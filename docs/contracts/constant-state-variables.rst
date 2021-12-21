@@ -6,26 +6,36 @@
 Constant and Immutable State Variables
 **************************************
 
-State variables can be declared as ``constant`` or ``immutable``.
-In both cases, the variables cannot be modified after the contract has been constructed.
-For ``constant`` variables, the value has to be fixed at compile-time, while
-for ``immutable``, it can still be assigned at construction time.
+.. State variables can be declared as ``constant`` or ``immutable``.
+.. In both cases, the variables cannot be modified after the contract has been constructed.
+.. For ``constant`` variables, the value has to be fixed at compile-time, while
+.. for ``immutable``, it can still be assigned at construction time.
 
-It is also possible to define ``constant`` variables at the file level.
+状態変数は ``constant`` または ``immutable`` として宣言できます。どちらの場合も、コントラクトが構築された後は、変数を変更できません。 ``constant`` 変数の場合はコンパイル時に値を固定する必要がありますが、 ``immutable`` の場合はコンストラクション時にも値を割り当てることができます。
 
-The compiler does not reserve a storage slot for these variables, and every occurrence is
-replaced by the respective value.
+.. It is also possible to define ``constant`` variables at the file level.
 
-Compared to regular state variables, the gas costs of constant and immutable variables
-are much lower. For a constant variable, the expression assigned to it is copied to
-all the places where it is accessed and also re-evaluated each time. This allows for local
-optimizations. Immutable variables are evaluated once at construction time and their value
-is copied to all the places in the code where they are accessed. For these values,
-32 bytes are reserved, even if they would fit in fewer bytes. Due to this, constant values
-can sometimes be cheaper than immutable values.
+また、ファイルレベルで ``constant`` 変数を定義することも可能です。
 
-Not all types for constants and immutables are implemented at this time. The only supported types are
-:ref:`strings <strings>` (only for constants) and :ref:`value types <value-types>`.
+.. The compiler does not reserve a storage slot for these variables, and every occurrence is
+.. replaced by the respective value.
+
+コンパイラはこれらの変数のためにストレージスロットを確保しておらず、出現するたびにそれぞれの値で置き換えられます。
+
+.. Compared to regular state variables, the gas costs of constant and immutable variables
+.. are much lower. For a constant variable, the expression assigned to it is copied to
+.. all the places where it is accessed and also re-evaluated each time. This allows for local
+.. optimizations. Immutable variables are evaluated once at construction time and their value
+.. is copied to all the places in the code where they are accessed. For these values,
+.. 32 bytes are reserved, even if they would fit in fewer bytes. Due to this, constant values
+.. can sometimes be cheaper than immutable values.
+
+通常のステート変数と比較して、定数変数やイミュータブル変数のガスコストは非常に低くなります。定数変数の場合、それに割り当てられた式は、アクセスされるすべての場所にコピーされ、また毎回再評価されます。これにより、局所的な最適化が可能になります。不変の変数は、構築時に一度だけ評価され、その値はコード内のアクセスされるすべての場所にコピーされます。これらの値のために、たとえそれより少ないバイト数で収まるとしても、32バイトが確保されます。このため、定数値の方が不変値よりもコストが低い場合があります。
+
+.. Not all types for constants and immutables are implemented at this time. The only supported types are
+.. :ref:`strings <strings>` (only for constants) and :ref:`value types <value-types>`.
+
+現時点では、定数や不変量のすべての型が実装されているわけではありません。サポートされているのは、 :ref:`strings <strings>` （定数用のみ）と :ref:`value types <value-types>` のみです。
 
 .. code-block:: solidity
 
@@ -52,47 +62,61 @@ Not all types for constants and immutables are implemented at this time. The onl
         }
     }
 
-
 Constant
 ========
 
-For ``constant`` variables, the value has to be a constant at compile time and it has to be
-assigned where the variable is declared. Any expression
-that accesses storage, blockchain data (e.g. ``block.timestamp``, ``address(this).balance`` or
-``block.number``) or
-execution data (``msg.value`` or ``gasleft()``) or makes calls to external contracts is disallowed. Expressions
-that might have a side-effect on memory allocation are allowed, but those that
-might have a side-effect on other memory objects are not. The built-in functions
-``keccak256``, ``sha256``, ``ripemd160``, ``ecrecover``, ``addmod`` and ``mulmod``
-are allowed (even though, with the exception of ``keccak256``, they do call external contracts).
+.. For ``constant`` variables, the value has to be a constant at compile time and it has to be
+.. assigned where the variable is declared. Any expression
+.. that accesses storage, blockchain data (e.g. ``block.timestamp``, ``address(this).balance`` or
+.. ``block.number``) or
+.. execution data (``msg.value`` or ``gasleft()``) or makes calls to external contracts is disallowed. Expressions
+.. that might have a side-effect on memory allocation are allowed, but those that
+.. might have a side-effect on other memory objects are not. The built-in functions
+.. ``keccak256``, ``sha256``, ``ripemd160``, ``ecrecover``, ``addmod`` and ``mulmod``
+.. are allowed (even though, with the exception of ``keccak256``, they do call external contracts).
 
-The reason behind allowing side-effects on the memory allocator is that it
-should be possible to construct complex objects like e.g. lookup-tables.
-This feature is not yet fully usable.
+``constant`` 変数については、コンパイル時に値が定数である必要があり、変数が宣言された場所で代入されなければなりません。ストレージ、ブロックチェーンデータ（例:  ``block.timestamp`` 、 ``address(this).balance`` 、 ``block.number`` ）、実行データ（ ``msg.value`` 、 ``gasleft()`` ）にアクセスしたり、外部コントラクトを呼び出したりする式はすべて不許可です。メモリの割り当てに副作用を及ぼす可能性のある式は許可されますが、他のメモリオブジェクトに副作用を及ぼす可能性のある式は許可されません。組み込み関数の ``keccak256`` 、 ``sha256`` 、 ``ripemd160`` 、 ``ecrecover`` 、 ``addmod`` 、 ``mulmod`` は許可されています（ ``keccak256`` を除いて外部コントラクトを呼び出していますが）。
+
+.. The reason behind allowing side-effects on the memory allocator is that it
+.. should be possible to construct complex objects like e.g. lookup-tables.
+.. This feature is not yet fully usable.
+
+メモリアロケータの副作用を許可した理由は、ルックアップテーブルなどの複雑なオブジェクトを構築できるようにするためです。この機能はまだ完全には使用できません。
 
 Immutable
 =========
 
-Variables declared as ``immutable`` are a bit less restricted than those
-declared as ``constant``: Immutable variables can be assigned an arbitrary
-value in the constructor of the contract or at the point of their declaration.
-They can be assigned only once and can, from that point on, be read even during
-construction time.
+.. Variables declared as ``immutable`` are a bit less restricted than those
+.. declared as ``constant``: Immutable variables can be assigned an arbitrary
+.. value in the constructor of the contract or at the point of their declaration.
+.. They can be assigned only once and can, from that point on, be read even during
+.. construction time.
 
-The contract creation code generated by the compiler will modify the
-contract's runtime code before it is returned by replacing all references
-to immutables by the values assigned to the them. This is important if
-you are comparing the
-runtime code generated by the compiler with the one actually stored in the
-blockchain.
+``immutable`` として宣言された変数は、 ``constant`` として宣言された変数よりも少し制限があります。不変の変数は、コントラクトのコンストラクタや宣言の時点で、任意の値を割り当てることができます。不変の変数は、コントラクトのコンストラクタや宣言時に任意の値を割り当てることができますが、一度だけ割り当てることができ、その時点から建設中でも読み取ることができます。
+
+.. The contract creation code generated by the compiler will modify the
+.. contract's runtime code before it is returned by replacing all references
+.. to immutables by the values assigned to the them. This is important if
+.. you are comparing the
+.. runtime code generated by the compiler with the one actually stored in the
+.. blockchain.
+
+コンパイラが生成したコントラクト作成コードは、不変物へのすべての参照を不変物に割り当てられた値に置き換えることで、コントラクトのランタイムコードを返す前に修正します。これは、コンパイラによって生成されたランタイムコードと、実際にブロックチェーンに保存されているランタイムコードを比較する場合に重要です。
+
+.. .. note::
+
+..   Immutables that are assigned at their declaration are only considered
+..   initialized once the constructor of the contract is executing.
+..   This means you cannot initialize immutables inline with a value
+..   that depends on another immutable. You can do this, however,
+..   inside the constructor of the contract.
+
+..   This is a safeguard against different interpretations about the order
+..   of state variable initialization and constructor execution, especially
+..   with regards to inheritance.
 
 .. note::
-  Immutables that are assigned at their declaration are only considered
-  initialized once the constructor of the contract is executing.
-  This means you cannot initialize immutables inline with a value
-  that depends on another immutable. You can do this, however,
-  inside the constructor of the contract.
 
-  This is a safeguard against different interpretations about the order
-  of state variable initialization and constructor execution, especially
-  with regards to inheritance.
+  宣言時に割り当てられたイミュータブルは、コントラクトのコンストラクタが実行されて初めて初期化されたとみなされます。   つまり、他のイミュータブルに依存する値でイミュータブルをインラインで初期化できません。ただし、コントラクトのコンストラクタの内部では初期化できます。
+
+  これは、状態変数の初期化とコンストラクタの実行の順序について、特に継承に関して異なる解釈がなされないようにするための措置です。

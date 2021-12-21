@@ -6,29 +6,37 @@
 Voting
 ******
 
-The following contract is quite complex, but showcases
-a lot of Solidity's features. It implements a voting
-contract. Of course, the main problems of electronic
-voting is how to assign voting rights to the correct
-persons and how to prevent manipulation. We will not
-solve all problems here, but at least we will show
-how delegated voting can be done so that vote counting
-is **automatic and completely transparent** at the
-same time.
+.. The following contract is quite complex, but showcases
+.. a lot of Solidity's features. It implements a voting
+.. contract. Of course, the main problems of electronic
+.. voting is how to assign voting rights to the correct
+.. persons and how to prevent manipulation. We will not
+.. solve all problems here, but at least we will show
+.. how delegated voting can be done so that vote counting
+.. is **automatic and completely transparent** at the
+.. same time.
 
-The idea is to create one contract per ballot,
-providing a short name for each option.
-Then the creator of the contract who serves as
-chairperson will give the right to vote to each
-address individually.
+次のコントラクトは非常に複雑ですが、Solidityの機能の多くを紹介しています。これは、投票コントラクトを実装しています。もちろん、電子投票の主な問題点は、いかにして正しい人に投票権を割り当てるか、いかにして操作を防ぐかです。ここですべての問題を解決するわけではありませんが、少なくとも、委任投票がどのように行われるかを示し、開票作業が同時に **automatic and completely transparent** で行われるようにします。
 
-The persons behind the addresses can then choose
-to either vote themselves or to delegate their
-vote to a person they trust.
+.. The idea is to create one contract per ballot,
+.. providing a short name for each option.
+.. Then the creator of the contract who serves as
+.. chairperson will give the right to vote to each
+.. address individually.
 
-At the end of the voting time, ``winningProposal()``
-will return the proposal with the largest number
-of votes.
+アイデアとしては、1つの投票用紙に1つの コントラクトを作成し、それぞれの選択肢に短い名前をつけます。そして、議長を務める コントラクトの作成者が、各アドレスに個別に投票権を与えます。
+
+.. The persons behind the addresses can then choose
+.. to either vote themselves or to delegate their
+.. vote to a person they trust.
+
+そして、そのアドレスを持つ人は、自分で投票するか、信頼できる人に投票を委任するかを選ぶことができます。
+
+.. At the end of the voting time, ``winningProposal()``
+.. will return the proposal with the largest number
+.. of votes.
+
+投票時間終了後、最も多くの票を獲得した案を ``winningProposal()`` 社に返却します。
 
 .. code-block:: solidity
 
@@ -183,9 +191,11 @@ of votes.
         }
     }
 
-
 Possible Improvements
 =====================
 
-Currently, many transactions are needed to assign the rights
-to vote to all participants. Can you think of a better way?
+.. Currently, many transactions are needed to assign the rights
+.. to vote to all participants. Can you think of a better way?
+.. 
+
+現在、すべての参加者に投票権を割り当てるためには、多くのトランザクションが必要です。何か良い方法はありませんか？

@@ -10,20 +10,26 @@ Common Patterns
 Withdrawal from Contracts
 *************************
 
-The recommended method of sending funds after an effect
-is using the withdrawal pattern. Although the most intuitive
-method of sending Ether, as a result of an effect, is a
-direct ``transfer`` call, this is not recommended as it
-introduces a potential security risk. You may read
-more about this on the :ref:`security_considerations` page.
+.. The recommended method of sending funds after an effect
+.. is using the withdrawal pattern. Although the most intuitive
+.. method of sending Ether, as a result of an effect, is a
+.. direct ``transfer`` call, this is not recommended as it
+.. introduces a potential security risk. You may read
+.. more about this on the :ref:`security_considerations` page.
 
-The following is an example of the withdrawal pattern in practice in
-a contract where the goal is to send the most money to the
-contract in order to become the "richest", inspired by
-`King of the Ether <https://www.kingoftheether.com/>`_.
+効果後の送金方法としては、出金パターンの使用が推奨されます。エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクト ``transfer`` コールですが、これは潜在的なセキュリティ・リスクがあるため推奨されません。これについては、 :ref:`security_considerations` のページで詳しく説明しています。
 
-In the following contract, if you are no longer the richest,
-you receive the funds of the person who is now the richest.
+.. The following is an example of the withdrawal pattern in practice in
+.. a contract where the goal is to send the most money to the
+.. contract in order to become the "richest", inspired by
+.. `King of the Ether <https://www.kingoftheether.com/>`_.
+
+`King of the Ether <https://www.kingoftheether.com/>`_ をヒントに、「一番のお金持ち」になるために一番多くのお金を送ることを目的としたコントラクトにおいて、実際に行われている出金パターンの例を以下に示します。
+
+.. In the following contract, if you are no longer the richest,
+.. you receive the funds of the person who is now the richest.
+
+次のコントラクトでは、自分が一番お金持ちでなくなった場合、今一番お金持ちになった人の資金を受け取ります。
 
 .. code-block:: solidity
 
@@ -61,7 +67,9 @@ you receive the funds of the person who is now the richest.
         }
     }
 
-This is as opposed to the more intuitive sending pattern:
+.. This is as opposed to the more intuitive sending pattern:
+
+これは、より直感的な送信パターンとは対照的です。
 
 .. code-block:: solidity
 
@@ -90,18 +98,22 @@ This is as opposed to the more intuitive sending pattern:
         }
     }
 
-Notice that, in this example, an attacker could trap the
-contract into an unusable state by causing ``richest`` to be
-the address of a contract that has a receive or fallback function
-which fails (e.g. by using ``revert()`` or by just
-consuming more than the 2300 gas stipend transferred to them). That way,
-whenever ``transfer`` is called to deliver funds to the
-"poisoned" contract, it will fail and thus also ``becomeRichest``
-will fail, with the contract being stuck forever.
+.. Notice that, in this example, an attacker could trap the
+.. contract into an unusable state by causing ``richest`` to be
+.. the address of a contract that has a receive or fallback function
+.. which fails (e.g. by using ``revert()`` or by just
+.. consuming more than the 2300 gas stipend transferred to them). That way,
+.. whenever ``transfer`` is called to deliver funds to the
+.. "poisoned" contract, it will fail and thus also ``becomeRichest``
+.. will fail, with the contract being stuck forever.
 
-In contrast, if you use the "withdraw" pattern from the first example,
-the attacker can only cause his or her own withdraw to fail and not the
-rest of the contract's workings.
+この例では、攻撃者は、失敗する受信関数やフォールバック関数を持つコントラクトのアドレスを ``richest`` にすることで、コントラクトを使用不能な状態に陥れることができることに注意してください（例えば、 ``revert()`` を使用したり、送金された2300ガスの俸給を超えて消費したりすることなど）。そうすれば、「毒された」コントラクトに資金を届けるために ``transfer`` が呼び出されるたびに、それは失敗し、したがって ``becomeRichest`` も失敗して、コントラクトは永遠に動けなくなります。
+
+.. In contrast, if you use the "withdraw" pattern from the first example,
+.. the attacker can only cause his or her own withdraw to fail and not the
+.. rest of the contract's workings.
+
+一方、最初の例の「draw」パターンを使用した場合、攻撃者は自分のdrawが失敗するだけで、コントラクトの残りの部分の働きを引き起こすことはできません。
 
 .. index:: access;restricting
 
@@ -109,25 +121,33 @@ rest of the contract's workings.
 Restricting Access
 ******************
 
-Restricting access is a common pattern for contracts.
-Note that you can never restrict any human or computer
-from reading the content of your transactions or
-your contract's state. You can make it a bit harder
-by using encryption, but if your contract is supposed
-to read the data, so will everyone else.
+.. Restricting access is a common pattern for contracts.
+.. Note that you can never restrict any human or computer
+.. from reading the content of your transactions or
+.. your contract's state. You can make it a bit harder
+.. by using encryption, but if your contract is supposed
+.. to read the data, so will everyone else.
 
-You can restrict read access to your contract's state
-by **other contracts**. That is actually the default
-unless you declare your state variables ``public``.
+アクセスを制限することはコントラクトの一般的なパターンです。トランザクションの内容やコントラクトの状態を人間やコンピュータに読まれないように制限できないことに注意してください。暗号化することで多少難しくできますが、あなたのコントラクトがデータを読めることになっていれば、他の人も読めてしまいます。
 
-Furthermore, you can restrict who can make modifications
-to your contract's state or call your contract's
-functions and this is what this section is about.
+.. You can restrict read access to your contract's state
+.. by **other contracts**. That is actually the default
+.. unless you declare your state variables ``public``.
+
+コントラクトの状態に対する読み取りアクセスを **other contracts** で制限できます。これは、状態変数を ``public`` で宣言しない限り、実際にはデフォルトです。
+
+.. Furthermore, you can restrict who can make modifications
+.. to your contract's state or call your contract's
+.. functions and this is what this section is about.
+
+さらに、コントラクトの状態を変更したり、コントラクトの関数を呼び出すことができる人を制限できますが、これがこのセクションの目的です。
 
 .. index:: function;modifier
 
-The use of **function modifiers** makes these
-restrictions highly readable.
+.. The use of **function modifiers** makes these
+.. restrictions highly readable.
+
+**function modifiers** を使用することで、これらの制限を非常に読みやすくしています。
 
 .. code-block:: solidity
     :force:
@@ -229,9 +249,11 @@ restrictions highly readable.
         }
     }
 
-A more specialised way in which access to function
-calls can be restricted will be discussed
-in the next example.
+.. A more specialised way in which access to function
+.. calls can be restricted will be discussed
+.. in the next example.
+
+関数呼び出しへのアクセスを制限する、より特殊な方法については、次の例で説明します。
 
 .. index:: state machine
 
@@ -239,59 +261,81 @@ in the next example.
 State Machine
 *************
 
-Contracts often act as a state machine, which means
-that they have certain **stages** in which they behave
-differently or in which different functions can
-be called. A function call often ends a stage
-and transitions the contract into the next stage
-(especially if the contract models **interaction**).
-It is also common that some stages are automatically
-reached at a certain point in **time**.
+.. Contracts often act as a state machine, which means
+.. that they have certain **stages** in which they behave
+.. differently or in which different functions can
+.. be called. A function call often ends a stage
+.. and transitions the contract into the next stage
+.. (especially if the contract models **interaction**).
+.. It is also common that some stages are automatically
+.. reached at a certain point in **time**.
 
-An example for this is a blind auction contract which
-starts in the stage "accepting blinded bids", then
-transitions to "revealing bids" which is ended by
-"determine auction outcome".
+コントラクトはしばしばステートマシンとして動作します。つまり、異なる動作をする特定の **stages** を持っていたり、異なる関数を呼び出すことができるということです。関数の呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させる（特にコントラクトが **interaction** をモデルとしている場合）。また、いくつかのステージが **time** のある時点で自動的に到達することも一般的です。
+
+.. An example for this is a blind auction contract which
+.. starts in the stage "accepting blinded bids", then
+.. transitions to "revealing bids" which is ended by
+.. "determine auction outcome".
+
+例えば、ブラインドオークションのコントラクトでは、「ブラインド入札を受け付ける」という段階から始まり、「入札を公開する」に移行し、「オークションの結果を決定する」で終了します。
 
 .. index:: function;modifier
 
-Function modifiers can be used in this situation
-to model the states and guard against
-incorrect usage of the contract.
+.. Function modifiers can be used in this situation
+.. to model the states and guard against
+.. incorrect usage of the contract.
+
+このような場合、関数修飾子を使って状態をモデル化し、コントラクトの間違った使い方を防ぐことができます。
 
 Example
 =======
 
-In the following example,
-the modifier ``atStage`` ensures that the function can
-only be called at a certain stage.
+.. In the following example,
+.. the modifier ``atStage`` ensures that the function can
+.. only be called at a certain stage.
 
-Automatic timed transitions
-are handled by the modifier ``timedTransitions``, which
-should be used for all functions.
+次の例では、修飾子 ``atStage`` によって、ある段階でしかその関数を呼び出すことができないようにしています。
+
+.. Automatic timed transitions
+.. are handled by the modifier ``timedTransitions``, which
+.. should be used for all functions.
+
+時限式の自動トランジションはモディファイア ``timedTransitions`` で処理されます。
+
+.. .. note::
+
+..     **Modifier Order Matters**.
+..     If atStage is combined
+..     with timedTransitions, make sure that you mention
+..     it after the latter, so that the new stage is
+..     taken into account.
 
 .. note::
-    **Modifier Order Matters**.
-    If atStage is combined
-    with timedTransitions, make sure that you mention
-    it after the latter, so that the new stage is
-    taken into account.
 
-Finally, the modifier ``transitionNext`` can be used
-to automatically go to the next stage when the
-function finishes.
+    **Modifier Order Matters** .     atStageがtimedTransitionsと組み合わされている場合は、新しいステージが考慮されるように、後者の後に言及するようにしてください。
+
+.. Finally, the modifier ``transitionNext`` can be used
+.. to automatically go to the next stage when the
+.. function finishes.
+
+最後に、修飾子 ``transitionNext`` を使うと、関数が終了したときに自動的に次のステージに進むことができます。
+
+.. .. note::
+
+..     **Modifier May be Skipped**.
+..     This only applies to Solidity before version 0.4.0:
+..     Since modifiers are applied by simply replacing
+..     code and not by using a function call,
+..     the code in the transitionNext modifier
+..     can be skipped if the function itself uses
+..     return. If you want to do that, make sure
+..     to call nextStage manually from those functions.
+..     Starting with version 0.4.0, modifier code
+..     will run even if the function explicitly returns.
 
 .. note::
-    **Modifier May be Skipped**.
-    This only applies to Solidity before version 0.4.0:
-    Since modifiers are applied by simply replacing
-    code and not by using a function call,
-    the code in the transitionNext modifier
-    can be skipped if the function itself uses
-    return. If you want to do that, make sure
-    to call nextStage manually from those functions.
-    Starting with version 0.4.0, modifier code
-    will run even if the function explicitly returns.
+
+    **Modifier May be Skipped** です。     これは、バージョン0.4.0以前のSolidityにのみ適用されます。     修飾子は、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNext修飾子のコードをスキップできます。その場合は、それらの関数から手動でnextStageを呼び出すようにしてください。     バージョン0.4.0からは、モディファイアのコードは、関数が明示的にreturnしても実行されます。
 
 .. code-block:: solidity
     :force:
@@ -387,3 +431,4 @@ function finishes.
         {
         }
     }
+

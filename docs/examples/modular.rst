@@ -4,18 +4,20 @@
 Modular Contracts
 *****************
 
-A modular approach to building your contracts helps you reduce the complexity
-and improve the readability which will help to identify bugs and vulnerabilities
-during development and code review.
-If you specify and control the behaviour or each module in isolation, the
-interactions you have to consider are only those between the module specifications
-and not every other moving part of the contract.
-In the example below, the contract uses the ``move`` method
-of the ``Balances`` :ref:`library <libraries>` to check that balances sent between
-addresses match what you expect. In this way, the ``Balances`` library
-provides an isolated component that properly tracks balances of accounts.
-It is easy to verify that the ``Balances`` library never produces negative balances or overflows
-and the sum of all balances is an invariant across the lifetime of the contract.
+.. A modular approach to building your contracts helps you reduce the complexity
+.. and improve the readability which will help to identify bugs and vulnerabilities
+.. during development and code review.
+.. If you specify and control the behaviour or each module in isolation, the
+.. interactions you have to consider are only those between the module specifications
+.. and not every other moving part of the contract.
+.. In the example below, the contract uses the ``move`` method
+.. of the ``Balances`` :ref:`library <libraries>` to check that balances sent between
+.. addresses match what you expect. In this way, the ``Balances`` library
+.. provides an isolated component that properly tracks balances of accounts.
+.. It is easy to verify that the ``Balances`` library never produces negative balances or overflows
+.. and the sum of all balances is an invariant across the lifetime of the contract.
+
+モジュラーアプローチでコントラクトを構築すると、複雑さを軽減し、読みやすさを向上させることができ、開発やコードレビューの際にバグや脆弱性を特定するのに役立ちます。各モジュールの動作を個別に指定して制御する場合、考慮しなければならない相互作用はモジュールの仕様間のものだけで、コントラクトの他のすべての可動部分ではありません。以下の例では、コントラクトは ``Balances``   :ref:`library <libraries>` の ``move`` メソッドを使用して、アドレス間で送信された残高が期待したものと一致するかどうかをチェックしている。このように、 ``Balances`` ライブラリはアカウントの残高を適切に追跡する独立したコンポーネントを提供しています。 ``Balances`` ライブラリが負の残高やオーバーフローを決して生成せず、すべての残高の合計がコントラクトのライフタイムにわたって不変であることを簡単に確認できる。
 
 .. code-block:: solidity
 
@@ -65,3 +67,4 @@ and the sum of all balances is an invariant across the lifetime of the contract.
             return balances[tokenOwner];
         }
     }
+

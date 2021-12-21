@@ -9,61 +9,85 @@ Using the Compiler
 Using the Commandline Compiler
 ******************************
 
+.. .. note::
+
+..     This section does not apply to :ref:`solcjs <solcjs>`, not even if it is used in commandline mode.
+
 .. note::
-    This section does not apply to :ref:`solcjs <solcjs>`, not even if it is used in commandline mode.
+
+    このセクションは :ref:`solcjs <solcjs>` には適用されず、コマンドラインモードで使用されても適用されません。
 
 Basic Usage
 -----------
 
-One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
-Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
-If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
+.. One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
+.. Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
+.. If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
+
+Solidityリポジトリのビルドターゲットの1つは、solidityのコマンドラインコンパイラである ``solc`` です。 ``solc --help`` を使用すると、すべてのオプションの説明を受けることができます。コンパイラは、抽象的な構文木（パースツリー）上の単純なバイナリやアセンブリから、ガス使用量の推定値まで、さまざまな出力を行うことができます。単一のファイルをコンパイルしたいだけなら、 ``solc --bin sourceFile.sol`` として実行すれば、バイナリを出力します。 ``solc`` のより高度な出力を得たい場合は、 ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` を使ってすべてを別々のファイルに出力するように指示したほうがよいでしょう。
 
 Optimizer Options
 -----------------
 
-Before you deploy your contract, activate the optimizer when compiling using ``solc --optimize --bin sourceFile.sol``.
-By default, the optimizer will optimize the contract assuming it is called 200 times across its lifetime
-(more specifically, it assumes each opcode is executed around 200 times).
-If you want the initial contract deployment to be cheaper and the later function executions to be more expensive,
-set it to ``--optimize-runs=1``. If you expect many transactions and do not care for higher deployment cost and
-output size, set ``--optimize-runs`` to a high number.
-This parameter has effects on the following (this might change in the future):
+.. Before you deploy your contract, activate the optimizer when compiling using ``solc --optimize --bin sourceFile.sol``.
+.. By default, the optimizer will optimize the contract assuming it is called 200 times across its lifetime
+.. (more specifically, it assumes each opcode is executed around 200 times).
+.. If you want the initial contract deployment to be cheaper and the later function executions to be more expensive,
+.. set it to ``--optimize-runs=1``. If you expect many transactions and do not care for higher deployment cost and
+.. output size, set ``--optimize-runs`` to a high number.
+.. This parameter has effects on the following (this might change in the future):
 
-- the size of the binary search in the function dispatch routine
-- the way constants like large numbers or strings are stored
+コントラクトをデプロイする前に、 ``solc --optimize --bin sourceFile.sol`` を使ってコンパイルする際にオプティマイザを有効にします。デフォルトでは、オプティマイザは、コントラクトがそのライフタイム全体で200回呼び出されると仮定して最適化します（より具体的には、各オペコードが約200回実行されると仮定します）。最初のコントラクトデプロイを安価にし、後の関数実行を高価にしたい場合は、 ``--optimize-runs=1`` に設定してください。多くのトランザクションが予想され、デプロイコストや出力サイズが高くなっても気にしない場合は、 ``--optimize-runs`` を高い数値に設定してください。このパラメータは以下に影響を与えます（将来的に変更される可能性があります）。
+
+.. - the size of the binary search in the function dispatch routine
+
+- 関数ディスパッチルーチンでのバイナリ検索のサイズ
+
+.. - the way constants like large numbers or strings are stored
+
+- 大きな数字や文字列などの定数の保存方法について
 
 .. index:: allowed paths, --allow-paths, base path, --base-path, include paths, --include-path
 
 Base Path and Import Remapping
 ------------------------------
 
-The commandline compiler will automatically read imported files from the filesystem, but
-it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
+.. The commandline compiler will automatically read imported files from the filesystem, but
+.. it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
+
+コマンドライン・コンパイラは、インポートされたファイルをファイルシステムから自動的に読み込みますが、以下のように ``prefix=path`` を使って :ref:`path redirects <import-remapping>` を提供することも可能です。
 
 .. code-block:: bash
 
     solc github.com/ethereum/dapp-bin/=/usr/local/lib/dapp-bin/ file.sol
 
-This essentially instructs the compiler to search for anything starting with
-``github.com/ethereum/dapp-bin/`` under ``/usr/local/lib/dapp-bin``.
+.. This essentially instructs the compiler to search for anything starting with
+.. ``github.com/ethereum/dapp-bin/`` under ``/usr/local/lib/dapp-bin``.
 
-When accessing the filesystem to search for imports, :ref:`paths that do not start with ./
-or ../ <direct-imports>` are treated as relative to the directories specified using
-``--base-path`` and ``--include-path`` options (or the current working directory if base path is not specified).
-Furthermore, the part of the path added via these options will not appear in the contract metadata.
+これは基本的に、 ``github.com/ethereum/dapp-bin/`` で始まるものを ``/usr/local/lib/dapp-bin`` の下で検索するようにコンパイラに指示するものです。
 
-For security reasons the compiler has :ref:`restrictions on what directories it can access <allowed-paths>`.
-Directories of source files specified on the command line and target paths of
-remappings are automatically allowed to be accessed by the file reader, but everything
-else is rejected by default.
-Additional paths (and their subdirectories) can be allowed via the
-``--allow-paths /sample/path,/another/sample/path`` switch.
-Everything inside the path specified via ``--base-path`` is always allowed.
+.. When accessing the filesystem to search for imports, :ref:`paths that do not start with ./
+.. or ../ <direct-imports>` are treated as relative to the directories specified using
+.. ``--base-path`` and ``--include-path`` options (or the current working directory if base path is not specified).
+.. Furthermore, the part of the path added via these options will not appear in the contract metadata.
 
-The above is only a simplification of how the compiler handles import paths.
-For a detailed explanation with examples and discussion of corner cases please refer to the section on
-:ref:`path resolution <path-resolution>`.
+インポートを検索するためにファイルシステムにアクセスする際、 :ref:`paths that do not start with ./ or ../ <direct-imports>` は ``--base-path`` および ``--include-path`` オプションで指定されたディレクトリ（ベースパスが指定されていない場合はカレントワーキングディレクトリ）からの相対パスとして扱われます。また、これらのオプションで追加されたパスの部分は、コントラクトのメタデータには表示されません。
+
+.. For security reasons the compiler has :ref:`restrictions on what directories it can access <allowed-paths>`.
+.. Directories of source files specified on the command line and target paths of
+.. remappings are automatically allowed to be accessed by the file reader, but everything
+.. else is rejected by default.
+.. Additional paths (and their subdirectories) can be allowed via the
+.. ``--allow-paths /sample/path,/another/sample/path`` switch.
+.. Everything inside the path specified via ``--base-path`` is always allowed.
+
+セキュリティ上の理由から、コンパイラは :ref:`restrictions on what directories it can access <allowed-paths>` .コマンドラインで指定されたソースファイルのディレクトリと、リマッピングのターゲットパスは、ファイルリーダーからのアクセスが自動的に許可されますが、それ以外はデフォルトで拒否されます。 ``--allow-paths /sample/path,/another/sample/path``  スイッチで追加のパス（およびそのサブディレクトリ）を許可できます。 ``--base-path``  で指定されたパスの中のものは常に許可されます。
+
+.. The above is only a simplification of how the compiler handles import paths.
+.. For a detailed explanation with examples and discussion of corner cases please refer to the section on
+.. :ref:`path resolution <path-resolution>`.
+
+上記は、コンパイラがインポートパスをどのように処理するかを簡単に説明したものです。例を挙げての詳細な説明やコーナーケースについては、 :ref:`path resolution <path-resolution>` のセクションを参照してください。
 
 .. index:: ! linker, ! --link, ! --libraries
 .. _library-linking:
@@ -71,41 +95,66 @@ For a detailed explanation with examples and discussion of corner cases please r
 Library Linking
 ---------------
 
-If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``. These are placeholders for the actual library addresses.
-The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
-The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help
-identify which libraries the placeholders represent. Note that the fully qualified library name
-is the path of its source file and the library name separated by ``:``.
-You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
+.. If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``. These are placeholders for the actual library addresses.
+.. The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
+.. The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help
+.. identify which libraries the placeholders represent. Note that the fully qualified library name
+.. is the path of its source file and the library name separated by ``:``.
+.. You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
 
-Either add ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` to your command to provide an address for each library (use commas or spaces as separators) or store the string in a file (one library per line) and run ``solc`` using ``--libraries fileName``.
+コントラクトで :ref:`libraries <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` という形式の部分文字列が含まれていることに気づくでしょう。これは、実際のライブラリアドレスのプレースホルダーです。プレースホルダーは、完全修飾ライブラリ名の keccak256 ハッシュの 16 進数エンコーディングの 34 文字のプレフィックスです。また、バイトコードファイルには、プレースホルダーがどのライブラリを表しているかを識別するために、最後に ``// <placeholder> -> <fq library name>`` という形式の行が含まれます。完全修飾ライブラリ名は、そのソースファイルのパスとライブラリ名を ``:`` で区切ったものであることに注意してください。 ``solc`` をリンカーとして使用すると、これらの箇所にライブラリのアドレスを挿入してくれます。
+
+.. Either add ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` to your command to provide an address for each library (use commas or spaces as separators) or store the string in a file (one library per line) and run ``solc`` using ``--libraries fileName``.
+
+``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` をコマンドに追加して各ライブラリのアドレスを指定するか（セパレータにはカンマまたはスペースを使用）、文字列をファイルに保存して（1行に1ライブラリ）、 ``--libraries fileName`` を使って ``solc`` を実行するかです。
+
+.. .. note::
+
+..     Starting Solidity 0.8.1 accepts ``=`` as separator between library and address, and ``:`` as a separator is deprecated. It will be removed in the future. Currently ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` will work too.
 
 .. note::
-    Starting Solidity 0.8.1 accepts ``=`` as separator between library and address, and ``:`` as a separator is deprecated. It will be removed in the future. Currently ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` will work too.
+
+    Solidity 0.8.1より、ライブラリとアドレスの間のセパレータとして ``=`` を受け入れ、セパレータとしての ``:`` は非推奨となりました。将来的には削除される予定です。現在は ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` も動作します。
 
 .. index:: --standard-json, --base-path
 
-If ``solc`` is called with the option ``--standard-json``, it will expect a JSON input (as explained below) on the standard input, and return a JSON output on the standard output. This is the recommended interface for more complex and especially automated uses. The process will always terminate in a "success" state and report any errors via the JSON output.
-The option ``--base-path`` is also processed in standard-json mode.
+.. If ``solc`` is called with the option ``--standard-json``, it will expect a JSON input (as explained below) on the standard input, and return a JSON output on the standard output. This is the recommended interface for more complex and especially automated uses. The process will always terminate in a "success" state and report any errors via the JSON output.
+.. The option ``--base-path`` is also processed in standard-json mode.
 
-If ``solc`` is called with the option ``--link``, all input files are interpreted to be unlinked binaries (hex-encoded) in the ``__$53aea86b7d70b31448b230b20ae141a537$__``-format given above and are linked in-place (if the input is read from stdin, it is written to stdout). All options except ``--libraries`` are ignored (including ``-o``) in this case.
+``solc`` が ``--standard-json`` オプション付きで呼び出された場合、標準入力に（以下に説明する）JSONの入力を受け取り、標準出力にJSONの出力を返します。これは、より複雑な用途、特に自動化された用途に推奨されるインターフェースです。プロセスは常に「成功」の状態で終了し、エラーがあればJSON出力で報告されます。オプション ``--base-path`` もstandard-jsonモードで処理されます。
+
+.. If ``solc`` is called with the option ``--link``, all input files are interpreted to be unlinked binaries (hex-encoded) in the ``__$53aea86b7d70b31448b230b20ae141a537$__``-format given above and are linked in-place (if the input is read from stdin, it is written to stdout). All options except ``--libraries`` are ignored (including ``-o``) in this case.
+
+``solc`` がオプション ``--link`` 付きで呼ばれた場合、すべての入力ファイルは、上記で与えられた ``__$53aea86b7d70b31448b230b20ae141a537$__`` 形式のリンクされていないバイナリ（16進コード）と解釈され、その場でリンクされます（入力が標準入力から読み込まれた場合は、標準出力に書き込まれます）。この場合、 ``--libraries`` 以外のオプションはすべて無視されます（ ``-o`` も含む）。
+
+.. .. warning::
+
+..     Manually linking libraries on the generated bytecode is discouraged because it does not update
+..     contract metadata. Since metadata contains a list of libraries specified at the time of
+..     compilation and bytecode contains a metadata hash, you will get different binaries, depending
+..     on when linking is performed.
+
+..     You should ask the compiler to link the libraries at the time a contract is compiled by either
+..     using the ``--libraries`` option of ``solc`` or the ``libraries`` key if you use the
+..     standard-JSON interface to the compiler.
 
 .. warning::
-    Manually linking libraries on the generated bytecode is discouraged because it does not update
-    contract metadata. Since metadata contains a list of libraries specified at the time of
-    compilation and bytecode contains a metadata hash, you will get different binaries, depending
-    on when linking is performed.
 
-    You should ask the compiler to link the libraries at the time a contract is compiled by either
-    using the ``--libraries`` option of ``solc`` or the ``libraries`` key if you use the
-    standard-JSON interface to the compiler.
+    生成されたバイトコード上でライブラリを手動でリンクすることは、コントラクトのメタデータが更新されないため、推奨されません。メタデータにはコンパイル時に指定されたライブラリのリストが含まれており、バイトコードにはメタデータのハッシュが含まれているため、リンクを実行するタイミングによって異なるバイナリが得られることになります。
+
+     コントラクトのコンパイル時にライブラリをリンクするようにコンパイラに依頼するには、 ``solc`` の ``--libraries`` オプションを使用するか、コンパイラへの標準JSONインターフェースを使用する場合は ``libraries`` キーを使用する必要があります。
+
+.. .. note::
+
+..     The library placeholder used to be the fully qualified name of the library itself
+..     instead of the hash of it. This format is still supported by ``solc --link`` but
+..     the compiler will no longer output it. This change was made to reduce
+..     the likelihood of a collision between libraries, since only the first 36 characters
+..     of the fully qualified library name could be used.
 
 .. note::
-    The library placeholder used to be the fully qualified name of the library itself
-    instead of the hash of it. This format is still supported by ``solc --link`` but
-    the compiler will no longer output it. This change was made to reduce
-    the likelihood of a collision between libraries, since only the first 36 characters
-    of the fully qualified library name could be used.
+
+    ライブラリのプレースホルダーは、以前はライブラリのハッシュではなく、ライブラリ自体の完全修飾名でした。この形式は ``solc --link`` ではまだサポートされていますが、コンパイラでは出力されなくなりました。この変更は、完全修飾ライブラリ名の最初の36文字しか使用できないため、ライブラリ間の衝突の可能性を減らすために行われました。
 
 .. _evm-version:
 .. index:: ! EVM version, compile target
@@ -113,23 +162,33 @@ If ``solc`` is called with the option ``--link``, all input files are interprete
 Setting the EVM Version to Target
 *********************************
 
-When you compile your contract code you can specify the Ethereum virtual machine
-version to compile for to avoid particular features or behaviours.
+.. When you compile your contract code you can specify the Ethereum virtual machine
+.. version to compile for to avoid particular features or behaviours.
+
+コントラクトコードをコンパイルする際に、特定の機能や動作を避けるためにコンパイルするEthereum仮想マシンのバージョンを指定できます。
+
+.. .. warning::
+
+..    Compiling for the wrong EVM version can result in wrong, strange and failing
+..    behaviour. Please ensure, especially if running a private chain, that you
+..    use matching EVM versions.
 
 .. warning::
 
-   Compiling for the wrong EVM version can result in wrong, strange and failing
-   behaviour. Please ensure, especially if running a private chain, that you
-   use matching EVM versions.
+   EVMのバージョンを間違えてコンパイルすると、間違った動作、おかしな動作、失敗することがあります。特にプライベートチェーンを実行している場合は、一致するEVMバージョンを使用するようにしてください。
 
-On the command line, you can select the EVM version as follows:
+.. On the command line, you can select the EVM version as follows:
+
+コマンドラインでは、以下のようにEVMのバージョンを選択できます。
 
 .. code-block:: shell
 
   solc --evm-version <VERSION> contract.sol
 
-In the :ref:`standard JSON interface <compiler-api>`, use the ``"evmVersion"``
-key in the ``"settings"`` field:
+.. In the :ref:`standard JSON interface <compiler-api>`, use the ``"evmVersion"``
+.. key in the ``"settings"`` field:
+
+:ref:`standard JSON interface <compiler-api>` では、 ``"settings"`` フィールドに ``"evmVersion"`` キーを使用します。
 
 .. code-block:: javascript
 
@@ -144,35 +203,104 @@ key in the ``"settings"`` field:
 Target Options
 --------------
 
-Below is a list of target EVM versions and the compiler-relevant changes introduced
-at each version. Backward compatibility is not guaranteed between each version.
+.. Below is a list of target EVM versions and the compiler-relevant changes introduced
+.. at each version. Backward compatibility is not guaranteed between each version.
+
+以下は、対象となるEVMのバージョンと、各バージョンで導入されたコンパイラ関連の変更点の一覧です。各バージョン間の下位互換性は保証されていません。
+
+.. - ``homestead``
 
 - ``homestead``
-   - (oldest version)
-- ``tangerineWhistle``
-   - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
-   - All gas sent by default for external calls, previously a certain amount had to be retained.
-- ``spuriousDragon``
-   - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
-- ``byzantium``
-   - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
-   - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
-   - It is possible to access dynamic data returned from function calls.
-   - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
-- ``constantinople``
-   - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
-   - Shifting operators use shifting opcodes and thus need less gas.
-- ``petersburg``
-   - The compiler behaves the same way as with constantinople.
-- ``istanbul``
-   - Opcodes ``chainid`` and ``selfbalance`` are available in assembly.
-- ``berlin``
-   - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
-     compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
-     the optimizer.
-- ``london`` (**default**)
-   - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
 
+.. - (oldest version)
+
+- (古いバージョン)
+
+.. - ``tangerineWhistle``
+
+- ``tangerineWhistle``
+
+.. - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
+
+- 他のアカウントへのアクセスのためのガスコストが増加し、ガス推定とオプティマイザーに関連する。
+
+.. - All gas sent by default for external calls, previously a certain amount had to be retained.
+
+- 外部からの電話に対しては、デフォルトですべてのガスが送信されますが、従来は一定量を保持する必要がありました。
+
+.. - ``spuriousDragon``
+
+- ``spuriousDragon``
+
+.. - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
+
+- ``exp`` オペコードのガスコストが増加し、ガス推定とオプティマイザーに関連する。
+
+.. - ``byzantium``
+
+- ``byzantium``
+
+.. - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
+
+- オプコード ``returndatacopy`` 、 ``returndatasize`` 、 ``staticcall`` はアセンブリで利用可能です。
+
+.. - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
+
+- ``staticcall``  opcodeは、ライブラリではないビューや純粋な関数を呼び出す際に使用され、関数がEVMレベルで状態を変更することを防ぎます。つまり、無効な型変換を使用している場合でも適用されます。
+
+.. - It is possible to access dynamic data returned from function calls.
+
+- ファンクションコールから返されたダイナミックデータにアクセスすることが可能です。
+
+.. - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
+
+- ``revert`` のオペコードが導入されたことで、 ``revert()`` がガスを無駄にしないようになりました。
+
+.. - ``constantinople``
+
+- ``constantinople``
+
+.. - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
+
+- Opcode ` `create2` ,  ``extcodehash`` ,  ``shl`` ,  ``shr`` ,  ``sar`` はアセンブリで使用可能です。
+
+.. - Shifting operators use shifting opcodes and thus need less gas.
+
+- シフティング・オペレーターは、シフティング・オペコードを使用するため、より少ないガスで済みます。
+
+.. - ``petersburg``
+
+- ``petersburg``
+
+.. - The compiler behaves the same way as with constantinople.
+
+- コンパイラは constantinople の場合と同じように動作します。
+
+.. - ``istanbul``
+
+- ``istanbul``
+
+.. - Opcodes ``chainid`` and ``selfbalance`` are available in assembly.
+
+- Opcodes  ``chainid`` と ``selfbalance`` はアセンブリで利用可能です。
+
+.. - ``berlin``
+
+- ``berlin``
+
+.. - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
+..      compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
+..      the optimizer.
+
+- ``SLOAD`` 、 ``*CALL`` 、 ``BALANCE`` 、 ``EXT*`` 、 ``SELFDESTRUCT`` のガス代が増加しました。コンパイラーは、このような操作に対して冷たいガスコストを想定しています。これは、ガス推定とオプティマイザに関連します。
+
+.. - ``london`` (**default**)
+
+- ``london``  ( **default** )
+
+.. - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
+
+- ブロックの基本料金（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリのグローバル ``block.basefee`` または ``basefee()`` を介してアクセスできます。
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -180,19 +308,27 @@ at each version. Backward compatibility is not guaranteed between each version.
 Compiler Input and Output JSON Description
 ******************************************
 
-The recommended way to interface with the Solidity compiler especially for
-more complex and automated setups is the so-called JSON-input-output interface.
-The same interface is provided by all distributions of the compiler.
+.. The recommended way to interface with the Solidity compiler especially for
+.. more complex and automated setups is the so-called JSON-input-output interface.
+.. The same interface is provided by all distributions of the compiler.
 
-The fields are generally subject to change,
-some are optional (as noted), but we try to only make backwards compatible changes.
+Solidity コンパイラとのインターフェイスとして、特に複雑な自動化されたセットアップには、いわゆる JSON-input-output インターフェイスを使用することをお勧めします。このインターフェイスは、コンパイラのすべてのディストリビューションで提供されています。
 
-The compiler API expects a JSON formatted input and outputs the compilation result in a JSON formatted output.
-The standard error output is not used and the process will always terminate in a "success" state, even
-if there were errors. Errors are always reported as part of the JSON output.
+.. The fields are generally subject to change,
+.. some are optional (as noted), but we try to only make backwards compatible changes.
 
-The following subsections describe the format through an example.
-Comments are of course not permitted and used here only for explanatory purposes.
+フィールドは一般的に変更される可能性があり、いくつかの項目はオプションですが（前述のとおり）、後方互換性のある変更のみを行うようにしています。
+
+.. The compiler API expects a JSON formatted input and outputs the compilation result in a JSON formatted output.
+.. The standard error output is not used and the process will always terminate in a "success" state, even
+.. if there were errors. Errors are always reported as part of the JSON output.
+
+コンパイラAPIは、JSON形式の入力を期待し、コンパイル結果をJSON形式の出力で出力します。標準のエラー出力は使用されず、エラーがあった場合でも、常に「成功」の状態で処理が終了します。エラーは常にJSON出力の一部として報告されます。
+
+.. The following subsections describe the format through an example.
+.. Comments are of course not permitted and used here only for explanatory purposes.
+
+以下のサブセクションでは、例を挙げてフォーマットを説明します。もちろん、コメントは許可されておらず、ここでは説明のためにのみ使用されています。
 
 Input Description
 -----------------
@@ -440,7 +576,6 @@ Input Description
       }
     }
 
-
 Output Description
 ------------------
 
@@ -597,25 +732,69 @@ Output Description
       }
     }
 
-
 Error Types
 ~~~~~~~~~~~
 
-1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
-2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
-3. ``ParserError``: Source code doesn't conform to the language rules.
-4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
-5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
-6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
-7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
-8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
-9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
-10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
-11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
-12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
-13. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
-14. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
+.. 1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
 
+1. ``JSONError`` : JSON入力が要求されたフォーマットに適合していない。例: 入力がJSONオブジェクトでない、言語がサポートされていない、など。
+
+.. 2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
+
+2. ``IOError`` : 解決できないURLや提供されたソースのハッシュの不一致など、IOおよびインポート処理のエラー。
+
+.. 3. ``ParserError``: Source code doesn't conform to the language rules.
+
+3. ``ParserError`` : ソースコードが言語ルールに準拠していない。
+
+.. 4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
+
+4. ``DocstringParsingError`` : コメントブロック内のNatSpecタグが解析できない。
+
+.. 5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
+
+5. ``SyntaxError`` :  ``for`` ループの外で ``continue`` が使われているなど、構文上のエラー。
+
+.. 6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
+
+6. ``DeclarationError`` : 無効な、解決不可能な、または衝突した識別子名 例:  ``Identifier not found``
+
+.. 7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
+
+7. ``TypeError`` : 無効な型変換、無効な代入など、型システム内のエラー。
+
+.. 8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
+
+8. ``UnimplementedFeatureError`` : この機能はコンパイラではサポートされていませんが、将来のバージョンではサポートされる予定です。
+
+.. 9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
+.. 1
+
+9. ``InternalCompilerError`` : コンパイラの内部バグが発生しました。1
+
+.. 10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
+.. 1
+
+10. ``Exception`` : コンパイル時に不明な障害が発生しました - これは問題として報告する必要があります。1
+
+.. 11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
+.. 1
+
+11. ``CompilerError`` : コンパイラー・スタックの無効な使用 - これは問題として報告する必要があります。1
+
+.. 12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
+.. 1
+
+12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。1
+
+.. 13. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
+.. 1
+
+13. ``Warning`` : 警告であり、コンパイルを止めることはできなかったが、可能であれば対処すべきです。1
+
+.. 14. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
+
+14. ``Info`` : ユーザーが役に立つかもしれないが、危険ではなく、必ずしも対処する必要がないとコンパイラが考えている情報。
 
 .. _compiler-tools:
 
@@ -625,61 +804,82 @@ Compiler Tools
 solidity-upgrade
 ----------------
 
-``solidity-upgrade`` can help you to semi-automatically upgrade your contracts
-to breaking language changes. While it does not and cannot implement all
-required changes for every breaking release, it still supports the ones, that
-would need plenty of repetitive manual adjustments otherwise.
+.. ``solidity-upgrade`` can help you to semi-automatically upgrade your contracts
+.. to breaking language changes. While it does not and cannot implement all
+.. required changes for every breaking release, it still supports the ones, that
+.. would need plenty of repetitive manual adjustments otherwise.
+
+``solidity-upgrade`` は、最新の言語変更に合わせてコントラクトを半自動的にアップグレードするのに役立ちます。 ``solidity-upgrade`` は、すべての変更されたリリースに必要なすべての変更を実装するわけではありませんし、そうすることもできませんが、他の方法では多くの反復的な手動調整を必要とするようなものをサポートしています。
+
+.. .. note::
+
+..     ``solidity-upgrade`` carries out a large part of the work, but your
+..     contracts will most likely need further manual adjustments. We recommend
+..     using a version control system for your files. This helps reviewing and
+..     eventually rolling back the changes made.
 
 .. note::
 
-    ``solidity-upgrade`` carries out a large part of the work, but your
-    contracts will most likely need further manual adjustments. We recommend
-    using a version control system for your files. This helps reviewing and
-    eventually rolling back the changes made.
+    ``solidity-upgrade`` は作業の大部分を行いますが、 コントラクトはさらに手動で調整する必要がある場合がほとんどです。ファイルにはバージョン管理システムを使用することをお勧めします。これにより、変更内容を確認し、最終的にはロールバックできます。
+
+.. .. warning::
+
+..     ``solidity-upgrade`` is not considered to be complete or free from bugs, so
+..     please use with care.
 
 .. warning::
 
-    ``solidity-upgrade`` is not considered to be complete or free from bugs, so
-    please use with care.
+    ``solidity-upgrade`` は完全なものではなく、バグもないと考えられますので、注意してお使いください。
 
 How it Works
 ~~~~~~~~~~~~
 
-You can pass (a) Solidity source file(s) to ``solidity-upgrade [files]``. If
-these make use of ``import`` statement which refer to files outside the
-current source file's directory, you need to specify directories that
-are allowed to read and import files from, by passing
-``--allow-paths [directory]``. You can ignore missing files by passing
-``--ignore-missing``.
+.. You can pass (a) Solidity source file(s) to ``solidity-upgrade [files]``. If
+.. these make use of ``import`` statement which refer to files outside the
+.. current source file's directory, you need to specify directories that
+.. are allowed to read and import files from, by passing
+.. ``--allow-paths [directory]``. You can ignore missing files by passing
+.. ``--ignore-missing``.
 
-``solidity-upgrade`` is based on ``libsolidity`` and can parse, compile and
-analyse your source files, and might find applicable source upgrades in them.
+``solidity-upgrade [files]`` にはSolidityのソースファイルを渡すことができます。これらのファイルが、現在のソースファイルのディレクトリ外のファイルを参照する ``import`` ステートメントを使用する場合は、 ``--allow-paths [directory]`` を渡して、ファイルの読み込みとインポートが許可されているディレクトリを指定する必要があります。 ``--ignore-missing`` を渡すと、見つからないファイルを無視できます。
 
-Source upgrades are considered to be small textual changes to your source code.
-They are applied to an in-memory representation of the source files
-given. The corresponding source file is updated by default, but you can pass
-``--dry-run`` to simulate to whole upgrade process without writing to any file.
+.. ``solidity-upgrade`` is based on ``libsolidity`` and can parse, compile and
+.. analyse your source files, and might find applicable source upgrades in them.
 
-The upgrade process itself has two phases. In the first phase source files are
-parsed, and since it is not possible to upgrade source code on that level,
-errors are collected and can be logged by passing ``--verbose``. No source
-upgrades available at this point.
+``solidity-upgrade`` は ``libsolidity`` をベースにしており、ソースファイルを解析、コンパイル、分析でき、その中から該当するソースアップグレードを見つけることができるかもしれません。
 
-In the second phase, all sources are compiled and all activated upgrade analysis
-modules are run alongside compilation. By default, all available modules are
-activated. Please read the documentation on
-:ref:`available modules <upgrade-modules>` for further details.
+.. Source upgrades are considered to be small textual changes to your source code.
+.. They are applied to an in-memory representation of the source files
+.. given. The corresponding source file is updated by default, but you can pass
+.. ``--dry-run`` to simulate to whole upgrade process without writing to any file.
 
+ソースアップグレードとは、ソースコードに小さな文字の変更を加えることと考えられます。ソースアップグレードは、与えられたソースファイルのメモリ内表現に適用されます。デフォルトでは、対応するソースファイルが更新されますが、 ``--dry-run``  を渡すことで、ファイルに書き込まずにアップグレード処理全体をシミュレートできます。
 
-This can result in compilation errors that may
-be fixed by source upgrades. If no errors occur, no source upgrades are being
-reported and you're done.
-If errors occur and some upgrade module reported a source upgrade, the first
-reported one gets applied and compilation is triggered again for all given
-source files. The previous step is repeated as long as source upgrades are
-reported. If errors still occur, you can log them by passing ``--verbose``.
-If no errors occur, your contracts are up to date and can be compiled with
-the latest version of the compiler.
+.. The upgrade process itself has two phases. In the first phase source files are
+.. parsed, and since it is not possible to upgrade source code on that level,
+.. errors are collected and can be logged by passing ``--verbose``. No source
+.. upgrades available at this point.
+
+アップグレード処理自体は2つのフェーズで構成されています。最初のフェーズでは、ソースファイルが解析され、そのレベルではソースコードをアップグレードできないため、エラーが収集され、 ``--verbose`` を渡すことでログに残すことができます。この時点では、ソースのアップグレードはできません。
+
+.. In the second phase, all sources are compiled and all activated upgrade analysis
+.. modules are run alongside compilation. By default, all available modules are
+.. activated. Please read the documentation on
+.. :ref:`available modules <upgrade-modules>` for further details.
+
+第 2 段階では、すべてのソースがコンパイルされ、アクティベートされたすべてのアップグレード分析モジュールがコンパイルと同時に実行されます。デフォルトでは、利用可能なすべてのモジュールが起動されます。詳細については、 :ref:`available modules <upgrade-modules>` のドキュメントをお読みください。
+
+.. This can result in compilation errors that may
+.. be fixed by source upgrades. If no errors occur, no source upgrades are being
+.. reported and you're done.
+.. If errors occur and some upgrade module reported a source upgrade, the first
+.. reported one gets applied and compilation is triggered again for all given
+.. source files. The previous step is repeated as long as source upgrades are
+.. reported. If errors still occur, you can log them by passing ``--verbose``.
+.. If no errors occur, your contracts are up to date and can be compiled with
+.. the latest version of the compiler.
+
+その結果、ソースのアップグレードによって修正される可能性のあるコンパイルエラーが発生することがあります。エラーが発生しなければ、ソース・アップグレードは報告されていないので、これで終了です。エラーが発生し、あるアップグレード・モジュールがソース・アップグレードを報告した場合は、最初に報告されたものが適用され、与えられたすべてのソース・ファイルに対して再びコンパイルが行われます。ソース・アップグレードが報告されている限り、前のステップが繰り返されます。それでもエラーが発生した場合は、 ``--verbose``  を渡すことでエラーをログに記録できます。エラーが発生しなければ、コントラクトは最新の状態になっており、最新バージョンのコンパイラでコンパイルできます。
 
 .. _upgrade-modules:
 
@@ -717,9 +917,11 @@ Available Upgrade Modules
 |                            |         |                                                  |
 +----------------------------+---------+--------------------------------------------------+
 
-Please read :doc:`0.5.0 release notes <050-breaking-changes>`,
-:doc:`0.6.0 release notes <060-breaking-changes>`,
-:doc:`0.7.0 release notes <070-breaking-changes>` and :doc:`0.8.0 release notes <080-breaking-changes>` for further details.
+.. Please read :doc:`0.5.0 release notes <050-breaking-changes>`,
+.. :doc:`0.6.0 release notes <060-breaking-changes>`,
+.. :doc:`0.7.0 release notes <070-breaking-changes>` and :doc:`0.8.0 release notes <080-breaking-changes>` for further details.
+
+詳しくは :doc: `0.5.0 release notes <050-breaking-changes>` , :doc: `0.6.0 release notes <060-breaking-changes>` , :doc: `0.7.0 release notes <070-breaking-changes>` , :doc: `0.8.0 release notes <080-breaking-changes>`  をご覧ください。
 
 Synopsis
 ~~~~~~~~
@@ -743,19 +945,20 @@ Synopsis
                              upgrade patches.
         --unsafe             Accept *unsafe* changes.
 
-
-
 Bug Reports / Feature Requests
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you found a bug or if you have a feature request, please
-`file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ on Github.
+.. If you found a bug or if you have a feature request, please
+.. `file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ on Github.
 
+もし、バグを見つけたり、機能のリクエストがあれば、Githubで `file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ をお願いします。
 
 Example
 ~~~~~~~
 
-Assume that you have the following contract in ``Source.sol``:
+.. Assume that you have the following contract in ``Source.sol``:
+
+``Source.sol`` で次のようなコントラクトをしているとします。
 
 .. code-block:: Solidity
 
@@ -788,28 +991,31 @@ Assume that you have the following contract in ``Source.sol``:
         }
     }
 
-
-
 Required Changes
 ^^^^^^^^^^^^^^^^
 
-The above contract will not compile starting from 0.7.0. To bring the contract up to date with the
-current Solidity version, the following upgrade modules have to be executed:
-``constructor-visibility``, ``now`` and ``dotsyntax``. Please read the documentation on
-:ref:`available modules <upgrade-modules>` for further details.
+.. The above contract will not compile starting from 0.7.0. To bring the contract up to date with the
+.. current Solidity version, the following upgrade modules have to be executed:
+.. ``constructor-visibility``, ``now`` and ``dotsyntax``. Please read the documentation on
+.. :ref:`available modules <upgrade-modules>` for further details.
 
+上記のコントラクトは、0.7.0からコンパイルできなくなります。 コントラクトを現在のSolidityのバージョンに合わせるためには、以下のアップグレードモジュールを実行する必要があります。 ``constructor-visibility`` 、 ``now`` 、 ``dotsyntax`` です。詳しくは、 :ref:`available modules <upgrade-modules>` のドキュメントをご覧ください。
 
 Running the Upgrade
 ^^^^^^^^^^^^^^^^^^^
 
-It is recommended to explicitly specify the upgrade modules by using ``--modules`` argument.
+.. It is recommended to explicitly specify the upgrade modules by using ``--modules`` argument.
+
+``--modules`` 引数でアップグレードモジュールを明示的に指定することをお勧めします。
 
 .. code-block:: bash
 
     solidity-upgrade --modules constructor-visibility,now,dotsyntax Source.sol
 
-The command above applies all changes as shown below. Please review them carefully (the pragmas will
-have to be updated manually.)
+.. The command above applies all changes as shown below. Please review them carefully (the pragmas will
+.. have to be updated manually.)
+
+上記のコマンドは、以下のようにすべての変更を適用します。慎重に確認してください(プラグマは手動で更新する必要があります)。
 
 .. code-block:: Solidity
 
@@ -840,3 +1046,4 @@ have to be updated manually.)
             d.f{value: 5}();
         }
     }
+

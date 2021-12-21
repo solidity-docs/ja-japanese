@@ -4,23 +4,27 @@
 Blind Auction
 *************
 
-In this section, we will show how easy it is to create a completely blind
-auction contract on Ethereum.  We will start with an open auction where
-everyone can see the bids that are made and then extend this contract into a
-blind auction where it is not possible to see the actual bid until the bidding
-period ends.
+.. In this section, we will show how easy it is to create a completely blind
+.. auction contract on Ethereum.  We will start with an open auction where
+.. everyone can see the bids that are made and then extend this contract into a
+.. blind auction where it is not possible to see the actual bid until the bidding
+.. period ends.
+
+このセクションでは、Ethereum上で完全なブラインドオークションコントラクトをいかに簡単に作成できるかを紹介します。  まず、誰もが入札を見ることができるオープンオークションから始めて、このコントラクトを、入札期間が終了するまで実際の入札を見ることができないブラインドオークションに拡張します。
 
 .. _simple_auction:
 
 Simple Open Auction
 ===================
 
-The general idea of the following simple auction contract is that everyone can
-send their bids during a bidding period. The bids already include sending money
-/ Ether in order to bind the bidders to their bid. If the highest bid is
-raised, the previous highest bidder gets their money back.  After the end of
-the bidding period, the contract has to be called manually for the beneficiary
-to receive their money - contracts cannot activate themselves.
+.. The general idea of the following simple auction contract is that everyone can
+.. send their bids during a bidding period. The bids already include sending money
+.. / Ether in order to bind the bidders to their bid. If the highest bid is
+.. raised, the previous highest bidder gets their money back.  After the end of
+.. the bidding period, the contract has to be called manually for the beneficiary
+.. to receive their money - contracts cannot activate themselves.
+
+以下のシンプルなオークションコントラクトの一般的な考え方は、入札期間中に誰もが入札を行うことができるというものです。入札には、入札者を拘束するためにお金/Etherを送ることがすでに含まれています。最高入札額が上がった場合、それまでの最高入札者はお金を返してもらいます。  入札期間の終了後、受益者がお金を受け取るためには、コントラクトを手動で呼び出さなければなりません。
 
 .. code-block:: solidity
 
@@ -164,32 +168,39 @@ to receive their money - contracts cannot activate themselves.
 Blind Auction
 =============
 
-The previous open auction is extended to a blind auction in the following. The
-advantage of a blind auction is that there is no time pressure towards the end
-of the bidding period. Creating a blind auction on a transparent computing
-platform might sound like a contradiction, but cryptography comes to the
-rescue.
+.. The previous open auction is extended to a blind auction in the following. The
+.. advantage of a blind auction is that there is no time pressure towards the end
+.. of the bidding period. Creating a blind auction on a transparent computing
+.. platform might sound like a contradiction, but cryptography comes to the
+.. rescue.
 
-During the **bidding period**, a bidder does not actually send their bid, but
-only a hashed version of it.  Since it is currently considered practically
-impossible to find two (sufficiently long) values whose hash values are equal,
-the bidder commits to the bid by that.  After the end of the bidding period,
-the bidders have to reveal their bids: They send their values unencrypted and
-the contract checks that the hash value is the same as the one provided during
-the bidding period.
+前回のオープン・オークションは、次のようにブラインド・オークションに拡張されます。ブラインド・オークションの利点は、入札期間の終わりに向けての時間的プレッシャーがないことです。透明なコンピューティング・プラットフォーム上でブラインド・オークションを行うというのは矛盾しているように聞こえるかもしれませんが、暗号技術がその助けとなります。
 
-Another challenge is how to make the auction **binding and blind** at the same
-time: The only way to prevent the bidder from just not sending the money after
-they won the auction is to make them send it together with the bid. Since value
-transfers cannot be blinded in Ethereum, anyone can see the value.
+.. During the **bidding period**, a bidder does not actually send their bid, but
+.. only a hashed version of it.  Since it is currently considered practically
+.. impossible to find two (sufficiently long) values whose hash values are equal,
+.. the bidder commits to the bid by that.  After the end of the bidding period,
+.. the bidders have to reveal their bids: They send their values unencrypted and
+.. the contract checks that the hash value is the same as the one provided during
+.. the bidding period.
 
-The following contract solves this problem by accepting any value that is
-larger than the highest bid. Since this can of course only be checked during
-the reveal phase, some bids might be **invalid**, and this is on purpose (it
-even provides an explicit flag to place invalid bids with high value
-transfers): Bidders can confuse competition by placing several high or low
-invalid bids.
+**bidding period** 期間中、入札者は自分の入札を実際には送信せず、ハッシュ化したものだけを送信します。  現在のところ、ハッシュ値が等しい2つの（十分に長い）値を見つけることは実質的に不可能であると考えられているため、入札者はそれによって入札にコミットします。  入札期間の終了後、入札者は自分の入札を明らかにしなければならない。入札者は自分の値を暗号化せずに送信し、コントラクトはそのハッシュ値が入札期間中に提供されたものと同じであるかどうかをチェックします。
 
+.. Another challenge is how to make the auction **binding and blind** at the same
+.. time: The only way to prevent the bidder from just not sending the money after
+.. they won the auction is to make them send it together with the bid. Since value
+.. transfers cannot be blinded in Ethereum, anyone can see the value.
+
+もう一つの課題は、いかにしてオークション **binding and blind** を同時に行うかということです。落札した後にお金を送らないだけで済むようにするには、入札と一緒に送らせるようにするしかありません。イーサリアムでは価値の移転はブラインドできないので、誰でも価値を見ることができます。
+
+.. The following contract solves this problem by accepting any value that is
+.. larger than the highest bid. Since this can of course only be checked during
+.. the reveal phase, some bids might be **invalid**, and this is on purpose (it
+.. even provides an explicit flag to place invalid bids with high value
+.. transfers): Bidders can confuse competition by placing several high or low
+.. invalid bids.
+
+以下のコントラクトでは、最高額のビッドよりも大きな値を受け入れることで、この問題を解決しています。もちろん、これは公開段階でしかチェックできないので、いくつかの入札は **invalid** になるかもしれませんが、これは意図的なものです（高額な送金で無効な入札を行うための明示的なフラグも用意されています）。入札者は、高額または低額の無効な入札を複数回行うことで、競争を混乱させることができます。
 
 .. code-block:: solidity
     :force:
@@ -354,3 +365,4 @@ invalid bids.
             return true;
         }
     }
+

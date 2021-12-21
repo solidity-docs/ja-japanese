@@ -4,39 +4,54 @@
 Creating Contracts
 ******************
 
-Contracts can be created "from outside" via Ethereum transactions or from within Solidity contracts.
+.. Contracts can be created "from outside" via Ethereum transactions or from within Solidity contracts.
 
-IDEs, such as `Remix <https://remix.ethereum.org/>`_, make the creation process seamless using UI elements.
+コントラクトは、イーサリアムのトランザクションを介して「外部から」作成することも、Solidityのコントラクト内で作成することもできます。
 
-One way to create contracts programmatically on Ethereum is via the JavaScript API `web3.js <https://github.com/ethereum/web3.js>`_.
-It has a function called `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_
-to facilitate contract creation.
+.. IDEs, such as `Remix <https://remix.ethereum.org/>`_, make the creation process seamless using UI elements.
 
-When a contract is created, its :ref:`constructor <constructor>` (a function declared with
-the ``constructor`` keyword) is executed once.
+`Remix <https://remix.ethereum.org/>`_ に代表されるIDEは、UI要素を用いて作成プロセスをシームレスにします。
 
-A constructor is optional. Only one constructor is allowed, which means
-overloading is not supported.
+.. One way to create contracts programmatically on Ethereum is via the JavaScript API `web3.js <https://github.com/ethereum/web3.js>`_.
+.. It has a function called `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_
+.. to facilitate contract creation.
 
-After the constructor has executed, the final code of the contract is stored on the
-blockchain. This code includes all public and external functions and all functions
-that are reachable from there through function calls. The deployed code does not
-include the constructor code or internal functions only called from the constructor.
+イーサリアムでプログラム的にコントラクトを作成する方法として、JavaScript API  `web3.js <https://github.com/ethereum/web3.js>`_ があります。これにはコントラクトの作成を容易にする `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_ という関数があります。
+
+.. When a contract is created, its :ref:`constructor <constructor>` (a function declared with
+.. the ``constructor`` keyword) is executed once.
+
+コントラクトが作成されると、その :ref:`constructor <constructor>` （ ``constructor`` キーワードで宣言された関数）が一度だけ実行されます。
+
+.. A constructor is optional. Only one constructor is allowed, which means
+.. overloading is not supported.
+
+コンストラクタはオプションです。コンストラクタは1つしか許可されていないので、オーバーロードはサポートされていません。
+
+.. After the constructor has executed, the final code of the contract is stored on the
+.. blockchain. This code includes all public and external functions and all functions
+.. that are reachable from there through function calls. The deployed code does not
+.. include the constructor code or internal functions only called from the constructor.
+
+コンストラクタが実行された後、コントラクトの最終コードがブロックチェーンに保存されます。このコードには、すべてのパブリック関数と外部関数、および関数呼び出しによってそこから到達可能なすべての関数が含まれます。デプロイされたコードには、コンストラクタのコードや、コンストラクタからのみ呼び出される内部関数は含まれません。
 
 .. index:: constructor;arguments
 
-Internally, constructor arguments are passed :ref:`ABI encoded <ABI>` after the code of
-the contract itself, but you do not have to care about this if you use ``web3.js``.
+.. Internally, constructor arguments are passed :ref:`ABI encoded <ABI>` after the code of
+.. the contract itself, but you do not have to care about this if you use ``web3.js``.
 
-If a contract wants to create another contract, the source code
-(and the binary) of the created contract has to be known to the creator.
-This means that cyclic creation dependencies are impossible.
+内部的にはコンストラクタの引数はコントラクト自体のコードの後に :ref:`ABI encoded <ABI>` を渡していますが、 ``web3.js`` を使用する場合はこれを気にする必要はありません。
+
+.. If a contract wants to create another contract, the source code
+.. (and the binary) of the created contract has to be known to the creator.
+.. This means that cyclic creation dependencies are impossible.
+
+あるコントラクトが別のコントラクトを作成したい場合、作成されたコントラクトのソースコード（およびバイナリ）が作成者に知られていなければなりません。つまり、周期的な作成の依存関係は不可能なのです。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.4.22 <0.9.0;
-
 
     contract OwnedToken {
         // `TokenCreator` is a contract type that is defined below.
@@ -91,7 +106,6 @@ This means that cyclic creation dependencies are impossible.
         }
     }
 
-
     contract TokenCreator {
         function createToken(bytes32 name)
             public
@@ -121,3 +135,4 @@ This means that cyclic creation dependencies are impossible.
             return keccak256(abi.encodePacked(currentOwner, newOwner))[0] == 0x7f;
         }
     }
+

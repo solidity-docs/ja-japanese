@@ -6,11 +6,15 @@
 Functions
 *********
 
-Functions can be defined inside and outside of contracts.
+.. Functions can be defined inside and outside of contracts.
 
-Functions outside of a contract, also called "free functions", always have implicit ``internal``
-:ref:`visibility<visibility-and-getters>`. Their code is included in all contracts
-that call them, similar to internal library functions.
+関数は、コントラクトの内側にも外側にも定義できます。
+
+.. Functions outside of a contract, also called "free functions", always have implicit ``internal``
+.. :ref:`visibility<visibility-and-getters>`. Their code is included in all contracts
+.. that call them, similar to internal library functions.
+
+コントラクト外の関数は「フリー関数」とも呼ばれ、常に暗黙の ``internal``   :ref:`visibility<visibility-and-getters>` を持っています。そのコードは、内部のライブラリ関数と同様に、それらを呼び出したすべてのコントラクトに含まれます。
 
 .. code-block:: solidity
 
@@ -33,30 +37,41 @@ that call them, similar to internal library functions.
         }
     }
 
+.. .. note::
+
+..     Functions defined outside a contract are still always executed
+..     in the context of a contract. They still have access to the variable ``this``,
+..     can call other contracts, send them Ether and destroy the contract that called them,
+..     among other things. The main difference to functions defined inside a contract
+..     is that free functions do not have direct access to storage variables and functions
+..     not in their scope.
+
 .. note::
-    Functions defined outside a contract are still always executed
-    in the context of a contract. They still have access to the variable ``this``,
-    can call other contracts, send them Ether and destroy the contract that called them,
-    among other things. The main difference to functions defined inside a contract
-    is that free functions do not have direct access to storage variables and functions
-    not in their scope.
+
+    コントラクトの外で定義された関数は、常にコントラクトのコンテキストで実行されます。変数 ``this`` へのアクセス、他のコントラクトの呼び出し、Etherの送信、呼び出したコントラクトの破棄などが可能です。コントラクトの内側で定義された関数との主な違いは、フリー関数は、そのスコープ内にないストレージ変数や関数に直接アクセスできないことです。
 
 .. _function-parameters-return-variables:
 
 Function Parameters and Return Variables
 ========================================
 
-Functions take typed parameters as input and may, unlike in many other
-languages, also return an arbitrary number of values as output.
+.. Functions take typed parameters as input and may, unlike in many other
+.. languages, also return an arbitrary number of values as output.
+
+関数は入力として型付けされたパラメータを受け取り、他の多くの言語とは異なり、出力として任意の数の値を返すこともできます。
 
 Function Parameters
 -------------------
 
-Function parameters are declared the same way as variables, and the name of
-unused parameters can be omitted.
+.. Function parameters are declared the same way as variables, and the name of
+.. unused parameters can be omitted.
 
-For example, if you want your contract to accept one kind of external call
-with two integers, you would use something like the following:
+関数のパラメータは変数と同じように宣言され、使わないパラメータの名前は省略できます。
+
+.. For example, if you want your contract to accept one kind of external call
+.. with two integers, you would use something like the following:
+
+例えば、コントラクトが2つの整数で1種類の外部呼び出しを受け付けるようにしたい場合は、以下のようにします。
 
 .. code-block:: solidity
 
@@ -70,28 +85,40 @@ with two integers, you would use something like the following:
         }
     }
 
-Function parameters can be used as any other local variable and they can also be assigned to.
+.. Function parameters can be used as any other local variable and they can also be assigned to.
+
+関数パラメータは、他のローカル変数と同様に使用でき、また、それらを割り当てることもできます。
+
+.. .. note::
+
+..   An :ref:`external function<external-function-calls>` cannot accept a
+..   multi-dimensional array as an input
+..   parameter. This functionality is possible if you enable the ABI coder v2
+..   by adding ``pragma abicoder v2;`` to your source file.
+
+..   An :ref:`internal function<external-function-calls>` can accept a
+..   multi-dimensional array without enabling the feature.
 
 .. note::
 
-  An :ref:`external function<external-function-calls>` cannot accept a
-  multi-dimensional array as an input
-  parameter. This functionality is possible if you enable the ABI coder v2
-  by adding ``pragma abicoder v2;`` to your source file.
+  :ref:`external function<external-function-calls>` が入力パラメータとして多次元配列を受け付けることができません。この機能は、ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にした場合に可能です。
 
-  An :ref:`internal function<external-function-calls>` can accept a
-  multi-dimensional array without enabling the feature.
+  :ref:`internal function<external-function-calls>` は機能を有効にしなくても多次元配列を受け付けることができます。
 
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
 Return Variables
 ----------------
 
-Function return variables are declared with the same syntax after the
-``returns`` keyword.
+.. Function return variables are declared with the same syntax after the
+.. ``returns`` keyword.
 
-For example, suppose you want to return two results: the sum and the product of
-two integers passed as function parameters, then you use something like:
+関数の戻り値変数は、 ``returns`` キーワードの後に同じ構文で宣言されます。
+
+.. For example, suppose you want to return two results: the sum and the product of
+.. two integers passed as function parameters, then you use something like:
+
+例えば、関数のパラメータとして渡された2つの整数の和と積の2つの結果を返したい場合、次のように使います。
 
 .. code-block:: solidity
 
@@ -109,16 +136,20 @@ two integers passed as function parameters, then you use something like:
         }
     }
 
-The names of return variables can be omitted.
-Return variables can be used as any other local variable and they
-are initialized with their :ref:`default value <default-value>` and have that
-value until they are (re-)assigned.
+.. The names of return variables can be omitted.
+.. Return variables can be used as any other local variable and they
+.. are initialized with their :ref:`default value <default-value>` and have that
+.. value until they are (re-)assigned.
 
-You can either explicitly assign to return variables and
-then leave the function as above,
-or you can provide return values
-(either a single or :ref:`multiple ones<multi-return>`) directly with the ``return``
-statement:
+リターン変数の名前は省略可能です。リターン変数は、他のローカル変数と同様に使用でき、 :ref:`default value <default-value>` で初期化され、（再）割り当てされるまでその値を保持します。
+
+.. You can either explicitly assign to return variables and
+.. then leave the function as above,
+.. or you can provide return values
+.. (either a single or :ref:`multiple ones<multi-return>`) directly with the ``return``
+.. statement:
+
+上記のように明示的にリターン変数に代入してから関数を残すか、 ``return`` 文でリターン値（シングルまたは :ref:`multiple ones<multi-return>` ）を直接指定できます。
 
 .. code-block:: solidity
 
@@ -135,25 +166,34 @@ statement:
         }
     }
 
-If you use an early ``return`` to leave a function that has return variables,
-you must provide return values together with the return statement.
+.. If you use an early ``return`` to leave a function that has return variables,
+.. you must provide return values together with the return statement.
+
+return変数を持つ関数を終了するためにearly  ``return`` を使用する場合は、return文と一緒にreturn値を指定する必要があります。
+
+.. .. note::
+
+..     You cannot return some types from non-internal functions, notably
+..     multi-dimensional dynamic arrays and structs. If you enable the
+..     ABI coder v2 by adding ``pragma abicoder v2;``
+..     to your source file then more types are available, but
+..     ``mapping`` types are still limited to inside a single contract and you
+..     cannot transfer them.
 
 .. note::
-    You cannot return some types from non-internal functions, notably
-    multi-dimensional dynamic arrays and structs. If you enable the
-    ABI coder v2 by adding ``pragma abicoder v2;``
-    to your source file then more types are available, but
-    ``mapping`` types are still limited to inside a single contract and you
-    cannot transfer them.
+
+    内部関数以外では、多次元の動的配列や構造体など、いくつかの型を返すことができません。ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にすると、より多くの型が利用できるようになりますが、 ``mapping`` 型はまだ1つのコントラクト内に限られており、送金できません。
 
 .. _multi-return:
 
 Returning Multiple Values
 -------------------------
 
-When a function has multiple return types, the statement ``return (v0, v1, ..., vn)`` can be used to return multiple values.
-The number of components must be the same as the number of return variables
-and their types have to match, potentially after an :ref:`implicit conversion <types-conversion-elementary-types>`.
+.. When a function has multiple return types, the statement ``return (v0, v1, ..., vn)`` can be used to return multiple values.
+.. The number of components must be the same as the number of return variables
+.. and their types have to match, potentially after an :ref:`implicit conversion <types-conversion-elementary-types>`.
+
+関数が複数の戻り値の型を持つ場合、ステートメント ``return (v0, v1, ..., vn)`` は複数の値を返すために使用できます。構成要素の数は戻り値の変数の数と同じでなければならず、それらの型は一致しなければならず、潜在的には :ref:`implicit conversion <types-conversion-elementary-types>` の後になります。
 
 .. _state-mutability:
 
@@ -167,27 +207,45 @@ State Mutability
 View Functions
 --------------
 
-Functions can be declared ``view`` in which case they promise not to modify the state.
+.. Functions can be declared ``view`` in which case they promise not to modify the state.
+
+関数は ``view`` 宣言でき、その場合は状態を変更しないことが約束されます。
+
+.. .. note::
+
+..   If the compiler's EVM target is Byzantium or newer (default) the opcode
+..   ``STATICCALL`` is used when ``view`` functions are called, which enforces the state
+..   to stay unmodified as part of the EVM execution. For library ``view`` functions
+..   ``DELEGATECALL`` is used, because there is no combined ``DELEGATECALL`` and ``STATICCALL``.
+..   This means library ``view`` functions do not have run-time checks that prevent state
+..   modifications. This should not impact security negatively because library code is
+..   usually known at compile-time and the static checker performs compile-time checks.
 
 .. note::
-  If the compiler's EVM target is Byzantium or newer (default) the opcode
-  ``STATICCALL`` is used when ``view`` functions are called, which enforces the state
-  to stay unmodified as part of the EVM execution. For library ``view`` functions
-  ``DELEGATECALL`` is used, because there is no combined ``DELEGATECALL`` and ``STATICCALL``.
-  This means library ``view`` functions do not have run-time checks that prevent state
-  modifications. This should not impact security negatively because library code is
-  usually known at compile-time and the static checker performs compile-time checks.
 
-The following statements are considered modifying the state:
+  コンパイラのEVMターゲットがByzantium以降（デフォルト）の場合、 ``view`` 関数が呼び出されるとオペコード ``STATICCALL`` が使用され、EVM実行の一部として状態が変更されないように強制されます。ライブラリ ``view`` 関数では、 ``DELEGATECALL`` と ``STATICCALL`` の組み合わせがないため、 ``DELEGATECALL`` が使用されます。   つまり、ライブラリ ``view`` 関数には、状態の変更を防ぐランタイムチェックがありません。ライブラリのコードは通常、コンパイル時に知られており、スタティック・チェッカーはコンパイル時のチェックを行うため、このことがセキュリティに悪影響を及ぼすことはありません。
 
-#. Writing to state variables.
-#. :ref:`Emitting events <events>`.
-#. :ref:`Creating other contracts <creating-contracts>`.
-#. Using ``selfdestruct``.
-#. Sending Ether via calls.
-#. Calling any function not marked ``view`` or ``pure``.
-#. Using low-level calls.
-#. Using inline assembly that contains certain opcodes.
+.. The following statements are considered modifying the state:
+
+次のような記述は、状態の修正とみなされます。
+
+.. #. Writing to state variables.
+.. #. :ref:`Emitting events <events>`.
+.. #. :ref:`Creating other contracts <creating-contracts>`.
+.. #. Using ``selfdestruct``.
+.. #. Sending Ether via calls.
+.. #. Calling any function not marked ``view`` or ``pure``.
+.. #. Using low-level calls.
+.. #. Using inline assembly that contains certain opcodes.
+
+#. 状態変数への書き込み。
+#. :ref:`Emitting events <events>` 。
+#. :ref:`Creating other contracts <creating-contracts>` 。
+#. ``selfdestruct`` の使用。
+#. コールでのイーサの送金。
+#. ``view`` または ``pure`` と表示されていない関数の呼び出し。
+#. 低レベルコールの使用。
+#. 特定のオペコードを含むインラインアセンブリの使用。
 
 .. code-block:: solidity
 
@@ -200,19 +258,34 @@ The following statements are considered modifying the state:
         }
     }
 
-.. note::
-  ``constant`` on functions used to be an alias to ``view``, but this was dropped in version 0.5.0.
+.. .. note::
+
+..   ``constant`` on functions used to be an alias to ``view``, but this was dropped in version 0.5.0.
 
 .. note::
-  Getter methods are automatically marked ``view``.
+
+  関数の ``constant`` は、かつては ``view`` の別名でしたが、バージョン0.5.0で廃止されました。
+
+.. .. note::
+
+..   Getter methods are automatically marked ``view``.
 
 .. note::
-  Prior to version 0.5.0, the compiler did not use the ``STATICCALL`` opcode
-  for ``view`` functions.
-  This enabled state modifications in ``view`` functions through the use of
-  invalid explicit type conversions.
-  By using  ``STATICCALL`` for ``view`` functions, modifications to the
-  state are prevented on the level of the EVM.
+
+  ゲッターメソッドは自動的に ``view`` と表示されます。
+
+.. .. note::
+
+..   Prior to version 0.5.0, the compiler did not use the ``STATICCALL`` opcode
+..   for ``view`` functions.
+..   This enabled state modifications in ``view`` functions through the use of
+..   invalid explicit type conversions.
+..   By using  ``STATICCALL`` for ``view`` functions, modifications to the
+..   state are prevented on the level of the EVM.
+
+.. note::
+
+  バージョン0.5.0以前のコンパイラでは、 ``view`` 関数に ``STATICCALL`` オペコードを使用していませんでした。   これにより、無効な明示的型変換を使用して、 ``view`` 関数の状態を変更できました。    ``view`` 関数に ``STATICCALL`` を使用することで、EVMのレベルで状態の変更を防ぐことができます。
 
 .. index:: ! pure function, function;pure
 
@@ -221,22 +294,45 @@ The following statements are considered modifying the state:
 Pure Functions
 --------------
 
-Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
-In particular, it should be possible to evaluate a ``pure`` function at compile-time given
-only its inputs and ``msg.data``, but without any knowledge of the current blockchain state.
-This means that reading from ``immutable`` variables can be a non-pure operation.
+.. Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
+.. In particular, it should be possible to evaluate a ``pure`` function at compile-time given
+.. only its inputs and ``msg.data``, but without any knowledge of the current blockchain state.
+.. This means that reading from ``immutable`` variables can be a non-pure operation.
+
+関数は ``pure`` を宣言でき、その場合、状態を読み取ったり変更したりしないことが約束されます。特に、 ``pure`` 関数をコンパイル時に、入力と ``msg.data`` のみを与えて評価することが可能でなければなりませんが、現在のブロックチェーンの状態については一切知りません。これは、 ``immutable`` 変数からの読み取りが非純粋な操作である可能性があることを意味する。
+
+.. .. note::
+
+..   If the compiler's EVM target is Byzantium or newer (default) the opcode ``STATICCALL`` is used,
+..   which does not guarantee that the state is not read, but at least that it is not modified.
 
 .. note::
-  If the compiler's EVM target is Byzantium or newer (default) the opcode ``STATICCALL`` is used,
-  which does not guarantee that the state is not read, but at least that it is not modified.
 
-In addition to the list of state modifying statements explained above, the following are considered reading from the state:
+  コンパイラのEVMターゲットがByzantium以降（デフォルト）の場合、オペコード ``STATICCALL`` が使用されます。これは、状態が読み取られないことを保証するものではありませんが、少なくとも修正されないことを保証するものです。
 
-#. Reading from state variables.
-#. Accessing ``address(this).balance`` or ``<address>.balance``.
-#. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
-#. Calling any function not marked ``pure``.
-#. Using inline assembly that contains certain opcodes.
+.. In addition to the list of state modifying statements explained above, the following are considered reading from the state:
+
+上記で説明した州の修飾文のリストに加えて、以下のものは州からの読み取りとみなされます。
+
+.. #. Reading from state variables.
+
+#. 状態変数からの読み出し。
+
+.. #. Accessing ``address(this).balance`` or ``<address>.balance``.
+
+#. ``address(this).balance`` または ``<address>.balance`` へのアクセス。
+
+.. #. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
+
+#. ``block`` 、 ``tx`` 、 ``msg`` （ ``msg.sig`` 、 ``msg.data`` を除く）のメンバーのいずれかにアクセスすること。
+
+.. #. Calling any function not marked ``pure``.
+
+#. ``pure`` マークの付いていない関数を呼び出すこと。
+
+.. #. Using inline assembly that contains certain opcodes.
+
+#. 特定のオペコードを含むインラインアセンブリの使用。
 
 .. code-block:: solidity
 
@@ -249,34 +345,55 @@ In addition to the list of state modifying statements explained above, the follo
         }
     }
 
-Pure functions are able to use the ``revert()`` and ``require()`` functions to revert
-potential state changes when an :ref:`error occurs <assert-and-require>`.
+.. Pure functions are able to use the ``revert()`` and ``require()`` functions to revert
+.. potential state changes when an :ref:`error occurs <assert-and-require>`.
 
-Reverting a state change is not considered a "state modification", as only changes to the
-state made previously in code that did not have the ``view`` or ``pure`` restriction
-are reverted and that code has the option to catch the ``revert`` and not pass it on.
+純粋な関数は、 :ref:`error occurs <assert-and-require>` が発生したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化を戻すことができます。
 
-This behaviour is also in line with the ``STATICCALL`` opcode.
+.. Reverting a state change is not considered a "state modification", as only changes to the
+.. state made previously in code that did not have the ``view`` or ``pure`` restriction
+.. are reverted and that code has the option to catch the ``revert`` and not pass it on.
+
+``view`` や ``pure`` の制限を受けていないコードで以前に行われた状態の変更のみが元に戻され、そのコードは ``revert`` をキャッチして渡さないというオプションを持っているため、状態の変更を元に戻すことは「状態の修正」とはみなされません。
+
+.. This behaviour is also in line with the ``STATICCALL`` opcode.
+
+この動作は、 ``STATICCALL`` のオペコードとも一致しています。
+
+.. .. warning::
+
+..   It is not possible to prevent functions from reading the state at the level
+..   of the EVM, it is only possible to prevent them from writing to the state
+..   (i.e. only ``view`` can be enforced at the EVM level, ``pure`` can not).
 
 .. warning::
-  It is not possible to prevent functions from reading the state at the level
-  of the EVM, it is only possible to prevent them from writing to the state
-  (i.e. only ``view`` can be enforced at the EVM level, ``pure`` can not).
+
+  EVMのレベルで関数が状態を読み取るのを防ぐことはできず、状態に書き込むのを防ぐことしかできません（つまり、EVMのレベルで強制できるのは ``view`` だけで、 ``pure`` はできません）。
+
+.. .. note::
+
+..   Prior to version 0.5.0, the compiler did not use the ``STATICCALL`` opcode
+..   for ``pure`` functions.
+..   This enabled state modifications in ``pure`` functions through the use of
+..   invalid explicit type conversions.
+..   By using  ``STATICCALL`` for ``pure`` functions, modifications to the
+..   state are prevented on the level of the EVM.
 
 .. note::
-  Prior to version 0.5.0, the compiler did not use the ``STATICCALL`` opcode
-  for ``pure`` functions.
-  This enabled state modifications in ``pure`` functions through the use of
-  invalid explicit type conversions.
-  By using  ``STATICCALL`` for ``pure`` functions, modifications to the
-  state are prevented on the level of the EVM.
+
+  バージョン0.5.0以前のコンパイラでは、 ``pure`` 関数に ``STATICCALL`` オペコードを使用していませんでした。   これにより、無効な明示的型変換を使用して、 ``pure`` 関数の状態を変更できました。    ``pure`` 関数に ``STATICCALL`` を使用することで、EVMのレベルで状態の変更を防ぐことができます。
+
+.. .. note::
+
+..   Prior to version 0.4.17 the compiler did not enforce that ``pure`` is not reading the state.
+..   It is a compile-time type check, which can be circumvented doing invalid explicit conversions
+..   between contract types, because the compiler can verify that the type of the contract does
+..   not do state-changing operations, but it cannot check that the contract that will be called
+..   at runtime is actually of that type.
 
 .. note::
-  Prior to version 0.4.17 the compiler did not enforce that ``pure`` is not reading the state.
-  It is a compile-time type check, which can be circumvented doing invalid explicit conversions
-  between contract types, because the compiler can verify that the type of the contract does
-  not do state-changing operations, but it cannot check that the contract that will be called
-  at runtime is actually of that type.
+
+  バージョン0.4.17以前では、コンパイラは ``pure`` が状態を読んでいないことを強制していませんでした。   これはコンパイル時の型チェックで、コントラクトの型の間で無効な明示的変換を行うことで回避できます。コンパイラはコントラクトの型が状態を変更する操作を行わないことを検証できますが、実行時に呼び出されるコントラクトが実際にその型であることをチェックできないからです。
 
 .. _special-functions:
 
@@ -290,55 +407,87 @@ Special Functions
 Receive Ether Function
 ----------------------
 
-A contract can have at most one ``receive`` function, declared using
-``receive() external payable { ... }``
-(without the ``function`` keyword).
-This function cannot have arguments, cannot return anything and must have
-``external`` visibility and ``payable`` state mutability.
-It can be virtual, can override and can have modifiers.
+.. A contract can have at most one ``receive`` function, declared using
+.. ``receive() external payable { ... }``
+.. (without the ``function`` keyword).
+.. This function cannot have arguments, cannot return anything and must have
+.. ``external`` visibility and ``payable`` state mutability.
+.. It can be virtual, can override and can have modifiers.
 
-The receive function is executed on a
-call to the contract with empty calldata. This is the function that is executed
-on plain Ether transfers (e.g. via ``.send()`` or ``.transfer()``). If no such
-function exists, but a payable :ref:`fallback function <fallback-function>`
-exists, the fallback function will be called on a plain Ether transfer. If
-neither a receive Ether nor a payable fallback function is present, the
-contract cannot receive Ether through regular transactions and throws an
-exception.
+コントラクトは最大で1つの ``receive`` 関数を持つことができ、 ``receive() external payable { ... }`` を使って宣言されます（ ``function`` キーワードなし）。この関数は、引数を持つことができず、何も返すことができず、 ``external`` の可視性と ``payable`` の状態変更性を持たなければなりません。この関数は仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
-In the worst case, the ``receive`` function can only rely on 2300 gas being
-available (for example when ``send`` or ``transfer`` is used), leaving little
-room to perform other operations except basic logging. The following operations
-will consume more gas than the 2300 gas stipend:
+.. The receive function is executed on a
+.. call to the contract with empty calldata. This is the function that is executed
+.. on plain Ether transfers (e.g. via ``.send()`` or ``.transfer()``). If no such
+.. function exists, but a payable :ref:`fallback function <fallback-function>`
+.. exists, the fallback function will be called on a plain Ether transfer. If
+.. neither a receive Ether nor a payable fallback function is present, the
+.. contract cannot receive Ether through regular transactions and throws an
+.. exception.
 
-- Writing to storage
-- Creating a contract
-- Calling an external function which consumes a large amount of gas
-- Sending Ether
+receive関数は、空のcalldataを持つコントラクトへの呼び出しで実行されます。これは、プレーンなEther送金（例:  ``.send()`` または ``.transfer()`` 経由）で実行される関数です。このような関数が存在せず、payable  :ref:`fallback function <fallback-function>` が存在する場合は、プレーンなEther送金時にフォールバック関数が呼び出されます。receive Ether関数もpayable fallback関数も存在しない場合、コントラクトは通常のトランザクションで Ether を受信できず、例外が発生します。
+
+.. In the worst case, the ``receive`` function can only rely on 2300 gas being
+.. available (for example when ``send`` or ``transfer`` is used), leaving little
+.. room to perform other operations except basic logging. The following operations
+.. will consume more gas than the 2300 gas stipend:
+
+最悪の場合、 ``receive`` 関数は2300のガスが使えることに頼るしかなく（ ``send`` や ``transfer`` を使用した場合など）、基本的なロギング以外の操作を行う余裕はありません。以下のような操作は、2300ガスの規定値よりも多くのガスを消費します。
+
+.. - Writing to storage
+
+- ストレージへの書き込み
+
+.. - Creating a contract
+
+-  コントラクトの作成
+
+.. - Calling an external function which consumes a large amount of gas
+
+- 大量のガスを消費する外部関数の呼び出し
+
+.. - Sending Ether
+
+- イーサの送信
+
+.. .. warning::
+
+..     Contracts that receive Ether directly (without a function call, i.e. using ``send`` or ``transfer``)
+..     but do not define a receive Ether function or a payable fallback function
+..     throw an exception, sending back the Ether (this was different
+..     before Solidity v0.4.0). So if you want your contract to receive Ether,
+..     you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
+..     not recommended, since it would not fail on interface confusions).
 
 .. warning::
-    Contracts that receive Ether directly (without a function call, i.e. using ``send`` or ``transfer``)
-    but do not define a receive Ether function or a payable fallback function
-    throw an exception, sending back the Ether (this was different
-    before Solidity v0.4.0). So if you want your contract to receive Ether,
-    you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
-    not recommended, since it would not fail on interface confusions).
 
+    Etherを直接受信するコントラクト（関数呼び出しなし、つまり ``send`` または ``transfer`` を使用）で、Receive Ether関数またはPayable Fallback関数を定義していないものは、例外をスローし、Etherを送り返します（Solidity v0.4.0以前は異なっていました）。そのため、コントラクトでEtherを受信したい場合は、receive Ether関数を実装する必要があります（Etherの受信にpayable fallback関数を使用することは、インターフェースの混乱で失敗しないため、推奨されません）。
+
+.. .. warning::
+
+..     A contract without a receive Ether function can receive Ether as a
+..     recipient of a *coinbase transaction* (aka *miner block reward*)
+..     or as a destination of a ``selfdestruct``.
+
+..     A contract cannot react to such Ether transfers and thus also
+..     cannot reject them. This is a design choice of the EVM and
+..     Solidity cannot work around it.
+
+..     It also means that ``address(this).balance`` can be higher
+..     than the sum of some manual accounting implemented in a
+..     contract (i.e. having a counter updated in the receive Ether function).
 
 .. warning::
-    A contract without a receive Ether function can receive Ether as a
-    recipient of a *coinbase transaction* (aka *miner block reward*)
-    or as a destination of a ``selfdestruct``.
 
-    A contract cannot react to such Ether transfers and thus also
-    cannot reject them. This is a design choice of the EVM and
-    Solidity cannot work around it.
+    Etherを受け取る関数を持たないコントラクトは、 *coinbaseトランザクション* （別名: *minerブロックリワード* ）の受信者として、または ``selfdestruct`` の宛先としてEtherを受け取ることができます。
 
-    It also means that ``address(this).balance`` can be higher
-    than the sum of some manual accounting implemented in a
-    contract (i.e. having a counter updated in the receive Ether function).
+    コントラクトは、そのようなEther送金に反応できず、したがって、それらを拒否することもできません。これはEVMの設計上の選択であり、Solidityはこれを回避できません。
 
-Below you can see an example of a Sink contract that uses function ``receive``.
+    また、 ``address(this).balance`` は、コントラクトに実装されている手動の会計処理（受信イーサ関数でカウンタを更新するなど）の合計よりも高くなる可能性があることを意味しています。
+
+.. Below you can see an example of a Sink contract that uses function ``receive``.
+
+下の図は、関数 ``receive`` を使用したSinkコントラクトの例です。
 
 .. code-block:: solidity
 
@@ -361,46 +510,65 @@ Below you can see an example of a Sink contract that uses function ``receive``.
 Fallback Function
 -----------------
 
-A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
-or ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)``
-(both without the ``function`` keyword).
-This function must have ``external`` visibility. A fallback function can be virtual, can override
-and can have modifiers.
+.. A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
+.. or ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)``
+.. (both without the ``function`` keyword).
+.. This function must have ``external`` visibility. A fallback function can be virtual, can override
+.. and can have modifiers.
 
-The fallback function is executed on a call to the contract if none of the other
-functions match the given function signature, or if no data was supplied at
-all and there is no :ref:`receive Ether function <receive-ether-function>`.
-The fallback function always receives data, but in order to also receive Ether
-it must be marked ``payable``.
+コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。この関数は ``external`` 可視性を持たなければなりません。フォールバック関数は、仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
-If the version with parameters is used, ``_input`` will contain the full data sent to the contract
-(equal to ``msg.data``) and can return data in ``_output``. The returned data will not be
-ABI-encoded. Instead it will be returned without modifications (not even padding).
+.. The fallback function is executed on a call to the contract if none of the other
+.. functions match the given function signature, or if no data was supplied at
+.. all and there is no :ref:`receive Ether function <receive-ether-function>`.
+.. The fallback function always receives data, but in order to also receive Ether
+.. it must be marked ``payable``.
 
-In the worst case, if a payable fallback function is also used in
-place of a receive function, it can only rely on 2300 gas being
-available (see :ref:`receive Ether function <receive-ether-function>`
-for a brief description of the implications of this).
+フォールバック関数は、他の関数が与えられた関数シグネチャに一致しない場合、またはデータが全く供給されず :ref:`receive Ether function <receive-ether-function>` がない場合、コントラクトへの呼び出しで実行されます。フォールバック関数は常にデータを受信しますが、Etherも受信するためには、 ``payable`` とマークされていなければなりません。
 
-Like any function, the fallback function can execute complex
-operations as long as there is enough gas passed on to it.
+.. If the version with parameters is used, ``_input`` will contain the full data sent to the contract
+.. (equal to ``msg.data``) and can return data in ``_output``. The returned data will not be
+.. ABI-encoded. Instead it will be returned without modifications (not even padding).
+
+パラメータ付きバージョンを使用した場合、 ``_input`` にはコントラクトに送信された完全なデータ（ ``msg.data`` に等しい）が含まれ、 ``_output`` でデータを返すことができます。返されたデータはABIエンコードされません。代わりに、修正なしで（パディングさえもしない）返されます。
+
+.. In the worst case, if a payable fallback function is also used in
+.. place of a receive function, it can only rely on 2300 gas being
+.. available (see :ref:`receive Ether function <receive-ether-function>`
+.. for a brief description of the implications of this).
+
+最悪の場合、受信関数の代わりに支払い可能なフォールバック関数も使用されている場合、2300ガスが使用可能であることだけに頼ることができます（この意味については、 :ref:`receive Ether function <receive-ether-function>` を参照してください）。
+
+.. Like any function, the fallback function can execute complex
+.. operations as long as there is enough gas passed on to it.
+
+他の関数と同様に、フォールバック関数も、十分な量のガスが渡されている限り、複雑な処理を実行できます。
+
+.. .. warning::
+
+..     A ``payable`` fallback function is also executed for
+..     plain Ether transfers, if no :ref:`receive Ether function <receive-ether-function>`
+..     is present. It is recommended to always define a receive Ether
+..     function as well, if you define a payable fallback function
+..     to distinguish Ether transfers from interface confusions.
 
 .. warning::
-    A ``payable`` fallback function is also executed for
-    plain Ether transfers, if no :ref:`receive Ether function <receive-ether-function>`
-    is present. It is recommended to always define a receive Ether
-    function as well, if you define a payable fallback function
-    to distinguish Ether transfers from interface confusions.
+
+    ``payable`` フォールバック関数は、 :ref:`receive Ether function <receive-ether-function>` が存在しない場合、プレーンなEther送金に対しても実行されます。Ether送金をインターフェイスの混乱と区別するために、payable fallback関数を定義する場合は、必ず受信Ether関数も定義することをお勧めします。
+
+.. .. note::
+
+..     If you want to decode the input data, you can check the first four bytes
+..     for the function selector and then
+..     you can use ``abi.decode`` together with the array slice syntax to
+..     decode ABI-encoded data:
+..     ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``
+..     Note that this should only be used as a last resort and
+..     proper functions should be used instead.
 
 .. note::
-    If you want to decode the input data, you can check the first four bytes
-    for the function selector and then
-    you can use ``abi.decode`` together with the array slice syntax to
-    decode ABI-encoded data:
-    ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``
-    Note that this should only be used as a last resort and
-    proper functions should be used instead.
 
+    入力データをデコードしたい場合は、最初の4バイトで関数セレクタをチェックし、 ``abi.decode`` と配列スライス構文を併用することで、ABIエンコードされたデータをデコードできます。      ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``  この方法は最後の手段としてのみ使用し、代わりに適切な関数を使用すべきであることに注意してください。
 
 .. code-block:: solidity
 
@@ -474,11 +642,13 @@ operations as long as there is enough gas passed on to it.
 Function Overloading
 ====================
 
-A contract can have multiple functions of the same name but with different parameter
-types.
-This process is called "overloading" and also applies to inherited functions.
-The following example shows overloading of the function
-``f`` in the scope of contract ``A``.
+.. A contract can have multiple functions of the same name but with different parameter
+.. types.
+.. This process is called "overloading" and also applies to inherited functions.
+.. The following example shows overloading of the function
+.. ``f`` in the scope of contract ``A``.
+
+コントラクトは、同じ名前でパラメータの種類が異なる複数の関数を持つことができます。この処理は「オーバーロード」と呼ばれ、継承された関数にも適用されます。次の例では、コントラクト ``A`` のスコープ内での関数 ``f`` のオーバーロードを示しています。
 
 .. code-block:: solidity
 
@@ -496,8 +666,10 @@ The following example shows overloading of the function
         }
     }
 
-Overloaded functions are also present in the external interface. It is an error if two
-externally visible functions differ by their Solidity types but not by their external types.
+.. Overloaded functions are also present in the external interface. It is an error if two
+.. externally visible functions differ by their Solidity types but not by their external types.
+
+オーバーロードされた関数は、外部インターフェイスにも存在します。外部から見える2つの関数が、Solidityの型ではなく、外部の型で異なる場合はエラーになります。
 
 .. code-block:: solidity
 
@@ -518,20 +690,28 @@ externally visible functions differ by their Solidity types but not by their ext
     contract B {
     }
 
+.. Both ``f`` function overloads above end up accepting the address type for the ABI although
+.. they are considered different inside Solidity.
 
-Both ``f`` function overloads above end up accepting the address type for the ABI although
-they are considered different inside Solidity.
+上記の両方の ``f`` 関数のオーバーロードは、Solidity内では異なるものと考えられていますが、最終的にはABI用のアドレスタイプを受け入れます。
 
 Overload resolution and Argument matching
 -----------------------------------------
 
-Overloaded functions are selected by matching the function declarations in the current scope
-to the arguments supplied in the function call. Functions are selected as overload candidates
-if all arguments can be implicitly converted to the expected types. If there is not exactly one
-candidate, resolution fails.
+.. Overloaded functions are selected by matching the function declarations in the current scope
+.. to the arguments supplied in the function call. Functions are selected as overload candidates
+.. if all arguments can be implicitly converted to the expected types. If there is not exactly one
+.. candidate, resolution fails.
+
+オーバーロードされた関数は、現在のスコープ内の関数宣言と、関数呼び出しで提供される引数を照合することで選択されます。すべての引数が期待される型に暗黙的に変換できる場合、関数はオーバーロードの候補として選択されます。正確に1つの候補がない場合、解決は失敗します。
+
+.. .. note::
+
+..     Return parameters are not taken into account for overload resolution.
 
 .. note::
-    Return parameters are not taken into account for overload resolution.
+
+    過負荷解消のためのリターンパラメータは考慮されません。
 
 .. code-block:: solidity
 
@@ -548,6 +728,9 @@ candidate, resolution fails.
         }
     }
 
-Calling ``f(50)`` would create a type error since ``50`` can be implicitly converted both to ``uint8``
-and ``uint256`` types. On another hand ``f(256)`` would resolve to ``f(uint256)`` overload as ``256`` cannot be implicitly
-converted to ``uint8``.
+.. Calling ``f(50)`` would create a type error since ``50`` can be implicitly converted both to ``uint8``
+.. and ``uint256`` types. On another hand ``f(256)`` would resolve to ``f(uint256)`` overload as ``256`` cannot be implicitly
+.. converted to ``uint8``.
+.. 
+
+``f(50)`` を呼び出すと、 ``50`` は暗黙のうちに ``uint8`` 型と ``uint256`` 型の両方に変換できるため、型エラーが発生します。一方、 ``f(256)`` は、 ``256`` が暗黙のうちに ``uint8`` に変換できないため、 ``f(uint256)`` のオーバーロードとなります。
