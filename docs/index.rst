@@ -5,14 +5,14 @@ Solidity
 .. contracts. Smart contracts are programs which govern the behaviour of accounts
 .. within the Ethereum state.
 
-Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。スマートコントラクトとは、Ethereumのステートの中でアカウントの動作を制御するプログラムです。
+Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムです。
 
 .. Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_.
 .. It is influenced by C++, Python and JavaScript, and is designed to target the Ethereum Virtual Machine (EVM).
 .. You can find more details about which languages Solidity has been inspired by in
 .. the :doc:`language influences <language-influences>` section.
 
-Solidityは、 `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。C++、Python、JavaScriptの影響を受けており、Ethereum Virtual Machine (EVM)をターゲットにして設計されています。Solidityがどの言語から影響を受けているかについては、 :doc:`language influences <language-influences>` のセクションで詳しく説明しています。
+Solidityは、 `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。C++、Python、JavaScriptの影響を受けており、Ethereum Virtual Machine (EVM)をターゲットにして設計されています。Solidityがどの言語から影響を受けているかについては、 :doc:`言語の影響 <language-influences>` のセクションで詳しく説明しています。
 
 .. Solidity is statically typed, supports inheritance, libraries and complex
 .. user-defined types among other features.
@@ -38,12 +38,12 @@ Solidityでは、投票、クラウドファンディング、ブラインド・
   .. Solidity recently released the 0.8.x version that introduced a lot of breaking
   .. changes. Make sure you read :doc:`the full list <080-breaking-changes>`.
 
-  Solidityは最近0.8.xをリリースしましたが、多くの変更点があります。必ず :doc:`the full list <080-breaking-changes>` を読んでください。
+  Solidityは最近バージョン0.8.xをリリースしましたが、多くの変更点があります。必ず :doc:`完全なリスト <080-breaking-changes>` を読んでください。
 
 .. Ideas for improving Solidity or this documentation are always welcome,
 .. read our :doc:`contributors guide <contributing>` for more details.
 
-Solidity やこのドキュメントを改善するためのアイデアはいつでも歓迎します。詳細は :doc:`コントリビューター・ガイド <contributing>` をお読みください。
+Solidity やこのドキュメントを改善するためのアイデアはいつでも歓迎します。詳細は :doc:`コントリビューター・ガイド <contributing>` を読んでください。
 
 .. Hint::
 
@@ -56,25 +56,35 @@ Solidity やこのドキュメントを改善するためのアイデアはい�
 Getting Started
 ---------------
 
-**1. Understand the Smart Contract Basics**
+.. **1. Understand the Smart Contract Basics**
+
+**1. スマートコントラクトの基本を理解する**
 
 .. If you are new to the concept of smart contracts we recommend you to get started by digging
 .. into the "Introduction to Smart Contracts" section, which covers:
 
 スマートコントラクトの概念を初めて知る方には、まず「スマートコントラクト入門」を掘り下げて読むことをお勧めします。
 
-* :ref:`A simple example smart contract <simple-smart-contract>` written in Solidity.
-* :ref:`Blockchain Basics <blockchain-basics>`.
-* :ref:`The Ethereum Virtual Machine <the-ethereum-virtual-machine>`.
+.. * :ref:`A simple example smart contract <simple-smart-contract>` written in Solidity.
+.. * :ref:`Blockchain Basics <blockchain-basics>`.
+.. * :ref:`The Ethereum Virtual Machine <the-ethereum-virtual-machine>`.
 
-**2. Get to Know Solidity**
+* :ref:`スマートコントラクトのシンプルな例 <simple-smart-contract>` （Solidityで記述）
+* :ref:`ブロックチェーンの基本 <blockchain-basics>`
+* :ref:`Ethereum Virtual Machine <the-ethereum-virtual-machine>`
+
+.. **2. Get to Know Solidity**
+
+**2. Solidityを知る**
 
 .. Once you are accustomed to the basics, we recommend you read the :doc:`"Solidity by Example" <solidity-by-example>`
 .. and “Language Description” sections to understand the core concepts of the language.
 
-基本的な操作に慣れてきたら、 :doc:`"Solidity by Example" <solidity-by-example>` や "Language Description" のセクションを読んで、言語のコア・コンセプトを理解することをお勧めします。
+基本的な操作に慣れてきたら、 :doc:`"Solidity by Example" <solidity-by-example>` や "言語仕様" のセクションを読んで、言語のコア・コンセプトを理解することをお勧めします。
 
-**3. Install the Solidity Compiler**
+.. **3. Install the Solidity Compiler**
+
+**3. Solidityコンパイラをインストールする**
 
 .. There are various ways to install the Solidity compiler,
 .. simply choose your preferred option and follow the steps outlined on the :ref:`installation page <installing-solidity>`.
@@ -136,23 +146,23 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
    最近、コミュニティの活動を効率化するために、GitHubの組織と翻訳のワークフローを新たに設定しました。今後のコミュニティ翻訳への貢献方法については、 `翻訳ガイド <https://github.com/solidity-docs/translation-guide>`_ をご参照ください。
 
-* `French <https://solidity-fr.readthedocs.io>`_ (in progress)
-* `Italian <https://github.com/damianoazzolini/solidity>`_ (in progress)
-* `Japanese <https://solidity-jp.readthedocs.io>`_
-* `Korean <https://solidity-kr.readthedocs.io>`_ (in progress)
-* `Russian <https://github.com/ethereum/wiki/wiki/%5BRussian%5D-%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%BF%D0%BE-Solidity>`_ (rather outdated)
-* `Simplified Chinese <https://learnblockchain.cn/docs/solidity/>`_ (in progress)
-* `Spanish <https://solidity-es.readthedocs.io>`_
-* `Turkish <https://github.com/denizozzgur/Solidity_TR/blob/master/README.md>`_ (partial)
+* `フランス語 <https://solidity-fr.readthedocs.io>`_ (翻訳中)
+* `イタリア語 <https://github.com/damianoazzolini/solidity>`_ (翻訳中)
+* `日本語 <https://solidity-jp.readthedocs.io>`_
+* `韓国語 <https://solidity-kr.readthedocs.io>`_ (翻訳中)
+* `ロシア語 <https://github.com/ethereum/wiki/wiki/%5BRussian%5D-%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%BF%D0%BE-Solidity>`_ (rather outdated)
+* `中国語（簡体字） <https://learnblockchain.cn/docs/solidity/>`_ (翻訳中)
+* `スペイン語 <https://solidity-es.readthedocs.io>`_
+* `トルコ語 <https://github.com/denizozzgur/Solidity_TR/blob/master/README.md>`_ (翻訳中)
 
-Contents
+コンテンツ
 ========
 
-:ref:`Keyword Index <genindex>`, :ref:`Search Page <search>`
+:ref:`キーワードインデックス <genindex>`, :ref:`検索ページ <search>`
 
 .. toctree::
    :maxdepth: 2
-   :caption: Basics
+   :caption: 基本
 
    introduction-to-smart-contracts.rst
    installing-solidity.rst
@@ -160,7 +170,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Language Description
+   :caption: 言語仕様
 
    layout-of-source-files.rst
    structure-of-a-contract.rst
@@ -174,7 +184,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Compiler
+   :caption: コンパイラ 
 
    using-the-compiler.rst
    analysing-compilation-output.rst
@@ -182,7 +192,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Internals
+   :caption: インターナル
 
    internals/layout_in_storage.rst
    internals/layout_in_memory.rst
@@ -195,7 +205,7 @@ Contents
 
 .. toctree::
    :maxdepth: 2
-   :caption: Additional Material
+   :caption: その他の資料
 
    050-breaking-changes.rst
    060-breaking-changes.rst
