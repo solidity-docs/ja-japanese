@@ -110,7 +110,7 @@ Solidity コンパイラをインストールするには様々な方法があ�
 
     人間がソフトウェアを書くと、バグが発生することがあります。スマートコントラクトを作成する際には、確立されたソフトウェア開発のベストプラクティスに従うべきです。これには、コードレビュー、テスト、監査、および正しさの証明が含まれます。スマートコントラクトのユーザーは、コードの作成者よりもコードを信頼している場合があります。また、ブロックチェーンやスマートコントラクトには、注意すべき独自の問題がありますので、本番のコードに取り組む前に、必ず :ref:`security_considerations` のセクションを読んでください。
 
-**4. Learn More**
+**4. さらに学ぶ**
 
 .. If you want to learn more about building decentralized applications on Ethereum, the
 .. `Ethereum Developer Resources <https://ethereum.org/en/developers/>`_
