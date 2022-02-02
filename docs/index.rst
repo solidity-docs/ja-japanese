@@ -156,7 +156,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 * `トルコ語 <https://github.com/denizozzgur/Solidity_TR/blob/master/README.md>`_ (翻訳中)
 
 コンテンツ
-========
+=============
 
 :ref:`キーワードインデックス <genindex>`, :ref:`検索ページ <search>`
 

@@ -437,7 +437,7 @@ Ethereum Virtual Machine（EVM）は、Ethereumにおけるスマートコント
 .. _accounts:
 
 アカウント
-========
+============
 
 .. There are two kinds of accounts in Ethereum which share the same
 .. address space: **External accounts** that are controlled by
@@ -473,7 +473,7 @@ Ethereumには、同じアドレス空間を共有する2種類のアカウン�
 .. index:: ! transaction
 
 トランザクション
-============
+====================
 
 .. A transaction is a message that is sent from one account to another
 .. account (which might be the same or empty, see below).
@@ -539,7 +539,7 @@ Ethereumには、同じアドレス空間を共有する2種類のアカウン�
 .. Storage, Memory and the Stack
 
 ストレージ、メモリおよびスタック
-=============================
+=====================================================
 
 .. The Ethereum Virtual Machine has three areas where it can store data-
 .. storage, memory and the stack, which are explained in the following
@@ -616,7 +616,7 @@ EVMの命令セットは、コンセンサスの問題を引き起こす可能�
 .. Message Calls
 
 メッセージコール
-=============
+==============================
 
 .. Contracts can call other contracts or send Ether to non-contract
 .. accounts by the means of message calls. Message calls are similar
@@ -753,7 +753,7 @@ DeactivateとSelf-destruct
 .. Precompiled Contracts
 
 プリコンパイルされたコントラクト
-=====================
+===================================================
 
 .. There is a small set of contract addresses that are special:
 .. The address range between ``1`` and (including) ``8`` contains
