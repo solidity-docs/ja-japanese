@@ -1,12 +1,12 @@
 ###############################
-Introduction to Smart Contracts
+スマートコントラクトの紹介
 ###############################
 
 .. _simple-smart-contract:
 
-***********************
-A Simple Smart Contract
-***********************
+************************************
+シンプルなスマートコントラクト
+************************************
 
 .. Let us begin with a basic example that sets the value of a variable and exposes
 .. it for other contracts to access. It is fine if you do not understand
@@ -14,7 +14,7 @@ A Simple Smart Contract
 
 まずは、変数の値を設定し、他のコントラクトがアクセスできるように公開する基本的な例から始めましょう。今はまだ全てを理解していなくても構いません、後でもっと詳しく説明します。
 
-Storage Example
+ストレージの例
 ===============
 
 .. code-block:: solidity
@@ -46,7 +46,7 @@ Storage Example
 .. :ref:`Pragmas<pragma>` are common instructions for compilers about how to treat the
 .. source code (e.g. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
 
-次の行では、ソースコードがSolidityバージョン0.4.16、またはバージョン0.9.0までの新しいバージョンの言語で書かれたものであることを指定しています（バージョン0.9.0は含まない）。
+次の行では、ソースコードがSolidityバージョン0.4.16からバージョン0.9.0の前までのバージョンで書かれたものであることを指定しています（バージョン0.9.0は含まない）。
 これは、コントラクトが新しい（破壊的変更があった）コンパイラのバージョンでコンパイルできないことを保証するためです。
 :ref:`Pragma<pragma>` は、ソースコードをどのように扱うかについての、コンパイラに対する一般的な指示です（例: `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_ ）。
 
@@ -98,7 +98,9 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 .. index:: ! subcurrency
 
-Subcurrency Example
+.. Subcurrency Example
+
+サブ通貨の例
 ===================
 
 .. The following contract implements the simplest form of a
@@ -167,7 +169,7 @@ Subcurrency Example
 .. It is suitable for storing addresses of contracts, or a hash of the public half
 .. of a keypair belonging to :ref:`external accounts<accounts>`.
 
-``address public minter;`` という行は、 :ref:`address<address>` という型のステート変数を宣言しています。address``型は160ビットの値で、算術演算を行うことができません。コントラクトのアドレスや、 :ref:`external accounts<accounts>` に属するキーペアのパブリックハーフのハッシュを格納するのに適しています。
+``address public minter;`` という行は、 :ref:`address<address>` という型のステート変数を宣言しています。 ``address`` 型は160ビットの値で、算術演算を行うことができません。コントラクトのアドレスや、 :ref:`external accounts<accounts>` に属するキーペアのパブリックハーフのハッシュを格納するのに適しています。
 
 .. The keyword ``public`` automatically generates a function that allows you to access the current value of the state
 .. variable from outside of the contract. Without this keyword, other contracts have no way to access the variable.
@@ -319,9 +321,9 @@ revert 文は ``require`` 関数と同様にすべての変更を無条件に中
 
 .. _blockchain-basics:
 
-*****************
-Blockchain Basics
-*****************
+****************************
+ブロックチェーンの基本
+****************************
 
 .. Blockchains as a concept are not too hard to understand for programmers. The reason is that
 .. most of the complications (mining, `hashing <https://en.wikipedia.org/wiki/Cryptographic_hash_function>`_,
@@ -337,8 +339,8 @@ Blockchain Basics
 
 .. index:: transaction
 
-Transactions
-============
+トランザクション
+====================
 
 .. A blockchain is a globally shared, transactional database.
 .. This means that everyone can read entries in the database just by participating in the network.
@@ -368,8 +370,8 @@ Transactions
 
 .. index:: ! block
 
-Blocks
-======
+ブロック
+=============
 
 .. One major obstacle to overcome is what (in Bitcoin terms) is called a "double-spend attack":
 .. What happens if two transactions exist in the network that both want to empty an account?
@@ -416,10 +418,10 @@ Blocks
 .. index:: !evm, ! ethereum virtual machine
 
 ****************************
-The Ethereum Virtual Machine
+Ethereum Virtual Machine
 ****************************
 
-Overview
+概要
 ========
 
 .. The Ethereum Virtual Machine or EVM is the runtime environment
@@ -434,7 +436,7 @@ Ethereum Virtual Machine（EVM）は、Ethereumにおけるスマートコント
 
 .. _accounts:
 
-Accounts
+アカウント
 ========
 
 .. There are two kinds of accounts in Ethereum which share the same
@@ -470,7 +472,7 @@ Ethereumには、同じアドレス空間を共有する2種類のアカウン�
 
 .. index:: ! transaction
 
-Transactions
+トランザクション
 ============
 
 .. A transaction is a message that is sent from one account to another
@@ -509,7 +511,7 @@ Transactions
 
 .. index:: ! gas, ! gas price
 
-Gas
+ガス
 ===
 
 .. Upon creation, each transaction is charged with a certain amount of **gas**,
@@ -534,7 +536,9 @@ Gas
 
 .. index:: ! storage, ! memory, ! stack
 
-Storage, Memory and the Stack
+.. Storage, Memory and the Stack
+
+ストレージ、メモリおよびスタック
 =============================
 
 .. The Ethereum Virtual Machine has three areas where it can store data-
@@ -586,7 +590,9 @@ EVMはレジスタマシンではなく、スタックマシンなので、す�
 
 .. index:: ! instruction
 
-Instruction Set
+.. Instruction Set
+
+命令セット
 ===============
 
 .. The instruction set of the EVM is kept minimal in order to avoid
@@ -607,7 +613,9 @@ EVMの命令セットは、コンセンサスの問題を引き起こす可能�
 
 .. index:: ! message call, function;call
 
-Message Calls
+.. Message Calls
+
+メッセージコール
 =============
 
 .. Contracts can call other contracts or send Ether to non-contract
@@ -647,7 +655,9 @@ Message Calls
 
 .. index:: delegatecall, callcode, library
 
-Delegatecall / Callcode and Libraries
+.. Delegatecall / Callcode and Libraries
+
+Delegatecall / Callcode とライブラリ
 =====================================
 
 .. There exists a special variant of a message call, named **delegatecall**
@@ -672,7 +682,7 @@ Delegatecall / Callcode and Libraries
 
 .. index:: log
 
-Logs
+ログ
 ====
 
 .. It is possible to store data in a specially indexed data structure
@@ -702,7 +712,9 @@ Create
 
 .. index:: selfdestruct, self-destruct, deactivate
 
-Deactivate and Self-destruct
+.. Deactivate and Self-destruct
+
+DeactivateとSelf-destruct
 ============================
 
 .. The only way to remove code from the blockchain is when a contract at that
@@ -738,7 +750,9 @@ Deactivate and Self-destruct
 
 .. _precompiledContracts:
 
-Precompiled Contracts
+.. Precompiled Contracts
+
+プリコンパイルされたコントラクト
 =====================
 
 .. There is a small set of contract addresses that are special:
