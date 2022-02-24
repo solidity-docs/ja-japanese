@@ -522,9 +522,9 @@ Ethereumには、同じアドレス空間を共有する2種類のアカウン�
 生成された各トランザクションには、一定量の **gas** が課されます。
 その目的は、トランザクションを実行するために必要な作業量を制限すると同時に、その実行に対する対価を支払うことです。EVMがトランザクションを実行している間、ガスは特定のルールに従って徐々に減っていきます。
 
-. .The **gas price** is a value set by the creator of the transaction, who
-. .has to pay ``gas_price * gas`` up front from the sending account.
-. .If some gas is left after the execution, it is refunded to the creator in the same way.
+.. The **gas price** is a value set by the creator of the transaction, who
+.. has to pay ``gas_price * gas`` up front from the sending account.
+.. If some gas is left after the execution, it is refunded to the creator in the same way.
 
 **gas price** は、トランザクションの作成者が設定する値で、作成者は送信側の口座から ``gas_price * gas`` を前払いする必要があります。実行後にガスが残っていた場合は、同様の方法で作成者に返金されます。
 
