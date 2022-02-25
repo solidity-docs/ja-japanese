@@ -110,7 +110,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 .. toctree::
    :maxdepth: 2
-   :caption: インターナル
+   :caption: 内部仕様 
 
    internals/layout_in_storage.rst
    internals/layout_in_memory.rst
