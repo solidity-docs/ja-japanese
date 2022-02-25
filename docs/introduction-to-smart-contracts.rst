@@ -8,10 +8,6 @@
 シンプルなスマートコントラクト
 ************************************
 
-.. Let us begin with a basic example that sets the value of a variable and exposes
-.. it for other contracts to access. It is fine if you do not understand
-.. everything right now, we will go into more detail later.
-
 まずは、変数の値を設定し、他のコントラクトがアクセスできるように公開する基本的な例から始めましょう。今はまだ全てを理解していなくても構いません、後でもっと詳しく説明します。
 
 ストレージの例
@@ -34,82 +30,37 @@
         }
     }
 
-.. The first line tells you that the source code is licensed under the
-.. GPL version 3.0. Machine-readable license specifiers are important
-.. in a setting where publishing the source code is the default.
-
 最初の行は、ソースコードがGPLバージョン3.0でライセンスされていることを示しています。機械的に読み取り可能なライセンス指定子は、ソースコードの公開がデフォルトとなっている環境では重要です。
 
-.. The next line specifies that the source code is written for
-.. Solidity version 0.4.16, or a newer version of the language up to, but not including version 0.9.0.
-.. This is to ensure that the contract is not compilable with a new (breaking) compiler version, where it could behave differently.
-.. :ref:`Pragmas<pragma>` are common instructions for compilers about how to treat the
-.. source code (e.g. `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_).
-
-次の行では、ソースコードがSolidityバージョン0.4.16からバージョン0.9.0の前までのバージョンで書かれたものであることを指定しています（バージョン0.9.0は含まない）。
+次の行では、ソースコードがSolidityバージョン0.4.16からバージョン0.9.0の前までのバージョンで書かれたものであることを示しています（バージョン0.9.0は含まない）。
 これは、コントラクトが新しい（破壊的変更があった）コンパイラのバージョンでコンパイルできないことを保証するためです。
 :ref:`Pragma<pragma>` は、ソースコードをどのように扱うかについての、コンパイラに対する一般的な指示です（例: `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_ ）。
-
-.. A contract in the sense of Solidity is a collection of code (its *functions*) and
-.. data (its *state*) that resides at a specific address on the Ethereum
-.. blockchain. The line ``uint storedData;`` declares a state variable called ``storedData`` of
-.. type ``uint`` (*u*\nsigned *int*\eger of *256* bits). You can think of it as a single slot
-.. in a database that you can query and alter by calling functions of the
-.. code that manages the database. In this example, the contract defines the
-.. functions ``set`` and ``get`` that can be used to modify
-.. or retrieve the value of the variable.
 
 Solidityでいうコントラクトとは、Ethereumブロックチェーン上の特定のアドレスに存在するコード（その *functions* ）とデータ（その *state* ）の集合体です。
 ``uint storedData;`` という行は、 ``uint`` （256ビットの *u*\nsigned *int*\eger）型の ``storedData`` という状態変数を宣言しています。
 これは、データベースを管理するコードの関数を呼び出すことで問い合わせや変更ができる、データベースの1つのスロットと考えることができます。
 この例では、コントラクトによって、変数の値を変更したり取得したりするのに使用できる関数 ``set`` と ``get`` が定義されています。
 
-.. To access a member (like a state variable) of the current contract, you do not typically add the ``this.`` prefix,
-.. you just access it directly via its name.
-.. Unlike in some other languages, omitting it is not just a matter of style,
-.. it results in a completely different way to access the member, but more on this later.
+現在のコントラクトのメンバ（ステート変数など）にアクセスする場合、通常は ``this.`` という接頭辞を付けずに、その名前で直接アクセスします。
+他のいくつかの言語とは異なり、これを省略することは単なるスタイルの問題ではなく、メンバへのアクセス方法が全く異なります。
 
-現在のコントラクトのメンバー（ステート変数など）にアクセスする場合、通常は ``this.`` という接頭辞を付けずに、その名前で直接アクセスします。
-他のいくつかの言語とは異なり、これを省略することは単なるスタイルの問題ではなく、メンバーへのアクセス方法が全く異なるものになります。
-
-.. This contract does not do much yet apart from (due to the infrastructure
-.. built by Ethereum) allowing anyone to store a single number that is accessible by
-.. anyone in the world without a (feasible) way to prevent you from publishing
-.. this number. Anyone could call ``set`` again with a different value
-.. and overwrite your number, but the number is still stored in the history
-.. of the blockchain. Later, you will see how you can impose access restrictions
-.. so that only you can alter the number.
-
-このコントラクトは、（Ethereumが構築したインフラにより）世界中の誰もがアクセス可能な1つの番号を、あなたがこの番号を公開するのを防ぐ（実現可能な）方法なしに、誰もが保存できることを除けば、まだあまり意味がありません。
+このコントラクトは、（Ethereumが構築したインフラにより）世界中の誰もがアクセス可能な1つの番号を、あなたがその番号を公開するのを防ぐ（実現可能な）方法なしに、誰もが保存できることを除けば、まだあまり意味がありません。
 誰もが ``set`` に別の値で再度callをし、あなたの番号を上書きできますが、その番号はブロックチェーンの履歴に保存されたままです。
 後で、自分だけが番号を変更できるようにアクセス制限をかける方法を見てみましょう。
 
 .. warning::
-    .. Be careful with using Unicode text, as similar looking (or even identical) characters can
-    .. have different code points and as such are encoded as a different byte array.
-
     Unicodeテキストを使用する際には、見た目が似ている（あるいは同じ）文字でもコードポイントが異なる場合があり、その場合は異なるバイト配列としてエンコードされるので注意が必要です。
 
 .. note::
-    .. All identifiers (contract names, function names and variable names) are restricted to
-    .. the ASCII character set. It is possible to store UTF-8 encoded data in string variables.
-
-    すべての識別子（コントラクト名、関数名、変数名）は、ASCII文字セットに制限されています。文字列変数にUTF-8でエンコードされたデータを格納することは可能です。
+    すべての識別子（コントラクト名、関数名、変数名）は、ASCII文字に制限されています。文字列変数にUTF-8でエンコードされたデータを格納することは可能です。
 
 .. index:: ! subcurrency
-
-.. Subcurrency Example
 
 サブ通貨の例
 ===================
 
-.. The following contract implements the simplest form of a
-.. cryptocurrency. The contract allows only its creator to create new coins (different issuance schemes are possible).
-.. Anyone can send coins to each other without a need for
-.. registering with a username and password, all you need is an Ethereum keypair.
-
 以下のコントラクトは、最も単純な形態の暗号通貨を実装したものです。
-このコントラクトでは、作成者のみが新しいコインを作成できます（異なる発行スキームが可能です）。
+このコントラクトでは、作成者のみが新しいコインを作成できます（異なる発行スキームは可能です）。
 誰もがユーザー名とパスワードを登録することなく、Ethereumのキーペアさえあればコインを送り合うことができます。
 
 .. code-block:: solidity
@@ -118,35 +69,30 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
     pragma solidity ^0.8.4;
 
     contract Coin {
-        // The keyword "public" makes variables
-        // accessible from other contracts
+        // キーワード「public」は、他のコントラクトから変数にアクセスできます
         address public minter;
         mapping (address => uint) public balances;
 
-        // Events allow clients to react to specific
-        // contract changes you declare
+        // イベントは、宣言した特定のコントラクトの変更にクライアントが反応することを可能にします
         event Sent(address from, address to, uint amount);
 
-        // Constructor code is only run when the contract
-        // is created
+        // コンストラクタのコードは、コントラクトが作成されるときにのみ実行されます
         constructor() {
             minter = msg.sender;
         }
 
-        // Sends an amount of newly created coins to an address
-        // Can only be called by the contract creator
+        // 新しく作成されたコインの量をアドレスに送信します
+        // コントラクトの作成者のみが呼び出すことができます
         function mint(address receiver, uint amount) public {
             require(msg.sender == minter);
             balances[receiver] += amount;
         }
 
-        // Errors allow you to provide information about
-        // why an operation failed. They are returned
-        // to the caller of the function.
+        // エラーは操作に失敗した理由についての情報を提供できます
+        // エラーは関数の呼び出し側に返されます
         error InsufficientBalance(uint requested, uint available);
 
-        // Sends an amount of existing coins
-        // from any caller to an address
+        // 任意のコールしたアカウントのコインの量をアドレスに送信します
         function send(address receiver, uint amount) public {
             if (amount > balances[msg.sender])
                 revert InsufficientBalance({
@@ -160,21 +106,9 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
         }
     }
 
-.. This contract introduces some new concepts, let us go through them one by one.
-
 今回のコントラクトでは、いくつかの新しい概念が導入されていますが、それらを一つずつ見ていきましょう。
 
-.. The line ``address public minter;`` declares a state variable of type :ref:`address<address>`.
-.. The ``address`` type is a 160-bit value that does not allow any arithmetic operations.
-.. It is suitable for storing addresses of contracts, or a hash of the public half
-.. of a keypair belonging to :ref:`external accounts<accounts>`.
-
-``address public minter;`` という行は、 :ref:`address<address>` という型のステート変数を宣言しています。 ``address`` 型は160ビットの値で、算術演算を行うことができません。コントラクトのアドレスや、 :ref:`external accounts<accounts>` に属するキーペアのパブリックハーフのハッシュを格納するのに適しています。
-
-.. The keyword ``public`` automatically generates a function that allows you to access the current value of the state
-.. variable from outside of the contract. Without this keyword, other contracts have no way to access the variable.
-.. The code of the function generated by the compiler is equivalent
-.. to the following (ignore ``external`` and ``view`` for now):
+``address public minter;`` という行は、 :ref:`address<address>` という型のステート変数を宣言しています。 ``address`` 型は160ビットの値で、算術演算を行うことができません。コントラクトのアドレスや、 :ref:`external accounts<accounts>` に属するキーペアの公開鍵のハッシュを格納するのに適しています。
 
 キーワード ``public`` を指定すると、コントラクトの外部からステート変数の現在の値にアクセスできる関数が自動的に生成されます。このキーワードがないと、他のコントラクトはその変数にアクセスする方法がありません。コンパイラが生成する関数のコードは以下のようになります（今のところ ``external`` と ``view`` は無視してください）。
 
@@ -182,32 +116,14 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
     function minter() external view returns (address) { return minter; }
 
-.. You could add a function like the above yourself, but you would have a function and state variable with the same name.
-.. You do not need to do this, the compiler figures it out for you.
-
 上記のような関数を自分で追加することもできますが、関数とステート変数が同じ名前になってしまいます。
-このようなことをする必要はありません。コンパイラが計算してくれます。
+このようなことをする必要はありません。コンパイラが解決してくれます。
 
 .. index:: mapping
 
-.. The next line, ``mapping (address => uint) public balances;`` also
-.. creates a public state variable, but it is a more complex datatype.
-.. The :ref:`mapping <mapping-types>` type maps addresses to :ref:`unsigned integers <integers>`.
-
 次の行の ``mapping (address => uint) public balances;`` もパブリックな状態変数を作成しますが、より複雑なデータタイプです。:ref:`mapping <mapping-types>` 型は、アドレスを :ref:`unsigned integers <integers>` にマッピングします。
 
-.. Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
-.. virtually initialised such that every possible key exists from the start and is mapped to a
-.. value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
-.. a mapping, nor a list of all values. Record what you
-.. added to the mapping, or use it in a context where this is not needed. Or
-.. even better, keep a list, or use a more suitable data type.
-
 マッピングは、可能なすべてのキーが最初から存在し、バイト表現がすべてゼロである値にマッピングされるように仮想的に初期化された `ハッシュテーブル <https://en.wikipedia.org/wiki/Hash_table>`_ と見なすことができます。しかし、マッピングのすべてのキーのリストを得ることも、すべての値のリストを得ることもできません。マッピングに追加したものを記録するか、これが必要ない文脈で使用してください。あるいは、リストを保持するか、より適切なデータ型を使用することをお勧めします。
-
-.. The :ref:`getter function<getter-functions>` created by the ``public`` keyword
-.. is more complex in the case of a mapping. It looks like the
-.. following:
 
 ``public`` キーワードで作成した :ref:`getter function<getter-functions>` は、マッピングの場合はもっと複雑です。それは次のようなものです。
 
@@ -217,26 +133,11 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
         return balances[_account];
     }
 
-.. You can use this function to query the balance of a single account.
-
 この関数を使って、1つのアカウントの残高を照会できます。
 
 .. index:: event
 
-.. The line ``event Sent(address from, address to, uint amount);`` declares
-.. an :ref:`"event" <events>`, which is emitted in the last line of the function
-.. ``send``. Ethereum clients such as web applications can
-.. listen for these events emitted on the blockchain without much
-.. cost. As soon as it is emitted, the listener receives the
-.. arguments ``from``, ``to`` and ``amount``, which makes it possible to track
-.. transactions.
-
 ``event Sent(address from, address to, uint amount);`` という行は、 :ref:`"event" <events>` を宣言しており、このイベントは関数 ``send`` の最終行で発せられます。ウェブアプリケーションなどのEthereumクライアントは、ブロックチェーン上で発せられるこれらのイベントを、それほどコストをかけずにリッスンできます。イベントが発せられると同時に、リスナーは引数の ``from``, ``to``, ``amount`` を受け取るため、トランザクションの追跡が可能になります。
-
-.. To listen for this event, you could use the following
-.. JavaScript code, which uses `web3.js <https://github.com/ethereum/web3.js/>`_ to create the ``Coin`` contract object,
-.. and any user interface calls the automatically generated ``balances`` function from above::
-..
 
 `web3.js <https://github.com/ethereum/web3.js/>`_ を使って ``Coin`` のコントラクトオブジェクトを作成し、どのようなユーザーインターフェースであっても、上記で自動的に生成された ``balances`` 関数を呼び出すようになっています。::
 
@@ -253,31 +154,12 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 .. index:: coin
 
-.. The :ref:`constructor<constructor>` is a special function that is executed during the creation of the contract and
-.. cannot be called afterwards. In this case, it permanently stores the address of the person creating the
-.. contract. The ``msg`` variable (together with ``tx`` and ``block``) is a
-.. :ref:`special global variable <special-variables-functions>` that
-.. contains properties which allow access to the blockchain. ``msg.sender`` is
-.. always the address where the current (external) function call came from.
-
 :ref:`constructor<constructor>` は、コントラクトの作成時に実行され、その後は呼び出すことができない特別な関数です。
-この場合、コントラクトを作成した人のアドレスを恒久的に保存します。
+この場合、コントラクトを作成した人のアドレスを永続的に保存します。
 ``msg`` 変数は（ ``tx`` や ``block`` と一緒に） :ref:`特別なグローバル変数 <special-variables-functions>` であり、ブロックチェーンへのアクセスを可能にするプロパティを含んでいます。
-``msg.sender`` は常に、現在の(外部の)関数呼び出しが行われたアドレスです。
-
-.. The functions that make up the contract, and that users and contracts can call are ``mint`` and ``send``.
+``msg.sender`` は常に、現在の（外部の）関数呼び出しが行われたアドレスです。
 
 コントラクトを構成し、ユーザーやコントラクトが呼び出すことのできる関数は、 ``mint`` と ``send`` です。
-
-.. The ``mint`` function sends an amount of newly created coins to another address. The :ref:`require
-.. <assert-and-require>` function call defines conditions that reverts all changes if not met. In this
-.. example, ``require(msg.sender == minter);`` ensures that only the creator of the contract can call
-.. ``mint``. In general, the creator can mint as many tokens as they like, but at some point, this will
-.. lead to a phenomenon called "overflow". Note that because of the default :ref:`Checked arithmetic
-.. <unchecked>`, the transaction would revert if the expression ``balances[receiver] += amount;``
-.. overflows, i.e., when ``balances[receiver] + amount`` in arbitrary precision arithmetic is larger
-.. than the maximum value of ``uint`` (``2**256 - 1``). This is also true for the statement
-.. ``balances[receiver] += amount;`` in the function ``send``.
 
 ``mint`` 関数は、新しく作成されたコインの量を別のアドレスに送信します。
 :ref:`require <assert-and-require>` 関数の呼び出しでは、条件を定義し、満たされない場合はすべての変更を元に戻します。
@@ -286,37 +168,15 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 デフォルトの :ref:`Checked arithmetic <unchecked>` のため、式 ``balances[receiver] += amount;`` がオーバーフローした場合、つまり、任意精度の算術演算で ``balances[receiver] + amount`` が ``uint`` の最大値（ ``2**256 - 1`` ）よりも大きくなった場合には、トランザクションは元に戻ってしまうことに注意してください。
 これは、関数 ``send`` の中の ``balances[receiver] += amount;`` という記述にも当てはまります。
 
-.. :ref:`Errors <errors>` allow you to provide more information to the caller about
-.. why a condition or operation failed. Errors are used together with the
-.. :ref:`revert statement <revert-statement>`. The revert statement unconditionally
-.. aborts and reverts all changes similar to the ``require`` function, but it also
-.. allows you to provide the name of an error and additional data which will be supplied to the caller
-.. (and eventually to the front-end application or block explorer) so that
-.. a failure can more easily be debugged or reacted upon.
-
 :ref:`Errors <errors>` を使うと、条件や操作が失敗したときに呼び出し側に詳しい情報を提供できます。
 エラーは :ref:`revert statement <revert-statement>` と一緒に使用されます。
 revert 文は ``require`` 関数と同様にすべての変更を無条件に中止、復帰させますが、エラーの名前や、呼び出し側（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に提供される追加データを提供することもできますので、失敗をより簡単にデバッグしたり、対応したりできます。
 
-.. The ``send`` function can be used by anyone (who already
-.. has some of these coins) to send coins to anyone else. If the sender does not have
-.. enough coins to send, the ``if`` condition evaluates to true. As a result, the ``revert`` will cause the operation to fail
-.. while providing the sender with error details using the ``InsufficientBalance`` error.
-
-``send`` 関数は、（すでにコインを持っている）誰でも、他の人にコインを送るために使うことができます。
+``send`` 関数は、（すでにコインを持っている）誰でも、他の人にコインを送るために使えます。
 送信者が送信するのに十分なコインを持っていない場合は、 ``if`` の条件が true と評価されます。
 結果として、 ``revert`` は操作を失敗させ、送信者には ``InsufficientBalance`` というエラーの詳細を伝えます。
 
 .. note::
-    .. If you use
-    .. this contract to send coins to an address, you will not see anything when you
-    .. look at that address on a blockchain explorer, because the record that you sent
-    .. coins and the changed balances are only stored in the data storage of this
-    .. particular coin contract. By using events, you can create
-    .. a "blockchain explorer" that tracks transactions and balances of your new coin,
-    .. but you have to inspect the coin contract address and not the addresses of the
-    .. coin owners.
-
     このコントラクトを使ってあるアドレスにコインを送っても、ブロックチェーン・エクスプローラーでそのアドレスを見ても何もわかりません。なぜなら、コインを送ったという記録と変更された残高は、この特定のコインコントラクトのデータストレージにのみ保存されているからです。イベントを使えば、新しいコインのトランザクションや残高を追跡する「ブロックチェーンエクスプローラー」を作ることができますが、コインの所有者のアドレスではなく、コインコントラクトのアドレスを検査する必要があります。
 
 .. _blockchain-basics:
