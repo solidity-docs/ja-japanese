@@ -889,7 +889,7 @@ Assert は、内部エラーのテストや不変性のチェックにのみ使�
 ..    is used. The low level operations never throw exceptions but
 ..    indicate failures by returning ``false``.
 
-#. メッセージ・コールで関数を呼び出したが、正しく終了しなかった場合（ガス欠、一致する関数がない、自分自身で例外をスローするなど）、低レベルの操作 ``call`` 、 ``send`` 、 ``delegatecall`` 、 ``callcode`` 、 ``staticcall`` を使用した場合を除きます。低レベルの操作は、例外を投げることはありませんが、 ``false`` を返すことで失敗を示します。
+#. メッセージコールで関数を呼び出したが、正しく終了しなかった場合（ガス欠、一致する関数がない、自分自身で例外をスローするなど）、低レベルの操作 ``call`` 、 ``send`` 、 ``delegatecall`` 、 ``callcode`` 、 ``staticcall`` を使用した場合を除きます。低レベルの操作は、例外を投げることはありませんが、 ``false`` を返すことで失敗を示します。
 
 .. #. If you create a contract using the ``new`` keyword but the contract
 ..    creation :ref:`does not finish properly<creating-contracts>`.
