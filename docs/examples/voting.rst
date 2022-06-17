@@ -3,84 +3,54 @@
 .. _voting:
 
 ******
-Voting
+投票
 ******
 
-.. The following contract is quite complex, but showcases
-.. a lot of Solidity's features. It implements a voting
-.. contract. Of course, the main problems of electronic
-.. voting is how to assign voting rights to the correct
-.. persons and how to prevent manipulation. We will not
-.. solve all problems here, but at least we will show
-.. how delegated voting can be done so that vote counting
-.. is **automatic and completely transparent** at the
-.. same time.
+次のコントラクトは非常に複雑ですが、Solidityの機能の多くを紹介しています。これは、投票コントラクトを実装しています。もちろん、電子投票の主な問題点は、いかにして正しい人に投票権を割り当てるか、いかにして操作を防ぐかです。ここですべての問題を解決するわけではありませんが、少なくとも、投票数のカウントが **自動的** に行われ、同時に **完全に透明** であるように、委任投票を行う方法を紹介する予定です。
 
-次のコントラクトは非常に複雑ですが、Solidityの機能の多くを紹介しています。これは、投票コントラクトを実装しています。もちろん、電子投票の主な問題点は、いかにして正しい人に投票権を割り当てるか、いかにして操作を防ぐかです。ここですべての問題を解決するわけではありませんが、少なくとも、委任投票がどのように行われるかを示し、開票作業が同時に **automatic and completely transparent** で行われるようにします。
-
-.. The idea is to create one contract per ballot,
-.. providing a short name for each option.
-.. Then the creator of the contract who serves as
-.. chairperson will give the right to vote to each
-.. address individually.
-
-アイデアとしては、1つの投票用紙に1つの コントラクトを作成し、それぞれの選択肢に短い名前をつけます。そして、議長を務める コントラクトの作成者が、各アドレスに個別に投票権を与えます。
-
-.. The persons behind the addresses can then choose
-.. to either vote themselves or to delegate their
-.. vote to a person they trust.
+アイデアとしては、1つの投票用紙に対して1つのコントラクトを作成し、それぞれの選択肢に短い名前をつけます。そして、議長を務めるコントラクトの作成者が、各アドレスに個別に投票権を与えます。
 
 そして、そのアドレスを持つ人は、自分で投票するか、信頼できる人に投票を委任するかを選ぶことができます。
 
-.. At the end of the voting time, ``winningProposal()``
-.. will return the proposal with the largest number
-.. of votes.
-
-投票時間終了後、最も多くの票を獲得した案を ``winningProposal()`` 社に返却します。
+投票時間終了後、最も多くの票を獲得したプロポーザルを ``winningProposal()`` に返します。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-    /// @title Voting with delegation.
+    /// @title 委任による投票
     contract Ballot {
-        // This declares a new complex type which will
-        // be used for variables later.
-        // It will represent a single voter.
+        // 新しい複合型を宣言し、後で変数に使用します。
+        // 一人の投票者を表します。
         struct Voter {
-            uint weight; // weight is accumulated by delegation
-            bool voted;  // if true, that person already voted
-            address delegate; // person delegated to
-            uint vote;   // index of the voted proposal
+            uint weight; // ウェイトは委任により蓄積される
+            bool voted;  // trueならすでにその人は投票済み
+            address delegate; // 委任先
+            uint vote;   // 投票したプロポーザルのインデックス
         }
 
-        // This is a type for a single proposal.
+        // 1つのプロポーザルの型です。
         struct Proposal {
-            bytes32 name;   // short name (up to 32 bytes)
-            uint voteCount; // number of accumulated votes
+            bytes32 name;   // 短い名前（上限32バイト）
+            uint voteCount; // 投票数
         }
 
         address public chairperson;
 
-        // This declares a state variable that
-        // stores a `Voter` struct for each possible address.
+        // アドレスごとに `Voter` 構造体を格納する状態変数を宣言しています。
         mapping(address => Voter) public voters;
 
-        // A dynamically-sized array of `Proposal` structs.
+        // `Proposal` 構造体の動的サイズの配列
         Proposal[] public proposals;
 
-        /// Create a new ballot to choose one of `proposalNames`.
+        /// `proposalNames` のいずれかを選択するための新しい投票を作成します。
         constructor(bytes32[] memory proposalNames) {
             chairperson = msg.sender;
             voters[chairperson].weight = 1;
 
-            // For each of the provided proposal names,
-            // create a new proposal object and add it
-            // to the end of the array.
+            // 指定されたプロポーザル名ごとに新しいプロポーザルオブジェクトを作成し、配列の末尾に追加します。
             for (uint i = 0; i < proposalNames.length; i++) {
-                // `Proposal({...})` creates a temporary
-                // Proposal object and `proposals.push(...)`
-                // appends it to the end of `proposals`.
+                // `Proposal({...})` は一時的なプロポーザルオブジェクトを作成し、 `proposals.push(...)` はそれを `proposals` の末尾に追加します。
                 proposals.push(Proposal({
                     name: proposalNames[i],
                     voteCount: 0
@@ -88,19 +58,13 @@ Voting
             }
         }
 
-        // Give `voter` the right to vote on this ballot.
-        // May only be called by `chairperson`.
+        // `voter` にこの投票用紙に投票する権利を与えます。
+        // `chairperson` だけが呼び出すことができます。
         function giveRightToVote(address voter) external {
-            // If the first argument of `require` evaluates
-            // to `false`, execution terminates and all
-            // changes to the state and to Ether balances
-            // are reverted.
-            // This used to consume all gas in old EVM versions, but
-            // not anymore.
-            // It is often a good idea to use `require` to check if
-            // functions are called correctly.
-            // As a second argument, you can also provide an
-            // explanation about what went wrong.
+            // `require` の第一引数の評価が `false` の場合、実行は終了し、状態やEther残高のすべての変更が元に戻されます。
+            // これは、古いEVMのバージョンでは全てのガスを消費していましたが、今はそうではありません。
+            // 関数が正しく呼び出されているかどうかを確認するために、 `require` を使用するのは良いアイデアです。
+            // 第二引数として、何が悪かったのかについての説明を記述することもできます。
             require(
                 msg.sender == chairperson,
                 "Only chairperson can give right to vote."
@@ -113,47 +77,38 @@ Voting
             voters[voter].weight = 1;
         }
 
-        /// Delegate your vote to the voter `to`.
+        /// 投票者 `to` に投票を委任します。
         function delegate(address to) external {
-            // assigns reference
+            // 参照を代入
             Voter storage sender = voters[msg.sender];
             require(!sender.voted, "You already voted.");
 
             require(to != msg.sender, "Self-delegation is disallowed.");
 
-            // Forward the delegation as long as
-            // `to` also delegated.
-            // In general, such loops are very dangerous,
-            // because if they run too long, they might
-            // need more gas than is available in a block.
-            // In this case, the delegation will not be executed,
-            // but in other situations, such loops might
-            // cause a contract to get "stuck" completely.
+            // `to` もデリゲートされている限り、デリゲートを転送します。
+            // 一般的に、このようなループは非常に危険です。なぜなら、ループが長くなりすぎると、ブロック内で利用できる量よりも多くのガスが必要になる可能性があるからです。
+            // この場合、デリゲーションは実行されません。しかし、他の状況では、このようなループによってコントラクトが完全に「スタック」してしまう可能性があります。
             while (voters[to].delegate != address(0)) {
                 to = voters[to].delegate;
 
-                // We found a loop in the delegation, not allowed.
+                // 委任でループを発見した場合、委任は許可されません。
                 require(to != msg.sender, "Found loop in delegation.");
             }
 
-            // Since `sender` is a reference, this
-            // modifies `voters[msg.sender].voted`
+            // `sender` は参照なので、`voters[msg.sender].voted` を修正します。
             sender.voted = true;
             sender.delegate = to;
             Voter storage delegate_ = voters[to];
             if (delegate_.voted) {
-                // If the delegate already voted,
-                // directly add to the number of votes
+                // 代表者が既に投票している場合は、直接投票数に加算する
                 proposals[delegate_.vote].voteCount += sender.weight;
             } else {
-                // If the delegate did not vote yet,
-                // add to her weight.
+                // 代表者がまだ投票していない場合は、その人の重みに加える
                 delegate_.weight += sender.weight;
             }
         }
 
-        /// Give your vote (including votes delegated to you)
-        /// to proposal `proposals[proposal].name`.
+        /// あなたの投票権（あなたに委任された投票権を含む）をプロポーザル `proposals[proposal].name` に与えてください。
         function vote(uint proposal) external {
             Voter storage sender = voters[msg.sender];
             require(sender.weight != 0, "Has no right to vote");
@@ -161,14 +116,11 @@ Voting
             sender.voted = true;
             sender.vote = proposal;
 
-            // If `proposal` is out of the range of the array,
-            // this will throw automatically and revert all
-            // changes.
+            // もし `proposal` が配列の範囲外であれば、自動的にスローされ、すべての変更が取り消されます。
             proposals[proposal].voteCount += sender.weight;
         }
 
-        /// @dev Computes the winning proposal taking all
-        /// previous votes into account.
+        /// @dev 以前の投票をすべて考慮した上で、当選案を計算します。
         function winningProposal() public view
                 returns (uint winningProposal_)
         {
@@ -181,9 +133,7 @@ Voting
             }
         }
 
-        // Calls winningProposal() function to get the index
-        // of the winner contained in the proposals array and then
-        // returns the name of the winner
+        // winningProposal()関数を呼び出して、プロポーザルの配列に含まれる当選案のインデックスを取得し、当選案の名前を返します。
         function winnerName() external view
                 returns (bytes32 winnerName_)
         {
@@ -191,11 +141,7 @@ Voting
         }
     }
 
-Possible Improvements
+改良の可能性
 =====================
-
-.. Currently, many transactions are needed to assign the rights
-.. to vote to all participants. Can you think of a better way?
-.. 
 
 現在、すべての参加者に投票権を割り当てるためには、多くのトランザクションが必要です。何か良い方法はありませんか？

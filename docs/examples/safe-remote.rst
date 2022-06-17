@@ -1,30 +1,12 @@
 .. index:: purchase, remote purchase, escrow
 
-********************
-Safe Remote Purchase
-********************
-
-.. Purchasing goods remotely currently requires multiple parties that need to trust each other.
-.. The simplest configuration involves a seller and a buyer. The buyer would like to receive
-.. an item from the seller and the seller would like to get money (or an equivalent)
-.. in return. The problematic part is the shipment here: There is no way to determine for
-.. sure that the item arrived at the buyer.
+*************************
+安全なリモート購入
+*************************
 
 現在、遠隔地で商品を購入するには、複数の当事者がお互いに信頼し合う必要があります。最もシンプルなのは、売り手と買い手の関係です。買い手は売り手から商品を受け取り、売り手はその見返りとして金銭（またはそれに相当するもの）を得たいと考えます。問題となるのは、ここでの発送です。商品が買い手に届いたかどうかを確実に判断する方法がありません。
 
-.. There are multiple ways to solve this problem, but all fall short in one or the other way.
-.. In the following example, both parties have to put twice the value of the item into the
-.. contract as escrow. As soon as this happened, the money will stay locked inside
-.. the contract until the buyer confirms that they received the item. After that,
-.. the buyer is returned the value (half of their deposit) and the seller gets three
-.. times the value (their deposit plus the value). The idea behind
-.. this is that both parties have an incentive to resolve the situation or otherwise
-.. their money is locked forever.
-
-この問題を解決するには複数の方法がありますが、いずれも1つまたは他の方法で不足しています。次の例では、両当事者がアイテムの2倍の価値をエスクローとして コントラクトに入れなければなりません。これが起こるとすぐに、買い手がアイテムを受け取ったことを確認するまで、お金はコントラクトの中にロックされたままになります。その後、買い手には価値（保証金の半分）が返却され、売り手には価値の3倍（保証金＋価値）が支払われます。これは、双方が事態を解決しようとするインセンティブを持ち、そうしないとお金が永遠にロックされてしまうという考えに基づいています。
-
-.. This contract of course does not solve the problem, but gives an overview of how
-.. you can use state machine-like constructs inside a contract.
+この問題を解決するには複数の方法がありますが、いずれも1つまたは他の方法で不足しています。次の例では、両当事者がアイテムの2倍の価値をエスクローとして コントラクトに入れなければなりません。これが起こるとすぐに、買い手がアイテムを受け取ったことを確認するまで、お金はコントラクトの中にロックされたままになります。その後、買い手にはvalue（デポジットの半分）が返却され、売り手にはvalueの3倍（デポジット＋value）が支払われます。これは、双方が事態を解決しようとするインセンティブを持ち、そうしないとお金が永遠にロックされてしまうという考えに基づいています。
 
 このコントラクトはもちろん問題を解決するものではありませんが、コントラクトの中でステートマシンのような構造をどのように使用できるかの概要を示しています。
 
@@ -38,7 +20,7 @@ Safe Remote Purchase
         address payable public buyer;
 
         enum State { Created, Locked, Release, Inactive }
-        // The state variable has a default value of the first member, `State.created`
+        // state変数のデフォルト値は、最初のメンバーである`State.created`です。
         State public state;
 
         modifier condition(bool condition_) {
@@ -46,13 +28,13 @@ Safe Remote Purchase
             _;
         }
 
-        /// Only the buyer can call this function.
+        /// 買い手だけがこの機能を呼び出すことができます。
         error OnlyBuyer();
-        /// Only the seller can call this function.
+        /// 売り手だけがこの機能を呼び出すことができます。
         error OnlySeller();
-        /// The function cannot be called at the current state.
+        /// 現在の状態では、この関数を呼び出すことはできません。
         error InvalidState();
-        /// The provided value has to be even.
+        /// 提供される値は偶数でなければなりません。
         error ValueNotEven();
 
         modifier onlyBuyer() {
@@ -78,9 +60,9 @@ Safe Remote Purchase
         event ItemReceived();
         event SellerRefunded();
 
-        // Ensure that `msg.value` is an even number.
-        // Division will truncate if it is an odd number.
-        // Check via multiplication that it wasn't an odd number.
+        // `msg.value` が偶数であることを確認します。
+        // 割り算は奇数だと切り捨てられます。
+        // 奇数でなかったことを乗算で確認します。
         constructor() payable {
             seller = payable(msg.sender);
             value = msg.value / 2;
@@ -88,9 +70,8 @@ Safe Remote Purchase
                 revert ValueNotEven();
         }
 
-        /// Abort the purchase and reclaim the ether.
-        /// Can only be called by the seller before
-        /// the contract is locked.
+        /// 購入を中止し、Etherを再クレームします。
+        /// コントラクトがロックされる前に売り手によってのみ呼び出すことができます。
         function abort()
             external
             onlySeller
@@ -98,17 +79,14 @@ Safe Remote Purchase
         {
             emit Aborted();
             state = State.Inactive;
-            // We use transfer here directly. It is
-            // reentrancy-safe, because it is the
-            // last call in this function and we
-            // already changed the state.
+            // ここではtransferを直接使っています。
+            // この関数の最後の呼び出しであり、すでに状態を変更しているため、reentrancy-safeになっています。
             seller.transfer(address(this).balance);
         }
 
-        /// Confirm the purchase as buyer.
-        /// Transaction has to include `2 * value` ether.
-        /// The ether will be locked until confirmReceived
-        /// is called.
+        /// 買い手として購入を確認します。
+        /// 取引には `2 * value` のEtherが含まれていなければなりません。
+        /// Etherは confirmReceived が呼ばれるまでロックされます。
         function confirmPurchase()
             external
             inState(State.Created)
@@ -120,33 +98,32 @@ Safe Remote Purchase
             state = State.Locked;
         }
 
-        /// Confirm that you (the buyer) received the item.
-        /// This will release the locked ether.
+        /// あなた（買い手）が商品を受け取ったことを確認します。
+        /// これにより、ロックされていたEtherが解除されます。
         function confirmReceived()
             external
             onlyBuyer
             inState(State.Locked)
         {
             emit ItemReceived();
-            // It is important to change the state first because
-            // otherwise, the contracts called using `send` below
-            // can call in again here.
+            // 最初に状態を変更することが重要です。
+            // そうしないと、以下の `send` を使用して呼び出されたコントラクトが、ここで再び呼び出される可能性があるからです。
             state = State.Release;
 
             buyer.transfer(value);
         }
 
-        /// This function refunds the seller, i.e.
-        /// pays back the locked funds of the seller.
+        /// この機能は、売り手に返金する、つまり売り手のロックされた資金を払い戻すものです。
         function refundSeller()
             external
             onlySeller
             inState(State.Release)
         {
             emit SellerRefunded();
-            // It is important to change the state first because
             // otherwise, the contracts called using `send` below
             // can call in again here.
+            // 最初に状態を変更することが重要です。
+            // そうしないと、以下の `send` を使用して呼び出されたコントラクトが、ここで再び呼び出される可能性があるからです。
             state = State.Inactive;
 
             seller.transfer(3 * value);
