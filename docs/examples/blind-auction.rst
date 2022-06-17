@@ -1,76 +1,57 @@
 .. index:: auction;blind, auction;open, blind auction, open auction
 
-*************
-Blind Auction
-*************
+**********************
+ブラインドオークション
+**********************
 
-.. In this section, we will show how easy it is to create a completely blind
-.. auction contract on Ethereum.  We will start with an open auction where
-.. everyone can see the bids that are made and then extend this contract into a
-.. blind auction where it is not possible to see the actual bid until the bidding
-.. period ends.
-
-このセクションでは、Ethereum上で完全なブラインドオークションコントラクトをいかに簡単に作成できるかを紹介します。  まず、誰もが入札を見ることができるオープンオークションから始めて、このコントラクトを、入札期間が終了するまで実際の入札を見ることができないブラインドオークションに拡張します。
+このセクションでは、Ethereum上で完全なブラインドオークションコントラクトをいかに簡単に作成できるかを紹介します。まず、誰もが入札を見ることができるオープンオークションから始めて、このコントラクトを、入札期間が終了するまで実際の入札を見ることができないブラインドオークションに拡張します。
 
 .. _simple_auction:
 
-Simple Open Auction
-===================
+シンプルなオープンオークション
+===================================
 
-.. The general idea of the following simple auction contract is that everyone can
-.. send their bids during a bidding period. The bids already include sending money
-.. / Ether in order to bind the bidders to their bid. If the highest bid is
-.. raised, the previous highest bidder gets their money back.  After the end of
-.. the bidding period, the contract has to be called manually for the beneficiary
-.. to receive their money - contracts cannot activate themselves.
-
-以下のシンプルなオークションコントラクトの一般的な考え方は、入札期間中に誰もが入札を行うことができるというものです。入札には、入札者を拘束するためにお金/Etherを送ることがすでに含まれています。最高入札額が上がった場合、それまでの最高入札者はお金を返してもらいます。  入札期間の終了後、受益者がお金を受け取るためには、コントラクトを手動で呼び出さなければなりません。
+以下のシンプルなオークションコントラクトの一般的な考え方は、入札期間中に誰もが入札を行うことができるというものです。入札には、入札者を拘束するためにお金/Etherを送ることがすでに含まれています。最高入札額が上がった場合、それまでの最高入札者はお金を返してもらいます。入札期間の終了後、受益者がお金を受け取るためには、コントラクトを手動で呼び出さなければなりません。コントラクトは自ら動作することはできません。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.4;
     contract SimpleAuction {
-        // Parameters of the auction. Times are either
-        // absolute unix timestamps (seconds since 1970-01-01)
-        // or time periods in seconds.
+        // オークションのパラメータ。時刻は絶対的なunixタイムスタンプ（1970-01-01からの秒数）または秒単位の時間です。
         address payable public beneficiary;
         uint public auctionEndTime;
 
-        // Current state of the auction.
+        // オークションの現状
         address public highestBidder;
         uint public highestBid;
 
-        // Allowed withdrawals of previous bids
+        // 以前の入札のうち取り下げを許可したもの
         mapping(address => uint) pendingReturns;
 
-        // Set to true at the end, disallows any change.
-        // By default initialized to `false`.
+        // 最後にtrueを設定すると、一切の変更が禁止されます。
+        // デフォルトでは `false` に初期化されています。
         bool ended;
 
-        // Events that will be emitted on changes.
+        // 変更時に発信されるイベント
         event HighestBidIncreased(address bidder, uint amount);
         event AuctionEnded(address winner, uint amount);
 
-        // Errors that describe failures.
+        // 失敗を表すエラー
 
-        // The triple-slash comments are so-called natspec
-        // comments. They will be shown when the user
-        // is asked to confirm a transaction or
-        // when an error is displayed.
+        // トリプルスラッシュのコメントは、いわゆるnatspecコメントです。
+        // これらは、ユーザーがトランザクションの確認を求められたときや、エラーが表示されたときに表示されます。
 
-        /// The auction has already ended.
+        /// オークションはすでに終了しています。
         error AuctionAlreadyEnded();
-        /// There is already a higher or equal bid.
+        /// すでに上位または同等の入札があります。
         error BidNotHighEnough(uint highestBid);
-        /// The auction has not ended yet.
+        /// オークションはまだ終了していません。
         error AuctionNotYetEnded();
-        /// The function auctionEnd has already been called.
+        /// 関数 auctionEnd はすでに呼び出されています。
         error AuctionEndAlreadyCalled();
 
-        /// Create a simple auction with `biddingTime`
-        /// seconds bidding time on behalf of the
-        /// beneficiary address `beneficiaryAddress`.
+        /// 受益者アドレス `beneficiaryAddress` に代わって `biddingTime` 秒の入札時間を持つシンプルなオークションを作成します。
         constructor(
             uint biddingTime,
             address payable beneficiaryAddress
@@ -79,36 +60,23 @@ Simple Open Auction
             auctionEndTime = block.timestamp + biddingTime;
         }
 
-        /// Bid on the auction with the value sent
-        /// together with this transaction.
-        /// The value will only be refunded if the
-        /// auction is not won.
+        /// この取引と一緒に送られたvalueでオークションに入札します。
+        /// 落札されなかった場合のみ、valueは返金されます。
         function bid() external payable {
-            // No arguments are necessary, all
-            // information is already part of
-            // the transaction. The keyword payable
-            // is required for the function to
-            // be able to receive Ether.
+            // 引数は必要なく、すべての情報はすでにトランザクションの一部となっています。
+            // キーワード payable は、この関数が Ether を受け取ることができるようにするために必要です。
 
-            // Revert the call if the bidding
-            // period is over.
+            // 入札期間が終了した場合、コールをリバートする。
             if (block.timestamp > auctionEndTime)
                 revert AuctionAlreadyEnded();
 
-            // If the bid is not higher, send the
-            // money back (the revert statement
-            // will revert all changes in this
-            // function execution including
-            // it having received the money).
+            // 入札額が高くなければ、お金を送り返す（リバートステートメントは、それがお金を受け取ったことを含め、この関数の実行のすべての変更を元に戻します）。
             if (msg.value <= highestBid)
                 revert BidNotHighEnough(highestBid);
 
             if (highestBid != 0) {
-                // Sending back the money by simply using
-                // highestBidder.send(highestBid) is a security risk
-                // because it could execute an untrusted contract.
-                // It is always safer to let the recipients
-                // withdraw their money themselves.
+                // highestBidder.send(highestBid) を使って単純に送り返すと、信頼できないコントラクトを実行する可能性があり、セキュリティ上のリスクがあります。
+                // 受取人が自分でお金を引き出せるようにするのが安全です。
                 pendingReturns[highestBidder] += highestBid;
             }
             highestBidder = msg.sender;
@@ -117,16 +85,15 @@ Simple Open Auction
         }
 
         /// Withdraw a bid that was overbid.
+        /// 過大な入札を撤回する。
         function withdraw() external returns (bool) {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
-                // It is important to set this to zero because the recipient
-                // can call this function again as part of the receiving call
-                // before `send` returns.
+                // 受信者は `send` が戻る前に、受信コールの一部としてこの関数を再び呼び出すことができるので、これをゼロに設定することが重要です。
                 pendingReturns[msg.sender] = 0;
 
                 if (!payable(msg.sender).send(amount)) {
-                    // No need to call throw here, just reset the amount owing
+                    // ここでコールを投げる必要はなく、ただリセットすれば良いです。
                     pendingReturns[msg.sender] = amount;
                     return false;
                 }
@@ -134,73 +101,40 @@ Simple Open Auction
             return true;
         }
 
-        /// End the auction and send the highest bid
-        /// to the beneficiary.
+        /// オークションを終了し、最高入札額を受益者に送付します。
         function auctionEnd() external {
-            // It is a good guideline to structure functions that interact
-            // with other contracts (i.e. they call functions or send Ether)
-            // into three phases:
-            // 1. checking conditions
-            // 2. performing actions (potentially changing conditions)
-            // 3. interacting with other contracts
-            // If these phases are mixed up, the other contract could call
-            // back into the current contract and modify the state or cause
-            // effects (ether payout) to be performed multiple times.
-            // If functions called internally include interaction with external
-            // contracts, they also have to be considered interaction with
-            // external contracts.
+            // 他のコントラクトと相互作用する関数（関数を呼び出したり、Etherを送ったりする）は、3つのフェーズに分けるのが良いガイドラインです。
+            // 1. 条件をチェックする
+            // 2. アクションを実行する（条件を変更する可能性がある）。
+            // 3. 他のコントラクトと対話する
+            // これらのフェーズが混在すると、他のコントラクトが現在のコントラクトにコールバックして状態を変更したり、エフェクト（エーテル払い出し）を複数回実行させたりする可能性があります。
+            // 内部で呼び出される関数に外部コントラクトとの相互作用が含まれる場合は、外部コントラクトとの相互作用も考慮しなければなりません。
 
-            // 1. Conditions
+            // 1. 条件
             if (block.timestamp < auctionEndTime)
                 revert AuctionNotYetEnded();
             if (ended)
                 revert AuctionEndAlreadyCalled();
 
-            // 2. Effects
+            // 2. エフェクト
             ended = true;
             emit AuctionEnded(highestBidder, highestBid);
 
-            // 3. Interaction
+            // 3. インタラクション
             beneficiary.transfer(highestBid);
         }
     }
 
-Blind Auction
-=============
+ブラインドオークション
+=========================
 
-.. The previous open auction is extended to a blind auction in the following. The
-.. advantage of a blind auction is that there is no time pressure towards the end
-.. of the bidding period. Creating a blind auction on a transparent computing
-.. platform might sound like a contradiction, but cryptography comes to the
-.. rescue.
+前回のオープンオークションは、次のようにブラインドオークションに拡張されます。ブラインドオークションの利点は、入札期間の終わりに向けての時間的プレッシャーがないことです。透明なコンピューティングプラットフォーム上でブラインドオークションを行うというのは矛盾しているように聞こえるかもしれませんが、暗号技術がその助けとなります。
 
-前回のオープン・オークションは、次のようにブラインド・オークションに拡張されます。ブラインド・オークションの利点は、入札期間の終わりに向けての時間的プレッシャーがないことです。透明なコンピューティング・プラットフォーム上でブラインド・オークションを行うというのは矛盾しているように聞こえるかもしれませんが、暗号技術がその助けとなります。
+**入札期間** 中、入札者は自分の入札を実際には送信せず、ハッシュ化したものだけを送信します。現在のところ、ハッシュ値が等しい2つの（十分に長い）値を見つけることは実質的に不可能であると考えられているため、入札者はそれによって入札にコミットします。入札期間の終了後、入札者は自分の入札を明らかにしなければならない。入札者は自分の値を暗号化せずに送信し、コントラクトはそのハッシュ値が入札期間中に提供されたものと同じであるかどうかをチェックします。
 
-.. During the **bidding period**, a bidder does not actually send their bid, but
-.. only a hashed version of it.  Since it is currently considered practically
-.. impossible to find two (sufficiently long) values whose hash values are equal,
-.. the bidder commits to the bid by that.  After the end of the bidding period,
-.. the bidders have to reveal their bids: They send their values unencrypted and
-.. the contract checks that the hash value is the same as the one provided during
-.. the bidding period.
+もう一つの課題は、いかにしてオークションの **バインディングとブラインド** を同時に行うかということです。落札した後にお金を送らないだけで済むようにするには、入札と一緒に送らせるようにするしかありません。イーサリアムでは価値の移転はブラインドできないので、誰でも価値を見ることができます。
 
-**bidding period** 期間中、入札者は自分の入札を実際には送信せず、ハッシュ化したものだけを送信します。  現在のところ、ハッシュ値が等しい2つの（十分に長い）値を見つけることは実質的に不可能であると考えられているため、入札者はそれによって入札にコミットします。  入札期間の終了後、入札者は自分の入札を明らかにしなければならない。入札者は自分の値を暗号化せずに送信し、コントラクトはそのハッシュ値が入札期間中に提供されたものと同じであるかどうかをチェックします。
-
-.. Another challenge is how to make the auction **binding and blind** at the same
-.. time: The only way to prevent the bidder from just not sending the money after
-.. they won the auction is to make them send it together with the bid. Since value
-.. transfers cannot be blinded in Ethereum, anyone can see the value.
-
-もう一つの課題は、いかにしてオークション **binding and blind** を同時に行うかということです。落札した後にお金を送らないだけで済むようにするには、入札と一緒に送らせるようにするしかありません。イーサリアムでは価値の移転はブラインドできないので、誰でも価値を見ることができます。
-
-.. The following contract solves this problem by accepting any value that is
-.. larger than the highest bid. Since this can of course only be checked during
-.. the reveal phase, some bids might be **invalid**, and this is on purpose (it
-.. even provides an explicit flag to place invalid bids with high value
-.. transfers): Bidders can confuse competition by placing several high or low
-.. invalid bids.
-
-以下のコントラクトでは、最高額のビッドよりも大きな値を受け入れることで、この問題を解決しています。もちろん、これは公開段階でしかチェックできないので、いくつかの入札は **invalid** になるかもしれませんが、これは意図的なものです（高額な送金で無効な入札を行うための明示的なフラグも用意されています）。入札者は、高額または低額の無効な入札を複数回行うことで、競争を混乱させることができます。
+以下のコントラクトでは、最高額の入札よりも大きな値を受け入れることで、この問題を解決しています。もちろん、これは公開段階でしかチェックできないので、いくつかの入札は **無効** になるかもしれませんが、これは意図的なものです（高額な送金で無効な入札を行うための明示的なフラグも用意されています）。入札者は、高額または低額の無効な入札を複数回行うことで、競争を混乱させることができます。
 
 .. code-block:: solidity
     :force:
@@ -223,26 +157,25 @@ Blind Auction
         address public highestBidder;
         uint public highestBid;
 
-        // Allowed withdrawals of previous bids
+        // 以前の入札のうち取り下げを許可したもの
         mapping(address => uint) pendingReturns;
 
         event AuctionEnded(address winner, uint highestBid);
 
-        // Errors that describe failures.
+        // 失敗を表すエラー
 
-        /// The function has been called too early.
-        /// Try again at `time`.
+        /// この関数は早く呼び出されすぎました。
+        /// `time` 秒後にもう一度試してください。
         error TooEarly(uint time);
-        /// The function has been called too late.
-        /// It cannot be called after `time`.
+        /// この関数を呼び出すのが遅すぎました。
+        /// `time` 秒後に呼び出すことはできません。
         error TooLate(uint time);
-        /// The function auctionEnd has already been called.
+        /// 関数 auctionEnd はすでに呼び出されています。
         error AuctionEndAlreadyCalled();
 
-        // Modifiers are a convenient way to validate inputs to
-        // functions. `onlyBefore` is applied to `bid` below:
-        // The new function body is the modifier's body where
-        // `_` is replaced by the old function body.
+        // モディファイアは、関数への入力を検証するための便利な方法です。
+        // 以下の `onlyBefore` は `bid` に適用されます。
+        // 新しい関数の本体はモディファイアの本体で、 `_` が古い関数の本体に置き換わります。
         modifier onlyBefore(uint time) {
             if (block.timestamp >= time) revert TooLate(time);
             _;
@@ -262,15 +195,11 @@ Blind Auction
             revealEnd = biddingEnd + revealTime;
         }
 
-        /// Place a blinded bid with `blindedBid` =
-        /// keccak256(abi.encodePacked(value, fake, secret)).
-        /// The sent ether is only refunded if the bid is correctly
-        /// revealed in the revealing phase. The bid is valid if the
-        /// ether sent together with the bid is at least "value" and
-        /// "fake" is not true. Setting "fake" to true and sending
-        /// not the exact amount are ways to hide the real bid but
-        /// still make the required deposit. The same address can
-        /// place multiple bids.
+        /// `blindedBid` = keccak256(abi.encodePacked(value, fake, secret)) でブラインド入札を行います。
+        /// 送信されたEtherは、リビールフェーズで入札が正しくリビールされた場合にのみ払い戻されます。
+        /// 入札と一緒に送られたEtherが少なくとも「value」であり、「fake」がtrueでない場合、入札は有効です。
+        /// 「fake」をtrueに設定し、正確な金額を送らないことで、本当の入札を隠しつつ、必要なデポジットを行うことができます。
+        /// 同じアドレスで複数の入札を行うことができます。
         function bid(bytes32 blindedBid)
             external
             payable
@@ -282,9 +211,8 @@ Blind Auction
             }));
         }
 
-        /// Reveal your blinded bids. You will get a refund for all
-        /// correctly blinded invalid bids and for all bids except for
-        /// the totally highest.
+        /// ブラインドした入札を公開します。
+        /// 正しくブラインドされた無効な入札と、完全に高い入札を除くすべての入札の払い戻しを受けることができます。
         function reveal(
             uint[] calldata values,
             bool[] calldata fakes,
@@ -305,8 +233,8 @@ Blind Auction
                 (uint value, bool fake, bytes32 secret) =
                         (values[i], fakes[i], secrets[i]);
                 if (bidToCheck.blindedBid != keccak256(abi.encodePacked(value, fake, secret))) {
-                    // Bid was not actually revealed.
-                    // Do not refund deposit.
+                    // 入札は実際にリビールされていません。
+                    // デポジットを返金しません。
                     continue;
                 }
                 refund += bidToCheck.deposit;
@@ -314,29 +242,25 @@ Blind Auction
                     if (placeBid(msg.sender, value))
                         refund -= value;
                 }
-                // Make it impossible for the sender to re-claim
-                // the same deposit.
+                // 送信者が同じデポジットを再クレームできないようにします。
                 bidToCheck.blindedBid = bytes32(0);
             }
             payable(msg.sender).transfer(refund);
         }
 
-        /// Withdraw a bid that was overbid.
+        /// オーバーな入札を引き出す。
         function withdraw() external {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
-                // It is important to set this to zero because the recipient
-                // can call this function again as part of the receiving call
-                // before `transfer` returns (see the remark above about
-                // conditions -> effects -> interaction).
+                // これをゼロに設定することが重要です。
+                // なぜなら、受信者は `transfer` が戻る前にリシーブしているコールの一部としてこの関数を再び呼び出すことができるからです（前で述べた 条件 -> エフェクト -> インタラクション に関する記述を参照してください）。
                 pendingReturns[msg.sender] = 0;
 
                 payable(msg.sender).transfer(amount);
             }
         }
 
-        /// End the auction and send the highest bid
-        /// to the beneficiary.
+        /// オークションを終了し、最高入札額を受益者に送ります。
         function auctionEnd()
             external
             onlyAfter(revealEnd)
@@ -347,9 +271,7 @@ Blind Auction
             beneficiary.transfer(highestBid);
         }
 
-        // This is an "internal" function which means that it
-        // can only be called from the contract itself (or from
-        // derived contracts).
+        // これは「内部」関数であり、コントラクト自身（または派生コントラクト）からしか呼び出すことができないことを意味します。
         function placeBid(address bidder, uint value) internal
                 returns (bool success)
         {
@@ -357,7 +279,7 @@ Blind Auction
                 return false;
             }
             if (highestBidder != address(0)) {
-                // Refund the previously highest bidder.
+                // 前回の最高額入札者に払い戻しを行います。
                 pendingReturns[highestBidder] += highestBid;
             }
             highestBid = value;
