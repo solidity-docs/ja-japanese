@@ -249,6 +249,7 @@ Block and Transaction Properties
 ABI Encoding and Decoding Functions
 -----------------------------------
 
+<<<<<<< HEAD
 .. - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI-decodes the given data, while the types are given in parentheses as second argument. Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 
 -  ``abi.decode(bytes memory encodedData, (...)) returns (...)`` : ABIは与えられたデータをデコードしますが、タイプは第2引数として括弧内に与えられます。例 ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
@@ -275,6 +276,14 @@ ABI Encoding and Decoding Functions
 ..     calling an external function. Furthermore, ``keccak256(abi.encodePacked(a, b))`` is a way
 ..     to compute the hash of structured data (although be aware that it is possible to
 ..     craft a "hash collision" using different function parameter types).
+=======
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI-decodes the given data, while the types are given in parentheses as second argument. Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.encode(...) returns (bytes memory)``: ABI-encodes the given arguments
+- ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of the given arguments. Note that packed encoding can be ambiguous!
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI-encodes the given arguments starting from the second and prepends the given four-byte selector
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 .. note::
 
@@ -293,6 +302,14 @@ Members of bytes
 .. - ``bytes.concat(...) returns (bytes memory)``: :ref:`Concatenates variable number of bytes and bytes1, ..., bytes32 arguments to one byte array<bytes-concat>`
 
 -  ``bytes.concat(...) returns (bytes memory)`` :  :ref:`Concatenates variable number of bytes and bytes1, ..., bytes32 arguments to one byte array<bytes-concat>`
+
+.. index:: string members
+
+Members of string
+-----------------
+
+- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
+
 
 .. index:: assert, revert, require
 
@@ -626,6 +643,7 @@ Type Information
 ..     The same restrictions as with ``.creationCode`` also apply for this
 ..     property.
 
+<<<<<<< HEAD
 ``type(C).runtimeCode``  コントラクトのランタイムバイトコードを含むメモリバイト配列。     これは、通常、 ``C`` のコンストラクタによってデプロイされるコードです。      ``C``  のコンストラクタがインライン アセンブリを使用している場合、これは実際にデプロイされるバイトコードとは異なる可能性があります。また、ライブラリはデプロイ時にランタイムのバイトコードを変更し、正規の呼び出しを防ぐことにも注意してください。     このプロパティにも、 ``.creationCode``  と同様の制限が適用されます。
 
 .. In addition to the properties above, the following properties are available
@@ -654,3 +672,18 @@ Type Information
 .. 
 
 ``type(T).max``  タイプ ``T`` で表現可能な最大の値。
+=======
+``type(T).max``
+    The largest value representable by type ``T``.
+
+Reserved Keywords
+=================
+
+These keywords are reserved in Solidity. They might become part of the syntax in the future:
+
+``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
+``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
+``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
+``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
+``var``.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2

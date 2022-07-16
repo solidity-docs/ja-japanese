@@ -323,7 +323,13 @@ Address
 
 アドレスタイプには2つの種類がありますが、ほとんど同じです。
 
+<<<<<<< HEAD
 .. - ``address``: Holds a 20 byte value (size of an Ethereum address).
+=======
+The idea behind this distinction is that ``address payable`` is an address you can send Ether to,
+while you are not supposed to send Ether to a plain ``address``, for example because it might be a smart contract
+that was not built to accept Ether.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 -  ``address`` : 20バイトの値（Ethereumのアドレスのサイズ）を保持します。
 
@@ -571,6 +577,12 @@ byzantium  ``staticcall`` も使えるようになりました。これは基本
 ..     All contracts can be converted to ``address`` type, so it is possible to query the balance of the
 ..     current contract using ``address(this).balance``.
 
+* ``code`` and ``codehash``
+
+You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+``bytes memory``, which might be empty. Use ``.codehash`` get the Keccak-256 hash of that code
+(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+
 .. note::
 
     すべてのコントラクトは ``address`` タイプに変換できるので、 ``address(this).balance`` を使って現在のコントラクトの残高を照会することが可能です。
@@ -740,6 +752,7 @@ Address Literals
 Rational and Integer Literals
 -----------------------------
 
+<<<<<<< HEAD
 .. Integer literals are formed from a sequence of numbers in the range 0-9.
 .. They are interpreted as decimals. For example, ``69`` means sixty nine.
 .. Octal literals do not exist in Solidity and leading zeros are invalid.
@@ -748,19 +761,55 @@ Rational and Integer Literals
 
 .. Decimal fraction literals are formed by a ``.`` with at least one number on
 .. one side.  Examples include ``1.``, ``.1`` and ``1.3``.
+=======
+Integer literals are formed from a sequence of digits in the range 0-9.
+They are interpreted as decimals. For example, ``69`` means sixty nine.
+Octal literals do not exist in Solidity and leading zeros are invalid.
+
+Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
+Examples include ``.1`` and ``1.3`` (but not ``1.``).
+
+Scientific notation in the form of ``2e10`` is also supported, where the
+mantissa can be fractional but the exponent has to be an integer.
+The literal ``MeE`` is equivalent to ``M * 10**E``.
+Examples include ``2e10``, ``-2e10``, ``2e-10``, ``2.5e1``.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 小数点以下のリテラルは、片側に少なくとも1つの数字を持つ ``.`` で形成されます。  例えば、 ``1.`` 、 ``.1`` 、 ``1.3`` などです。
 
+<<<<<<< HEAD
 .. Scientific notation is also supported, where the base can have fractions and the exponent cannot.
 .. Examples include ``2e10``, ``-2e10``, ``2e-10``, ``2.5e1``.
+=======
+Number literal expressions retain arbitrary precision until they are converted to a non-literal type (i.e. by
+using them together with anything other than a number literal expression (like boolean literals) or by explicit conversion).
+This means that computations do not overflow and divisions do not truncate
+in number literal expressions.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 科学的記数法にも対応しており、基数には分数を含めることができますが、指数には含めることができません。例としては、 ``2e10`` 、 ``-2e10`` 、 ``2e-10`` 、 ``2.5e1`` などがあります。
 
+<<<<<<< HEAD
 .. Underscores can be used to separate the digits of a numeric literal to aid readability.
 .. For example, decimal ``123_000``, hexadecimal ``0x2eff_abde``, scientific decimal notation ``1_2e345_678`` are all valid.
 .. Underscores are only allowed between two digits and only one consecutive underscore is allowed.
 .. There is no additional semantic meaning added to a number literal containing underscores,
 .. the underscores are ignored.
+=======
+.. warning::
+    While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
+
+    - Ternary operator (``... ? ... : ...``),
+    - Array subscript (``<array>[<index>]``).
+
+    You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256
+    directly, but in fact they are computed within the type ``uint8`` and can overflow.
+
+Any operator that can be applied to integers can also be applied to number literal expressions as
+long as the operands are integers. If any of the two is fractional, bit operations are disallowed
+and exponentiation is disallowed if the exponent is fractional (because that might result in
+a non-rational number).
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 アンダースコアは、読みやすくするために数値リテラルの桁を区切るのに使用できます。例えば、10進法の ``123_000`` 、16進法の ``0x2eff_abde`` 、科学的10進法の ``1_2e345_678`` はすべて有効です。アンダースコアは2つの数字の間にのみ使用でき、連続したアンダースコアは1つしか使用できません。アンダースコアを含む数値リテラルには、追加の意味はなく、アンダースコアは無視されます。
 

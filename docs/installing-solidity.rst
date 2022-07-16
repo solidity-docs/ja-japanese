@@ -9,7 +9,26 @@ Solidityコンパイラのインストール
 バージョニング
 ===============
 
+<<<<<<< HEAD
 Solidityのバージョンは `セマンティック・バージョニング <https://semver.org>`_ に続き、リリースに加えて **nightlyデベロップメント・ビルド** も提供されます。  nightlyビルドは動作を保証するものではなく、最善の努力にもかかわらず、文書化されていない、または壊れた変更が含まれている可能性があります。最新のリリースを使用することをお勧めします。以下のパッケージインストーラーは最新のリリースを使用しています。
+=======
+Solidity versions follow `Semantic Versioning <https://semver.org>`_. In
+addition, patch level releases with major release 0 (i.e. 0.x.y) will not
+contain breaking changes. That means code that compiles with version 0.x.y
+can be expected to compile with 0.x.z where z > y.
+
+In addition to releases, we provide **nightly development builds** with the
+intention of making it easy for developers to try out upcoming features and
+provide early feedback. Note, however, that while the nightly builds are usually
+very stable, they contain bleeding-edge code from the development branch and are
+not guaranteed to be always working. Despite our best efforts, they might
+contain undocumented and/or broken changes that will not become a part of an
+actual release. They are not meant for production use.
+
+When deploying contracts, you should use the latest released version of Solidity. This
+is because breaking changes, as well as new features and bug fixes are introduced regularly.
+We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 Remix
 =====
@@ -91,8 +110,23 @@ nightlyバージョンは、以下のコマンドでインストールできま�
     sudo apt-get update
     sudo apt-get install solc
 
+<<<<<<< HEAD
 また、すべての `supported Linux distros <https://snapcraft.io/docs/core/install>`_ でインストール可能な `snap package <https://snapcraft.io/>`_ もリリースしています。solcの最新ステーブル版をインストールするには
 また、 `対応するLinuxディストロ <https://snapcraft.io/docs/core/install>`_ すべてにインストール可能な `snapパッケージ <https://snapcraft.io/>`_ もリリースしています。最新のステーブル版solcをインストールするには、以下のコマンドを実行します。
+=======
+Furthermore, some Linux distributions provide their own packages. These packages are not directly
+maintained by us, but usually kept up-to-date by the respective package maintainers.
+
+For example, Arch Linux has packages for the latest development version:
+
+.. code-block:: bash
+
+    pacman -S solidity
+
+There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
+It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
+install the latest stable version of solc:
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 .. code-block:: bash
 
@@ -108,6 +142,7 @@ nightlyバージョンは、以下のコマンドでインストールできま�
 
     ``solc`` スナップはstrict confinementを使用します。これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。     詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ をご覧ください。
 
+<<<<<<< HEAD
 Arch Linuxにも、最新の開発バージョンに限定されますが、パッケージがあります。
 
 .. code-block:: bash
@@ -119,6 +154,8 @@ Gentoo Linuxには、Solidityパッケージを含む `Ethereumオーバーレ�
 .. code-block:: bash
 
     emerge dev-lang/solidity
+=======
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 macOSパッケージ
 =================
@@ -441,7 +478,12 @@ Solidityバージョンの文字列は、4つの部分で構成されていま�
 
 - プレリリースのタグ。通常は ``develop.YYYY.MM.DD`` または ``nightly.YYYY.MM.DD`` に設定されています。
 
+<<<<<<< HEAD
 - コミット。フォーマットは　``commit.GITHASH`` です。
+=======
+These parts are combined as required by SemVer, where the Solidity pre-release tag equals to the SemVer pre-release
+and the Solidity commit and platform combined make up the SemVer build metadata.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 - プラットフォーム。任意の数の項目を持ち、プラットフォームとコンパイラに関する詳細を含むます。
 
@@ -449,12 +491,27 @@ Solidityバージョンの文字列は、4つの部分で構成されていま�
 
 これらのパーツはSemverの要求に応じて組み合わせられます。SolidityのプレリリースタグはSemverのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
 
+<<<<<<< HEAD
 リリース例: ``0.4.8+commit.60cc1668.Emscripten.clang``。
+=======
+After a release is made, the patch version level is bumped, because we assume that only
+patch level changes follow. When changes are merged, the version should be bumped according
+to SemVer and the severity of the change. Finally, a release is always made with the version
+of the current nightly build, but without the ``prerelease`` specifier.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 プレリリースの例: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``。
 
+<<<<<<< HEAD
 バージョニングについての重要な情報
 =====================================================
+=======
+1. The 0.4.0 release is made.
+2. The nightly build has a version of 0.4.1 from now on.
+3. Non-breaking changes are introduced --> no change in version.
+4. A breaking change is introduced --> version is bumped to 0.5.0.
+5. The 0.5.0 release is made.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。変更がマージされたときには、semver と変更の重要度に応じてバージョンを上げる必要があります。最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
 

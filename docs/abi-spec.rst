@@ -25,7 +25,7 @@ Basic Design
 この仕様では、インターフェイスが動的であるなど、実行時にしかわからないコントラクトは扱わない。
 
 .. _abi_function_selector:
-.. index:: selector
+.. index:: ! selector; of a function
 
 Function Selector
 =================
@@ -543,8 +543,13 @@ Examples
 Use of Dynamic Types
 ====================
 
+<<<<<<< HEAD
 .. A call to a function with the signature ``f(uint,uint32[],bytes10,bytes)`` with values
 .. ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` is encoded in the following way:
+=======
+A call to a function with the signature ``f(uint256,uint32[],bytes10,bytes)`` with values
+``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` is encoded in the following way:
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 ``f(uint,uint32[],bytes10,bytes)``  with values  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")``  というシグネチャを持つ関数の呼び出しは、以下のようにエンコードされます。
 
@@ -617,8 +622,13 @@ Use of Dynamic Types
       000000000000000000000000000000000000000000000000000000000000000d
       48656c6c6f2c20776f726c642100000000000000000000000000000000000000
 
+<<<<<<< HEAD
 .. Let us apply the same principle to encode the data for a function with a signature ``g(uint[][],string[])``
 .. with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
+=======
+Let us apply the same principle to encode the data for a function with a signature ``g(uint256[][],string[])``
+with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 同じ原理で、シグネチャ ``g(uint[][],string[])`` を持つ関数のデータを値 ``([[1, 2], [3]], ["one", "two", "three"])`` でエンコードしてみましょう。ただし、エンコードの最も基本的な部分から始めます。
 
@@ -730,8 +740,13 @@ Use of Dynamic Types
 
 オフセット ``d`` は、5行目（160バイト）の文字列 ``"two"`` の内容の始まりを指しているので、 ``d = 0x00000000000000000000000000000000000000000000000000000000000000a0`` となります。
 
+<<<<<<< HEAD
 .. Offset ``e`` points to the start of the content of the string ``"three"`` which is line 7 (224 bytes);
 .. thus ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0``.
+=======
+Note that the encodings of the embedded elements of the root arrays are not dependent on each other
+and have the same encodings for a function with a signature ``g(string[],uint256[][])``.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 オフセット ``e`` は、7行目（224バイト）である文字列 ``"three"`` のコンテンツの開始を指しているので、 ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0`` 。
 
@@ -857,6 +872,7 @@ Events
 長さが最大32バイトのすべての型について、 ``EVENT_INDEXED_ARGS`` 配列には、通常のABIエンコーディングと同様に、32バイトにパディングまたは符号拡張された値が直接格納されます。しかし、すべての "複雑な "型や動的な長さの型（すべての配列、 ``string`` 、 ``bytes`` 、構造体を含む）では、 ``EVENT_INDEXED_ARGS`` には直接エンコードされた値ではなく、特別なインプレースエンコードされた値の*Keccakハッシュ*（ :ref:`indexed_event_encoding` 参照）が格納されます。これにより、アプリケーションは（エンコードされた値のハッシュをトピックとして設定することで）動的長型の値を効率的に問い合わせることができますが、アプリケーションは問い合わせていないインデックス化された値をデコードできなくなります。動的長型の場合、アプリケーション開発者は、（引数がインデックス化されている場合の）所定の値の高速検索と（引数がインデックス化されていないことが必要な）任意の値の可読性との間でトレードオフの関係に直面します。開発者はこのトレードオフを克服し、効率的な検索と任意の可読性の両方を達成するために、同じ値を保持することを意図した2つの引数（1つはインデックス化され、1つはインデックス化されない）を持つイベントを定義できます。
 
 .. _abi_errors:
+.. index:: error, selector; of an error
 
 Errors
 ======
