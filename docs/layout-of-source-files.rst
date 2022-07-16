@@ -2,6 +2,7 @@
 Layout of a Solidity Source File
 ********************************
 
+<<<<<<< HEAD
 .. Source files can contain an arbitrary number of
 .. :ref:`contract definitions<contract_structure>`, import_ directives,
 .. :ref:`pragma directives<pragma>` and
@@ -9,12 +10,20 @@ Layout of a Solidity Source File
 .. and :ref:`constant variable<constants>` definitions.
 
 ソースファイルには、任意の数の :ref:`contract definitions<contract_structure>` 、import_ディレクティブ、 :ref:`pragma directives<pragma>` と :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
+=======
+Source files can contain an arbitrary number of
+:ref:`contract definitions<contract_structure>`, import_ ,
+:ref:`pragma<pragma>` and :ref:`using for<using-for>` directives and
+:ref:`struct<structs>`, :ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>`
+and :ref:`constant variable<constants>` definitions.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 .. index:: ! license, spdx
 
 SPDX License Identifier
 =======================
 
+<<<<<<< HEAD
 .. Trust in smart contract can be better established if their source code
 .. is available. Since making source code available always touches on legal problems
 .. with regards to copyright, the Solidity compiler encourages the use
@@ -24,6 +33,13 @@ SPDX License Identifier
 スマートコントラクトの信頼性は、そのソースコードが利用可能であれば、より確立されます。ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械可読な `SPDX license identifiers <https://spdx.org>`_ の使用を推奨しています。すべてのソースファイルは、そのライセンスを示すコメントで始まるべきです。
 
 .. ``// SPDX-License-Identifier: MIT``
+=======
+Trust in smart contracts can be better established if their source code
+is available. Since making source code available always touches on legal problems
+with regards to copyright, the Solidity compiler encourages the use
+of machine-readable `SPDX license identifiers <https://spdx.org>`_.
+Every source file should start with a comment indicating its license:
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 ``// SPDX-License-Identifier: MIT``
 
@@ -31,7 +47,15 @@ SPDX License Identifier
 .. `list allowed by SPDX <https://spdx.org/licenses/>`_, but
 .. it does include the supplied string in the :ref:`bytecode metadata <metadata>`.
 
+<<<<<<< HEAD
 コンパイラはライセンスが `list allowed by SPDX <https://spdx.org/licenses/>`_ の一部であることを検証しませんが、供給された文字列は :ref:`bytecode metadata <metadata>` に含まれます。
+=======
+If you do not want to specify a license or if the source code is
+not open-source, please use the special value ``UNLICENSED``.
+Note that ``UNLICENSED`` (no usage allowed, not present in SPDX license list)
+is different from ``UNLICENSE`` (grants all rights to everyone).
+Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 .. If you do not want to specify a license or if the source code is
 .. not open-source, please use the special value ``UNLICENSED``.

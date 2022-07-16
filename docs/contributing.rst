@@ -57,6 +57,7 @@ Team Calls
 
 議論したい課題やプルリクエストがある場合や、チームやコントリビューターが取り組んでいることを聞きたい場合は、公開のチームコールに参加できます。
 
+<<<<<<< HEAD
 .. - Mondays at 3pm CET/CEST.
 
 - 毎週月曜日午後3時（CET/CEST）。
@@ -68,6 +69,9 @@ Team Calls
 .. Both calls take place on `Jitsi <https://meet.komputing.org/solidity>`_.
 
 どちらのコールも `Jitsi <https://meet.komputing.org/solidity>`_ で行われます。
+=======
+Both calls take place on `Jitsi <https://meet.ethereum.org/solidity>`_.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 How to Report Issues
 ====================
@@ -163,6 +167,13 @@ Prerequisites
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
 
 macOSでは、いくつかのテストスクリプトで、GNU coreutilsがインストールされていることが求められます。これはHomebrewを使って最も簡単に実現できます。 ``brew install coreutils`` .
+
+On Windows systems make sure that you have a privilege to create symlinks,
+otherwise several tests may fail.
+Administrators should have that privilege, but you may also
+`grant it to other users <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
+or
+`enable Developer Mode <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
 
 Running the Tests
 -----------------
@@ -368,7 +379,11 @@ out the separator and the comments that follow it.
 
 テストを失敗させるためのいくつかのオプションがあります。
 
+<<<<<<< HEAD
 .. - ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
+=======
+All of these options apply to the current contract, except ``quit`` which stops the entire testing process.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 - ``edit`` です。 ``isoltest`` は、コントラクト内容を調整できるように、エディタでコントラクト内容を開こうとします。 ``isoltest --editor /path/to/editor`` のようにコマンドラインで指定されたエディタを使用するか、 ``EDITOR`` のように環境変数で指定されたエディタを使用するか、 ``/usr/bin/editor`` だけを使用するか（順不同）。
 
@@ -709,10 +724,15 @@ CIプロセスでは、PRを作成する際に ``./test/cmdlineTests.sh`` スク
 Running Documentation Tests
 ---------------------------
 
+<<<<<<< HEAD
 .. Make sure your contributions pass our documentation tests by running ``./scripts/docs.sh`` that installs dependencies
 .. needed for documentation and checks for any problems such as broken links or syntax issues.
 
 ドキュメントに必要な依存関係をインストールし、リンク切れや構文の問題などの問題をチェックする ``./scripts/docs.sh`` を実行することで、あなたの貢献が私たちのドキュメント・テストに合格することを確認してください。
+=======
+Make sure your contributions pass our documentation tests by running ``./docs/docs.sh`` that installs dependencies
+needed for documentation and checks for any problems such as broken links or syntax issues.
+>>>>>>> 800088e38b5835ebdc71e9ba5299a70a5accd7c2
 
 Solidity Language Design
 ========================
