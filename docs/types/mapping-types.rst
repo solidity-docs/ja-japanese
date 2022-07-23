@@ -1,7 +1,7 @@
 .. index:: !mapping
 .. _mapping-types:
 
-Mapping Types
+マッピング型
 =============
 
 .. Mapping types use the syntax ``mapping(_KeyType => _ValueType)`` and variables
@@ -11,7 +11,10 @@ Mapping Types
 .. or complex types, such as mappings, structs or array types are not allowed.
 .. ``_ValueType`` can be any type, including mappings, arrays and structs.
 
-マッピングタイプは ``mapping(_KeyType => _ValueType)`` の構文を使用し、マッピングタイプの変数は ``mapping(_KeyType => _ValueType) _VariableName`` の構文を使用して宣言されます。 ``_KeyType`` には、任意の組み込み値型、 ``bytes`` 、 ``string`` 、または任意のコントラクト型やエニューム型を使用できます。マッピング、構造体、配列型など、その他のユーザー定義の型や複雑な型は使用できません。 ``_ValueType``  は、マッピング、配列、構造体など、どのような型でも構いません。
+マッピング型は ``mapping(_KeyType => _ValueType)`` の構文を使用し、マッピング型の変数は ``mapping(_KeyType => _ValueType) _VariableName`` の構文を使用して宣言されます。
+``_KeyType`` には、任意の組み込み値型、 ``bytes`` 、 ``string`` 、または任意のコントラクト型や列挙型を使用できます。
+マッピング、構造体、配列型など、その他のユーザー定義の型や複雑な型は使用できません。
+``_ValueType`` は、マッピング、配列、構造体など、どのような型でも構いません。
 
 .. You can think of mappings as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_, which are virtually initialised
 .. such that every possible key exists and is mapped to a value whose
@@ -19,7 +22,8 @@ Mapping Types
 .. The similarity ends there, the key data is not stored in a
 .. mapping, only its ``keccak256`` hash is used to look up the value.
 
-マッピングは `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ と考えることができ、ありとあらゆるキーが存在するように仮想的に初期化され、バイト表現がすべてゼロである値（タイプの :ref:`default value <default-value>` ）にマッピングされています。キーデータはマッピングには保存されず、 ``keccak256`` ハッシュのみが値の検索に使用されるという点で似ています。
+マッピングは `ハッシュテーブル <https://en.wikipedia.org/wiki/Hash_table>`_ と考えることができ、ありとあらゆるキーが存在するように仮想的に初期化され、バイト表現がすべてゼロである値（型の :ref:`デフォルト値<default-value>` ）にマッピングされています。
+キーデータはマッピングには保存されず、 ``keccak256`` ハッシュのみが値の検索に使用されるという点で似ています。
 
 .. Because of this, mappings do not have a length or a concept of a key or
 .. value being set, and therefore cannot be erased without extra information
@@ -34,7 +38,9 @@ Mapping Types
 .. of contract functions that are publicly visible.
 .. These restrictions are also true for arrays and structs that contain mappings.
 
-マッピングのデータ位置は ``storage`` のみであるため、ステート変数、関数内のストレージ参照型、ライブラリ関数のパラメータとして使用できます。これらは、一般に公開されているコントラクト関数のパラメータやリターンパラメータとしては使用できません。これらの制限は、マッピングを含む配列や構造体にも当てはまります。
+マッピングのデータロケーションは ``storage`` のみであるため、ステート変数、関数内のストレージ参照型、ライブラリ関数のパラメータとして使用できます。
+これらは、一般に公開されているコントラクト関数のパラメータやリターンパラメータとしては使用できません。
+これらの制限は、マッピングを含む配列や構造体にも当てはまります。
 
 .. You can mark state variables of mapping type as ``public`` and Solidity creates a
 .. :ref:`getter <visibility-and-getters>` for you. The ``_KeyType`` becomes a parameter for the getter.
@@ -42,7 +48,9 @@ Mapping Types
 .. If ``_ValueType`` is an array or a mapping, the getter has one parameter for
 .. each ``_KeyType``, recursively.
 
-マッピングタイプのステート変数を ``public`` としてマークすると、Solidityが :ref:`getter <visibility-and-getters>` を作成してくれます。 ``_KeyType`` はゲッターのパラメータになります。 ``_ValueType`` が値型または構造体の場合、ゲッターは ``_ValueType`` を返します。 ``_ValueType`` が配列やマッピングの場合は、ゲッターは ``_KeyType`` ごとに1つのパラメータを再帰的に持ちます。
+マッピング型のステート変数を ``public`` としてマークすると、Solidityが :ref:`ゲッター <visibility-and-getters>` を作成してくれます。 ``_KeyType`` はゲッターのパラメータになります。
+``_ValueType`` が値型または構造体の場合、ゲッターは ``_ValueType`` を返します。
+``_ValueType`` が配列やマッピングの場合は、ゲッターは ``_KeyType`` ごとに1つのパラメータを再帰的に持ちます。
 
 .. In the example below, the ``MappingExample`` contract defines a public ``balances``
 .. mapping, with the key type an ``address``, and a value type a ``uint``, mapping
@@ -50,7 +58,8 @@ Mapping Types
 .. returns a value that matches the type, which you can see in the ``MappingUser``
 .. contract that returns the value at the specified address.
 
-以下の例では、 ``MappingExample`` コントラクトがパブリック ``balances`` マッピングを定義しており、キータイプは ``address`` 、値タイプは ``uint`` で、Ethereumアドレスを符号なし整数値にマッピングしています。 ``uint`` は値のタイプなので、ゲッターはタイプにマッチした値を返しますが、 ``MappingUser`` コントラクトでは指定されたアドレスの値を返しているのがわかります。
+以下の例では、 ``MappingExample`` コントラクトがパブリック ``balances`` マッピングを定義しており、キー型は ``address`` 、値型は ``uint`` で、Ethereumアドレスを符号なし整数値にマッピングしています。
+``uint`` は値型なので、ゲッターは型にマッチした値を返しますが、 ``MappingUser`` コントラクトでは指定されたアドレスの値を返しているのがわかります。
 
 .. code-block:: solidity
 
@@ -78,7 +87,9 @@ Mapping Types
 .. ``_allowances`` is an example of a mapping type inside another mapping type.
 .. The example below uses ``_allowances`` to record the amount someone else is allowed to withdraw from your account.
 
-下の例は、 `ERC20 token <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_ を簡略化したものです。 ``_allowances`` は、別のマッピングタイプの中にマッピングタイプがある例です。以下の例では、 ``_allowances`` を使って、他の人があなたのアカウントから引き出すことができる金額を記録しています。
+下の例は、 `ERC20トークン <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_ を簡略化したものです。
+``_allowances`` は、別のマッピング型の中にマッピング型がある例です。
+以下の例では、 ``_allowances`` を使って、他の人があなたのアカウントから引き出すことができる金額を記録しています。
 
 .. code-block:: solidity
 
@@ -125,8 +136,8 @@ Mapping Types
 .. index:: !iterable mappings
 .. _iterable-mappings:
 
-Iterable Mappings
------------------
+イテレート可能なマッピング
+------------------------------
 
 .. You cannot iterate over mappings, i.e. you cannot enumerate their keys.
 .. It is possible, though, to implement a data structure on
@@ -134,7 +145,9 @@ Iterable Mappings
 .. ``IterableMapping`` library that the ``User`` contract then adds data too, and
 .. the ``sum`` function iterates over to sum all the values.
 
-マッピングを反復できません。つまり、キーを列挙することもできません。しかし、マッピングの上にデータ構造を実装し、その上で反復処理を行うことは可能です。例えば、以下のコードでは、 ``IterableMapping`` ライブラリを実装し、 ``User`` コントラクトがデータを追加し、 ``sum`` 関数がすべての値を合計するために反復処理を行います。
+マッピングはイテレートできません。つまり、キーを列挙することもできません。
+しかし、マッピングの上にデータ構造を実装し、その上で反復処理を行うことは可能です。
+例えば、以下のコードでは、 ``IterableMapping`` ライブラリを実装し、 ``User`` コントラクトがデータを追加し、 ``sum`` 関数がすべての値を合計するために反復処理を行います。
 
 .. code-block:: solidity
     :force:
@@ -201,23 +214,22 @@ Iterable Mappings
         }
     }
 
-    // How to use it
+    // 使用方法
     contract User {
-        // Just a struct holding our data.
+        // データを保持する構造体
         itmap data;
-        // Apply library functions to the data type.
+        // データ型にライブラリ関数を適用する。
         using IterableMapping for itmap;
 
-        // Insert something
+        // 何かを挿入する
         function insert(uint k, uint v) public returns (uint size) {
-            // This calls IterableMapping.insert(data, k, v)
+            // これは IterableMapping.insert(data, k, v) を呼び出します。
             data.insert(k, v);
-            // We can still access members of the struct,
-            // but we should take care not to mess with them.
+            // 構造体のメンバーにアクセスすることは可能ですが、構造体をいじらないように注意する必要があります。
             return data.size;
         }
 
-        // Computes the sum of all stored data.
+        // 保存されているすべてのデータの合計を計算する。
         function sum() public view returns (uint s) {
             for (
                 uint i = data.iterate_start();

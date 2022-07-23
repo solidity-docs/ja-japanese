@@ -2,10 +2,10 @@
 
 .. _types-conversion-elementary-types:
 
-Conversions between Elementary Types
+初等型間の変換
 ====================================
 
-Implicit Conversions
+暗黙的な変換
 --------------------
 
 .. An implicit type conversion is automatically applied by the compiler in some cases
@@ -13,7 +13,8 @@ Implicit Conversions
 .. In general, an implicit conversion between value-types is possible if it makes
 .. sense semantically and no information is lost.
 
-暗黙の型変換は、代入時、関数に引数を渡すとき、および演算子を適用するときに、コンパイラによって自動的に適用される場合があります。一般に、意味的に意味があり、情報が失われないのであれば、値型間の暗黙の変換は可能です。
+暗黙の型変換は、代入時、関数に引数を渡すとき、および演算子を適用するときに、コンパイラによって自動的に適用される場合があります。
+一般に、セマンティック的に正しく、情報が失われないのであれば、値型間の暗黙の変換は可能です。
 
 .. For example, ``uint8`` is convertible to
 .. ``uint16`` and ``int128`` to ``int256``, but ``int8`` is not convertible to ``uint256``,
@@ -25,7 +26,8 @@ Implicit Conversions
 .. convert one of the operands to the type of the other (the same is true for assignments).
 .. This means that operations are always performed in the type of one of the operands.
 
-演算子が異なる型に適用される場合、コンパイラはオペランドの一方を他方の型に暗黙のうちに変換しようとします（代入の場合も同様）。つまり、演算は常に一方のオペランドの型で実行されることになります。
+演算子が異なる型に適用される場合、コンパイラはオペランドの一方を他方の型に暗黙のうちに変換しようとします（代入の場合も同様）。
+つまり、演算は常に一方のオペランドの型で実行されることになります。
 
 .. For more details about which implicit conversions are possible,
 .. please consult the sections about the types themselves.
@@ -40,7 +42,9 @@ Implicit Conversions
 .. Because it is assigned to a variable of type ``uint32`` another implicit conversion
 .. is performed after the addition.
 
-下の例では、加算のオペランドである ``y`` と ``z`` は同じ型ではありませんが、 ``uint8`` は暗黙のうちに ``uint16`` に変換でき、その逆はできません。そのため、 ``y`` は ``z`` の型に変換されてから、 ``uint16`` の型で加算が行われます。その結果、式 ``y + z`` の型は ``uint16`` となります。 ``uint32`` 型の変数に代入されているため、加算の後に別の暗黙の変換が行われます。
+下の例では、加算のオペランドである ``y`` と ``z`` は同じ型ではありませんが、 ``uint8`` は暗黙のうちに ``uint16`` に変換でき、その逆はできません。
+そのため、 ``y`` は ``z`` の型に変換されてから、 ``uint16`` の型で加算が行われます。
+その結果、式 ``y + z`` の型は ``uint16`` となります。 ``uint32`` 型の変数に代入されているため、加算の後に別の暗黙の変換が行われます。
 
 .. code-block:: solidity
 
@@ -48,7 +52,7 @@ Implicit Conversions
     uint16 z;
     uint32 x = y + z;
 
-Explicit Conversions
+明示的な変換
 --------------------
 
 .. If the compiler does not allow implicit conversion but you are confident a conversion will work,
@@ -57,7 +61,8 @@ Explicit Conversions
 .. features of the compiler, so be sure to test that the
 .. result is what you want and expect!
 
-コンパイラが暗黙的な変換を許可していないが、変換がうまくいくと確信している場合、明示的な型変換が可能な場合があります。この場合、予期しない動作をしたり、コンパイラのセキュリティ機能を迂回したりすることがありますので、結果が期待通りのものであることを必ずテストしてください。
+コンパイラが暗黙的な変換を許可していないが、変換がうまくいくと確信している場合、明示的な型変換が可能な場合があります。
+この場合、予期しない動作をしたり、コンパイラのセキュリティ機能を迂回したりすることがありますので、結果が期待通りのものであることを必ずテストしてください。
 
 .. Take the following example that converts a negative ``int`` to a ``uint``:
 
@@ -81,40 +86,43 @@ Explicit Conversions
 .. code-block:: solidity
 
     uint32 a = 0x12345678;
-    uint16 b = uint16(a); // b will be 0x5678 now
+    uint16 b = uint16(a); // b は 0x5678 になる
 
 .. If an integer is explicitly converted to a larger type, it is padded on the left (i.e., at the higher order end).
 .. The result of the conversion will compare equal to the original integer:
 
-整数がより大きな型に明示的に変換された場合、その整数は左に（すなわち高次の端に）パディングされます。変換の結果は、元の整数と同じになります。
+整数がより大きな型に明示的に変換された場合、その整数は左に（すなわち高次の端に）パディングされます。
+変換の結果は、元の整数と同じになります。
 
 .. code-block:: solidity
 
     uint16 a = 0x1234;
-    uint32 b = uint32(a); // b will be 0x00001234 now
+    uint32 b = uint32(a); // b は 0x00001234 になる
     assert(a == b);
 
 .. Fixed-size bytes types behave differently during conversions. They can be thought of as
 .. sequences of individual bytes and converting to a smaller type will cut off the
 .. sequence:
 
-固定サイズのバイトタイプは、変換時の挙動が異なります。これらは個々のバイトのシーケンスと考えることができ、より小さなタイプに変換するとシーケンスが切断されます。
+固定サイズのバイト、変換時の挙動が異なります。
+これらは個々のバイトのシーケンスと考えることができ、より小さな型に変換するとシーケンスが切断されます。
 
 .. code-block:: solidity
 
     bytes2 a = 0x1234;
-    bytes1 b = bytes1(a); // b will be 0x12
+    bytes1 b = bytes1(a); // b は 0x12 になる
 
 .. If a fixed-size bytes type is explicitly converted to a larger type, it is padded on
 .. the right. Accessing the byte at a fixed index will result in the same value before and
 .. after the conversion (if the index is still in range):
 
-固定サイズのバイト型が明示的に大きな型に変換された場合は、右にパディングされます。固定インデックスでバイトにアクセスすると、変換前と変換後で同じ値になります（インデックスがまだ範囲内にある場合）。
+固定サイズのバイト型が明示的に大きな型に変換された場合は、右にパディングされます。
+固定インデックスでバイトにアクセスすると、変換前と変換後で同じ値になります（インデックスがまだ範囲内にある場合）。
 
 .. code-block:: solidity
 
     bytes2 a = 0x1234;
-    bytes4 b = bytes4(a); // b will be 0x12340000
+    bytes4 b = bytes4(a); // b は 0x12340000 になる
     assert(a[0] == b[0]);
     assert(a[1] == b[1]);
 
@@ -124,21 +132,24 @@ Explicit Conversions
 .. different size, you have to use intermediate conversions that make the desired truncation and padding
 .. rules explicit:
 
-整数と固定サイズのバイト配列は、切り捨てやパディングの際に異なる動作をするので、 整数と固定サイズのバイト配列の間の明示的な変換は、両者が同じサイズである場合に のみ許されます。異なるサイズの整数と固定サイズのバイト配列の間で変換したい場合は、必要な切り捨てとパディングの規則を明示する中間変換を使用しなければなりません。
+整数と固定サイズのバイト配列は、切り捨てやパディングの際に異なる動作をするので、 整数と固定サイズのバイト配列の間の明示的な変換は、両者が同じサイズである場合にのみ許されます。
+異なるサイズの整数と固定サイズのバイト配列の間で変換したい場合は、必要な切り捨てとパディングの規則を明示する中間変換を使用しなければなりません。
 
 .. code-block:: solidity
 
     bytes2 a = 0x1234;
-    uint32 b = uint16(a); // b will be 0x00001234
-    uint32 c = uint32(bytes4(a)); // c will be 0x12340000
-    uint8 d = uint8(uint16(a)); // d will be 0x34
-    uint8 e = uint8(bytes1(a)); // e will be 0x12
+    uint32 b = uint16(a); // b は 0x00001234 になる
+    uint32 c = uint32(bytes4(a)); // c は 0x12340000 になる
+    uint8 d = uint8(uint16(a)); // d は 0x34 になる
+    uint8 e = uint8(bytes1(a)); // e は 0x12 になる
 
 .. ``bytes`` arrays and ``bytes`` calldata slices can be converted explicitly to fixed bytes types (``bytes1``/.../``bytes32``).
 .. In case the array is longer than the target fixed bytes type, truncation at the end will happen.
 .. If the array is shorter than the target type, it will be padded with zeros at the end.
 
-``bytes`` 配列と ``bytes``  calldata sliceは、明示的に固定バイト型（ ``bytes1`` /.../ ``bytes32`` ）に変換できます。配列が対象となる固定バイト型よりも長い場合は、末尾の切り捨てが行われます。配列が対象となる固定バイト型よりも短い場合は、末尾にゼロが詰められます。
+``bytes`` 配列と ``bytes``  calldata sliceは、明示的に固定バイト型（ ``bytes1`` / ... / ``bytes32`` ）に変換できます。
+配列が対象となる固定バイト型よりも長い場合は、末尾の切り捨てが行われます。
+配列が対象となる固定バイト型よりも短い場合は、末尾にゼロが詰められます。
 
 .. code-block:: solidity
 
@@ -149,20 +160,20 @@ Explicit Conversions
         bytes s = "abcdefgh";
         function f(bytes calldata c, bytes memory m) public view returns (bytes16, bytes3) {
             require(c.length == 16, "");
-            bytes16 b = bytes16(m);  // if length of m is greater than 16, truncation will happen
-            b = bytes16(s);  // padded on the right, so result is "abcdefgh\0\0\0\0\0\0\0\0"
-            bytes3 b1 = bytes3(s); // truncated, b1 equals to "abc"
-            b = bytes16(c[:8]);  // also padded with zeros
+            bytes16 b = bytes16(m);  // m の長さが 16 より大きい場合、切り捨てが発生します。
+            b = bytes16(s);  // 右詰めしたもので、結果は "abcdefgh\0\0\0\0\0\0\0\0"
+            bytes3 b1 = bytes3(s); //切り捨て、b1は"abc"に等しい。
+            b = bytes16(c[:8]);  // ゼロ埋めされる
             return (b, b1);
         }
     }
 
 .. _types-conversion-literals:
 
-Conversions between Literals and Elementary Types
+リテラルと初等型間の変換
 =================================================
 
-Integer Types
+整数型
 -------------
 
 .. Decimal and hexadecimal number literals can be implicitly converted to any integer type
@@ -172,9 +183,9 @@ Integer Types
 
 .. code-block:: solidity
 
-    uint8 a = 12; // fine
-    uint32 b = 1234; // fine
-    uint16 c = 0x123456; // fails, since it would have to truncate to 0x3456
+    uint8 a = 12; // OK
+    uint32 b = 1234; // OK
+    uint16 c = 0x123456; // 失敗。0x3456 に切り捨てなければならないため。
 
 .. .. note::
 
@@ -184,9 +195,10 @@ Integer Types
 
 .. note::
 
-    バージョン0.8.0以前では、10進数や16進数のリテラルを明示的に整数型に変換できました。0.8.0からは、このような明示的な変換は暗黙的な変換と同様に厳格になりました。
+    バージョン0.8.0以前では、10進数や16進数のリテラルを明示的に整数型に変換できました。
+    0.8.0からは、このような明示的な変換は暗黙的な変換と同様に厳格になりました。
 
-Fixed-Size Byte Arrays
+固定サイズバイト列
 ----------------------
 
 .. Decimal number literals cannot be implicitly converted to fixed-size byte arrays. Hexadecimal
@@ -194,17 +206,19 @@ Fixed-Size Byte Arrays
 .. type. As an exception both decimal and hexadecimal literals which have a value of zero can be
 .. converted to any fixed-size bytes type:
 
-10進数リテラルを固定サイズのバイト配列に暗黙的に変換できません。16進数リテラルは変換できますが、それは16進数の桁数がバイト型のサイズにぴったり合う場合に限られます。例外として、0の値を持つ10進数リテラルと16進数リテラルは、任意の固定サイズのバイト型に変換できます。
+10進数リテラルを固定サイズのバイト列に暗黙的に変換できません。
+16進数リテラルは変換できますが、それは16進数の桁数がバイト型のサイズにぴったり合う場合に限られます。
+例外として、0の値を持つ10進数リテラルと16進数リテラルは、任意の固定サイズのバイト型に変換できます。
 
 .. code-block:: solidity
 
-    bytes2 a = 54321; // not allowed
-    bytes2 b = 0x12; // not allowed
-    bytes2 c = 0x123; // not allowed
-    bytes2 d = 0x1234; // fine
-    bytes2 e = 0x0012; // fine
-    bytes4 f = 0; // fine
-    bytes4 g = 0x0; // fine
+    bytes2 a = 54321; // NG
+    bytes2 b = 0x12; // NG
+    bytes2 c = 0x123; // NG
+    bytes2 d = 0x1234; // OK
+    bytes2 e = 0x0012; // OK
+    bytes4 f = 0; // OK
+    bytes4 g = 0x0; // OK
 
 .. String literals and hex string literals can be implicitly converted to fixed-size byte arrays,
 .. if their number of characters matches the size of the bytes type:
@@ -213,20 +227,21 @@ Fixed-Size Byte Arrays
 
 .. code-block:: solidity
 
-    bytes2 a = hex"1234"; // fine
-    bytes2 b = "xy"; // fine
-    bytes2 c = hex"12"; // not allowed
-    bytes2 d = hex"123"; // not allowed
-    bytes2 e = "x"; // not allowed
-    bytes2 f = "xyz"; // not allowed
+    bytes2 a = hex"1234"; // OK
+    bytes2 b = "xy"; // OK
+    bytes2 c = hex"12"; // NG
+    bytes2 d = hex"123"; // NG
+    bytes2 e = "x"; // NG
+    bytes2 f = "xyz"; // NG
 
-Addresses
----------
+アドレス
+------------
 
 .. As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
 .. test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
 
-:ref:`address_literals` で説明したように、チェックサムテストに合格した正しいサイズの16進数リテラルは ``address`` 型となります。他のリテラルは暗黙的に ``address`` 型に変換できません。
+:ref:`address_literals` で説明したように、チェックサムテストに合格した正しいサイズの16進数リテラルは ``address`` 型となります。
+他のリテラルは暗黙的に ``address`` 型に変換できません。
 
 .. Explicit conversions from ``bytes20`` or any integer type to ``address`` result in ``address payable``.
 
