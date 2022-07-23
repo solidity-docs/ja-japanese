@@ -77,8 +77,6 @@ Etherの単位
 
 -  ``blockhash(uint blockNumber) returns (bytes32)``: ``blocknumber`` が直近256個のブロックの一つである場合は、与えられたブロックのハッシュ、そうでない場合はゼロを返す
 
-.. - ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
-
 -  ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
 
 -  ``block.chainid`` (``uint``): カレントブロックのチェーンID
