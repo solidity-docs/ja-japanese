@@ -12,11 +12,6 @@ Solidityにはいくつかの基本的な型があり、それらを組み合わ
 
 また、演算子を含む式では、型同士が相互に作用できます。様々な演算子のクイックリファレンスについては、 :ref:`order` を参照してください。
 
-.. The concept of "undefined" or "null" values does not exist in Solidity, but newly
-.. declared variables always have a :ref:`default value<default-value>` dependent
-.. on its type. To handle any unexpected values, you should use the :ref:`revert function<assert-and-require>` to revert the whole transaction, or return a
-.. tuple with a second ``bool`` value denoting success.
-
 Solidityには "undefined"や"null"の値の概念はありませんが、新しく宣言された変数は常にその型に依存した :ref:`デフォルト値<default-value>` を持ちます。
 予期せぬ値を処理するには、 :ref:`リバート<assert-and-require>` を使ってトランザクション全体を戻すか、成功を示す ``bool`` 値を2番目に持つタプルを返す必要があります。
 

@@ -14,10 +14,15 @@
 ``bool``: 可能な値は定数 ``true`` と ``false`` です。
 
 演算子:
+
 * ``!`` （論理的否定）
+
 * ``&&`` （論理積、"and"）
+
 * ``||`` （論理和、"or"）
+
 * ``==`` （等号）
+
 * ``!=`` （不等号）
 
 演算子 ``||`` と ``&&`` は、共通の短絡ルールを適用します。
@@ -34,9 +39,13 @@
 ``uint`` と ``int`` は、それぞれ ``uint256`` と ``int256`` のエイリアス。
 
 演算子:
+
 * 比較: ``<=``, ``<``,  ``==``,  ``!=``,  ``>=``, ``>`` ( ``bool`` に評価)
+
 * ビット演算子: ``&``, ``|``, ``^`` (ビットごとの排他的論理和), ``~`` (ビットごとの否定)
+
 * シフト演算子: ``<<`` (左シフト), ``>>`` (右シフト)
+
 * 算術演算子: ``+``, ``-``, 単項 ``-`` (符号付き整数の場合のみ), ``*``, ``/``, ``%`` (モジュロ), ``**`` (指数)
 
 整数型の ``X`` の場合、 ``type(X).min`` と ``type(X).max`` を使って、その型で表現できる最小値と最大値にアクセスできます。
@@ -67,7 +76,9 @@
 右のオペランドは符号なしの型でなければならず、符号ありの型でシフトしようとするとコンパイルエラーになります。
 
 シフトは、以下の方法で2の累乗を使って"シミュレート"できます。なお、左オペランドの型への切り捨ては常に最後に行われますが、明示的には言及されていません。
+
 -  ``x << y`` は数学的表現で ``x * 2**y`` に相当します。
+
 -  ``x >> y`` は、数学的表現で ``x / 2**y`` を負の無限大に向けて丸めたものに相当します。
 
 .. warning::
@@ -119,9 +130,13 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 モジュロ演算 ``a % n`` では、オペランド ``a`` をオペランド ``n`` で除算した後の余り ``r`` が得られますが、ここでは ``q = int(a / n)`` と ``r = a - (n * q)`` が使われています。
 つまり、モジュロの結果は左のオペランドと同じ符号（またはゼロ）になり、 ``a % n == -(-a % n)`` は負の ``a`` の場合も同様です。
+
 * ``int256(5) % int256(2) == int256(1)``
+
 * ``int256(5) % int256(-2) == int256(1)``
+
 * ``int256(-5) % int256(2) == int256(-1)``
+
 * ``int256(-5) % int256(-2) == int256(-1)``
 
 .. note::
@@ -162,7 +177,9 @@ Solidityでは、除算はゼロに向かって丸められます。
 ``ufixed`` と ``fixed`` は、それぞれ ``ufixed128x18`` と ``fixed128x18`` のエイリアスです。
 
 演算子:
+
 * 比較: ``<=``,  ``<``,  ``==``,  ``!=``,  ``>=``,  ``>`` ( ``bool`` に評価)
+
 * 算術演算子: ``+``,  ``-``, 単項 ``-``,  ``*``,  ``/``,  ``%`` (モジュロ)
 
 .. note::
@@ -177,8 +194,10 @@ Solidityでは、除算はゼロに向かって丸められます。
 アドレス
 -----------
 
-アドレスタイプには2つの種類がありますが、ほとんど同じです。
+アドレス型には2つの種類がありますが、ほとんど同じです。
+
 -  ``address``: 20バイトの値（Ethereumのアドレスのサイズ）を保持します。
+
 -  ``address payable``:  ``address`` と同じですが、メンバの ``transfer`` と ``send`` が追加されます。
 
 この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーン ``address`` はEtherを送ることができないということです。
@@ -199,6 +218,7 @@ Solidityでは、除算はゼロに向かって丸められます。
     また、この区別や変換はできるだけ早い段階で行うようにしてください。
 
 演算子:
+
 * ``<=``, ``<``, ``==``,  ``!=``, ``>=``, ``>``
 
 .. warning::
@@ -317,7 +337,7 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 
 .. note::
 
-    すべてのコントラクトは ``address`` タイプに変換できるので、 ``address(this).balance`` を使って現在のコントラクトの残高を照会することが可能です。
+    すべてのコントラクトは ``address`` 型に変換できるので、 ``address(this).balance`` を使って現在のコントラクトの残高を照会することが可能です。
 
 .. index:: ! contract type, ! type; contract
 
@@ -330,14 +350,14 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 コントラクトを、それらが継承するコントラクトに暗黙的に変換できます。
 コントラクトは、 ``address`` 型との間で明示的に変換できます。
 
-``address payable`` タイプとの間の明示的な変換は、コントラクトタイプにreceiveまたはpayableのフォールバック関数がある場合にのみ可能です。
+``address payable`` 型との間の明示的な変換は、コントラクト型にreceiveまたはpayableのフォールバック関数がある場合にのみ可能です。
 変換は ``address(x)`` を使用して行われます。
-コントラクトタイプにreceiveまたはpayment fallback関数がない場合、 ``address payable`` への変換は ``payable(address(x))`` を使用して行うことができます。
+コントラクト型にreceiveまたはpayment fallback関数がない場合、 ``address payable`` への変換は ``payable(address(x))`` を使用して行うことができます。
 詳細は、:ref:`アドレス型<address>` の項を参照してください。
 
 .. note::
 
-    バージョン0.5.0以前は、コントラクトはアドレスタイプから直接派生し、 ``address`` と ``address payable`` の区別はありませんでした。
+    バージョン0.5.0以前は、コントラクトはアドレス型から直接派生し、 ``address`` と ``address payable`` の区別はありませんでした。
 
 コントラクト型（ ``MyContract c`` ）のローカル変数を宣言すると、そのコントラクトで関数を呼び出すことができます。
 ただし、同じコントラクト型のどこかから代入するように注意してください。
@@ -345,7 +365,7 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 また、コントラクトをインスタンス化することもできます（新規に作成することを意味します）。
 詳細は :ref:`'Contracts via new'<creating-contracts>` の項を参照してください。
 
-コントラクトのデータ表現は ``address`` 型と同じで、このタイプは :ref:`ABI<ABI>` でも使用されています。
+コントラクトのデータ表現は ``address`` 型と同じで、この型は :ref:`ABI<ABI>` でも使用されています。
 
 コントラクトは、いかなる演算子もサポートしません。
 
@@ -361,15 +381,20 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 ``bytes1`` ,  ``bytes2`` ,  ``bytes3`` , ...,  ``bytes32`` の値は、1から最大32までのバイト列を保持します。
 
 演算子:
+
 * 比較: ``<=``,  ``<``,  ``==``,  ``!=``,  ``>=``,  ``>``  ( ``bool`` に評価)
+
 * ビット演算子: ``&``, ``|``, ``^`` （ビットごとの排他的論理和）, ``~`` （ビットごとの否定）
+
 * シフト演算子: ``<<`` (左シフト), ``>>`` (右シフト)
+
 * インデックスアクセス: ``x`` が型 ``bytesI`` の場合、 ``0 <= k < I`` において ``x[k]``  は ``k`` 番目のバイトを返します（読み取り専用）。
 
 シフト演算子は、右オペランドに符号なし整数型を指定して動作します（ただし、左オペランドの型を返します）が、この型はシフトするビット数を表します。
 符号付きの型でシフトするとコンパイルエラーになります。
 
 メンバー:
+
 * ``.length`` は、バイト列の固定長を出力します（読み取り専用）。
 
 .. note::
@@ -462,79 +487,41 @@ Solidityには8進数のリテラルは存在せず、先頭のゼロは無効�
 文字列リテラルと文字列型
 -------------------------
 
-.. String literals are written with either double or single-quotes (``"foo"`` or ``'bar'``), and they can also be split into multiple consecutive parts (``"foo" "bar"`` is equivalent to ``"foobar"``) which can be helpful when dealing with long strings.  They do not imply trailing zeroes as in C; ``"foo"`` represents three bytes, not four.  As with integer literals, their type can vary, but they are implicitly convertible to ``bytes1``, ..., ``bytes32``, if they fit, to ``bytes`` and to ``string``.
-
 文字列リテラルは、ダブルクオートまたはシングルクオート（ ``"foo"`` または ``'bar'`` ）で記述され、連続した複数の部分に分割することもできます（ ``"foo" "bar"`` は ``"foobar"`` に相当）。これは長い文字列を扱う際に便利です。
-また、C言語のように末尾にゼロを付けることはなく、 ``"foo"`` は4バイトではなく3バイトを表します。
-整数リテラルと同様に、その型は様々ですが、 ``bytes1`` , ...,  ``bytes32`` に暗黙のうちに変換され、それが適合する場合は、 ``bytes`` や ``string`` に変換されます。
+また、C言語のように末尾にゼロを付けることはなく、 ``"foo"`` は4バイトではなく3バイトです。
+整数リテラルと同様に、その型は様々ですが、 ``bytes1``, ..., ``bytes32`` に暗黙のうちに変換され、それが適合する場合は、 ``bytes`` や ``string`` に変換されます。
 
-.. For example, with ``bytes32 samevar = "stringliteral"`` the string literal is interpreted in its raw byte form when assigned to a ``bytes32`` type.
-
-例えば、 ``bytes32 samevar = "stringliteral"`` では文字列リテラルが ``bytes32`` タイプに割り当てられると、生のバイト形式で解釈されます。
-
-.. String literals can only contain printable ASCII characters, which means the characters between and including 0x20 .. 0x7E.
+例えば、 ``bytes32 samevar = "stringliteral"`` では文字列リテラルが ``bytes32`` 型に割り当てられると、生のバイト形式で解釈されます。
 
 文字列リテラルには、印刷可能なASCII文字のみを含めることができます。つまり、0x20から0x7Eまでの文字です。
 
-.. Additionally, string literals also support the following escape characters:
-
 さらに、文字列リテラルは以下のエスケープ文字にも対応しています。
 
-.. - ``\<newline>`` (escapes an actual newline)
-
--  ``\<newline>``  (実際の改行をエスケープ)
-
-.. - ``\\`` (backslash)
+-  ``\<newline>`` (実際の改行のエスケープ)
 
 -  ``\\`` (バックスラッシュ)
 
-.. - ``\'`` (single quote)
-
--  ``\'`` （シングルクォート）
-
-.. - ``\"`` (double quote)
+-  ``\'`` (シングルクォート)
 
 -  ``\"`` (ダブルクォート)
 
-.. - ``\n`` (newline)
+-  ``\n`` (改行)
 
--  ``\n`` (ニューライン)
+-  ``\r`` (キャリッジリターン)
 
-.. - ``\r`` (carriage return)
-
--  ``\r`` （キャリッジリターン）
-
-.. - ``\t`` (tab)
-
--  ``\t`` （タブ）
-
-.. - ``\xNN`` (hex escape, see below)
+-  ``\t`` (タブ)
 
 -  ``\xNN`` (ヘックスエスケープ、下記参照)
 
-.. - ``\uNNNN`` (unicode escape, see below)
-
--  ``\uNNNN`` （ユニコードエスケープ、下記参照）
-
-.. ``\xNN`` takes a hex value and inserts the appropriate byte, while ``\uNNNN`` takes a Unicode codepoint and inserts an UTF-8 sequence.
+-  ``\uNNNN`` (Unicodeエスケープ、下記参照)
 
 ``\xNN`` は16進数の値を受け取り、適切なバイトを挿入します。 ``\uNNNN`` はUnicodeコードポイントを受け取り、UTF-8シーケンスを挿入します。
 
-.. .. note::
-
-..     Until version 0.8.0 there were three additional escape sequences: ``\b``, ``\f`` and ``\v``.
-..     They are commonly available in other languages but rarely needed in practice.
-..     If you do need them, they can still be inserted via hexadecimal escapes, i.e. ``\x08``, ``\x0c``
-..     and ``\x0b``, respectively, just as any other ASCII character.
-
 .. note::
 
-    バージョン0.8.0までは、さらに3つのエスケープシーケンスがありました。 ``\b`` 、 ``\f`` 、 ``\v`` です。     これらは他の言語ではよく使われていますが、実際にはほとんど必要ありません。     もし必要であれば、他のASCII文字と同じように16進数のエスケープ、すなわち ``\x08`` 、 ``\x0c`` 、 ``\x0b`` を使って挿入できます。
-
-.. The string in the following example has a length of ten bytes.
-.. It starts with a newline byte, followed by a double quote, a single
-.. quote a backslash character and then (without separator) the
-.. character sequence ``abcdef``.
+    バージョン0.8.0までは、さらに3つのエスケープシーケンスがありました。 ``\b``、 ``\f``、 ``\v`` です。
+    これらは他の言語ではよく使われていますが、実際にはほとんど必要ありません。
+    もし必要であれば、他のASCII文字と同じように16進数のエスケープ、すなわち ``\x08`` 、 ``\x0c`` 、 ``\x0b`` を使って挿入できます。
 
 次の例の文字列の長さは10バイトです。この文字列は、改行バイトで始まり、ダブルクォート、シングルクォート、バックスラッシュ文字、そして（セパレータなしで）文字列 ``abcdef`` が続きます。
 
@@ -544,16 +531,10 @@ Solidityには8進数のリテラルは存在せず、先頭のゼロは無効�
     "\n\"\'\\abc\
     def"
 
-.. Any Unicode line terminator which is not a newline (i.e. LF, VF, FF, CR, NEL, LS, PS) is considered to
-.. terminate the string literal. Newline only terminates the string literal if it is not preceded by a ``\``.
-
 改行ではない Unicode の行終端記号（LF、VF、FF、CR、NEL、LS、PS など）は、文字列リテラルを終了するものとみなされます。改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
 
-Unicode Literals
+Unicodeリテラル
 ----------------
-
-.. While regular string literals can only contain ASCII, Unicode literals – prefixed with the keyword ``unicode`` – can contain any valid UTF-8 sequence.
-.. They also support the very same escape sequences as regular string literals.
 
 通常の文字列リテラルはASCIIのみを含むことができますが、Unicodeリテラル（キーワード ``unicode`` を前に付けたもの）は、有効なUTF-8シーケンスを含むことができます。また、Unicodeリテラルは、通常の文字列リテラルと同じエスケープシーケンスにも対応しています。
 
@@ -563,49 +544,29 @@ Unicode Literals
 
 .. index:: literal, bytes
 
-Hexadecimal Literals
+16進数リテラル
 --------------------
 
-.. Hexadecimal literals are prefixed with the keyword ``hex`` and are enclosed in double
-.. or single-quotes (``hex"001122FF"``, ``hex'0011_22_FF'``). Their content must be
-.. hexadecimal digits which can optionally use a single underscore as separator between
-.. byte boundaries. The value of the literal will be the binary representation
-.. of the hexadecimal sequence.
+16進数リテラルは、キーワード ``hex`` を前に付け、ダブルクオートまたはシングルクオートで囲みます（ ``hex"001122FF"`` 、 ``hex'0011_22_FF'`` ）。リテラルの内容は16進数でなければならず、バイト境界のセパレータとしてアンダースコアを1つ使用することも可能です。リテラルの値は、16進数をバイナリ表現したものになります。
 
-16進数リテラルは、キーワード ``hex`` を前に付け、ダブルクオートまたはシングルクオートで囲みます（ ``hex"001122FF"`` 、 ``hex'0011_22_FF'`` ）。リテラルの内容は16進数でなければならず、バイト境界のセパレータとしてアンダースコアを1つ使用することも可能です。リテラルの値は、16進数を2進数で表現したものになります。
+空白で区切られた複数の16進数リテラルは、1つのリテラルに連結されます。
+``hex"00112233" hex"44556677"`` は ``hex"0011223344556677"`` と同じです。
 
-.. Multiple hexadecimal literals separated by whitespace are concatenated into a single literal:
-.. ``hex"00112233" hex"44556677"`` is equivalent to ``hex"0011223344556677"``
-
-空白で区切られた複数の16進数リテラルが、1つのリテラルに連結されます。 ``hex"00112233" hex"44556677"`` は ``hex"0011223344556677"`` と同じです。
-
-.. Hexadecimal literals behave like :ref:`string literals <string_literals>` and have the same convertibility restrictions.
-
-16進数のリテラルは、 :ref:`string literals <string_literals>` と同じように動作し、同じような変換の制限があります。
+16進数リテラルは、 :ref:`文字列リテラル<string_literals>` と同じように動作し、同じような変換の制限があります。
 
 .. index:: enum
 
 .. _enums:
 
-Enums
------
+列挙
+------
 
-.. Enums are one way to create a user-defined type in Solidity. They are explicitly convertible
-.. to and from all integer types but implicit conversion is not allowed.  The explicit conversion
-.. from integer checks at runtime that the value lies inside the range of the enum and causes a
-.. :ref:`Panic error<assert-and-require>` otherwise.
-.. Enums require at least one member, and its default value when declared is the first member.
-.. Enums cannot have more than 256 members.
-
-EnumはSolidityでユーザー定義型を作成する一つの方法です。すべての整数型との間で明示的に変換できますが、暗黙的な変換はできません。  整数型からの明示的な変換は、実行時に値が列挙型の範囲内にあるかどうかをチェックし、そうでない場合は :ref:`Panic error<assert-and-require>` を発生させます。列挙型は少なくとも1つのメンバーを必要とし、宣言時のデフォルト値は最初のメンバーです。列挙型は256以上のメンバーを持つことはできません。
-
-.. The data representation is the same as for enums in C: The options are represented by
-.. subsequent unsigned integer values starting from ``0``.
+列挙（enum）はSolidityでユーザー定義型を作成する一つの方法です。すべての整数型との間で明示的に変換できますが、暗黙的な変換はできません。
+整数型からの明示的な変換は、実行時に値が列挙型の範囲内にあるかどうかをチェックし、そうでない場合は :ref:`パニックエラー<assert-and-require>` を発生させます。
+列挙型は少なくとも1つのメンバーを必要とし、宣言時のデフォルト値は最初のメンバーです。
+列挙型は256以上のメンバーを持つことはできません。
 
 データ表現は、C言語のenumと同じです。オプションは、 ``0`` から始まる後続の符号なし整数値で表されます。
-
-.. Using ``type(NameOfEnum).min`` and ``type(NameOfEnum).max`` you can get the
-.. smallest and respectively largest value of the given enum.
 
 ``type(NameOfEnum).min`` と ``type(NameOfEnum).max`` を使えば、与えられたenumの最小値と最大値を得ることができます。
 
@@ -623,9 +584,7 @@ EnumはSolidityでユーザー定義型を作成する一つの方法です。�
             choice = ActionChoices.GoStraight;
         }
 
-        // Since enum types are not part of the ABI, the signature of "getChoice"
-        // will automatically be changed to "getChoice() returns (uint8)"
-        // for all matters external to Solidity.
+        // 列挙型はABIの一部ではないため、Solidityの外部に対して、「getChoice」の署名は自動的に「getChoice() returns (uint8)」に変更されることになります。
         function getChoice() public view returns (ActionChoices) {
             return choice;
         }
@@ -643,10 +602,6 @@ EnumはSolidityでユーザー定義型を作成する一つの方法です。�
         }
     }
 
-.. .. note::
-
-..     Enums can also be declared on the file level, outside of contract or library definitions.
-
 .. note::
 
     Enumは、コントラクトやライブラリの定義とは別に、ファイルレベルで宣言することもできます。
@@ -655,34 +610,16 @@ EnumはSolidityでユーザー定義型を作成する一つの方法です。�
 
 .. _user-defined-value-types:
 
-User Defined Value Types
+ユーザー定義の値型
 ------------------------
-
-.. A user defined value type allows creating a zero cost abstraction over an elementary value type.
-.. This is similar to an alias, but with stricter type requirements.
 
 ユーザー定義の値型は、基本的な値型をゼロコストで抽象化して作成できます。これは、エイリアスに似ていますが、型の要件がより厳しくなっています。
 
-.. A user defined value type is defined using ``type C is V``, where ``C`` is the name of the newly
-.. introduced type and ``V`` has to be a built-in value type (the "underlying type"). The function
-.. ``C.wrap`` is used to convert from the underlying type to the custom type. Similarly, the
-.. function ``C.unwrap`` is used to convert from the custom type to the underlying type.
-
-ユーザー定義の値の型は、 ``type C is V`` を使って定義されます。 ``C`` は新しく導入される型の名前で、 ``V`` は組み込みの値の型（「基礎となる型」）でなければなりません。関数 ``C.wrap`` は、基礎となる型からカスタム型への変換に使用されます。同様に、関数 ``C.unwrap`` はカスタムタイプから基礎タイプへの変換に使用されます。
-
-.. The type ``C`` does not have any operators or bound member functions. In particular, even the
-.. operator ``==`` is not defined. Explicit and implicit conversions to and from other types are
-.. disallowed.
+ユーザー定義の値型は、 ``type C is V`` を使って定義されます。 ``C`` は新しく導入される型の名前で、 ``V`` は組み込みの値の型（「基礎となる型」）でなければなりません。関数 ``C.wrap`` は、基礎となる型からカスタム型への変換に使用されます。同様に、関数 ``C.unwrap`` はカスタム型から基礎型への変換に使用されます。
 
 ``C`` 型には、演算子やバインドされたメンバ関数がありません。特に、演算子 ``==`` も定義されていません。他の型との間の明示的および暗黙的な変換は許されません。
 
-.. The data-representation of values of such types are inherited from the underlying type
-.. and the underlying type is also used in the ABI.
-
 このような型の値のデータ表現は、基礎となる型から継承され、基礎となる型はABIでも使用されます。
-
-.. The following example illustrates a custom type ``UFixed256x18`` representing a decimal fixed point
-.. type with 18 decimals and a minimal library to do arithmetic operations on the type.
 
 次の例では、18桁の10進数固定小数点型を表すカスタム型 ``UFixed256x18`` と、その型に対して算術演算を行うための最小限のライブラリを示しています。
 
@@ -691,39 +628,32 @@ User Defined Value Types
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.8;
 
-    // Represent a 18 decimal, 256 bit wide fixed point type using a user defined value type.
+    // 18進数、256ビット幅の固定小数点型をユーザー定義の値型を使用して表現する。
     type UFixed256x18 is uint256;
 
-    /// A minimal library to do fixed point operations on UFixed256x18.
+    /// UFixed256x18に対して固定小数点演算を行うための最小限のライブラリ
     library FixedMath {
         uint constant multiplier = 10**18;
 
-        /// Adds two UFixed256x18 numbers. Reverts on overflow, relying on checked
-        /// arithmetic on uint256.
+        /// 2つのUFixed256x18の値を足す。uint256のチェックされた算術に依存して、オーバーフローでリバートします。
         function add(UFixed256x18 a, UFixed256x18 b) internal pure returns (UFixed256x18) {
             return UFixed256x18.wrap(UFixed256x18.unwrap(a) + UFixed256x18.unwrap(b));
         }
-        /// Multiplies UFixed256x18 and uint256. Reverts on overflow, relying on checked
-        /// arithmetic on uint256.
+        /// UFixed256x18の値とuint256の値を掛ける。uint256のチェックされた算術に依存して、オーバーフローでリバートします。
         function mul(UFixed256x18 a, uint256 b) internal pure returns (UFixed256x18) {
             return UFixed256x18.wrap(UFixed256x18.unwrap(a) * b);
         }
-        /// Take the floor of a UFixed256x18 number.
+        /// UFixed256x18の数のフロアを取る。
         /// @return the largest integer that does not exceed `a`.
         function floor(UFixed256x18 a) internal pure returns (uint256) {
             return UFixed256x18.unwrap(a) / multiplier;
         }
-        /// Turns a uint256 into a UFixed256x18 of the same value.
-        /// Reverts if the integer is too large.
+        /// uint256 を同じ値の UFixed256x18 に変換します。
+        /// 整数が大きすぎる場合はリバートする。
         function toUFixed256x18(uint256 a) internal pure returns (UFixed256x18) {
             return UFixed256x18.wrap(a * multiplier);
         }
     }
-
-.. Notice how ``UFixed256x18.wrap`` and ``FixedMath.toUFixed256x18`` have the same signature but
-.. perform two very different operations: The ``UFixed256x18.wrap`` function returns a ``UFixed256x18``
-.. that has the same data representation as the input, whereas ``toUFixed256x18`` returns a
-.. ``UFixed256x18`` that has the same numerical value.
 
 ``UFixed256x18.wrap`` と ``FixedMath.toUFixed256x18`` は同じ署名を持っていますが、全く異なる2つの処理を行っていることに注目してください。 ``UFixed256x18.wrap`` 関数は入力と同じデータ表現の ``UFixed256x18`` を返すのに対し、 ``toUFixed256x18`` は同じ数値を持つ ``UFixed256x18`` を返します。
 
@@ -731,149 +661,62 @@ User Defined Value Types
 
 .. _function_types:
 
-Function Types
+関数型
 --------------
 
-.. Function types are the types of functions. Variables of function type
-.. can be assigned from functions and function parameters of function type
-.. can be used to pass functions to and return functions from function calls.
-.. Function types come in two flavours - *internal* and *external* functions:
-
-関数型は、関数の型です。関数型の変数は、関数から代入でき、関数型のパラメータは、関数呼び出しに関数を渡したり、関数呼び出しから関数を返したりするのに使われます。関数型には、 *内部* 関数と *外部* 関数の2種類があります。
-
-.. Internal functions can only be called inside the current contract (more specifically,
-.. inside the current code unit, which also includes internal library functions
-.. and inherited functions) because they cannot be executed outside of the
-.. context of the current contract. Calling an internal function is realized
-.. by jumping to its entry label, just like when calling a function of the current
-.. contract internally.
+関数型は、関数の型です。関数型の変数は、関数から代入でき、関数型のパラメータは、関数呼び出しに関数を渡したり、関数呼び出しから関数を返したりするのに使われます。関数型には、 *内部（internal）* 関数と *外部（external）* 関数の2種類があります。
 
 内部関数は、現在のコントラクトのコンテキストの外では実行できないため、現在のコントラクトの内部（より具体的には、現在のコードユニットの内部で、内部ライブラリ関数や継承された関数も含む）でのみ呼び出すことができます。内部関数の呼び出しは、現在のコントラクトの関数を内部で呼び出す場合と同様に、そのエントリーラベルにジャンプすることで実現します。
 
-.. External functions consist of an address and a function signature and they can
-.. be passed via and returned from external function calls.
-
 外部関数は、アドレスと関数シグネチャで構成されており、外部関数呼び出しを介して渡したり、外部関数呼び出しから返したりできます。
 
-.. Function types are notated as follows:
-
-関数タイプは以下のように表記されています。
+関数型は以下のように表記されています。
 
 .. code-block:: solidity
     :force:
 
     function (<parameter types>) {internal|external} [pure|view|payable] [returns (<return types>)]
 
-.. In contrast to the parameter types, the return types cannot be empty - if the
-.. function type should not return anything, the whole ``returns (<return types>)``
-.. part has to be omitted.
-
-パラメータ型とは対照的に、リターン型は空にできません。関数型が何も返さない場合は、 ``returns (<return types>)`` の部分をすべて省略しなければなりません。
-
-.. By default, function types are internal, so the ``internal`` keyword can be
-.. omitted. Note that this only applies to function types. Visibility has
-.. to be specified explicitly for functions defined in contracts, they
-.. do not have a default.
+パラメータ型とは対照的に、リターン型は空にできません。
+関数型が何も返さない場合は、 ``returns (<return types>)`` の部分をすべて省略しなければなりません。
 
 デフォルトでは、関数型は内部的なものなので、 ``internal`` キーワードは省略できます。これは関数型にのみ適用されることに注意してください。コントラクトで定義された関数については、可視性を明示的に指定する必要があり、デフォルトはありません。
 
-.. Conversions:
-
-Conversions:
-
-.. A function type ``A`` is implicitly convertible to a function type ``B`` if and only if
-.. their parameter types are identical, their return types are identical,
-.. their internal/external property is identical and the state mutability of ``A``
-.. is more restrictive than the state mutability of ``B``. In particular:
+変換:
 
 関数型 ``A`` は、それらのパラメータ型が同一であり、戻り値の型が同一であり、それらの内部/外部プロパティが同一であり、 ``A`` の状態の変更可能性が ``B`` の状態の変更可能性よりも制限されている場合に限り、関数型 ``B`` に暗黙的に変換可能です。具体的には
 
-.. - ``pure`` functions can be converted to ``view`` and ``non-payable`` functions
-
 -  ``pure`` 関数を ``view`` 、 ``non-payable`` 関数に変換可能
-
-.. - ``view`` functions can be converted to ``non-payable`` functions
 
 -  ``view`` 関数から ``non-payable`` 関数への変換が可能
 
-.. - ``payable`` functions can be converted to ``non-payable`` functions
-
 -  ``payable`` 関数から ``non-payable`` 関数への変換が可能
-
-.. No other conversions between function types are possible.
 
 それ以外の関数型間の変換はできません。
 
-.. The rule about ``payable`` and ``non-payable`` might be a little
-.. confusing, but in essence, if a function is ``payable``, this means that it
-.. also accepts a payment of zero Ether, so it also is ``non-payable``.
-.. On the other hand, a ``non-payable`` function will reject Ether sent to it,
-.. so ``non-payable`` functions cannot be converted to ``payable`` functions.
-
 ``payable`` と ``non-payable`` のルールは少しわかりにくいかもしれませんが、要するにある関数が ``payable`` であれば、ゼロのEtherの支払いも受け入れるということなので、 ``non-payable`` でもあるということです。一方、 ``non-payable`` 関数は送られてきたEtherを拒否しますので、 ``non-payable`` 関数を ``payable`` 関数に変換できません。
 
-.. If a function type variable is not initialised, calling it results
-.. in a :ref:`Panic error<assert-and-require>`. The same happens if you call a function after using ``delete``
-.. on it.
-
-関数型変数が初期化されていない場合、それを呼び出すと :ref:`Panic error<assert-and-require>` になります。また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
-
-.. If external function types are used outside of the context of Solidity,
-.. they are treated as the ``function`` type, which encodes the address
-.. followed by the function identifier together in a single ``bytes24`` type.
+関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
 
 外部関数型がSolidityのコンテキスト外で使用される場合は、 ``function`` 型として扱われ、アドレスに続いて関数識別子をまとめて1つの ``bytes24`` 型にエンコードします。
 
-.. Note that public functions of the current contract can be used both as an
-.. internal and as an external function. To use ``f`` as an internal function,
-.. just use ``f``, if you want to use its external form, use ``this.f``.
-
 現在のコントラクトのパブリック関数は、内部関数としても外部関数としても使用できることに注意してください。 ``f`` を内部関数として使用したい場合は ``f`` を、外部関数として使用したい場合は ``this.f`` を使用してください。
 
-.. A function of an internal type can be assigned to a variable of an internal function type regardless
-.. of where it is defined.
-.. This includes private, internal and public functions of both contracts and libraries as well as free
-.. functions.
-.. External function types, on the other hand, are only compatible with public and external contract
-.. functions.
-.. Libraries are excluded because they require a ``delegatecall`` and use :ref:`a different ABI
-.. convention for their selectors <library-selectors>`.
-.. Functions declared in interfaces do not have definitions so pointing at them does not make sense either.
+内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
 
-内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリー関数も含まれます。一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。ライブラリは、 ``delegatecall`` とuse  :ref:`a different ABI convention for their selectors <library-selectors>` を必要とするため、除外されます。インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
-
-.. Members:
-
-メンバーです。
-
-.. External (or public) functions have the following members:
+メンバー:
 
 外部（またはパブリック）関数には、次のようなメンバーを持ちます。
 
-.. * ``.address`` returns the address of the contract of the function.
-
 * ``.address`` は、関数のコントラクトのアドレスを返します。
 
-.. * ``.selector`` returns the :ref:`ABI function selector <abi_function_selector>`
-
-* ``.selector`` が :ref:`ABI function selector <abi_function_selector>` を返します。
-
-.. .. note::
-
-..   External (or public) functions used to have the additional members
-..   ``.gas(uint)`` and ``.value(uint)``. These were deprecated in Solidity 0.6.2
-..   and removed in Solidity 0.7.0. Instead use ``{gas: ...}`` and ``{value: ...}``
-..   to specify the amount of gas or the amount of wei sent to a function,
-..   respectively. See :ref:`External Function Calls <external-function-calls>` for
-..   more information.
+* ``.selector`` が :ref:`ABI関数セレクター<abi_function_selector>` を返します。
 
 .. note::
 
-  外部（またはパブリック）関数には、追加のメンバー ``.gas(uint)`` と ``.value(uint)`` がありました。これらはSolidity 0.6.2で非推奨となり、Solidity 0.7.0で削除されました。代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。詳細は :ref:`External Function Calls <external-function-calls>` を参照してください。
+  外部（またはパブリック）関数には、追加のメンバー ``.gas(uint)`` と ``.value(uint)`` がありました。これらはSolidity 0.6.2で非推奨となり、Solidity 0.7.0で削除されました。代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。詳細は :ref:`外部関数呼び出し<external-function-calls>` を参照してください。
 
-.. Example that shows how to use the members:
-
-メンバーの使用方法を示す例
+メンバーの使用方法を示す例:
 
 .. code-block:: solidity
 
@@ -891,9 +734,7 @@ Conversions:
         }
     }
 
-.. Example that shows how to use internal function types:
-
-内部関数型の使用方法を示す例です。
+内部関数型の使用方法を示す例:
 
 .. code-block:: solidity
 
@@ -901,8 +742,7 @@ Conversions:
     pragma solidity >=0.4.16 <0.9.0;
 
     library ArrayUtils {
-        // internal functions can be used in internal library functions because
-        // they will be part of the same code context
+        // 内部関数は、同じコードコンテキストの一部となるため、内部ライブラリ関数で使用することができる
         function map(uint[] memory self, function (uint) pure returns (uint) f)
             internal
             pure
@@ -952,9 +792,7 @@ Conversions:
         }
     }
 
-.. Another example that uses external function types:
-
-外部関数型を使用するもう一つの例です。
+外部関数型を使用するもう一つの例: 
 
 .. code-block:: solidity
 
