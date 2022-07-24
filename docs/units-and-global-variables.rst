@@ -75,35 +75,35 @@ Etherの単位
 ブロックとトランザクションのプロパティ
 ----------------------------------------
 
--  ``blockhash(uint blockNumber) returns (bytes32)``: ``blocknumber`` が直近256個のブロックの一つである場合は、与えられたブロックのハッシュ、そうでない場合はゼロを返す
+- ``blockhash(uint blockNumber) returns (bytes32)``: ``blocknumber`` が直近256個のブロックの一つである場合は、与えられたブロックのハッシュ、そうでない場合はゼロを返す
 
--  ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
+- ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
 
--  ``block.chainid`` (``uint``): カレントブロックのチェーンID
+- ``block.chainid`` (``uint``): カレントブロックのチェーンID
 
--  ``block.coinbase`` (``address payable``): カレントブロックのマイナーのアドレス
+- ``block.coinbase`` (``address payable``): カレントブロックのマイナーのアドレス
 
--  ``block.difficulty`` (``uint``): カレントブロックの難易度
+- ``block.difficulty`` (``uint``): カレントブロックの難易度
 
--  ``block.gaslimit`` (``uint``): カレントブロックのガスリミット
+- ``block.gaslimit`` (``uint``): カレントブロックのガスリミット
 
--  ``block.number`` (``uint``): カレントブロックの番号
+- ``block.number`` (``uint``): カレントブロックの番号
 
--  ``block.timestamp``  ( ``uint`` ): カレントブロックのタイムスタンプ（Unixエポックからの秒数）
+- ``block.timestamp`` ( ``uint`` ): カレントブロックのタイムスタンプ（Unixエポックからの秒数）
 
--  ``gasleft() returns (uint256)`` : 残りのガス
+- ``gasleft() returns (uint256)``: 残りのガス
 
--  ``msg.data`` (``bytes calldata``): 完全なコールデータ
+- ``msg.data`` (``bytes calldata``): 完全なコールデータ
 
--  ``msg.sender`` (``address``): メッセージの送信者（現在のコール）
+- ``msg.sender`` (``address``): メッセージの送信者（現在のコール）
 
--  ``msg.sig`` (``bytes4``): コールデータの最初の4バイト（すなわち関数識別子）
+- ``msg.sig`` (``bytes4``): コールデータの最初の4バイト（すなわち関数識別子）
 
--  ``msg.value`` (``uint``): メッセージと一緒に送られたweiの数
+- ``msg.value`` (``uint``): メッセージと一緒に送られたweiの数
 
--  ``tx.gasprice`` (``uint``): トランザクションのガスプライス
+- ``tx.gasprice`` (``uint``): トランザクションのガスプライス
 
--  ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）
+- ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）
 
 .. note::
 
@@ -180,7 +180,7 @@ ABIエンコーディングおよびデコーディングの関数
 
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: 与えられた引数を2番目から順にABIエンコードし、与えられた4バイトのセレクタを前に付加します。
 
-- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:  ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` に相当。
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` に相当。
 
 .. .. note::
 
@@ -201,7 +201,7 @@ ABIエンコーディングおよびデコーディングの関数
 bytesのメンバー
 ----------------
 
--  ``bytes.concat(...) returns (bytes memory)`` :  :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>`。
+- ``bytes.concat(...) returns (bytes memory)`` :  :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>`。
 
 .. index:: assert, revert, require
 
@@ -271,11 +271,11 @@ bytesのメンバー
     楕円曲線の署名から公開鍵に紐づくアドレスを復元するか、エラーで0を返します。
     この関数のパラメータは、署名のECDSA値に対応しています。
 
-    *  ``r``  = 署名の最初の32バイト
+    * ``r`` = 署名の最初の32バイト
 
-    *  ``s``  = 署名の2番目の32バイト
+    * ``s`` = 署名の2番目の32バイト
 
-    *  ``v``  = 署名の最後の1バイト
+    * ``v`` = 署名の最後の1バイト
 
     ``ecrecover`` は ``address`` を返し、 ``address payable`` を返しません。
     復旧したアドレスに送金する必要がある場合は、 :ref:`address payable<address>` を参照して変換してください。
@@ -369,7 +369,7 @@ bytesのメンバー
 
 .. warning::
 
-    EVMでは、存在しないコントラクトへの呼び出しは常に成功すると考えられているため、Solidityでは外部呼び出しを行う際に、 ``extcodesize``  オペコードを使用した追加のチェックを行っています。
+    EVMでは、存在しないコントラクトへの呼び出しは常に成功すると考えられているため、Solidityでは外部呼び出しを行う際に、 ``extcodesize`` オペコードを使用した追加のチェックを行っています。
     これにより、呼び出されようとしているコントラクトが実際に存在する（コードが含まれている）か、例外が発生するかを確認します。
 
     コントラクトインスタンスではなくアドレスを操作する低レベルコール（ ``.call()`` 、 ``.delegatecall()`` 、 ``.staticcall()`` 、 ``.send()`` 、 ``.transfer()`` など） には、このチェックが含まれて **いない** ため、ガス代が安く済みますが、安全性も低くなります。
@@ -459,7 +459,7 @@ bytesのメンバー
 
 ``type(C).creationCode``
     コントラクトの作成バイトコードを含むメモリバイト列。
-    これはインラインアセンブリで使用でき、特に ``create2``  オペコードを使用してカスタム作成ルーチンを構築できます。
+    これはインラインアセンブリで使用でき、特に ``create2`` オペコードを使用してカスタム作成ルーチンを構築できます。
     このプロパティは、コントラクト自体または派生コントラクトでアクセスできま **せん**。
     これにより、バイトコードはコールサイトのバイトコードに含まれることになり、そのような循環参照はできません。
 
@@ -476,9 +476,9 @@ bytesのメンバー
 ``type(C).runtimeCode``
     コントラクトのランタイムバイトコードを含むメモリバイト列。
     これは、通常、 ``C`` のコンストラクタによってデプロイされるコードです。
-    ``C``  のコンストラクタがインラインアセンブリを使用している場合、これは実際にデプロイされるバイトコードとは異なる可能性があります。
+    ``C`` のコンストラクタがインラインアセンブリを使用している場合、これは実際にデプロイされるバイトコードとは異なる可能性があります。
     また、ライブラリはデプロイ時にランタイムのバイトコードを変更し、正規の呼び出しを防ぐことにも注意してください。
-    このプロパティにも、 ``.creationCode``  と同様の制限が適用されます。
+    このプロパティにも、 ``.creationCode`` と同様の制限が適用されます。
 
 上記のプロパティに加えて、インターフェース型 ``I`` では以下のプロパティが利用可能です。
 

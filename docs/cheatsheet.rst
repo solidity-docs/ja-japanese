@@ -164,10 +164,10 @@
 
 - ``type(C).name`` (``string``): コントラクトの名前
 
-- ``type(C).creationCode``  ( ``bytes memory`` ):
+- ``type(C).creationCode`` ( ``bytes memory`` ):
   与えられたコントラクトの作成バイトコード、 :ref:`型情報<meta-type>` を参照。
 
-- ``type(C).runtimeCode``  ( ``bytes memory`` ):
+- ``type(C).runtimeCode`` ( ``bytes memory`` ):
   与えられたコントラクトのランタイムのバイトコード、 :ref:`型情報<meta-type>` を参照。
 
 - ``type(I).interfaceId`` (``bytes4``):
