@@ -1,22 +1,16 @@
 .. _inline-assembly:
 
-###############
-Inline Assembly
-###############
+########################
+インラインアセンブリ
+########################
 
 .. index:: ! assembly, ! asm, ! evmasm
 
-.. You can interleave Solidity statements with inline assembly in a language close
-.. to the one of the Ethereum virtual machine. This gives you more fine-grained control,
-.. which is especially useful when you are enhancing the language by writing libraries.
+Ethereum Virtual Machineの言語に近い言語で、Solidityのステートメントにインラインアセンブリを挟むことができます。
+これにより、より細かな制御が可能となり、特にライブラリを書いて言語を強化する場合に有効です。
 
-イーサリアムの仮想マシンの言語に近い言語で、Solidityのステートメントとインラインアセンブリをインターリーブできます。これにより、より細かな制御が可能となり、特にライブラリを書いて言語を強化する場合に有効です。
-
-.. The language used for inline assembly in Solidity is called :ref:`Yul <yul>`
-.. and it is documented in its own section. This section will only cover
-.. how the inline assembly code can interface with the surrounding Solidity code.
-
-Solidityのインライン・アセンブリに使用される言語は :ref:`Yul <yul>` と呼ばれ、独自のセクションで説明されています。このセクションでは、インライン・アセンブリ・コードが周囲のSolidityコードとどのように連携するかについてのみ説明します。
+Solidityのインラインアセンブリに使用される言語は :ref:`Yul <yul>` と呼ばれ、詳細はそのセクションに書かれています。
+このセクションでは、インラインアセンブリのコードが周囲のSolidityコードとどのように連携するかについてのみ説明します。
 
 .. .. warning::
 
@@ -27,7 +21,9 @@ Solidityのインライン・アセンブリに使用される言語は :ref:`Yu
 
 .. warning::
 
-    インラインアセンブリは、Ethereum Virtual Machineに低レベルでアクセスする方法です。これは、Solidityのいくつかの重要な安全機能とチェックをバイパスします。必要なタスクにのみ使用し、使用に自信がある場合のみ使用してください。
+    インラインアセンブリは、Ethereum Virtual Machineに低レベルでアクセスする方法です。
+    これは、Solidityのいくつかの重要な安全機能とチェックをバイパスします。
+    必要なタスクにのみ使用し、使用に自信がある場合のみ使用してください。
 
 .. An inline assembly block is marked by ``assembly { ... }``, where the code inside
 .. the curly braces is code in the :ref:`Yul <yul>` language.
@@ -41,9 +37,10 @@ Solidityのインライン・アセンブリに使用される言語は :ref:`Yu
 .. Different inline assembly blocks share no namespace, i.e. it is not possible
 .. to call a Yul function or access a Yul variable defined in a different inline assembly block.
 
-異なるインラインアセンブリブロックは、名前空間を共有しません。つまり、異なるインラインアセンブリブロックで定義されたYul関数を呼び出したり、Yul変数にアクセスしたりできません。
+異なるインラインアセンブリブロックは、名前空間を共有しません。
+つまり、異なるインラインアセンブリブロックで定義されたYul関数を呼び出したり、Yul変数にアクセスしたりできません。
 
-Example
+例
 -------
 
 .. The following example provides library code to access the code of another contract and
@@ -51,7 +48,9 @@ Example
 .. ``<address>.code``. But the point here is that reusable assembly libraries can enhance the
 .. Solidity language without a compiler change.
 
-次の例では、他のコントラクトのコードにアクセスし、それを ``bytes`` 変数にロードするライブラリコードを提供しています。これは「素のSolidity」でも ``<address>.code`` を使えば可能です。しかし、ここでのポイントは、再利用可能なアセンブリライブラリは、コンパイラを変更することなくSolidity言語を強化できるということです。
+次の例では、他のコントラクトのコードにアクセスし、それを ``bytes`` 変数にロードするライブラリコードを提供しています。
+これは「素のSolidity」でも ``<address>.code`` を使えば可能です。
+しかし、ここでのポイントは、再利用可能なアセンブリライブラリは、コンパイラを変更することなくSolidity言語を強化できるということです。
 
 .. code-block:: solidity
 
@@ -61,16 +60,16 @@ Example
     library GetCode {
         function at(address _addr) public view returns (bytes memory o_code) {
             assembly {
-                // retrieve the size of the code, this needs assembly
+                // コードのサイズを取得します。これはアセンブリが必要です。
                 let size := extcodesize(_addr)
-                // allocate output byte array - this could also be done without assembly
-                // by using o_code = new bytes(size)
+                // 出力バイト配列を確保します。
+                // これは、o_code = new bytes(size) を用いて，アセンブリなしで行うこともできます。
                 o_code := mload(0x40)
-                // new "memory end" including padding
+                // パディングを含む新しい"memory end"です。
                 mstore(0x40, add(o_code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
-                // store length in memory
+                // メモリにコードサイズを格納します。
                 mstore(o_code, size)
-                // actually retrieve the code, this needs assembly
+                // 実際のコードを取得します。これはアセンブリが必要です。
                 extcodecopy(_addr, add(o_code, 0x20), 0, size)
             }
         }
@@ -79,7 +78,7 @@ Example
 .. Inline assembly is also beneficial in cases where the optimizer fails to produce
 .. efficient code, for example:
 
-インライン・アセンブリは、オプティマイザーが効率的なコードを生成できない場合などにも有効です。
+インラインアセンブリは、オプティマイザが効率的なコードを生成できない場合などにも有効です。
 
 .. code-block:: solidity
 
@@ -87,16 +86,14 @@ Example
     pragma solidity >=0.4.16 <0.9.0;
 
     library VectorSum {
-        // This function is less efficient because the optimizer currently fails to
-        // remove the bounds checks in array access.
+        // この関数は、現在、オプティマイザが配列アクセスにおける境界チェックを除去しないため、効率が悪くなっています。
         function sumSolidity(uint[] memory _data) public pure returns (uint sum) {
             for (uint i = 0; i < _data.length; ++i)
                 sum += _data[i];
         }
 
-        // We know that we only access the array in bounds, so we can avoid the check.
-        // 0x20 needs to be added to an array because the first slot contains the
-        // array length.
+        // 列へのアクセスは境界内だけであることが分かっているので、チェックを回避できます。
+        // 最初のスロットに配列の長さが入っているので、0x20を配列に追加する必要があります。
         function sumAsm(uint[] memory _data) public pure returns (uint sum) {
             for (uint i = 0; i < _data.length; ++i) {
                 assembly {
@@ -105,21 +102,20 @@ Example
             }
         }
 
-        // Same as above, but accomplish the entire code within inline assembly.
+        // 上記と同じですが、コード全体をインラインアセンブリで実現します。
         function sumPureAsm(uint[] memory _data) public pure returns (uint sum) {
             assembly {
-                // Load the length (first 32 bytes)
+                // 長さ（最初の32バイト）を読み込む
                 let len := mload(_data)
 
-                // Skip over the length field.
+                // 長さのフィールドをスキップする。
                 //
-                // Keep temporary variable so it can be incremented in place.
+                // in-placeでインクリメントできるように一時的な変数を保持する。
                 //
-                // NOTE: incrementing _data would result in an unusable
-                //       _data variable after this assembly block
+                // 注: _data をインクリメントすると、このアセンブリブロックの後では _data 変数は使用できなくなります。
                 let data := add(_data, 0x20)
 
-                // Iterate until the bound is not met.
+                // 上限に達するまで反復する。
                 for
                     { let end := add(data, mul(len, 0x20)) }
                     lt(data, end)
@@ -131,8 +127,8 @@ Example
         }
     }
 
-Access to External Variables, Functions and Libraries
------------------------------------------------------
+外部変数、外部関数、外部ライブラリへのアクセス
+---------------------------------------------------------
 
 .. You can access Solidity variables and other identifiers by using their name.
 
@@ -148,21 +144,27 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. and that it is your responsibility to respect Solidity's memory management.
 .. See :ref:`Conventions in Solidity <conventions-in-solidity>`.
 
-メモリを参照するローカル変数は、値そのものではなく、メモリ内の変数のアドレスを評価します。このような変数は代入することもできますが、代入はポインタを変更するだけでデータを変更するわけではないので、Solidityのメモリ管理を尊重する責任があることに注意してください。 :ref:`Conventions in Solidity <conventions-in-solidity>` を参照してください。
+メモリを参照するローカル変数は、値そのものではなく、メモリ内の変数のアドレスを評価します。
+このような変数は代入することもできますが、代入はポインタを変更するだけでデータを変更するわけではないので、Solidityのメモリ管理を尊重する責任があることに注意してください。
+:ref:`Solidityの慣習 <conventions-in-solidity>` を参照してください。
 
 .. Similarly, local variables that refer to statically-sized calldata arrays or calldata structs
 .. evaluate to the address of the variable in calldata, not the value itself.
 .. The variable can also be assigned a new offset, but note that no validation to ensure that
 .. the variable will not point beyond ``calldatasize()`` is performed.
 
-同様に、静的なサイズのcalldata配列やcalldata構造体を参照するローカル変数は、値そのものではなく、calldata内の変数のアドレスに評価されます。変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを確認する検証は行われないことに注意してください。
+同様に、静的なサイズのcalldata配列やcalldata構造体を参照するローカル変数は、値そのものではなく、calldata内の変数のアドレスに評価されます。
+変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを確認する検証は行われないことに注意してください。
 
 .. For external function pointers the address and the function selector can be
 .. accessed using ``x.address`` and ``x.selector``.
 .. The selector consists of four right-aligned bytes.
 .. Both values are can be assigned to. For example:
 
-外部関数ポインターの場合、アドレスと関数セレクターは ``x.address`` と ``x.selector`` を使ってアクセスできます。セレクタは右揃えの4バイトで構成されています。いずれの値も割り当て可能です。例えば、以下のようになります。
+外部関数ポインターの場合、アドレスと関数セレクターは ``x.address`` と ``x.selector`` を使ってアクセスできます。
+セレクタは右揃えの4バイトで構成されています。
+いずれの値も代入可能です。
+例えば、以下のようになります。
 
 .. code-block:: solidity
     :force:
@@ -171,7 +173,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
     pragma solidity >=0.8.10 <0.9.0;
 
     contract C {
-        // Assigns a new selector and address to the return variable @fun
+        // 返り値を格納する変数 @fun に新しいセレクタとアドレスを代入する。
         function combineToFunctionPointer(address newAddress, uint newSelector) public pure returns (function() external fun) {
             assembly {
                 fun.selector := newSelector
@@ -185,7 +187,8 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. Both expressions can also be assigned to, but as for the static case, no validation will be performed
 .. to ensure that the resulting data area is within the bounds of ``calldatasize()``.
 
-ダイナミックなcalldata配列の場合、 ``x.offset`` と ``x.length`` を使ってcalldataのオフセット（バイト単位）と長さ（要素数）にアクセスできます。両式は代入することもできますが、スタティックの場合と同様に、結果として得られるデータ領域が ``calldatasize()`` の範囲内にあるかどうかの検証は行われません。
+動的なcalldata配列の場合、 ``x.offset`` と ``x.length`` を使ってcalldataのオフセット（バイト単位）と長さ（要素数）にアクセスできます。
+両方の式は代入することもできますが、静的の場合と同様に、結果として得られるデータ領域が ``calldatasize()`` の範囲内にあるかどうかの検証は行われません。
 
 .. For local storage variables or state variables, a single Yul identifier
 .. is not sufficient, since they do not necessarily occupy a single full storage slot.
@@ -194,18 +197,23 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
 .. Using ``x`` itself will result in an error.
 
-ローカルストレージ変数やステート変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、1つのユルい識別子では不十分です。そのため、変数の「アドレス」は、スロットとそのスロット内のバイトオフセットで構成されます。変数 ``x`` が指すスロットを取得するには ``x.slot`` を、バイトオフセットを取得するには ``x.offset`` を使います。 ``x`` をそのまま使うとエラーになります。
+ローカルストレージ変数やステート変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
+そのため、変数の「アドレス」は、スロットとそのスロット内のバイトオフセットで構成されます。
+変数 ``x`` が指すスロットを取得するには ``x.slot`` を、バイトオフセットを取得するには ``x.offset`` を使います。
+``x`` をそのまま使うとエラーになります。
 
 .. You can also assign to the ``.slot`` part of a local storage variable pointer.
 .. For these (structs, arrays or mappings), the ``.offset`` part is always zero.
 .. It is not possible to assign to the ``.slot`` or ``.offset`` part of a state variable,
 .. though.
 
-また、ローカルストレージの変数ポインタの ``.slot`` 部に割り当てることもできます。これら（構造体、配列、マッピング）の場合、 ``.offset`` 部は常にゼロです。ただし、ステート変数の ``.slot`` または ``.offset`` 部分に代入できません。
+また、ローカルストレージの変数ポインタの ``.slot`` 部に代入することもできます。
+これら（構造体、配列、マッピング）の場合、 ``.offset`` 部は常にゼロです。
+ただし、ステート変数の ``.slot`` または ``.offset`` 部分に代入できません。
 
 .. Local Solidity variables are available for assignments, for example:
 
-ローカルSolidityの変数は、例えば、割り当てに利用できます。
+ローカルSolidityの変数は代入に利用できます。例:
 
 .. code-block:: solidity
     :force:
@@ -217,8 +225,8 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
         uint b;
         function f(uint x) public view returns (uint r) {
             assembly {
-                // We ignore the storage slot offset, we know it is zero
-                // in this special case.
+                // ストレージスロットのオフセットは無視します。
+                // この特別なケースではゼロであることが分かっています。
                 r := mul(x, sload(b.slot))
             }
         }
@@ -238,7 +246,11 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 
 .. warning::
 
-    256ビット未満の型（ ``uint64`` 、 ``address`` 、 ``bytes16`` など）の変数にアクセスする場合、その型のエンコーディングに含まれないビットを仮定できません。特に、それらをゼロと仮定してはいけません。     安全のために、このことが重要な文脈で使用する前に、必ずデータを適切にクリアしてください。  ``uint32 x = f(); assembly { x := and(x, 0xffffffff) /* now use x */ }``  符号付きの型をクリーンにするには、 ``signextend``  オペコードを使用できます。      ``assembly { signextend(<num_bytes_of_x_minus_one>, x) }``
+    256ビット未満の型（ ``uint64`` 、 ``address`` 、 ``bytes16`` など）の変数にアクセスする場合、その型のエンコーディングに含まれないビットを仮定することはできません。
+    特に、それらをゼロと仮定してはいけません。
+    安全のために、このことが重要な文脈で使用する前に、必ずデータを適切にクリアしてください。
+    ``uint32 x = f(); assembly { x := and(x, 0xffffffff) /* now use x */ }`` 符号付きの型をクリーンにするには、 ``signextend`` オペコードを使用できます。
+    オペコード: ``assembly { signextend(<num_bytes_of_x_minus_one>, x) }``
 
 .. Since Solidity 0.6.0 the name of a inline assembly variable may not
 .. shadow any declaration visible in the scope of the inline assembly block
@@ -252,7 +264,7 @@ Solidity 0.6.0以降、インラインアセンブリ変数の名前は、イン
 
 Solidity 0.7.0以降、インラインアセンブリブロック内で宣言された変数や関数は ``.`` を含むことができませんが、インラインアセンブリブロックの外からSolidityの変数にアクセスするために ``.`` を使用することは有効です。
 
-Things to Avoid
+避けるべきこと
 ---------------
 
 .. Inline assembly might have a quite high-level look, but it actually is extremely
@@ -262,11 +274,12 @@ Things to Avoid
 .. variable access and removing stack slots for assembly-local variables when the end
 .. of their block is reached.
 
-インライン・アセンブリは、かなりハイレベルな見た目をしていますが、実際には極めてローレベルです。関数呼び出し、ループ、if、スイッチは簡単な書き換えルールで変換され、その後、アセンブラがしてくれるのは、関数型オペコードの再配置、変数アクセスのためのスタックの高さのカウント、ブロックの終わりに達したときのアセンブリローカル変数のスタックスロットの削除だけです。
+インラインアセンブリは、かなりハイレベルな見た目をしていますが、実際には極めてローレベルです。
+関数呼び出し、ループ、if、スイッチは簡単な書き換えルールで変換され、その後、アセンブラがしてくれるのは、関数型オペコードの再配置、変数アクセスのためのスタックの高さのカウント、ブロックの終わりに達したときのアセンブリローカル変数のスタックスロットの削除だけです。
 
 .. _conventions-in-solidity:
 
-Conventions in Solidity
+Solidityの慣習
 -----------------------
 
 .. In contrast to EVM assembly, Solidity has types which are narrower than 256 bits,
@@ -278,7 +291,9 @@ Conventions in Solidity
 .. from within inline assembly, you might have to manually clean the higher-order bits
 .. first.
 
-EVMアセンブリとは対照的に、Solidityには、 ``uint24`` などの256ビットよりも狭い型があります。効率化のため、ほとんどの算術演算では、型が256ビットよりも短い可能性があるという事実は無視され、高次のビットは必要に応じて、つまり、メモリに書き込まれる直前や比較が実行される前に、クリーニングされます。つまり、インラインアセンブリ内でこのような変数にアクセスする場合、最初に高次ビットを手動でクリーニングする必要があるかもしれません。
+EVMアセンブリとは対照的に、Solidityには、 ``uint24`` などの256ビットよりも小さい型があります。
+効率化のため、ほとんどの算術演算では、型が256ビットよりも短い可能性があるという事実は無視され、高次のビットは必要に応じて、つまり、メモリに書き込まれる直前や比較が実行される前に、クリーニングされます。
+つまり、インラインアセンブリ内でこのような変数にアクセスする場合、最初に高次ビットを手動でクリーニングする必要があるかもしれません。
 
 .. Solidity manages memory in the following way. There is a "free memory pointer"
 .. at position ``0x40`` in memory. If you want to allocate memory, use the memory
@@ -288,7 +303,12 @@ EVMアセンブリとは対照的に、Solidityには、 ``uint24`` などの256
 .. There is no built-in mechanism to release or free allocated memory.
 .. Here is an assembly snippet you can use for allocating memory that follows the process outlined above
 
-Solidityは次のような方法でメモリを管理しています。メモリの位置 ``0x40`` に「フリーメモリポインタ」があります。メモリを確保したい場合は、このポインタが指す位置から始まるメモリを使用し、更新します。このメモリが以前に使用されていないという保証はないので、その内容が0バイトであると仮定できません。割り当てられたメモリを解放するメカニズムは組み込まれていません。以下は、上記のプロセスに沿ってメモリを割り当てるために使用できるアセンブリスニペットです。
+Solidityは次のような方法でメモリを管理しています。
+メモリの位置 ``0x40`` に「フリーメモリポインタ」があります。
+メモリを確保したい場合は、このポインタが指す位置から始まるメモリを使用し、更新します。
+このメモリが以前に使用されていないという保証はないので、その内容が0バイトであると仮定できません。
+割り当てられたメモリを解放するメカニズムは組み込まれていません。
+以下は、上記のプロセスに沿ってメモリを割り当てるために使用できるアセンブリスニペットです。
 
 .. code-block:: yul
 
@@ -304,14 +324,18 @@ Solidityは次のような方法でメモリを管理しています。メモリ
 .. This means that the allocatable memory starts at ``0x80``, which is the initial value
 .. of the free memory pointer.
 
-メモリの最初の64バイトは、短期的に割り当てられる「スクラッチスペース」として使用できます。フリーメモリポインタの後の32バイト（つまり ``0x60`` から始まる）は、永久にゼロであることを意味し、空のダイナミックメモリアレイの初期値として使用されます。つまり、割り当て可能なメモリは、フリーメモリポインタの初期値である ``0x80`` から始まります。
+メモリの最初の64バイトは、短期的に割り当てられる「スクラッチスペース」として使用できます。
+フリーメモリポインタの後の32バイト（つまり ``0x60`` から始まる）は、永久にゼロであることを意味し、空の動的メモリ配列の初期値として使用されます。
+つまり、割り当て可能なメモリは、フリーメモリポインタの初期値である ``0x80`` から始まります。
 
 .. Elements in memory arrays in Solidity always occupy multiples of 32 bytes (this is
 .. even true for ``bytes1[]``, but not for ``bytes`` and ``string``). Multi-dimensional memory
 .. arrays are pointers to memory arrays. The length of a dynamic array is stored at the
 .. first slot of the array and followed by the array elements.
 
-Solidityのメモリ配列の要素は、常に32バイトの倍数を占めています（これは ``bytes1[]`` でも当てはまりますが、 ``bytes`` と ``string`` では当てはまりません）。多次元のメモリ配列は、メモリ配列へのポインタです。動的配列の長さは、配列の最初のスロットに格納され、その後に配列要素が続きます。
+Solidityのメモリ配列の要素は、常に32バイトの倍数を占めています（これは ``bytes1[]`` でも当てはまりますが、 ``bytes`` と ``string`` では当てはまりません）。
+多次元のメモリ配列は、メモリ配列へのポインタです。
+動的配列の長さは、配列の最初のスロットに格納され、その後に配列要素が続きます。
 
 .. .. warning::
 
