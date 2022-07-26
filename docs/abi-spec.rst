@@ -543,15 +543,10 @@ Examples
 Use of Dynamic Types
 ====================
 
-<<<<<<< HEAD
-.. A call to a function with the signature ``f(uint,uint32[],bytes10,bytes)`` with values
+.. A call to a function with the signature ``f(uint256,uint32[],bytes10,bytes)`` with values
 .. ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` is encoded in the following way:
-=======
-A call to a function with the signature ``f(uint256,uint32[],bytes10,bytes)`` with values
-``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` is encoded in the following way:
->>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
-``f(uint,uint32[],bytes10,bytes)``  with values  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")``  というシグネチャを持つ関数の呼び出しは、以下のようにエンコードされます。
+``f(uint256,uint32[],bytes10,bytes)``  with values  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")``  というシグネチャを持つ関数の呼び出しは、以下のようにエンコードされます。
 
 .. We take the first four bytes of ``sha3("f(uint256,uint32[],bytes10,bytes)")``, i.e. ``0x8be65246``.
 .. Then we encode the head parts of all four arguments. For the static types ``uint256`` and ``bytes10``,
@@ -622,15 +617,10 @@ A call to a function with the signature ``f(uint256,uint32[],bytes10,bytes)`` wi
       000000000000000000000000000000000000000000000000000000000000000d
       48656c6c6f2c20776f726c642100000000000000000000000000000000000000
 
-<<<<<<< HEAD
-.. Let us apply the same principle to encode the data for a function with a signature ``g(uint[][],string[])``
+.. Let us apply the same principle to encode the data for a function with a signature ``g(uint256[][],string[])``
 .. with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
-=======
-Let us apply the same principle to encode the data for a function with a signature ``g(uint256[][],string[])``
-with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
->>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
-同じ原理で、シグネチャ ``g(uint[][],string[])`` を持つ関数のデータを値 ``([[1, 2], [3]], ["one", "two", "three"])`` でエンコードしてみましょう。ただし、エンコードの最も基本的な部分から始めます。
+同じ原理で、シグネチャ ``g(uint256[][],string[])`` を持つ関数のデータを値 ``([[1, 2], [3]], ["one", "two", "three"])`` でエンコードしてみましょう。ただし、エンコードの最も基本的な部分から始めます。
 
 .. First we encode the length and data of the first embedded dynamic array ``[1, 2]`` of the first root array ``[[1, 2], [3]]``:
 
@@ -740,20 +730,16 @@ with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most
 
 オフセット ``d`` は、5行目（160バイト）の文字列 ``"two"`` の内容の始まりを指しているので、 ``d = 0x00000000000000000000000000000000000000000000000000000000000000a0`` となります。
 
-<<<<<<< HEAD
+
 .. Offset ``e`` points to the start of the content of the string ``"three"`` which is line 7 (224 bytes);
 .. thus ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0``.
-=======
-Note that the encodings of the embedded elements of the root arrays are not dependent on each other
-and have the same encodings for a function with a signature ``g(string[],uint256[][])``.
->>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 オフセット ``e`` は、7行目（224バイト）である文字列 ``"three"`` のコンテンツの開始を指しているので、 ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0`` 。
 
 .. Note that the encodings of the embedded elements of the root arrays are not dependent on each other
-.. and have the same encodings for a function with a signature ``g(string[],uint[][])``.
+.. and have the same encodings for a function with a signature ``g(string[],uint256[][])``.
 
-なお、ルート配列の埋め込み要素の符号化は互いに依存しておらず、シグネチャ ``g(string[],uint[][])`` を持つ関数では同じ符号化になります。
+なお、ルート配列の埋め込み要素の符号化は互いに依存しておらず、シグネチャ ``g(string[],uint256[][])`` を持つ関数では同じ符号化になります。
 
 .. Then we encode the length of the first root array:
 
