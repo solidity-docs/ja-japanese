@@ -9,7 +9,15 @@ Interfaces
 .. Interfaces are similar to abstract contracts, but they cannot have any functions implemented.
 .. There are further restrictions:
 
+<<<<<<< HEAD
 インターフェイスは、抽象的なコントラクトと似ていますが、いかなる関数も実装できません。さらに制限があります。
+=======
+- They cannot inherit from other contracts, but they can inherit from other interfaces.
+- All declared functions must be external in the interface, even if they are public in the contract.
+- They cannot declare a constructor.
+- They cannot declare state variables.
+- They cannot declare modifiers.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. - They cannot inherit from other contracts, but they can inherit from other interfaces.
 .. - All declared functions must be external.

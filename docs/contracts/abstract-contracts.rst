@@ -6,6 +6,7 @@
 Abstract Contracts
 ******************
 
+<<<<<<< HEAD
 .. Contracts need to be marked as abstract when at least one of their functions is not implemented.
 .. Contracts may be marked as abstract even though all functions are implemented.
 
@@ -16,6 +17,17 @@ Abstract Contracts
 .. provided (no implementation body ``{ }`` was given).
 
 これは、次の例のように ``abstract`` キーワードを使うことで可能です。関数 ``utterance()`` は定義されているが、実装が提供されていない（実装体 ``{ }`` が与えられていない）ため、このコントラクトは抽象的に定義される必要があることに注意してください。
+=======
+Contracts must be marked as abstract when at least one of their functions is not implemented or when
+they do not provide arguments for all of their base contract constructors.
+Even if this is not the case, a contract may still be marked abstract, such as when you do not intend
+for the contract to be created directly. Abstract contracts are similar to :ref:`interfaces` but an
+interface is more limited in what it can declare.
+
+An abstract contract is declared using the ``abstract`` keyword as shown in the following example.
+Note that this contract needs to be defined as abstract, because the function ``utterance()`` is declared,
+but no implementation was provided (no implementation body ``{ }`` was given).
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. code-block:: solidity
 

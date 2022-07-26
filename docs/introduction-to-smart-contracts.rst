@@ -8,7 +8,13 @@
 シンプルなスマートコントラクト
 ************************************
 
+<<<<<<< HEAD
 まずは、変数の値を設定し、他のコントラクトがアクセスできるように公開する基本的な例から始めましょう。今はまだ全てを理解していなくても構いません、後でもっと詳しく説明します。
+=======
+Let us begin with a basic example that sets the value of a variable and exposes
+it for other contracts to access. It is fine if you do not understand
+everything right now, we will go into more details later.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 ストレージの例
 ===============
@@ -129,8 +135,8 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 .. code-block:: solidity
 
-    function balances(address _account) external view returns (uint) {
-        return balances[_account];
+    function balances(address account) external view returns (uint) {
+        return balances[account];
     }
 
 この関数を使って、1つのアカウントの残高を照会できます。
@@ -168,9 +174,19 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 デフォルトの :ref:`Checked arithmetic <unchecked>` のため、式 ``balances[receiver] += amount;`` がオーバーフローした場合、つまり、任意精度の算術演算で ``balances[receiver] + amount`` が ``uint`` の最大値（ ``2**256 - 1`` ）よりも大きくなった場合には、トランザクションは元に戻ってしまうことに注意してください。
 これは、関数 ``send`` の中の ``balances[receiver] += amount;`` という記述にも当てはまります。
 
+<<<<<<< HEAD
 :ref:`Errors <errors>` を使うと、条件や操作が失敗したときに呼び出し側に詳しい情報を提供できます。
 エラーは :ref:`revert statement <revert-statement>` と一緒に使用されます。
 revert 文は ``require`` 関数と同様にすべての変更を無条件に中止、復帰させますが、エラーの名前や、呼び出し側（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に提供される追加データを提供することもできるので、失敗をより簡単にデバッグしたり、対応したりできます。
+=======
+:ref:`Errors <errors>` allow you to provide more information to the caller about
+why a condition or operation failed. Errors are used together with the
+:ref:`revert statement <revert-statement>`. The ``revert`` statement unconditionally
+aborts and reverts all changes similar to the ``require`` function, but it also
+allows you to provide the name of an error and additional data which will be supplied to the caller
+(and eventually to the front-end application or block explorer) so that
+a failure can more easily be debugged or reacted upon.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 ``send`` 関数は、（すでにコインを持っている）誰でも、他の人にコインを送るために使えます。
 送金者が送金するのに十分なコインを持っていない場合は、 ``if`` の条件が true と評価されます。
@@ -214,9 +230,17 @@ revert 文は ``require`` 関数と同様にすべての変更を無条件に中
 「オーダー・セレクション・メカニズム」（これを「マイニング」と呼びます）の一環として、ブロックが時々戻されることがありますが、それはチェーンの「端」に限ったことです。特定のブロックの上にブロックが追加されればされるほど、そのブロックが元に戻される可能性は低くなります。つまり、あなたのトランザクションが元に戻され、さらにはブロックチェーンから削除されることもあるかもしれませんが、待てば待つほど、その可能性は低くなります。
 
 .. note::
+<<<<<<< HEAD
     トランザクションが次のブロックや将来の特定のブロックに含まれることは保証されていません。
     なぜなら、そのトランザクションがどのブロックに含まれるかを決めるのは、トランザクションの提出者ではなく、マイナーに任されているからです。
     コントラクトの将来の呼び出しをスケジュールしたい場合は、 `alarm clock <https://www.ethereum-alarm-clock.com/>`_ または同様のオラクルサービスを使用できます。
+=======
+    Transactions are not guaranteed to be included in the next block or any specific future block,
+    since it is not up to the submitter of a transaction, but up to the miners to determine in which block the transaction is included.
+
+    If you want to schedule future calls of your contract, you can use
+    a smart contract automation tool or an oracle service.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. _the-ethereum-virtual-machine:
 
@@ -267,19 +291,47 @@ Ethereumには、同じアドレス空間を共有する2種類のアカウン�
 ガス
 ========
 
+<<<<<<< HEAD
 生成された各トランザクションには、一定量の **gas** が課されます。
 その目的は、トランザクションを実行するために必要な作業量を制限すると同時に、その実行に対する対価を支払うことです。EVMがトランザクションを実行している間、ガスは特定のルールに従って徐々に減っていきます。
 
 **gas price** は、トランザクションの作成者が設定する値で、作成者は送信側の口座から ``gas_price * gas`` を前払いする必要があります。実行後にガスが残っていた場合は、同様の方法で作成者に返金されます。
 
 いずれかの時点でガスが使い切られると（つまりマイナスになると）、ガス切れの例外が発生し、現在のコールフレームで状態に加えられたすべての変更が元に戻ります。
+=======
+Upon creation, each transaction is charged with a certain amount of **gas**
+that has to be paid for by the originator of the transaction (``tx.origin``).
+While the EVM executes the
+transaction, the gas is gradually depleted according to specific rules.
+If the gas is used up at any point (i.e. it would be negative),
+an out-of-gas exception is triggered, which ends execution and reverts all modifications
+made to the state in the current call frame.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
+
+This mechanism incentivizes economical use of EVM execution time
+and also compensates EVM executors (i.e. miners / stakers) for their work.
+Since each block has a maximum amount of gas, it also limits the amount
+of work needed to validate a block.
+
+The **gas price** is a value set by the originator of the transaction, who
+has to pay ``gas_price * gas`` up front to the EVM executor.
+If some gas is left after execution, it is refunded to the transaction originator.
+In case of an exception that reverts changes, already used up gas is not refunded.
+
+Since EVM executors can choose to include a transaction or not,
+transaction senders cannot abuse the system by setting a low gas price.
 
 .. index:: ! storage, ! memory, ! stack
 
 ストレージ、メモリ、スタック
 =====================================================
 
+<<<<<<< HEAD
 Ethereum Virtual Machineには、データを保存できる3つの領域「ストレージ」「メモリ」「スタック」があり、以下の段落で説明します。
+=======
+The Ethereum Virtual Machine has three areas where it can store data:
+storage, memory and the stack.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 各アカウントには **storage** と呼ばれるデータ領域があり、関数呼び出しやトランザクション間で永続的に使用されます。
 storageは256ビットのワードを256ビットのワードにマッピングするkey-value storeです。
@@ -319,8 +371,15 @@ EVMの命令セットは、コンセンサスの問題を引き起こす可能�
 Delegatecall / Callcodeとライブラリ
 =====================================
 
+<<<<<<< HEAD
 メッセージコールには、 **delegatecall** という特別なバリエーションがあります。
 これは、ターゲットアドレスのコードが呼び出し元のコントラクトのコンテキストで実行され、 ``msg.sender`` と ``msg.value`` の値が変更されないという点を除けば、メッセージコールと同じです。
+=======
+There exists a special variant of a message call, named **delegatecall**
+which is identical to a message call apart from the fact that
+the code at the target address is executed in the context (i.e. at the address) of the calling
+contract and ``msg.sender`` and ``msg.value`` do not change their values.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 これは、コントラクトが実行時に異なるアドレスからコードを動的にロードできることを意味します。ストレージ、現在のアドレス、バランスは依然として呼び出したコントラクトのものを参照しており、コードだけが呼び出されたアドレスから取得されます。
 
@@ -340,7 +399,7 @@ Create
 
 コントラクトは、特別なオペコードを使用して他のコントラクトを作成することもできます（つまり、トランザクションのように単純にゼロアドレスを呼び出すわけではありません）。これらの **createコール** と通常のメッセージコールとの唯一の違いは、ペイロードデータが実行され、その結果がコードとして保存され、呼び出し側/作成側がスタック上の新しいコントラクトのアドレスを受け取ることです。
 
-.. index:: selfdestruct, self-destruct, deactivate
+.. index:: ! selfdestruct, deactivate
 
 DeactivateとSelf-destruct
 ============================

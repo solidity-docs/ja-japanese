@@ -81,6 +81,7 @@
         function delegate(address to) external {
             // 参照を代入
             Voter storage sender = voters[msg.sender];
+            require(sender.weight != 0, "You have no right to vote");
             require(!sender.voted, "You already voted.");
 
             require(to != msg.sender, "Self-delegation is disallowed.");
@@ -95,10 +96,20 @@
                 require(to != msg.sender, "Found loop in delegation.");
             }
 
+<<<<<<< HEAD
             // `sender` は参照なので、`voters[msg.sender].voted` を修正します。
+=======
+            Voter storage delegate_ = voters[to];
+
+            // Voters cannot delegate to accounts that cannot vote.
+            require(delegate_.weight >= 1);
+
+            // Since `sender` is a reference, this
+            // modifies `voters[msg.sender]`.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
             sender.voted = true;
             sender.delegate = to;
-            Voter storage delegate_ = voters[to];
+
             if (delegate_.voted) {
                 // 代表者が既に投票している場合は、直接投票数に加算する
                 proposals[delegate_.vote].voteCount += sender.weight;

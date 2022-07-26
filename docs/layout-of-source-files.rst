@@ -2,22 +2,46 @@
 Solidityソースファイルのレイアウト
 ******************************************
 
+<<<<<<< HEAD
 ソースファイルには、任意の数の :ref:`コントラクト定義<contract_structure>` 、import_ ディレクティブ、 :ref:`pragmaディレクティブ<pragma>` と :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
+=======
+Source files can contain an arbitrary number of
+:ref:`contract definitions<contract_structure>`, import_ ,
+:ref:`pragma<pragma>` and :ref:`using for<using-for>` directives and
+:ref:`struct<structs>`, :ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>`
+and :ref:`constant variable<constants>` definitions.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. index:: ! license, spdx
 
 SPDX License Identifier
 =======================
 
+<<<<<<< HEAD
 スマートコントラクトの信頼性は、そのソースコードが利用可能であれば、より確立されます。
 ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械が解釈可能な `SPDX license identifiers <https://spdx.org>`_ の使用を推奨しています。
 すべてのソースファイルは、そのライセンスを示すコメントで始まるべきです。
+=======
+Trust in smart contracts can be better established if their source code
+is available. Since making source code available always touches on legal problems
+with regards to copyright, the Solidity compiler encourages the use
+of machine-readable `SPDX license identifiers <https://spdx.org>`_.
+Every source file should start with a comment indicating its license:
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 ``// SPDX-License-Identifier: MIT``
 
 コンパイラはライセンスが `SPDXで許可されたリスト <https://spdx.org/licenses/>`_ の一部であることを検証しませんが、供給された文字列は :ref:`bytecodeメタデータ <metadata>` に含まれます。
 
+<<<<<<< HEAD
 ライセンスを指定したくない場合や、ソースコードがオープンソースでない場合は、特別な値 ``UNLICENSED`` を使用してください。
+=======
+If you do not want to specify a license or if the source code is
+not open-source, please use the special value ``UNLICENSED``.
+Note that ``UNLICENSED`` (no usage allowed, not present in SPDX license list)
+is different from ``UNLICENSE`` (grants all rights to everyone).
+Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 もちろん、このコメントを提供することで、各ソースファイルに特定のライセンスヘッダーを記載しなければならないとか、オリジナルの著作権者に言及しなければならないといった、ライセンスに関する他の義務から解放されるわけではありません。
 

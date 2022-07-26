@@ -354,7 +354,7 @@ Salted contract creations / create2
                 salt,
                 keccak256(abi.encodePacked(
                     type(D).creationCode,
-                    arg
+                    abi.encode(arg)
                 ))
             )))));
 
@@ -851,7 +851,13 @@ Assert は、内部エラーのテストや不変性のチェックにのみ使�
 
 ``Error(string)`` 例外（またはデータのない例外）は、以下のような場合にコンパイラによって生成されます。
 
+<<<<<<< HEAD
 .. #. Calling ``require(x)`` where ``x`` evaluates to ``false``.
+=======
+For the following cases, the error data from the external call
+(if provided) is forwarded. This means that it can either cause
+an `Error` or a `Panic` (or whatever else was given):
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 #. ``x`` が ``false`` に評価されるところを ``require(x)`` と呼ぶ。
 
@@ -941,6 +947,7 @@ Assert は、内部エラーのテストや不変性のチェックにのみ使�
 .. safest action is to revert all changes and make the whole transaction
 .. (or at least call) without effect.
 
+<<<<<<< HEAD
 内部的には、Solidityは元に戻す操作（命令 ``0xfd`` ）を行います。これにより、EVMは状態に加えられたすべての変更を元に戻します。元に戻す理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更を元に戻し、トランザクション全体（または少なくともコール）を効果なしにすることです。
 
 .. In both cases, the caller can react on such failures using ``try``/``catch``, but
@@ -953,6 +960,10 @@ Assert は、内部エラーのテストや不変性のチェックにのみ使�
 ..     Panic exceptions used to use the ``invalid`` opcode before Solidity 0.8.0,
 ..     which consumed all gas available to the call.
 ..     Exceptions that use ``require`` used to consume all gas until before the Metropolis release.
+=======
+In both cases, the caller can react on such failures using ``try``/``catch``, but
+the changes in the callee will always be reverted.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. note::
 
@@ -975,8 +986,13 @@ Assert は、内部エラーのテストや不変性のチェックにのみ使�
 
     revert CustomError(arg1, arg2);
 
+<<<<<<< HEAD
 .. For backards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
 .. and accepts a string:
+=======
+For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
+and accepts a string:
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 ..     revert();
 ..     revert("description");
@@ -1142,7 +1158,12 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 .. - ``catch Panic(uint errorCode) { ... }``: If the error was caused by a panic, i.e. by a failing ``assert``, division by zero,
 ..   invalid array access, arithmetic overflow and others, this catch clause will be run.
 
+<<<<<<< HEAD
 - ``catch Panic(uint errorCode) { ... }`` : エラーがパニックによって引き起こされた場合、つまり、 ``assert`` の失敗、ゼロによる除算、無効な配列アクセス、算術オーバーフローなどによって引き起こされた場合、このキャッチ句が実行されます。
+=======
+It is planned to support other types of error data in the future.
+The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. - ``catch (bytes memory lowLevelData) { ... }``: This clause is executed if the error signature
 ..   does not match any other clause, if there was an error while decoding the error
@@ -1211,5 +1232,16 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 .. 
 
 .. note::
+<<<<<<< HEAD
 
     失敗したコールの原因はさまざまです。エラーメッセージが呼び出されたコントラクトから直接来ていると思わないでください。エラーはコールチェーンのより深いところで発生し、呼び出されたコントラクトがそれを送金しただけかもしれません。また、意図的なエラー状態ではなく、ガス欠状態が原因である可能性もあります。発信者は常にコール中のガスの63/64を保持しているため、呼び出されたコントラクトがガス切れになっても、発信者にはガスが残っています。
+=======
+    The reason behind a failed call can be manifold. Do not assume that
+    the error message is coming directly from the called contract:
+    The error might have happened deeper down in the call chain and the
+    called contract just forwarded it. Also, it could be due to an
+    out-of-gas situation and not a deliberate error condition:
+    The caller always retains at least 1/64th of the gas in a call and thus
+    even if the called contract goes out of gas, the caller still
+    has some gas left.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674

@@ -681,6 +681,7 @@ Restrictions on the Grammar
 
 すべての式は0個以上の値で評価されます。識別子とリテラルは正確に1つの値に評価され、関数呼び出しは呼び出された関数の戻り変数の数に等しい数の値に評価されます。
 
+<<<<<<< HEAD
 .. In variable declarations and assignments, the right-hand-side expression
 .. (if present) has to evaluate to a number of values equal to the number of
 .. variables on the left-hand-side.
@@ -688,6 +689,26 @@ Restrictions on the Grammar
 .. to more than one value is allowed.
 .. The same variable name cannot occur more than once in the left-hand-side of
 .. an assignment or variable declaration.
+=======
+A ``continue`` or ``break`` statement can only be used inside the body of a for-loop, as follows.
+Consider the innermost loop that contains the statement.
+The loop and the statement must be in the same function, or both must be at the top level.
+The statement must be in the loop's body block;
+it cannot be in the loop's initialization block or update block.
+It is worth emphasizing that this restriction applies just
+to the innermost loop that contains the ``continue`` or ``break`` statement:
+this innermost loop, and therefore the ``continue`` or ``break`` statement,
+may appear anywhere in an outer loop, possibly in an outer loop's initialization block or update block.
+For example, the following is legal,
+because the ``break`` occurs in the body block of the inner loop,
+despite also occurring in the update block of the outer loop:
+
+.. code-block:: yul
+
+    for {} true { for {} true {} { break } }
+    {
+    }
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 変数宣言や代入では、右辺の式（存在する場合）は、左辺の変数の数と同じ数の値に評価されなければなりません。これは、複数の値に評価される式が許される唯一の状況です。代入や変数宣言の左辺には、同じ変数名を複数回使用できません。
 
@@ -962,7 +983,7 @@ Yulはローカル変数やコントロールフローを管理しているた�
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | Instruction             |     |   | Explanation                                                     |
 +=========================+=====+===+=================================================================+
-| stop()                  + `-` | F | stop execution, identical to return(0, 0)                       |
+| stop()                  | `-` | F | stop execution, identical to return(0, 0)                       |
 +-------------------------+-----+---+-----------------------------------------------------------------+
 | add(x, y)               |     | F | x + y                                                           |
 +-------------------------+-----+---+-----------------------------------------------------------------+
@@ -1400,6 +1421,7 @@ Yulオブジェクトは、名前の付いたコードおよびデータセク�
 
 .. note::
 
+<<<<<<< HEAD
     ``.`` を含む名前のデータ・オブジェクトやサブ・オブジェクトを定義できますが、 ``.`` は他のオブジェクトの内部にあるオブジェクトにアクセスするためのセパレータとして使用されるため、 ``datasize`` 、 ``dataoffset`` 、 ``datacopy`` を介してアクセスできません。
 
 .. .. note::
@@ -1410,6 +1432,17 @@ Yulオブジェクトは、名前の付いたコードおよびデータセク�
 
 ..     Other data objects with special significance might be added in the
 ..     future, but their names will always start with a ``.``.
+=======
+    An object with a name that ends in ``_deployed`` is treated as deployed code by the Yul optimizer.
+    The only consequence of this is a different gas cost heuristic in the optimizer.
+
+.. note::
+
+    Data objects or sub-objects whose names contain a ``.`` can be defined
+    but it is not possible to access them through ``datasize``,
+    ``dataoffset`` or ``datacopy`` because ``.`` is used as a separator
+    to access objects inside another object.
+>>>>>>> 9f34322f394fc939fac0bf8b683fd61c45173674
 
 .. note::
 
@@ -1450,17 +1483,17 @@ Yulオブジェクトの例を以下に示します。
 
             // now return the runtime object (the currently
             // executing code is the constructor code)
-            size := datasize("runtime")
+            size := datasize("Contract1_deployed")
             offset := allocate(size)
             // This will turn into a memory->memory copy for Ewasm and
             // a codecopy for EVM
-            datacopy(offset, dataoffset("runtime"), size)
+            datacopy(offset, dataoffset("Contract1_deployed"), size)
             return(offset, size)
         }
 
         data "Table2" hex"4123"
 
-        object "runtime" {
+        object "Contract1_deployed" {
             code {
                 function allocate(size) -> ptr {
                     ptr := mload(0x40)
@@ -1482,7 +1515,7 @@ Yulオブジェクトの例を以下に示します。
                 // code here ...
             }
 
-            object "runtime" {
+            object "Contract2_deployed" {
                 code {
                     // code here ...
                 }
@@ -1518,6 +1551,8 @@ Solidityをスタンドアローンのユルいモードで使いたい場合は
 .. In Solidity mode, the Yul optimizer is activated together with the regular optimizer.
 
 Solidityモードでは、通常のオプティマイザーと一緒にYulオプティマイザーが作動します。
+
+.. _optimization-step-sequence:
 
 Optimization Step Sequence
 --------------------------
