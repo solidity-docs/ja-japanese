@@ -121,8 +121,8 @@ Explicitness Requirements
 
 .. * Explicit data location for all variables of struct, array or mapping types is
   now mandatory. This is also applied to function parameters and return
-  variables.  For example, change ``uint[] x = m_x`` to ``uint[] storage x =
-  m_x``, and ``function f(uint[][] x)`` to ``function f(uint[][] memory x)``
+  variables.  For example, change ``uint[] x = z`` to ``uint[] storage x =
+  z``, and ``function f(uint[][] x)`` to ``function f(uint[][] memory x)``
   where ``memory`` is the data location and might be replaced by ``storage`` or
   ``calldata`` accordingly.  Note that ``external`` functions require
   parameters with a data location of ``calldata``.
@@ -628,7 +628,7 @@ Example
             return data;
         }
 
-        using address_make_payable for address;
+        using AddressMakePayable for address;
         // Data location for 'arr' must be specified
         function g(uint[] memory /* arr */, bytes8 x, OtherContract otherContract, address unknownContract) public payable {
             // 'otherContract.transfer' is not provided.
@@ -645,7 +645,7 @@ Example
             // 'address payable' should be used whenever possible.
             // To increase clarity, we suggest the use of a library for
             // the conversion (provided after the contract in this example).
-            address payable addr = unknownContract.make_payable();
+            address payable addr = unknownContract.makePayable();
             require(addr.send(1 ether));
 
             // Since uint32 (4 bytes) is smaller than bytes8 (8 bytes),
@@ -661,8 +661,8 @@ Example
 
     // We can define a library for explicitly converting ``address``
     // to ``address payable`` as a workaround.
-    library address_make_payable {
-        function make_payable(address x) internal pure returns (address payable) {
+    library AddressMakePayable {
+        function makePayable(address x) internal pure returns (address payable) {
             return address(uint160(x));
         }
     }

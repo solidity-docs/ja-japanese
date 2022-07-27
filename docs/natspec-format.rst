@@ -50,10 +50,17 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 Documentation Example
 =====================
 
+<<<<<<< HEAD
 .. Documentation is inserted above each ``contract``, ``interface``,
 .. ``function``, and ``event`` using the Doxygen notation format.
 .. A ``public`` state variable is equivalent to a ``function``
 .. for the purposes of NatSpec.
+=======
+Documentation is inserted above each ``contract``, ``interface``, ``library``,
+``function``, and ``event`` using the Doxygen notation format.
+A ``public`` state variable is equivalent to a ``function``
+for the purposes of NatSpec.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``function`` 、 ``event`` の上に挿入されます。 ``public`` 状態変数は、NatSpecの目的上、 ``function`` と同等です。
 

@@ -166,6 +166,7 @@ Etherの単位
 ABIエンコーディングおよびデコーディングの関数
 -----------------------------------------------
 
+<<<<<<< HEAD
 .. - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI-decodes the given data, while the types are given in parentheses as second argument. Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 .. - ``abi.encode(...) returns (bytes memory)``: ABI-encodes the given arguments
 .. - ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of the given arguments. Note that packed encoding can be ambiguous!
@@ -188,6 +189,14 @@ ABIエンコーディングおよびデコーディングの関数
 ..     calling an external function. Furthermore, ``keccak256(abi.encodePacked(a, b))`` is a way
 ..     to compute the hash of structured data (although be aware that it is possible to
 ..     craft a "hash collision" using different function parameter types).
+=======
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI-decodes the given data, while the types are given in parentheses as second argument. Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.encode(...) returns (bytes memory)``: ABI-encodes the given arguments
+- ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of the given arguments. Note that packed encoding can be ambiguous!
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI-encodes the given arguments starting from the second and prepends the given four-byte selector
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. note::
 
@@ -202,6 +211,14 @@ bytesのメンバー
 ----------------
 
 - ``bytes.concat(...) returns (bytes memory)`` :  :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>`。
+
+.. index:: string members
+
+Members of string
+-----------------
+
+- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
+
 
 .. index:: assert, revert, require
 
@@ -499,4 +516,19 @@ bytesのメンバー
     型 ``T`` で表現可能な最小の値です。
 
 ``type(T).max``
+<<<<<<< HEAD
     型 ``T`` で表現可能な最大の値です。
+=======
+    The largest value representable by type ``T``.
+
+Reserved Keywords
+=================
+
+These keywords are reserved in Solidity. They might become part of the syntax in the future:
+
+``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
+``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
+``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
+``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
+``var``.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c

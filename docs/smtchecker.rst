@@ -126,12 +126,12 @@ Overflow
         uint immutable x;
         uint immutable y;
 
-        function add(uint _x, uint _y) internal pure returns (uint) {
-            return _x + _y;
+        function add(uint x_, uint y_) internal pure returns (uint) {
+            return x_ + y_;
         }
 
-        constructor(uint _x, uint _y) {
-            (x, y) = (_x, _y);
+        constructor(uint x_, uint y_) {
+            (x, y) = (x_, y_);
         }
 
         function stateAdd() public view returns (uint) {
@@ -162,7 +162,7 @@ Overflow
         Overflow.add(1, 115792089237316195423570985008687907853269984665640564039457584007913129639935) -- internal call
      --> o.sol:9:20:
       |
-    9 |             return _x + _y;
+    9 |             return x_ + y_;
       |                    ^^^^^^^
 
 .. If we add ``require`` statements that filter out overflow cases,
@@ -179,12 +179,12 @@ Overflow
         uint immutable x;
         uint immutable y;
 
-        function add(uint _x, uint _y) internal pure returns (uint) {
-            return _x + _y;
+        function add(uint x_, uint y_) internal pure returns (uint) {
+            return x_ + y_;
         }
 
-        constructor(uint _x, uint _y) {
-            (x, y) = (_x, _y);
+        constructor(uint x_, uint y_) {
+            (x, y) = (x_, y_);
         }
 
         function stateAdd() public view returns (uint) {
@@ -200,6 +200,7 @@ Assert
 .. An assertion represents an invariant in your code: a property that must be true
 .. *for all transactions, including all input and storage values*, otherwise there is a bug.
 
+<<<<<<< HEAD
 アサーションとは、コードの不変性を表すもので、すべての入力値と保存値を含むすべてのトランザクションに対して*真でなければならないプロパティで、そうでなければバグがあることになります。
 
 .. The code below defines a function ``f`` that guarantees no overflow.
@@ -210,6 +211,14 @@ Assert
 .. definition to see what results come out!
 
 以下のコードでは、オーバーフローしないことを保証する関数 ``f`` を定義しています。関数 ``inv`` は、 ``f`` が単調増加であるという仕様を定義しています: すべての可能なペア ``(_a, _b)`` に対して、もし ``_b > _a`` ならば ``f(_b) > f(_a)`` です。 ``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。この性質と関数の定義を使って、どんな結果が出るか試してみてください。
+=======
+The code below defines a function ``f`` that guarantees no overflow.
+Function ``inv`` defines the specification that ``f`` is monotonically increasing:
+for every possible pair ``(a, b)``, if ``b > a`` then ``f(b) > f(a)``.
+Since ``f`` is indeed monotonically increasing, the SMTChecker proves that our
+property is correct. You are encouraged to play with the property and the function
+definition to see what results come out!
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. code-block:: Solidity
 
@@ -217,14 +226,14 @@ Assert
     pragma solidity >=0.8.0;
 
     contract Monotonic {
-        function f(uint _x) internal pure returns (uint) {
-            require(_x < type(uint128).max);
-            return _x * 42;
+        function f(uint x) internal pure returns (uint) {
+            require(x < type(uint128).max);
+            return x * 42;
         }
 
-        function inv(uint _a, uint _b) public pure {
-            require(_b > _a);
-            assert(f(_b) > f(_a));
+        function inv(uint a, uint b) public pure {
+            require(b > a);
+            assert(f(b) > f(a));
         }
     }
 
@@ -241,14 +250,14 @@ Assert
     pragma solidity >=0.8.0;
 
     contract Max {
-        function max(uint[] memory _a) public pure returns (uint) {
+        function max(uint[] memory a) public pure returns (uint) {
             uint m = 0;
-            for (uint i = 0; i < _a.length; ++i)
-                if (_a[i] > m)
-                    m = _a[i];
+            for (uint i = 0; i < a.length; ++i)
+                if (a[i] > m)
+                    m = a[i];
 
-            for (uint i = 0; i < _a.length; ++i)
-                assert(m >= _a[i]);
+            for (uint i = 0; i < a.length; ++i)
+                assert(m >= a[i]);
 
             return m;
         }
@@ -291,15 +300,15 @@ Assert
     pragma solidity >=0.8.0;
 
     contract Max {
-        function max(uint[] memory _a) public pure returns (uint) {
-            require(_a.length >= 5);
+        function max(uint[] memory a) public pure returns (uint) {
+            require(a.length >= 5);
             uint m = 0;
-            for (uint i = 0; i < _a.length; ++i)
-                if (_a[i] > m)
-                    m = _a[i];
+            for (uint i = 0; i < a.length; ++i)
+                if (a[i] > m)
+                    m = a[i];
 
-            for (uint i = 0; i < _a.length; ++i)
-                assert(m > _a[i]);
+            for (uint i = 0; i < a.length; ++i)
+                assert(m > a[i]);
 
             return m;
         }
@@ -314,7 +323,7 @@ Assert
     Warning: CHC: Assertion violation happens here.
     Counterexample:
 
-    _a = [0, 0, 0, 0, 0]
+    a = [0, 0, 0, 0, 0]
      = 0
 
     Transaction trace:
@@ -322,7 +331,7 @@ Assert
     Test.max([0, 0, 0, 0, 0])
       --> max.sol:14:4:
        |
-    14 |            assert(m > _a[i]);
+    14 |            assert(m > a[i]);
 
 State Properties
 ================
@@ -469,9 +478,9 @@ External Calls and Reentrancy
 
         Unknown immutable unknown;
 
-        constructor(Unknown _u) {
-            require(address(_u) != address(0));
-            unknown = _u;
+        constructor(Unknown u) {
+            require(address(u) != address(0));
+            unknown = u;
         }
 
         modifier mutex {
@@ -481,8 +490,8 @@ External Calls and Reentrancy
             lock = false;
         }
 
-        function set(uint _x) mutex public {
-            x = _x;
+        function set(uint x_) mutex public {
+            x = x_;
         }
 
         function run() mutex public {
@@ -784,7 +793,19 @@ SMT and Horn solvers
 
 ユーザーは、使用可能な場合、どのソルバーを使用するかを、CLIオプション ``--model-checker-solvers {all,cvc4,smtlib2,z3}`` またはJSONオプション ``settings.modelChecker.solvers=[smtlib2,z3]`` で選択できます。
 
+<<<<<<< HEAD
 .. - ``cvc4`` is only available if the ``solc`` binary is compiled with it. Only BMC uses ``cvc4``.
+=======
+.. note::
+  z3 version 4.8.16 broke ABI compatibility with previous versions and cannot
+  be used with solc <=0.8.13. If you are using z3 >=4.8.16 please use solc
+  >=0.8.14.
+
+Since both BMC and CHC use ``z3``, and ``z3`` is available in a greater variety
+of environments, including in the browser, most users will almost never need to be
+concerned about this option. More advanced users might apply this option to try
+alternative solvers on more complex problems.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 - ``cvc4`` は、 ``solc`` のバイナリがコンパイルされている場合にのみ使用できます。 ``cvc4`` を使うのはBMCだけです。
 
@@ -959,15 +980,15 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
     {
         function f(
             bytes32 hash,
-            uint8 _v1, uint8 _v2,
-            bytes32 _r1, bytes32 _r2,
-            bytes32 _s1, bytes32 _s2
+            uint8 v1, uint8 v2,
+            bytes32 r1, bytes32 r2,
+            bytes32 s1, bytes32 s2
         ) public pure returns (address) {
-            address a1 = ecrecover(hash, _v1, _r1, _s1);
-            require(_v1 == _v2);
-            require(_r1 == _r2);
-            require(_s1 == _s2);
-            address a2 = ecrecover(hash, _v2, _r2, _s2);
+            address a1 = ecrecover(hash, v1, r1, s1);
+            require(v1 == v2);
+            require(r1 == r2);
+            require(s1 == s2);
+            address a2 = ecrecover(hash, v2, r2, s2);
             assert(a1 == a2);
             return a1;
         }

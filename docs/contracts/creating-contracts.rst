@@ -63,7 +63,7 @@ Creating Contracts
 
         // This is the constructor which registers the
         // creator and the assigned name.
-        constructor(bytes32 _name) {
+        constructor(bytes32 name_) {
             // State variables are accessed via their name
             // and not via e.g. `this.owner`. Functions can
             // be accessed directly or through `this.f`,
@@ -80,7 +80,7 @@ Creating Contracts
             // no real way to verify that.
             // This does not create a new contract.
             creator = TokenCreator(msg.sender);
-            name = _name;
+            name = name_;
         }
 
         function changeName(bytes32 newName) public {

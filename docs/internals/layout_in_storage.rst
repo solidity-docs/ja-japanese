@@ -91,6 +91,15 @@ Layout of State Variables in Storage
 ..      being executed.
 
 .. note::
+<<<<<<< HEAD
+=======
+     The layout of state variables in storage is considered to be part of the external interface
+     of Solidity due to the fact that storage pointers can be passed to libraries. This means that
+     any change to the rules outlined in this section is considered a breaking change
+     of the language and due to its critical nature should be considered very carefully before
+     being executed. In the event of such a breaking change, we would want to release a
+     compatibility mode in which the compiler would generate bytecode supporting the old layout.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
      ストレージへのステート変数のレイアウトは、ストレージへのポインタをライブラリに渡すことができるため、Solidityの外部インターフェースの一部とみなされます。つまり、このセクションで説明されているルールを変更することは、言語の破壊的な変更とみなされ、その重大な性質のため、実行する前に非常に慎重に検討する必要があります。
 
@@ -117,6 +126,7 @@ Mappings and Dynamic Arrays
 
 マッピングや配列の格納場所が、 :ref:`the storage layout rules <storage-inplace-encoding>` を適用した後にスロット ``p`` になったとします。動的配列の場合、このスロットには、配列の要素数が格納されます（バイト配列と文字列は例外で、 :ref:`below <bytes-and-string>` を参照してください）。マッピングの場合、このスロットは空のままですが、2つのマッピングが隣り合っていても、その内容が異なる保存場所になることを保証するために必要です。
 
+<<<<<<< HEAD
 .. Array data is located starting at ``keccak256(p)`` and it is laid out in the same way as
 .. statically-sized array data would: One element after the other, potentially sharing
 .. storage slots if the elements are not longer than 16 bytes. Dynamic arrays of dynamic arrays apply this
@@ -124,6 +134,10 @@ Mappings and Dynamic Arrays
 .. computed as follows (again, assuming ``x`` itself is stored at slot ``p``):
 .. The slot is ``keccak256(keccak256(p) + i) + floor(j / floor(256 / 24))`` and
 .. the element can be obtained from the slot data ``v`` using ``(v >> ((j % floor(256 / 24)) * 24)) & type(uint24).max``.
+=======
+- for value types, ``h`` pads the value to 32 bytes in the same way as when storing the value in memory.
+- for strings and byte arrays, ``h(k)`` is just the unpadded data.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 配列データは ``keccak256(p)`` から始まり、静的なサイズの配列データと同じように配置されています。要素の長さが16バイト以下であれば、ストレージスロットを共有できる可能性があります。動的配列の動的配列は、このルールを再帰的に適用します。 ``x`` の型が ``uint24[][]`` である要素 ``x[i][j]`` の位置は、次のように計算されます（ここでも、 ``x`` 自身がスロット ``p`` に格納されていると仮定します）。スロットは ``keccak256(keccak256(p) + i) + floor(j / floor(256 / 24))`` であり、要素は ``(v >> ((j % floor(256 / 24)) * 24)) & type(uint24).max`` を用いてスロットデータ ``v`` から得ることができる。
 
@@ -200,8 +214,13 @@ Mappings and Dynamic Arrays
 ..   slot results in a ``Panic(0x22)`` error.
 
 .. note::
+<<<<<<< HEAD
 
   無効にエンコードされたスロットの処理は現在サポートされていませんが、将来的に追加される可能性があります。   実験的なIRベースのコンパイラパイプラインでコンパイルしている場合、無効にエンコードされたスロットを読み込むと ``Panic(0x22)`` エラーが発生します。
+=======
+  Handling invalidly encoded slots is currently not supported but may be added in the future.
+  If you are compiling via IR, reading an invalidly encoded slot results in a ``Panic(0x22)`` error.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 JSON Output
 ===========

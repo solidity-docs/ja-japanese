@@ -2,7 +2,11 @@
 Contributing
 ############
 
+<<<<<<< HEAD
 .. Help is always welcome and there are plenty of options how you can contribute to Solidity.
+=======
+Help is always welcome and there are plenty of options to contribute to Solidity.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 ヘルプはいつでも歓迎ですし、Solidityに貢献する方法はたくさんあります。
 
@@ -10,6 +14,7 @@ Contributing
 
 特に、以下の分野でのご支援をお願いいたします。
 
+<<<<<<< HEAD
 .. * Reporting issues.
 
 * 報告事項。
@@ -48,6 +53,9 @@ Contributing
 .. Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project - in the issues, pull requests, or Gitter channels - you agree to abide by its terms.
 
 このプロジェクトは `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 付きで公開されていることにご注意ください。課題、プルリクエスト、Gitterチャンネルなど、このプロジェクトに参加することで、その条件を守ることに同意したことになります。
+=======
+Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project — in the issues, pull requests, or Gitter channels — you agree to abide by its terms.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 Team Calls
 ==========
@@ -57,6 +65,7 @@ Team Calls
 
 議論したい課題やプルリクエストがある場合や、チームやコントリビューターが取り組んでいることを聞きたい場合は、公開のチームコールに参加できます。
 
+<<<<<<< HEAD
 .. - Mondays at 3pm CET/CEST.
 
 - 毎週月曜日午後3時（CET/CEST）。
@@ -68,6 +77,9 @@ Team Calls
 .. Both calls take place on `Jitsi <https://meet.komputing.org/solidity>`_.
 
 どちらのコールも `Jitsi <https://meet.komputing.org/solidity>`_ で行われます。
+=======
+Both calls take place on `Jitsi <https://meet.ethereum.org/solidity>`_.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 How to Report Issues
 ====================
@@ -78,6 +90,7 @@ How to Report Issues
 
 問題を報告するには、 `GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_ をご利用ください。ご報告の際には、以下の内容をお知らせください。
 
+<<<<<<< HEAD
 .. * Solidity version.
 
 * Solidityバージョン。
@@ -102,6 +115,10 @@ How to Report Issues
 .. very helpful and sometimes even clarifies a misunderstanding.
 
 問題の原因となったソースコードを最小限に減らすことは、常に非常に役に立ち、時には誤解を解くことにもなります。
+=======
+Reducing the source code that caused the issue to a bare minimum is always
+very helpful, and sometimes even clarifies a misunderstanding.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 Workflow for Pull Requests
 ==========================
@@ -117,7 +134,13 @@ Workflow for Pull Requests
 .. and instead, ``git rebase`` your branch. This will help us review your change
 .. more easily.
 
+<<<<<<< HEAD
 フォーク後に ``develop`` からの変更を取り込む必要がある場合 (たとえば、潜在的なマージ・コンフリクトを解決するため)、 ``git merge`` の使用を避け、代わりに ``git rebase`` でブランチを作成してください。そうすることで、あなたの変更をより簡単に確認できます。
+=======
+However, if you are making a larger change, please consult with the `Solidity Development Gitter channel
+<https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above — this one is
+focused on compiler and language development instead of language usage) first.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. Additionally, if you are writing a new feature, please ensure you add appropriate
 .. test cases under ``test/`` (see below).
@@ -157,12 +180,24 @@ Prerequisites
 .. `libz3 <https://github.com/Z3Prover/z3>`_, and
 .. `libhera <https://github.com/ewasm/hera>`_).
 
+<<<<<<< HEAD
 すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ 、 `libz3 <https://github.com/Z3Prover/z3>`_ 、 `libhera <https://github.com/ewasm/hera>`_ ）をオプションでインストールできます。
 
 .. On macOS some of the testing scripts expect GNU coreutils to be installed.
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
 
 macOSでは、いくつかのテストスクリプトで、GNU coreutilsがインストールされていることが求められます。これはHomebrewを使って最も簡単に実現できます。 ``brew install coreutils`` .
+=======
+On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
+This can be easiest accomplished using Homebrew: ``brew install coreutils``.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
+
+On Windows systems, make sure that you have a privilege to create symlinks,
+otherwise several tests may fail.
+Administrators should have that privilege, but you may also
+`grant it to other users <https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/create-symbolic-links#policy-management>`_
+or
+`enable Developer Mode <https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development>`_.
 
 Running the Tests
 -----------------
@@ -178,7 +213,13 @@ Solidityには様々なタイプのテストがあり、そのほとんどが `B
 .. application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command line tests and
 .. compilation tests.
 
+<<<<<<< HEAD
 ``./scripts/tests.sh`` スクリプトは、 `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ アプリケーション ``soltest`` （またはそのラッパー ``scripts/soltest.sh`` ）にバンドルされているものや、コマンドラインテスト、コンパイルテストなど、ほとんどのSolidityテストを自動的に実行します。
+=======
+The ``evmone`` library must be located in the ``deps`` or ``deps/lib`` directory relative to the
+current working directory, to its parent or its parent's parent. Alternatively, an explicit location
+for the ``evmone`` shared object can be specified via the ``ETH_EVMONE`` environment variable.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. The test system automatically tries to discover the location of
 .. the `evmone <https://github.com/ethereum/evmone/releases>`_ for running the semantic tests.
@@ -368,7 +409,11 @@ out the separator and the comments that follow it.
 
 テストを失敗させるためのいくつかのオプションがあります。
 
+<<<<<<< HEAD
 .. - ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
+=======
+All of these options apply to the current contract, except ``quit`` which stops the entire testing process.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 - ``edit`` です。 ``isoltest`` は、コントラクト内容を調整できるように、エディタでコントラクト内容を開こうとします。 ``isoltest --editor /path/to/editor`` のようにコマンドラインで指定されたエディタを使用するか、 ``EDITOR`` のように環境変数で指定されたエディタを使用するか、 ``/usr/bin/editor`` だけを使用するか（順不同）。
 
@@ -443,9 +488,13 @@ Running the Fuzzer via AFL
     cmake .. -DCMAKE_C_COMPILER=path/to/afl-gcc -DCMAKE_CXX_COMPILER=path/to/afl-g++
     make solfuzzer
 
+<<<<<<< HEAD
 .. At this stage you should be able to see a message similar to the following:
 
 この段階では、以下のようなメッセージが表示されます。
+=======
+At this stage, you should be able to see a message similar to the following:
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. code-block:: text
 
@@ -709,16 +758,26 @@ CIプロセスでは、PRを作成する際に ``./test/cmdlineTests.sh`` スク
 Running Documentation Tests
 ---------------------------
 
+<<<<<<< HEAD
 .. Make sure your contributions pass our documentation tests by running ``./scripts/docs.sh`` that installs dependencies
 .. needed for documentation and checks for any problems such as broken links or syntax issues.
 
 ドキュメントに必要な依存関係をインストールし、リンク切れや構文の問題などの問題をチェックする ``./scripts/docs.sh`` を実行することで、あなたの貢献が私たちのドキュメント・テストに合格することを確認してください。
+=======
+Make sure your contributions pass our documentation tests by running ``./docs/docs.sh`` that installs dependencies
+needed for documentation and checks for any problems such as broken links or syntax issues.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 Solidity Language Design
 ========================
 
+<<<<<<< HEAD
 .. To actively get involved in the language design process and share your ideas concerning the future of Solidity,
 .. please join the `Solidity forum <https://forum.soliditylang.org/>`_.
+=======
+To actively get involved in the language design process and to share your ideas concerning the future of Solidity,
+please join the `Solidity forum <https://forum.soliditylang.org/>`_.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 言語設計のプロセスに積極的に参加し、Solidityの将来に関するアイデアを共有するには、 `Solidity forum <https://forum.soliditylang.org/>`_ に参加してください。
 
@@ -733,8 +792,13 @@ Solidityのフォーラムは、新しい言語機能やその実装のアイデ
 
 提案が具体的になれば、その実現に向けて `Solidity GitHub repository <https://github.com/ethereum/solidity>`_ でもイシューという形で議論されます。
 
+<<<<<<< HEAD
 .. In addition to the forum and issue discussions, we regularly host language design discussion calls in which selected
 .. topics, issues or feature implementations are debated in detail. The invitation to those calls is shared via the forum.
+=======
+For ad-hoc cases and questions, you can reach out to us via the `Solidity-dev Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ — a
+dedicated chatroom for conversations around the Solidity compiler and language development.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 フォーラムや課題の議論に加えて、定期的に言語設計ディスカッションコールを開催し、特定のトピックや課題、機能の実装について詳細に議論しています。これらのコールへの招待状は、フォーラムを通じて共有されます。
 

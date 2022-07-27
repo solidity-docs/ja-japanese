@@ -8,15 +8,22 @@ Style Guide
 Introduction
 ************
 
+<<<<<<< HEAD
 .. This guide is intended to provide coding conventions for writing solidity code.
 .. This guide should be thought of as an evolving document that will change over
 .. time as useful conventions are found and old conventions are rendered obsolete.
+=======
+This guide is intended to provide coding conventions for writing Solidity code.
+This guide should be thought of as an evolving document that will change over
+time as useful conventions are found and old conventions are rendered obsolete.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 このガイドは、solidityのコードを書くためのコーディング規約を提供することを目的としています。このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化した文書と考えるべきです。
 
 .. Many projects will implement their own style guides.  In the event of
 .. conflicts, project specific style guides take precedence.
 
+<<<<<<< HEAD
 多くのプロジェクトでは、独自のスタイルガイドを導入しています。  矛盾が生じた場合は、プロジェクト独自のスタイルガイドが優先されます。
 
 .. The structure and many of the recommendations within this style guide were
@@ -41,6 +48,18 @@ Introduction
 .. note::
 
     スタイルガイドとは一貫性のことです。このスタイルガイドとの一貫性は重要です。プロジェクト内での一貫性はより重要です。一つのモジュールや関数の中での一貫性が最も重要です。
+=======
+The goal of this guide is *not* to be the right way or the best way to write
+Solidity code.  The goal of this guide is *consistency*.  A quote from python's
+`pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
+captures this concept well.
+
+.. note::
+
+    A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is most important.
+
+    But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don't hesitate to ask!
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
     しかし、最も重要なことです。 **know when to be inconsistent**  -- 時には、スタイルガイドが適用できないこともあります。迷ったときは、自分のベストな判断で行動しましょう。他の例を見て、何がベストなのかを判断してください。そして、迷わず質問してください。
 
@@ -69,7 +88,11 @@ Tabs or Spaces
 Blank Lines
 ===========
 
+<<<<<<< HEAD
 .. Surround top level declarations in solidity source with two blank lines.
+=======
+Surround top level declarations in Solidity source with two blank lines.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 solidity sourceのトップレベル宣言を2行の空行で囲む。
 
@@ -174,8 +197,12 @@ NG:
 Maximum Line Length
 ===================
 
+<<<<<<< HEAD
 .. Keeping lines under the `PEP 8 recommendation <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ to a maximum of 79 (or 99)
 .. characters helps readers easily parse the code.
+=======
+Maximum suggested line length is 120 characters.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 `PEP 8 recommendation <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ の下の行を最大79（または99）文字にすることで、読者がコードを容易に解析できるようになります。
 
@@ -257,7 +284,7 @@ OK:
 
 .. code-block:: solidity
 
-    thisIsALongNestedMapping[being][set][to_some_value] = someFunction(
+    thisIsALongNestedMapping[being][set][toSomeValue] = someFunction(
         argument1,
         argument2,
         argument3,
@@ -270,7 +297,7 @@ NG:
 
 .. code-block:: solidity
 
-    thisIsALongNestedMapping[being][set][to_some_value] = someFunction(argument1,
+    thisIsALongNestedMapping[being][set][toSomeValue] = someFunction(argument1,
                                                                        argument2,
                                                                        argument3,
                                                                        argument4);
@@ -347,6 +374,7 @@ OK:
     contract A {
         // ...
     }
+
 
     contract B is Owned {
         // ...
@@ -555,7 +583,7 @@ OK:
 
     x = 1;
     y = 2;
-    long_variable = 3;
+    longVariable = 3;
 
 .. No:
 
@@ -563,9 +591,9 @@ NG:
 
 .. code-block:: solidity
 
-    x             = 1;
-    y             = 2;
-    long_variable = 3;
+    x            = 1;
+    y            = 2;
+    longVariable = 3;
 
 .. Don't include a whitespace in the receive and fallback functions:
 
@@ -865,10 +893,17 @@ NG:
         selfdestruct(owner);
     }
 
+<<<<<<< HEAD
 .. For long function declarations, it is recommended to drop each argument onto
 .. it's own line at the same indentation level as the function body.  The closing
 .. parenthesis and opening bracket should be placed on their own line as well at
 .. the same indentation level as the function declaration.
+=======
+For long function declarations, it is recommended to drop each argument onto
+its own line at the same indentation level as the function body.  The closing
+parenthesis and opening bracket should be placed on their own line as well at
+the same indentation level as the function declaration.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 長い関数宣言の場合は、各引数を関数本体と同じインデントレベルで一行にまとめることをお勧めします。  閉じ括弧と開き括弧も同様に、関数宣言と同じインデントレベルで一行に置く必要があります。
 
@@ -1055,14 +1090,19 @@ OK:
         constructor(uint) {
         }
     }
+
+
     contract C {
         constructor(uint, uint) {
         }
     }
+
+
     contract D {
         constructor(uint) {
         }
     }
+
 
     contract A is B, C, D {
         uint x;
@@ -1136,11 +1176,17 @@ NG:
 
     function shortFunction() public { doSomething(); }
 
+<<<<<<< HEAD
 .. These guidelines for function declarations are intended to improve readability.
 .. Authors should use their best judgement as this guide does not try to cover all
 .. possible permutations for function declarations.
 
 この関数宣言のガイドラインは、読みやすさを向上させることを目的としています。このガイドラインは、関数宣言のすべての可能性を網羅するものではありませんので、執筆者は最善の判断を下す必要があります。
+=======
+These guidelines for function declarations are intended to improve readability.
+Authors should use their best judgment as this guide does not try to cover all
+possible permutations for function declarations.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 Mappings
 ========
@@ -1250,10 +1296,17 @@ NG:
     x += 3+4;
     x |= y&&z;
 
+<<<<<<< HEAD
 .. * Operators with a higher priority than others can exclude surrounding
 ..   whitespace in order to denote precedence.  This is meant to allow for
 ..   improved readability for complex statement. You should always use the same
 ..   amount of whitespace on either side of an operator:
+=======
+* Operators with a higher priority than others can exclude surrounding
+  whitespace in order to denote precedence.  This is meant to allow for
+  improved readability for complex statements. You should always use the same
+  amount of whitespace on either side of an operator:
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 * 優先順位の高い演算子は、優先順位を示すために周囲の空白を除外できます。  これは、複雑な文の可読性を高めるためのものです。演算子の両側には、常に同じ量の空白を使用する必要があります。
 
@@ -1287,6 +1340,7 @@ Order of Layout
 
 .. 1. Pragma statements
 
+<<<<<<< HEAD
 1. プラグマ・ステートメント
 
 .. 2. Import statements
@@ -1329,6 +1383,13 @@ Order of Layout
 
 ..     It might be clearer to declare types close to their use in events or state
 ..     variables.
+=======
+1. Type declarations
+2. State variables
+3. Events
+4. Modifiers
+5. Functions
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. note::
 
@@ -1374,6 +1435,7 @@ Naming Styles
 .. * ``lowercase``
 
 * ``lowercase``
+<<<<<<< HEAD
 
 .. * ``lower_case_with_underscores``
 
@@ -1381,11 +1443,14 @@ Naming Styles
 
 .. * ``UPPERCASE``
 
+=======
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 * ``UPPERCASE``
 
 .. * ``UPPER_CASE_WITH_UNDERSCORES``
 
 * ``UPPER_CASE_WITH_UNDERSCORES``
+<<<<<<< HEAD
 
 .. * ``CapitalizedWords`` (or CapWords)
 
@@ -1398,6 +1463,10 @@ Naming Styles
 .. * ``Capitalized_Words_With_Underscores``
 
 * ``Capitalized_Words_With_Underscores``
+=======
+* ``CapitalizedWords`` (or CapWords)
+* ``mixedCase`` (differs from CapitalizedWords by initial lowercase character!)
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. .. note::
 ..  When using initialisms in CapWords, capitalize all the letters of the initialisms. Thus HTTPServerError is better than HttpServerError. When using initialisms in mixedCase, capitalize all the letters of the initialisms, except keep the first one lower case if it is the beginning of the name. Thus xmlHTTPRequest is better than XMLHTTPRequest.
@@ -1592,6 +1661,7 @@ Enumは、単純な型宣言のスタイルで、CapWordsスタイルを使用�
 Avoiding Naming Collisions
 ==========================
 
+<<<<<<< HEAD
 .. * ``single_trailing_underscore_``
 
 * ``single_trailing_underscore_``
@@ -1600,6 +1670,12 @@ Avoiding Naming Collisions
 .. built-in or otherwise reserved name.
 
 この規約は、希望の名前が組み込みの名前やその他の予約された名前と衝突する場合に提案されます。
+=======
+* ``singleTrailingUnderscore_``
+
+This convention is suggested when the desired name collides with that of
+an existing state variable, function, built-in or otherwise reserved name.
+>>>>>>> ce5da7dbdc13f1ec37a52e9eb76a36bb16af427c
 
 .. _style_guide_natspec:
 
