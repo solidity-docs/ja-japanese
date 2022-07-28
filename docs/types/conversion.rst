@@ -240,6 +240,7 @@
 .. As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
 .. test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
 
+<<<<<<< HEAD
 :ref:`address_literals` で説明したように、チェックサムテストに合格した正しいサイズの16進数リテラルは ``address`` 型となります。
 他のリテラルは暗黙的に ``address`` 型に変換できません。
 
@@ -251,3 +252,12 @@
 .. 
 
 ``address a`` を ``payable(a)`` で ``address payable`` に変換できます。
+=======
+Explicit conversions to ``address`` are allowed only from ``bytes20`` and ``uint160``.
+
+An ``address a`` can be converted explicitly to ``address payable`` via ``payable(a)``.
+
+.. note::
+    Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to  ``address`` or ``address payable``.
+    Starting with in 0.8.0 only conversion from ``uint160`` is allowed.
+>>>>>>> 72f1907298f8bd55cd22d16ebb8975de910ba4d3

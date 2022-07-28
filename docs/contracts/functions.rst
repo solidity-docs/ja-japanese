@@ -21,17 +21,17 @@ Functions
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.1 <0.9.0;
 
-    function sum(uint[] memory _arr) pure returns (uint s) {
-        for (uint i = 0; i < _arr.length; i++)
-            s += _arr[i];
+    function sum(uint[] memory arr) pure returns (uint s) {
+        for (uint i = 0; i < arr.length; i++)
+            s += arr[i];
     }
 
     contract ArrayExample {
         bool found;
-        function f(uint[] memory _arr) public {
+        function f(uint[] memory arr) public {
             // This calls the free function internally.
             // The compiler will add its code to the contract.
-            uint s = sum(_arr);
+            uint s = sum(arr);
             require(s >= 10);
             found = true;
         }
@@ -80,8 +80,8 @@ Function Parameters
 
     contract Simple {
         uint sum;
-        function taker(uint _a, uint _b) public {
-            sum = _a + _b;
+        function taker(uint a, uint b) public {
+            sum = a + b;
         }
     }
 
@@ -126,13 +126,13 @@ Return Variables
     pragma solidity >=0.4.16 <0.9.0;
 
     contract Simple {
-        function arithmetic(uint _a, uint _b)
+        function arithmetic(uint a, uint b)
             public
             pure
-            returns (uint o_sum, uint o_product)
+            returns (uint sum, uint product)
         {
-            o_sum = _a + _b;
-            o_product = _a * _b;
+            sum = a + b;
+            product = a * b;
         }
     }
 
@@ -157,12 +157,12 @@ Return Variables
     pragma solidity >=0.4.16 <0.9.0;
 
     contract Simple {
-        function arithmetic(uint _a, uint _b)
+        function arithmetic(uint a, uint b)
             public
             pure
-            returns (uint o_sum, uint o_product)
+            returns (uint sum, uint product)
         {
-            return (_a + _b, _a * _b);
+            return (a + b, a * b);
         }
     }
 
@@ -460,6 +460,16 @@ receive関数は、空のcalldataを持つコントラクトへの呼び出し�
 ..     not recommended, since it would not fail on interface confusions).
 
 .. warning::
+<<<<<<< HEAD
+=======
+    When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``)
+    but the receiving contract does not define a receive Ether function or a payable fallback function,
+    an exception will be thrown, sending back the Ether (this was different
+    before Solidity v0.4.0). If you want your contract to receive Ether,
+    you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
+    not recommended, since the fallback is invoked and would not fail for interface confusions
+    on the part of the sender).
+>>>>>>> 72f1907298f8bd55cd22d16ebb8975de910ba4d3
 
     Etherを直接受信するコントラクト（関数呼び出しなし、つまり ``send`` または ``transfer`` を使用）で、Receive Ether関数またはPayable Fallback関数を定義していないものは、例外をスローし、Etherを送り返します（Solidity v0.4.0以前は異なっていました）。そのため、コントラクトでEtherを受信したい場合は、receive Ether関数を実装する必要があります（Etherの受信にpayable fallback関数を使用することは、インターフェースの混乱で失敗しないため、推奨されません）。
 
@@ -510,19 +520,33 @@ receive関数は、空のcalldataを持つコントラクトへの呼び出し�
 Fallback Function
 -----------------
 
+<<<<<<< HEAD
 .. A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
 .. or ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)``
 .. (both without the ``function`` keyword).
 .. This function must have ``external`` visibility. A fallback function can be virtual, can override
 .. and can have modifiers.
+=======
+A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
+or ``fallback (bytes calldata input) external [payable] returns (bytes memory output)``
+(both without the ``function`` keyword).
+This function must have ``external`` visibility. A fallback function can be virtual, can override
+and can have modifiers.
+>>>>>>> 72f1907298f8bd55cd22d16ebb8975de910ba4d3
 
 コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。この関数は ``external`` 可視性を持たなければなりません。フォールバック関数は、仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
+<<<<<<< HEAD
 .. The fallback function is executed on a call to the contract if none of the other
 .. functions match the given function signature, or if no data was supplied at
 .. all and there is no :ref:`receive Ether function <receive-ether-function>`.
 .. The fallback function always receives data, but in order to also receive Ether
 .. it must be marked ``payable``.
+=======
+If the version with parameters is used, ``input`` will contain the full data sent to the contract
+(equal to ``msg.data``) and can return data in ``output``. The returned data will not be
+ABI-encoded. Instead it will be returned without modifications (not even padding).
+>>>>>>> 72f1907298f8bd55cd22d16ebb8975de910ba4d3
 
 フォールバック関数は、他の関数が与えられた関数シグネチャに一致しない場合、またはデータが全く供給されず :ref:`receive Ether function <receive-ether-function>` がない場合、コントラクトへの呼び出しで実行されます。フォールバック関数は常にデータを受信しますが、Etherも受信するためには、 ``payable`` とマークされていなければなりません。
 
@@ -567,6 +591,16 @@ Fallback Function
 ..     proper functions should be used instead.
 
 .. note::
+<<<<<<< HEAD
+=======
+    If you want to decode the input data, you can check the first four bytes
+    for the function selector and then
+    you can use ``abi.decode`` together with the array slice syntax to
+    decode ABI-encoded data:
+    ``(c, d) = abi.decode(input[4:], (uint256, uint256));``
+    Note that this should only be used as a last resort and
+    proper functions should be used instead.
+>>>>>>> 72f1907298f8bd55cd22d16ebb8975de910ba4d3
 
     入力データをデコードしたい場合は、最初の4バイトで関数セレクタをチェックし、 ``abi.decode`` と配列スライス構文を併用することで、ABIエンコードされたデータをデコードできます。      ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``  この方法は最後の手段としてのみ使用し、代わりに適切な関数を使用すべきであることに注意してください。
 
@@ -656,13 +690,13 @@ Function Overloading
     pragma solidity >=0.4.16 <0.9.0;
 
     contract A {
-        function f(uint _in) public pure returns (uint out) {
-            out = _in;
+        function f(uint value) public pure returns (uint out) {
+            out = value;
         }
 
-        function f(uint _in, bool _really) public pure returns (uint out) {
-            if (_really)
-                out = _in;
+        function f(uint value, bool really) public pure returns (uint out) {
+            if (really)
+                out = value;
         }
     }
 
@@ -678,12 +712,12 @@ Function Overloading
 
     // This will not compile
     contract A {
-        function f(B _in) public pure returns (B out) {
-            out = _in;
+        function f(B value) public pure returns (B out) {
+            out = value;
         }
 
-        function f(address _in) public pure returns (address out) {
-            out = _in;
+        function f(address value) public pure returns (address out) {
+            out = value;
         }
     }
 
@@ -719,12 +753,12 @@ Overload resolution and Argument matching
     pragma solidity >=0.4.16 <0.9.0;
 
     contract A {
-        function f(uint8 _in) public pure returns (uint8 out) {
-            out = _in;
+        function f(uint8 val) public pure returns (uint8 out) {
+            out = val;
         }
 
-        function f(uint256 _in) public pure returns (uint256 out) {
-            out = _in;
+        function f(uint256 val) public pure returns (uint256 out) {
+            out = val;
         }
     }
 

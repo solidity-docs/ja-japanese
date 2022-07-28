@@ -23,9 +23,18 @@
 署名の作成
 ----------------------
 
+<<<<<<< HEAD
 アリスはトランザクションに署名するためにEthereumネットワークと対話する必要はなく、プロセスは完全にオフラインです。このチュートリアルでは、他にも多くのセキュリティ上の利点があるため、 `EIP-762 <https://github.com/ethereum/EIPs/pull/712>`_ で説明した方法を用いて、 `web3.js <https://github.com/ethereum/web3.js>`_ と `MetaMask <https://metamask.io>`_ を使ってブラウザ上でメッセージを署名します。
 
 .. Fix typo: EIP-712
+=======
+Alice does not need to interact with the Ethereum network
+to sign the transaction, the process is completely offline.
+In this tutorial, we will sign messages in the browser
+using `web3.js <https://github.com/ethereum/web3.js>`_ and
+`MetaMask <https://metamask.io>`_, using the method described in `EIP-712 <https://github.com/ethereum/EIPs/pull/712>`_,
+as it provides a number of other security benefits.
+>>>>>>> 72f1907298f8bd55cd22d16ebb8975de910ba4d3
 
 .. code-block:: javascript
 
