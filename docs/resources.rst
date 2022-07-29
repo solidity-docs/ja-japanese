@@ -5,6 +5,7 @@ Resources
 General Resources
 =================
 
+<<<<<<< HEAD
 .. * `Ethereum.org Developer Portal <https://ethereum.org/en/developers/>`_
 
 * `Ethereum.org Developer Portal <https://ethereum.org/en/developers/>`_
@@ -40,6 +41,18 @@ General Resources
 .. * `Solidity by Example <https://solidity-by-example.org/>`_
 
 * `Solidity by Example <https://solidity-by-example.org/>`_
+=======
+* `Ethereum.org Developer Portal <https://ethereum.org/en/developers/>`_
+* `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_
+* `Solidity Portal <https://soliditylang.org/>`_
+* `Solidity Changelog <https://github.com/ethereum/solidity/blob/develop/Changelog.md>`_
+* `Solidity Source Code on GitHub <https://github.com/ethereum/solidity/>`_
+* `Solidity Language Users Chat <https://matrix.to/#/#ethereum_solidity:gitter.im>`_
+* `Solidity Compiler Developers Chat <https://matrix.to/#/#ethereum_solidity-dev:gitter.im>`_
+* `Awesome Solidity <https://github.com/bkrem/awesome-solidity>`_
+* `Solidity by Example <https://solidity-by-example.org/>`_
+* `Solidity Documentation Community Translations <https://github.com/solidity-docs>`_
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 Integrated (Ethereum) Development Environments
 ==============================================
@@ -53,12 +66,21 @@ Integrated (Ethereum) Development Environments
 ..     * `Embark <https://framework.embarklabs.io/>`_
 ..         Developer platform for building and deploying decentralized applications.
 
+<<<<<<< HEAD
 ..     * `Hardhat <https://hardhat.org/>`_
 ..         Ethereum development environment with local Ethereum network, debugging features and plugin ecosystem.
+=======
+    * `Foundry <https://github.com/gakonst/foundry>`_
+        Fast, portable and modular toolkit for Ethereum application development written in Rust.
+
+    * `Hardhat <https://hardhat.org/>`_
+        Ethereum development environment with local Ethereum network, debugging features and plugin ecosystem.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 ..     * `Remix <https://remix.ethereum.org/>`_
 ..         Browser-based IDE with integrated compiler and Solidity runtime environment without server-side components.
 
+<<<<<<< HEAD
 ..     * `Scaffold-ETH <https://github.com/austintgriffith/scaffold-eth>`_
 ..         Ethereum development stack focused on fast product iterations.
 
@@ -78,6 +100,10 @@ Integrated (Ethereum) Development Environments
     * 高速な製品イテレーションに焦点を当てた `Scaffold-ETH <https://github.com/austintgriffith/scaffold-eth>`_  Ethereum開発スタック。
 
     *  `Truffle <https://www.trufflesuite.com/truffle>`_  Ethereum開発フレームワーク。
+=======
+    * `Truffle <https://www.trufflesuite.com/truffle>`_
+        Ethereum development framework.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 Editor Integrations
 ===================
@@ -151,6 +177,9 @@ Editor Integrations
 
     * シンタックスハイライトとSolidityコンパイラを含む、Microsoft Visual Studio Code用の `Visual Studio Code extension <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_  Solidityプラグイン。
 
+    * `Solidity Visual Auditor extension <https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor>`_
+        Adds security centric syntax and semantic highlighting to Visual Studio Code.
+
 Solidity Tools
 ==============
 
@@ -177,7 +206,15 @@ Solidity Tools
 .. * `evmdis <https://github.com/Arachnid/evmdis>`_
 ..     EVM Disassembler that performs static analysis on the bytecode to provide a higher level of abstraction than raw EVM operations.
 
+<<<<<<< HEAD
 * `evmdis <https://github.com/Arachnid/evmdis>`_  EVM Disassemblerは、バイトコードに対して静的解析を行い、生のEVM操作よりも高い抽象度を提供します。
+=======
+* `Scaffold-ETH <https://github.com/scaffold-eth/scaffold-eth>`_
+    Forkable Ethereum development stack focused on fast product iterations.
+
+* `sol2uml <https://www.npmjs.com/package/sol2uml>`_
+    Unified Modeling Language (UML) class diagram generator for Solidity contracts.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 .. * `EVM Lab <https://github.com/ethereum/evmlab/>`_
 ..     Rich tool package to interact with the EVM. Includes a VM, Etherchain API, and a trace-viewer with gas cost display.
@@ -192,7 +229,15 @@ Solidity Tools
 .. * `leafleth <https://github.com/clemlak/leafleth>`_
 ..     A documentation generator for Solidity smart-contracts.
 
+<<<<<<< HEAD
 * `leafleth <https://github.com/clemlak/leafleth>`_  Solidityスマートコントラクトのためのドキュメント生成ツールです。
+=======
+* `Sourcify <https://sourcify.dev/>`_
+    Decentralized automated contract verification service and public repository of contract metadata.
+
+* `Sūrya <https://github.com/ConsenSys/surya/>`_
+    Utility tool for smart contract systems, offering a number of visual outputs and information about the contracts' structure. Also supports querying the function call graph.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 .. * `PIET <https://piet.slock.it/>`_
 ..     A tool to develop, audit and use Solidity smart contracts through a simple graphical interface.

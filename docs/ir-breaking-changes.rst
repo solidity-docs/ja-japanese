@@ -1,6 +1,8 @@
 
 .. index: ir breaking changes
 
+.. _ir-breaking-changes:
+
 *********************************
 Solidity IR-based Codegen Changes
 *********************************
@@ -11,11 +13,17 @@ Solidity IR-based Codegen Changes
 
 Solidityは、2つの異なる方法でEVMバイトコードを生成できます。Solidityから直接EVMのオペコードを生成する方法（"old codegen"）と、Yulの中間表現（"IR"）を介して生成する方法（"new codegen "または "IR-based codegen"）です。
 
+<<<<<<< HEAD
 .. The IR-based code generator was introduced with an aim to not only allow
 .. code generation to be more transparent and auditable but also
 .. to enable more powerful optimization passes that span across functions.
 
 IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数をまたいだより強力な最適化パスを可能にすることを目的としています。
+=======
+You can enable it on the command line using ``--via-ir``
+or with the option ``{"viaIR": true}`` in standard-json and we
+encourage everyone to try it out!
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 .. Currently, the IR-based code generator is still marked experimental,
 .. but it supports all language features and has received a lot of testing,
@@ -42,6 +50,7 @@ Semantic Only Changes
 .. This section lists the changes that are semantic-only, thus potentially
 .. hiding new and different behavior in existing code.
 
+<<<<<<< HEAD
 このセクションでは、セマンティックのみの変更点をリストアップしています。そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
 .. - When storage structs are deleted, every storage slot that contains
@@ -51,6 +60,57 @@ Semantic Only Changes
 ..   (e.g. in the context of a contract upgrade), you have to be aware that
 ..   ``delete`` will now also clear the added member (while it wouldn't
 ..   have been cleared in the past).
+=======
+- The order of state variable initialization has changed in case of inheritance.
+
+  The order used to be:
+
+  - All state variables are zero-initialized at the beginning.
+  - Evaluate base constructor arguments from most derived to most base contract.
+  - Initialize all state variables in the whole inheritance hierarchy from most base to most derived.
+  - Run the constructor, if present, for all contracts in the linearized hierarchy from most base to most derived.
+
+  New order:
+
+  - All state variables are zero-initialized at the beginning.
+  - Evaluate base constructor arguments from most derived to most base contract.
+  - For every contract in order from most base to most derived in the linearized hierarchy:
+
+      1. Initialize state variables.
+      2. Run the constructor (if present).
+
+  This causes differences in contracts where the initial value of a state
+  variable relies on the result of the constructor in another contract:
+
+  .. code-block:: solidity
+
+      // SPDX-License-Identifier: GPL-3.0
+      pragma solidity >=0.7.1;
+
+      contract A {
+          uint x;
+          constructor() {
+              x = 42;
+          }
+          function f() public view returns(uint256) {
+              return x;
+          }
+      }
+      contract B is A {
+          uint public y = f();
+      }
+
+  Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
+  With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
+
+- When storage structs are deleted, every storage slot that contains
+  a member of the struct is set to zero entirely. Formerly, padding space
+  was left untouched.
+  Consequently, if the padding space within a struct is used to store data
+  (e.g. in the context of a contract upgrade), you have to be aware that
+  ``delete`` will now also clear the added member (while it wouldn't
+  have been cleared in the past).
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
   .. code-block:: solidity
 
@@ -88,8 +148,8 @@ Semantic Only Changes
       // SPDX-License-Identifier: GPL-3.0
       pragma solidity >=0.7.0;
       contract C {
-          function f(uint _a) public pure mod() returns (uint _r) {
-              _r = _a++;
+          function f(uint a) public pure mod() returns (uint r) {
+              r = a++;
           }
           modifier mod() { _; _; }
       }
@@ -127,6 +187,7 @@ Semantic Only Changes
   - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before
     each ``_;`` evaluation.
 
+<<<<<<< HEAD
 .. - The order of contract initialization has changed in case of inheritance.
 
 ..   The order used to be:
@@ -233,6 +294,8 @@ Semantic Only Changes
   Now it is returning ``0x6465616462656566000000000000000000000000000000000000000000000010`` (it has
   correct length, and correct elements, but does not contain superfluous data).
 
+=======
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
   .. index:: ! evaluation order; expression
 
 .. - For the old code generator, the evaluation order of expressions is unspecified.
@@ -246,8 +309,8 @@ Semantic Only Changes
       // SPDX-License-Identifier: GPL-3.0
       pragma solidity >=0.8.1;
       contract C {
-          function preincr_u8(uint8 _a) public pure returns (uint8) {
-              return ++_a + _a;
+          function preincr_u8(uint8 a) public pure returns (uint8) {
+              return ++a + a;
           }
       }
 
@@ -268,11 +331,11 @@ Semantic Only Changes
       // SPDX-License-Identifier: GPL-3.0
       pragma solidity >=0.8.1;
       contract C {
-          function add(uint8 _a, uint8 _b) public pure returns (uint8) {
-              return _a + _b;
+          function add(uint8 a, uint8 b) public pure returns (uint8) {
+              return a + b;
           }
-          function g(uint8 _a, uint8 _b) public pure returns (uint8) {
-              return add(++_a + ++_b, _a + _b);
+          function g(uint8 a, uint8 b) public pure returns (uint8) {
+              return add(++a + ++b, a + b);
           }
       }
 
@@ -397,13 +460,13 @@ Cleanup
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.1;
     contract C {
-        function f(uint8 _a) public pure returns (uint _r1, uint _r2)
+        function f(uint8 a) public pure returns (uint r1, uint r2)
         {
-            _a = ~_a;
+            a = ~a;
             assembly {
-                _r1 := _a
+                r1 := a
             }
-            _r2 = _a;
+            r2 = a;
         }
     }
 
@@ -411,6 +474,7 @@ Cleanup
 
 関数 ``f(1)`` は以下の値を返します。
 
+<<<<<<< HEAD
 .. - Old code generator: (``fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe``, ``00000000000000000000000000000000000000000000000000000000000000fe``)
 
 - 古いコードジェネレータ。( ``fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`` ,  ``00000000000000000000000000000000000000000000000000000000000000fe`` )
@@ -425,3 +489,8 @@ Cleanup
 .. 
 
 なお、新コード・ジェネレータとは異なり、旧コード・ジェネレータでは、ビット・ノットの割り当て（ ``_a = ~_a`` ）の後にクリーンアップを行わない。このため、新旧のコード・ジェネレータでは、インライン・アセンブリ・ブロック内で戻り値 ``_r1`` に割り当てられる値が異なります。しかし、どちらのコード・ジェネレータも、 ``_a`` の新しい値が ``_r2`` に割り当てられる前に、クリーンアップを実行します。
+=======
+Note that, unlike the new code generator, the old code generator does not perform a cleanup after the bit-not assignment (``a = ~a``).
+This results in different values being assigned (within the inline assembly block) to return value ``r1`` between the old and new code generators.
+However, both code generators perform a cleanup before the new value of ``a`` is assigned to ``r2``.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614

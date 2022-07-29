@@ -3,7 +3,12 @@ Solidity
 
 Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムです。
 
+<<<<<<< HEAD
 Solidityは、 `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。C++、Python、JavaScriptの影響を受けており、Ethereum Virtual Machine (EVM)をターゲットにして設計されています。Solidityがどの言語から影響を受けているかについては、 :doc:`言語の影響 <language-influences>` のセクションで詳しく説明しています。
+=======
+Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ designed to target the Ethereum Virtual Machine (EVM).
+It is influenced by C++, Python and JavaScript. You can find more details about which languages Solidity has been inspired by in the :doc:`language influences <language-influences>` section.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 Solidityは、静的型付け、継承、ライブラリ、複雑なユーザー定義型などの機能をサポートしています。
 
@@ -58,10 +63,27 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 翻訳
 ------------
 
+<<<<<<< HEAD
 このドキュメントは、コミュニティのボランティアによって、いくつかの言語に翻訳されています。これらの言語は、完全性と最新性の程度が異なります。英語版を参考にしてください。
+=======
+Community contributors help translate this documentation into several languages.
+Note that they have varying degrees of completeness and up-to-dateness. The English
+version stands as a reference.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
+
+You can switch between languages by clicking on the flyout menu in the bottom-left corner
+and selecting the preferred language.
+
+* `French <https://docs.soliditylang.org/fr/latest/>`_
+* `Indonesian <https://github.com/solidity-docs/id-indonesian>`_
+* `Persian <https://github.com/solidity-docs/fa-persian>`_
+* `Japanese <https://github.com/solidity-docs/ja-japanese>`_
+* `Korean <https://github.com/solidity-docs/ko-korean>`_
+* `Chinese <https://github.com/solidity-docs/zh-cn-chinese/>`_
 
 .. note::
 
+<<<<<<< HEAD
    最近、コミュニティの活動を効率化するために、GitHubの組織と翻訳のワークフローを新たに設定しました。今後のコミュニティ翻訳への貢献方法については、 `翻訳ガイド <https://github.com/solidity-docs/translation-guide>`_ をご参照ください。
 
 * `フランス語 <https://solidity-fr.readthedocs.io>`_ (翻訳中)
@@ -72,6 +94,11 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 * `中国語（簡体字） <https://learnblockchain.cn/docs/solidity/>`_ (翻訳中)
 * `スペイン語 <https://solidity-es.readthedocs.io>`_
 * `トルコ語 <https://github.com/denizozzgur/Solidity_TR/blob/master/README.md>`_ (翻訳中)
+=======
+   We recently set up a new GitHub organization and translation workflow to help streamline the
+   community efforts. Please refer to the `translation guide <https://github.com/solidity-docs/translation-guide>`_
+   for information on how to start a new language or contribute to the community translations.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 コンテンツ
 =============

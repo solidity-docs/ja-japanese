@@ -32,6 +32,7 @@ Libraries
 
 .. note::
 
+<<<<<<< HEAD
     バージョン0.4.20までは、Solidityの型システムを回避してライブラリを破壊できました。このバージョンから、ライブラリには状態を変更する関数を直接（つまり ``DELEGATECALL`` なしで）呼び出すことを禁止する :ref:`mechanism<call-protection>` が含まれるようになりました。
 
 .. Libraries can be seen as implicit base contracts of the contracts that use them.
@@ -53,6 +54,19 @@ Libraries
 ..     Calling a public library function with ``L.f()`` results in an external call (``DELEGATECALL``
 ..     to be precise).
 ..     In contrast, ``A.f()`` is an internal call when ``A`` is a base contract of the current contract.
+=======
+Libraries can be seen as implicit base contracts of the contracts that use them.
+They will not be explicitly visible in the inheritance hierarchy, but calls
+to library functions look just like calls to functions of explicit base
+contracts (using qualified access like ``L.f()``).
+Of course, calls to internal functions
+use the internal calling convention, which means that all internal types
+can be passed and types :ref:`stored in memory <data-location>` will be passed by reference and not copied.
+To realize this in the EVM, the code of internal library functions
+that are called from a contract
+and all functions called from therein will at compile time be included in the calling
+contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 .. note::
 
@@ -165,16 +179,16 @@ Libraries
             r.limbs[0] = x;
         }
 
-        function add(bigint memory _a, bigint memory _b) internal pure returns (bigint memory r) {
-            r.limbs = new uint[](max(_a.limbs.length, _b.limbs.length));
+        function add(bigint memory a, bigint memory b) internal pure returns (bigint memory r) {
+            r.limbs = new uint[](max(a.limbs.length, b.limbs.length));
             uint carry = 0;
             for (uint i = 0; i < r.limbs.length; ++i) {
-                uint a = limb(_a, i);
-                uint b = limb(_b, i);
+                uint limbA = limb(a, i);
+                uint limbB = limb(b, i);
                 unchecked {
-                    r.limbs[i] = a + b + carry;
+                    r.limbs[i] = limbA + limbB + carry;
 
-                    if (a + b < a || (a + b == type(uint).max && carry > 0))
+                    if (limbA + limbB < limbA || (limbA + limbB == type(uint).max && carry > 0))
                         carry = 1;
                     else
                         carry = 0;
@@ -191,8 +205,8 @@ Libraries
             }
         }
 
-        function limb(bigint memory _a, uint _limb) internal pure returns (uint) {
-            return _limb < _a.limbs.length ? _a.limbs[_limb] : 0;
+        function limb(bigint memory a, uint index) internal pure returns (uint) {
+            return index < a.limbs.length ? a.limbs[index] : 0;
         }
 
         function max(uint a, uint b) private pure returns (uint) {
@@ -253,7 +267,7 @@ Libraries
 (これらは後の段階で解除されるかもしれません）。
 
 .. _library-selectors:
-.. index:: selector
+.. index:: ! selector; of a library function
 
 Function Signatures and Selectors in Libraries
 ==============================================

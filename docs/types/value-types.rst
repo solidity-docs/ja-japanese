@@ -198,7 +198,13 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 -  ``address``: 20バイトの値（Ethereumのアドレスのサイズ）を保持します。
 
+<<<<<<< HEAD
 -  ``address payable``:  ``address`` と同じですが、メンバの ``transfer`` と ``send`` が追加されます。
+=======
+The idea behind this distinction is that ``address payable`` is an address you can send Ether to,
+while you are not supposed to send Ether to a plain ``address``, for example because it might be a smart contract
+that was not built to accept Ether.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーン ``address`` はEtherを送ることができないということです。
 
@@ -335,6 +341,12 @@ Byzantiumから ``staticcall`` も使えるようになりました。
     スマートコントラクトのコードでは、状態の読み書きにかかわらず、ハードコードされたガスの値に依存することは、多くの落とし穴があるので避けたほうがよいでしょう。
     また、ガスへのアクセスが将来的に変わる可能性もあります。
 
+* ``code`` and ``codehash``
+
+You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+``bytes memory``, which might be empty. Use ``.codehash`` get the Keccak-256 hash of that code
+(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+
 .. note::
 
     すべてのコントラクトは ``address`` 型に変換できるので、 ``address(this).balance`` を使って現在のコントラクトの残高を照会することが可能です。
@@ -434,6 +446,7 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 有理数リテラルと整数リテラル
 -----------------------------
 
+<<<<<<< HEAD
 整数リテラルは、0～9の範囲の数字の列で構成されます。
 小数点以下の数字として解釈されます。例えば、 ``69`` は69を意味します。
 Solidityには8進数のリテラルは存在せず、先頭のゼロは無効です。
@@ -442,19 +455,55 @@ Solidityには8進数のリテラルは存在せず、先頭のゼロは無効�
 
 科学的表記（指数表記）にも対応しており、基数には分数を含めることができますが、指数には含めることができません。
 例としては、 ``2e10`` 、 ``-2e10`` 、 ``2e-10`` 、 ``2.5e1`` などがあります。
+=======
+Integer literals are formed from a sequence of digits in the range 0-9.
+They are interpreted as decimals. For example, ``69`` means sixty nine.
+Octal literals do not exist in Solidity and leading zeros are invalid.
+
+Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
+Examples include ``.1`` and ``1.3`` (but not ``1.``).
+
+Scientific notation in the form of ``2e10`` is also supported, where the
+mantissa can be fractional but the exponent has to be an integer.
+The literal ``MeE`` is equivalent to ``M * 10**E``.
+Examples include ``2e10``, ``-2e10``, ``2e-10``, ``2.5e1``.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 アンダースコアは、読みやすくするために数値リテラルの桁を区切るのに使用できます。
 例えば、10進法の ``123_000`` 、16進法の ``0x2eff_abde`` 、科学的10進法の ``1_2e345_678`` はすべて有効です。
 アンダースコアは2つの数字の間にのみ使用でき、連続したアンダースコアは1つしか使用できません。
 アンダースコアを含む数値リテラルには、追加の意味はなく、アンダースコアは無視されます。
 
+<<<<<<< HEAD
 数リテラル式は、非リテラル型に変換されるまで（非リテラル式との併用や明示的な変換など）、任意の精度を保ちます。
 このため、数値リテラル式では、計算がオーバーフローしたり、除算が切り捨てられたりすることはありません。
+=======
+Number literal expressions retain arbitrary precision until they are converted to a non-literal type (i.e. by
+using them together with anything other than a number literal expression (like boolean literals) or by explicit conversion).
+This means that computations do not overflow and divisions do not truncate
+in number literal expressions.
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 例えば、 ``(2**800 + 1) - 2**800`` の結果は定数 ``1`` （ ``uint8`` 型）になりますが、中間の結果はマシンのワードサイズに収まりません。さらに、 ``.5 * 8`` の結果は整数の ``4`` になります（ただし、その間には非整数が使われています）。
 
+<<<<<<< HEAD
 整数に適用できる演算子は、オペランドが整数であれば、数リテラル式にも適用できます。
 2つのうちいずれかが小数の場合、ビット演算は許可されず、指数が小数の場合、指数演算は許可されません（非有理数になってしまう可能性があるため）。
+=======
+.. warning::
+    While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
+
+    - Ternary operator (``... ? ... : ...``),
+    - Array subscript (``<array>[<index>]``).
+
+    You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256
+    directly, but in fact they are computed within the type ``uint8`` and can overflow.
+
+Any operator that can be applied to integers can also be applied to number literal expressions as
+long as the operands are integers. If any of the two is fractional, bit operations are disallowed
+and exponentiation is disallowed if the exponent is fractional (because that might result in
+a non-rational number).
+>>>>>>> d5a78b18b3fd9e54b2839e9685127c6cdbddf614
 
 リテラル数を左（またはベース）オペランドとし、整数型を右（指数）オペランドとするシフトと指数計算は、右（指数）オペランドの型にかかわらず、常に ``uint256`` （非負のリテラルの場合）または ``int256`` （負のリテラルの場合）型で実行されます。
 
