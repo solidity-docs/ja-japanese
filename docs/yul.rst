@@ -681,6 +681,7 @@ Restrictions on the Grammar
 
 すべての式は0個以上の値で評価されます。識別子とリテラルは正確に1つの値に評価され、関数呼び出しは呼び出された関数の戻り変数の数に等しい数の値に評価されます。
 
+<<<<<<< HEAD
 .. In variable declarations and assignments, the right-hand-side expression
 .. (if present) has to evaluate to a number of values equal to the number of
 .. variables on the left-hand-side.
@@ -688,6 +689,26 @@ Restrictions on the Grammar
 .. to more than one value is allowed.
 .. The same variable name cannot occur more than once in the left-hand-side of
 .. an assignment or variable declaration.
+=======
+A ``continue`` or ``break`` statement can only be used inside the body of a for-loop, as follows.
+Consider the innermost loop that contains the statement.
+The loop and the statement must be in the same function, or both must be at the top level.
+The statement must be in the loop's body block;
+it cannot be in the loop's initialization block or update block.
+It is worth emphasizing that this restriction applies just
+to the innermost loop that contains the ``continue`` or ``break`` statement:
+this innermost loop, and therefore the ``continue`` or ``break`` statement,
+may appear anywhere in an outer loop, possibly in an outer loop's initialization block or update block.
+For example, the following is legal,
+because the ``break`` occurs in the body block of the inner loop,
+despite also occurring in the update block of the outer loop:
+
+.. code-block:: yul
+
+    for {} true { for {} true {} { break } }
+    {
+    }
+>>>>>>> d7f0394316b84421d897671df1173cf01c641160
 
 変数宣言や代入では、右辺の式（存在する場合）は、左辺の変数の数と同じ数の値に評価されなければなりません。これは、複数の値に評価される式が許される唯一の状況です。代入や変数宣言の左辺には、同じ変数名を複数回使用できません。
 
