@@ -743,7 +743,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 #. コントラクトがパブリックゲッター関数でEtherを受け取る場合。
 
 .. For the following cases, the error data from the external call
-.. (if provided) is forwarded. This mean that it can either cause
+.. (if provided) is forwarded. This means that it can either cause
 .. an `Error` or a `Panic` (or whatever else was given):
 
 以下のケースでは、外部の呼び出しからのエラーデータ（提供されている場合）が送金されます。
@@ -828,15 +828,13 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
     revert CustomError(arg1, arg2);
 
-.. For backards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
+.. For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
 .. and accepts a string:
-
-..     revert();
-..     revert("description");
 
 後方互換性を考慮して、括弧を使用して文字列を受け取る ``revert()`` 関数もあります。
 
-    revert(); revert("description")。
+    revert();
+    revert("description");
 
 .. The error data will be passed back to the caller and can be caught there.
 .. Using ``revert()`` causes a revert without any error data while ``revert("description")``
@@ -992,7 +990,7 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 - ``catch { ... }``: エラーデータに興味がないのであれば、前の句の代わりに ``catch { ... }`` を（唯一のcatch句としても）使用すればよいでしょう。
 
 .. It is planned to support other types of error data in the future.
-.. The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as an identifiers.
+.. The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
 
 将来的には、他のタイプのエラーデータにも対応する予定です。
 文字列 ``Error`` と ``Panic`` は、現在、そのまま解析され、識別子としては扱われません。

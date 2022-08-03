@@ -86,6 +86,9 @@
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: 
   与えた引数を2番目から順に :ref:`ABI <ABI>` エンコードし、与えた4バイトのセレクタを前に付加します。
 
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the
+  tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
+
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:
   ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature)), ...)`` と同等です。
 

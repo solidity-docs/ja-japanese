@@ -182,6 +182,8 @@ ABIエンコーディングおよびデコーディングの関数
 
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` に相当。
 
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
+
 .. .. note::
 
 ..     These encoding functions can be used to craft data for external function calls without actually
