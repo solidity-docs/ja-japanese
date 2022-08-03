@@ -681,7 +681,6 @@ Restrictions on the Grammar
 
 すべての式は0個以上の値で評価されます。識別子とリテラルは正確に1つの値に評価され、関数呼び出しは呼び出された関数の戻り変数の数に等しい数の値に評価されます。
 
-<<<<<<< HEAD
 .. In variable declarations and assignments, the right-hand-side expression
 .. (if present) has to evaluate to a number of values equal to the number of
 .. variables on the left-hand-side.
@@ -689,7 +688,18 @@ Restrictions on the Grammar
 .. to more than one value is allowed.
 .. The same variable name cannot occur more than once in the left-hand-side of
 .. an assignment or variable declaration.
-=======
+
+変数宣言や代入では、右辺の式（存在する場合）は、左辺の変数の数と同じ数の値に評価されなければなりません。これは、複数の値に評価される式が許される唯一の状況です。代入や変数宣言の左辺には、同じ変数名を複数回使用できません。
+
+.. Expressions that are also statements (i.e. at the block level) have to
+.. evaluate to zero values.
+
+ステートメントでもある式（ブロックレベル）は、ゼロ値に評価されなければなりません。
+
+.. In all other situations, expressions have to evaluate to exactly one value.
+
+それ以外の状況では、式は正確に1つの値に評価されなければなりません。
+
 A ``continue`` or ``break`` statement can only be used inside the body of a for-loop, as follows.
 Consider the innermost loop that contains the statement.
 The loop and the statement must be in the same function, or both must be at the top level.
@@ -708,25 +718,6 @@ despite also occurring in the update block of the outer loop:
     for {} true { for {} true {} { break } }
     {
     }
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
-
-変数宣言や代入では、右辺の式（存在する場合）は、左辺の変数の数と同じ数の値に評価されなければなりません。これは、複数の値に評価される式が許される唯一の状況です。代入や変数宣言の左辺には、同じ変数名を複数回使用できません。
-
-.. Expressions that are also statements (i.e. at the block level) have to
-.. evaluate to zero values.
-
-ステートメントでもある式（ブロックレベル）は、ゼロ値に評価されなければなりません。
-
-.. In all other situations, expressions have to evaluate to exactly one value.
-
-それ以外の状況では、式は正確に1つの値に評価されなければなりません。
-
-.. The ``continue`` and ``break`` statements can only be used inside loop bodies
-.. and have to be in the same function as the loop (or both have to be at the
-.. top level). The ``continue`` and ``break`` statements cannot be used
-.. in other parts of a loop, not even when it is scoped inside a second loop's body.
-
-``continue`` 文と ``break`` 文は、ループ本体の中でのみ使用でき、ループと同じ関数の中でなければなりません（または両方ともトップレベルでなければなりません）。 ``continue`` 文と ``break`` 文はループの他の部分では使用できず、2つ目のループのボディ内にスコープされている場合でも使用できません。
 
 .. The condition part of the for-loop has to evaluate to exactly one value.
 
