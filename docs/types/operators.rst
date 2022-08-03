@@ -1,10 +1,7 @@
 .. index:: ! operator
 
-<<<<<<< HEAD
-LValueに関する演算子
-===========================
-=======
-Operators
+
+演算子
 =========
 
 Arithmetic and bit operators can be applied even if the two operands do not have the same type.
@@ -34,7 +31,6 @@ left operand for the operation and the result.
 
 Compound and Increment/Decrement Operators
 ------------------------------------------
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
 
 .. If ``a`` is an LValue (i.e. a variable or something that can be assigned to), the
 .. following operators are available as shorthands:
