@@ -441,21 +441,10 @@ Solidityには8進数のリテラルは存在せず、先頭のゼロは無効�
 
 小数点以下のリテラルは、片側に少なくとも1つの数字を持つ ``.`` で形成されます。  例えば、 ``1.`` 、 ``.1`` 、 ``1.3`` などです。
 
-科学的表記（指数表記）にも対応しており、基数には分数を含めることができますが、指数には含めることができません。
+``2e10`` のような科学的表記（指数表記）もサポートされています。
+仮数は小数でも構いませんが、指数は整数でなければなりません。
+``MeE`` というリテラルは ``M * 10**E`` と同じ意味です。
 例としては、 ``2e10`` 、 ``-2e10`` 、 ``2e-10`` 、 ``2.5e1`` などがあります。
-=======
-Integer literals are formed from a sequence of digits in the range 0-9.
-They are interpreted as decimals. For example, ``69`` means sixty nine.
-Octal literals do not exist in Solidity and leading zeros are invalid.
-
-Decimal fractional literals are formed by a ``.`` with at least one number on
-one side.  Examples include ``1.``, ``.1`` and ``1.3``.
-
-Scientific notation in the form of ``2e10`` is also supported, where the
-mantissa can be fractional but the exponent has to be an integer.
-The literal ``MeE`` is equivalent to ``M * 10**E``.
-Examples include ``2e10``, ``-2e10``, ``2e-10``, ``2.5e1``.
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
 
 アンダースコアは、読みやすくするために数値リテラルの桁を区切るのに使用できます。
 例えば、10進法の ``123_000`` 、16進法の ``0x2eff_abde`` 、科学的10進法の ``1_2e345_678`` はすべて有効です。
