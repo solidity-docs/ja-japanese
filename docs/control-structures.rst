@@ -732,13 +732,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 ..    ``payable`` modifier (including the constructor and the fallback function).
 .. #. If your contract receives Ether via a public getter function.
 
-<<<<<<< HEAD
 #. ``x`` が ``false`` に評価されるとき ``require(x)`` を呼び出す。
-=======
-For the following cases, the error data from the external call
-(if provided) is forwarded. This means that it can either cause
-an `Error` or a `Panic` (or whatever else was given):
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
 
 #. ``revert()`` や ``revert("description")`` を使う場合。
 
@@ -749,7 +743,7 @@ an `Error` or a `Panic` (or whatever else was given):
 #. コントラクトがパブリックゲッター関数でEtherを受け取る場合。
 
 .. For the following cases, the error data from the external call
-.. (if provided) is forwarded. This mean that it can either cause
+.. (if provided) is forwarded. This means that it can either cause
 .. an `Error` or a `Panic` (or whatever else was given):
 
 以下のケースでは、外部の呼び出しからのエラーデータ（提供されている場合）が送金されます。
@@ -834,20 +828,13 @@ an `Error` or a `Panic` (or whatever else was given):
 
     revert CustomError(arg1, arg2);
 
-<<<<<<< HEAD
-.. For backards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
+.. For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
 .. and accepts a string:
-=======
-For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
-and accepts a string:
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
-
-..     revert();
-..     revert("description");
 
 後方互換性を考慮して、括弧を使用して文字列を受け取る ``revert()`` 関数もあります。
 
-    revert(); revert("description")。
+    revert();
+    revert("description");
 
 .. The error data will be passed back to the caller and can be caught there.
 .. Using ``revert()`` causes a revert without any error data while ``revert("description")``
@@ -1000,15 +987,10 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 
 - ``catch (bytes memory lowLevelData) { ... }``: この句は、エラーのシグネチャが他の句と一致しない場合、エラーメッセージのデコード中にエラーが発生した場合、または例外でエラーデータが提供されなかった場合に実行されます。宣言された変数は、その場合の低レベルのエラーデータへのアクセスを提供します。
 
-<<<<<<< HEAD
 - ``catch { ... }``: エラーデータに興味がないのであれば、前の句の代わりに ``catch { ... }`` を（唯一のcatch句としても）使用すればよいでしょう。
-=======
-It is planned to support other types of error data in the future.
-The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
 
 .. It is planned to support other types of error data in the future.
-.. The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as an identifiers.
+.. The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
 
 将来的には、他のタイプのエラーデータにも対応する予定です。
 文字列 ``Error`` と ``Panic`` は、現在、そのまま解析され、識別子としては扱われません。
