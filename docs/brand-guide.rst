@@ -74,14 +74,7 @@ Solidityのロゴは、 `Creative Commons Attribution 4.0 International License 
 
 .. You are free to:
 
-<<<<<<< HEAD
 あなたは自由です。
-=======
-- **Attribution** — You must give appropriate credit, provide a link to
-  the license, and indicate if changes were made. You may do so in any
-  reasonable manner, but not in any way that suggests that the Solidity
-  core team endorses you or your use.
->>>>>>> d7f0394316b84421d897671df1173cf01c641160
 
 .. - **Share** — Copy and redistribute the material in any medium or format.
 
@@ -96,12 +89,12 @@ Solidityのロゴは、 `Creative Commons Attribution 4.0 International License 
 
 以下の条件で
 
-.. - **Attribution** — You must give appropriate credit, provide a link to
-..   the license, and indicate if changes were made. You may do so in any
-..   reasonable manner, but not in any way that suggests the the Solidity
-..   core team endorses you or your use.
+- **Attribution** — You must give appropriate credit, provide a link to
+  the license, and indicate if changes were made. You may do so in any
+  reasonable manner, but not in any way that suggests that the Solidity
+  core team endorses you or your use.
 
-- **Attribution**  - 適切なクレジットを表示し、ライセンスへのリンクを提供し、変更があった場合はそれを示さなければなりません。妥当な方法でそうできますが、Solidityコアチームがあなたやあなたの使用を支持していることを示唆するような方法ではありません。
+.. - **Attribution**  - 適切なクレジットを表示し、ライセンスへのリンクを提供し、変更があった場合はそれを示さなければなりません。妥当な方法でそうできますが、Solidityコアチームがあなたやあなたの使用を支持していることを示唆するような方法ではありません。
 
 .. When using the Solidity logo, please respect the Solidity logo guidelines.
 
