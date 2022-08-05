@@ -2,37 +2,21 @@
 
 .. _libraries:
 
-*********
-Libraries
-*********
+*************
+ライブラリ
+*************
 
-.. Libraries are similar to contracts, but their purpose is that they are deployed
-.. only once at a specific address and their code is reused using the ``DELEGATECALL``
-.. (``CALLCODE`` until Homestead)
-.. feature of the EVM. This means that if library functions are called, their code
-.. is executed in the context of the calling contract, i.e. ``this`` points to the
-.. calling contract, and especially the storage from the calling contract can be
-.. accessed. As a library is an isolated piece of source code, it can only access
-.. state variables of the calling contract if they are explicitly supplied (it
-.. would have no way to name them, otherwise). Library functions can only be
-.. called directly (i.e. without the use of ``DELEGATECALL``) if they do not modify
-.. the state (i.e. if they are ``view`` or ``pure`` functions),
-.. because libraries are assumed to be stateless. In particular, it is
-.. not possible to destroy a library.
-
-ライブラリはコントラクトに似ていますが、その目的は、特定のアドレスに一度だけデプロイされ、そのコードはEVMの ``DELEGATECALL`` （ホームステッドまでの ``CALLCODE`` ）機能を使って再利用されることです。つまり、ライブラリ関数が呼び出された場合、そのコードは呼び出したコントラクトのコンテキストで実行され、すなわち ``this`` は呼び出したコントラクトを指し、特に呼び出したコントラクトのストレージにアクセスできます。ライブラリは独立したソースコードの一部なので、呼び出し元のコントラクトの状態変数が明示的に提供されている場合にのみアクセスできます（そうでない場合は名前を付ける方法がありません）。ライブラリはステートレスであると想定されているため、ライブラリ関数は、ステートを変更しない場合（ ``view`` または ``pure`` 関数の場合）にのみ、直接（つまり ``DELEGATECALL`` を使用せずに）呼び出すことができます。特に、ライブラリを破壊できません。
-
-.. .. note::
-
-..     Until version 0.4.20, it was possible to destroy libraries by
-..     circumventing Solidity's type system. Starting from that version,
-..     libraries contain a :ref:`mechanism<call-protection>` that
-..     disallows state-modifying functions
-..     to be called directly (i.e. without ``DELEGATECALL``).
+ライブラリはコントラクトに似ていますが、その目的は、特定のアドレスに一度だけデプロイされ、そのコードはEVMの ``DELEGATECALL`` （Homesteadまでの ``CALLCODE`` ）機能を使って再利用されることです。
+ライブラリ関数が呼び出された場合、そのコードは呼び出したコントラクトのコンテキストで実行されます。
+つまり ``this`` は呼び出したコントラクトを指し、呼び出したコントラクトのストレージにアクセスできます。
+ライブラリは独立したソースコードの一部なので、呼び出し元のコントラクトの状態変数が明示的に提供されている場合にのみアクセスできます（そうでない場合は名前を付ける方法がありません）。
+ライブラリはステートレスであると想定されているため、ライブラリ関数は、ステートを変更しない場合（ ``view`` または ``pure`` 関数の場合）にのみ、直接（つまり ``DELEGATECALL`` を使用せずに）呼び出すことができます。
+ライブラリを破壊することはできません。
 
 .. note::
 
-    バージョン0.4.20までは、Solidityの型システムを回避してライブラリを破壊できました。このバージョンから、ライブラリには状態を変更する関数を直接（つまり ``DELEGATECALL`` なしで）呼び出すことを禁止する :ref:`mechanism<call-protection>` が含まれるようになりました。
+    バージョン0.4.20までは、Solidityの型システムを回避してライブラリを破壊できました。
+    このバージョンから、ライブラリには状態を変更する関数を直接（つまり ``DELEGATECALL`` なしで）呼び出すことを禁止する :ref:`メカニズム<call-protection>` が含まれるようになりました。
 
 .. Libraries can be seen as implicit base contracts of the contracts that use them.
 .. They will not be explicitly visible in the inheritance hierarchy, but calls
@@ -45,7 +29,11 @@ Libraries
 .. and all functions called from therein will at compile time be included in the calling
 .. contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
 
-ライブラリは、それを使用するコントラクトの暗黙のベースコントラクトと見なすことができます。継承階層では明示的には見えませんが、ライブラリ関数への呼び出しは、明示的なベースコントラクトの関数への呼び出しと同じように見えます（ ``L.f()`` のような修飾されたアクセスを使用）。もちろん、内部関数への呼び出しは内部呼び出し規約を使用します。つまり、すべての内部型を渡すことができ、 :ref:`stored in memory <data-location>` 型は参照によって渡され、コピーされません。EVMでこれを実現するために、内部ライブラリ関数のコードとそこから呼び出されるすべての関数は、コンパイル時に呼び出しコントラクトに含まれ、 ``DELEGATECALL`` の代わりに通常の ``JUMP`` 呼び出しが使用されます。
+ライブラリは、それを使用するコントラクトの暗黙のベースコントラクトと見なすことができます。
+継承階層では明示的には見えませんが、ライブラリ関数への呼び出しは、明示的なベースコントラクトの関数への呼び出しと同じように見えます（ ``L.f()`` のような修飾されたアクセスを使用）。
+もちろん、内部関数への呼び出しは内部呼び出し規約を使用します。
+つまり、すべての内部型を渡すことができ、 :ref:`メモリに保存された <data-location>` 型は参照によって渡され、コピーされません。
+EVMでこれを実現するために、内部ライブラリ関数のコードとそこから呼び出されるすべての関数は、コンパイル時に呼び出しコントラクトに含まれ、 ``DELEGATECALL`` の代わりに通常の ``JUMP`` 呼び出しが使用されます。
 
 .. .. note::
 
@@ -56,7 +44,9 @@ Libraries
 
 .. note::
 
-    継承のアナロジーは、パブリック関数になると破綻します。     パブリックライブラリ関数を ``L.f()`` で呼び出すと、外部呼び出しになります（正確には ``DELEGATECALL`` ）。     対して ``A.f()`` は、 ``A`` が現在のコントラクトのベースコントラクトである場合、内部呼び出しとなります。
+    継承のアナロジーは、パブリック関数になると破綻します。
+    パブリックライブラリ関数を ``L.f()`` で呼び出すと、外部呼び出しになります（正確には ``DELEGATECALL`` ）。
+    対して ``A.f()`` は、 ``A`` が現在のコントラクトのベースコントラクトである場合、内部呼び出しとなります。
 
 .. index:: using for, set
 
@@ -64,32 +54,28 @@ Libraries
 .. be sure to check out :ref:`using for <using-for>` for a
 .. more advanced example to implement a set).
 
-次の例では、ライブラリを使用する方法を説明しています（ただし、手動の方法を使用しています。セットを実装するためのより高度な例については、必ず :ref:`using for <using-for>` を参照してください）。
+次の例では、ライブラリを使用する方法を説明しています（ただし、手動の方法を使用しています。集合を実装するためのより高度な例については、必ず :ref:`using for <using-for>` を参照してください）。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // We define a new struct datatype that will be used to
-    // hold its data in the calling contract.
+    // 呼び出し側のコントラクトでそのデータを保持するために使用される新しい構造体のデータ型を定義します。
     struct Data {
         mapping(uint => bool) flags;
     }
 
     library Set {
-        // Note that the first parameter is of type "storage
-        // reference" and thus only its storage address and not
-        // its contents is passed as part of the call.  This is a
-        // special feature of library functions.  It is idiomatic
-        // to call the first parameter `self`, if the function can
-        // be seen as a method of that object.
+        // 最初のパラメータは「ストレージ参照」型であるため、呼び出しの一部として、そのストレージアドレスのみが渡され、その内容は渡されないことに注意してください。 
+        // これはライブラリ関数の特別な機能です。
+        // もし関数がそのオブジェクトのメソッドとみなすことができるならば、最初のパラメータを `self` と呼ぶのが慣例となっています。
         function insert(Data storage self, uint value)
             public
             returns (bool)
         {
             if (self.flags[value])
-                return false; // already there
+                return false; // 既に存在する
             self.flags[value] = true;
             return true;
         }
@@ -99,7 +85,7 @@ Libraries
             returns (bool)
         {
             if (!self.flags[value])
-                return false; // not there
+                return false; // 存在しない
             self.flags[value] = false;
             return true;
         }
@@ -117,21 +103,19 @@ Libraries
         Data knownValues;
 
         function register(uint value) public {
-            // The library functions can be called without a
-            // specific instance of the library, since the
-            // "instance" will be the current contract.
+            // 「インスタンス」は現在のコントラクトになるため、ライブラリの関数は特定のインスタンスなしで呼び出すことができます。
             require(Set.insert(knownValues, value));
         }
-        // In this contract, we can also directly access knownValues.flags, if we want.
+        // このコントラクトでは、必要であれば、knownValues.flagsに直接アクセスすることもできます。
     }
 
-.. Of course, you do not have to follow this way to use
-.. libraries: they can also be used without defining struct
-.. data types. Functions also work without any storage
+.. Functions also work without any storage
 .. reference parameters, and they can have multiple storage reference
 .. parameters and in any position.
 
-もちろん、このような方法でライブラリを使用する必要はありません。構造体のデータ型を定義せずにライブラリを使用することもできます。また、関数は記憶参照パラメータなしで動作し、複数の記憶参照パラメータを任意の位置に持つことができます。
+もちろん、このような方法でライブラリを使用する必要はありません。
+構造体のデータ型を定義せずにライブラリを使用することもできます。
+また、関数はストレージの参照パラメータなしで動作し、複数のストレージの参照パラメータを任意の位置に持つことができます。
 
 .. The calls to ``Set.contains``, ``Set.insert`` and ``Set.remove``
 .. are all compiled as calls (``DELEGATECALL``) to an external
@@ -141,13 +125,14 @@ Libraries
 .. in this call, though (prior to Homestead, because of the use of ``CALLCODE``, ``msg.sender`` and
 .. ``msg.value`` changed, though).
 
-``Set.contains`` 、 ``Set.insert`` 、 ``Set.remove`` の呼び出しは、すべて外部のコントラクト／ライブラリへの呼び出し（ ``DELEGATECALL`` ）としてコンパイルされています。ライブラリを使用している場合は、実際の外部関数の呼び出しが行われることに注意してください。 ``msg.sender`` 、 ``msg.value`` 、 ``this`` は、この呼び出しでも値が保持されますが（ホームステッド以前は、 ``CALLCODE`` を使用していたため、 ``msg.sender`` と ``msg.value`` は変化していましたが）。
+``Set.contains`` 、 ``Set.insert`` 、 ``Set.remove`` の呼び出しは、すべて外部のコントラクト／ライブラリへの呼び出し（ ``DELEGATECALL`` ）としてコンパイルされています。
+ライブラリを使用している場合は、実際の外部関数の呼び出しが行われることに注意してください。 ``msg.sender`` 、 ``msg.value`` 、 ``this`` は、この呼び出しでも値が保持されますが（ホームステッド以前は、 ``CALLCODE`` を使用していたため、 ``msg.sender`` と ``msg.value`` は変化していましたが）。
 
 .. The following example shows how to use :ref:`types stored in memory <data-location>` and
 .. internal functions in libraries in order to implement
 .. custom types without the overhead of external function calls:
 
-次の例は、外部関数呼び出しのオーバーヘッドなしにカスタムタイプを実装するために、 :ref:`types stored in memory <data-location>` とライブラリの内部関数を使用する方法を示しています。
+次の例は、外部関数呼び出しのオーバーヘッドなしにカスタムタイプを実装するために、 :ref:`メモリに保存された型 <data-location>` とライブラリの内部関数を使用する方法を示しています。
 
 .. code-block:: solidity
     :force:
@@ -181,7 +166,7 @@ Libraries
                 }
             }
             if (carry > 0) {
-                // too bad, we have to add a limb
+                // 残念、limbを追加しなくてはいけません
                 uint[] memory newLimbs = new uint[](r.limbs.length + 1);
                 uint i;
                 for (i = 0; i < r.limbs.length; ++i)
@@ -211,10 +196,7 @@ Libraries
         }
     }
 
-.. It is possible to obtain the address of a library by converting
-.. the library type to the ``address`` type, i.e. using ``address(LibraryName)``.
-
-ライブラリタイプを ``address`` タイプに変換して、つまり ``address(LibraryName)`` を使ってライブラリのアドレスを取得することが可能です。
+ライブラリ型を ``address`` 型に変換して、つまり ``address(LibraryName)`` を使ってライブラリのアドレスを取得することが可能です。
 
 .. As the compiler does not know the address where the library will be deployed, the compiled hex code
 .. will contain placeholders of the form ``__$30bbc0abd4d6364515865950d3e0d10953$__``. The placeholder
@@ -226,37 +208,30 @@ Libraries
 .. compiled binary. See :ref:`library-linking` for information on how to use the commandline compiler
 .. for linking.
 
-コンパイラは、ライブラリが配置されるアドレスを知らないため、コンパイルされた16進コードには ``__$30bbc0abd4d6364515865950d3e0d10953$__`` という形式のプレースホルダーが含まれます。このプレースホルダーは、完全修飾されたライブラリ名の keccak256 ハッシュの 16 進エンコーディングの 34 文字のプレフィックスであり、例えば、ライブラリが  ``libraries/``  ディレクトリの  ``bigint.sol``  というファイルに格納されている場合は  ``libraries/bigint.sol:BigInt``  となります。このようなバイトコードは不完全なので、デプロイしてはいけません。プレースホルダーを実際のアドレスに置き換える必要があります。これを行うには、ライブラリのコンパイル時にコンパイラに渡すか、リンカを使用して既にコンパイルされたバイナリを更新する必要があります。リンク用のコマンドライン・コンパイラの使用方法については、 :ref:`library-linking` を参照してください。
-
-.. In comparison to contracts, libraries are restricted in the following ways:
+コンパイラは、ライブラリが配置されるアドレスを知らないため、コンパイルされた16進コードには ``__$30bbc0abd4d6364515865950d3e0d10953$__`` という形式のプレースホルダーが含まれます。
+このプレースホルダーは、完全修飾されたライブラリ名のkeccak256ハッシュの16進エンコーディングの34文字のプレフィックスであり、例えば、ライブラリが ``libraries/`` ディレクトリの ``bigint.sol`` というファイルに格納されている場合は ``libraries/bigint.sol:BigInt`` となります。
+このようなバイトコードは不完全なので、デプロイしてはいけません。
+プレースホルダーを実際のアドレスに置き換える必要があります。
+これを行うには、ライブラリのコンパイル時にコンパイラに渡すか、リンカを使用して既にコンパイルされたバイナリを更新する必要があります。
+リンク用のコマンドラインコンパイラの使用方法については、 :ref:`library-linking` を参照してください。
 
 コントラクトと比較して、ライブラリには以下のような制限があります。
 
-.. - they cannot have state variables
-
 - 状態変数を持つことはできません。
 
-.. - they cannot inherit nor be inherited
+- 継承することも継承されることもできません。
 
-- 継承することも継承されることもできない
+- Etherを受け取れません。
 
-.. - they cannot receive Ether
+- 壊すことができません。
 
-- を受信できません。
-
-.. - they cannot be destroyed
-
-- 壊すことができない
-
-.. (These might be lifted at a later point.)
-
-(これらは後の段階で解除されるかもしれません）。
+（これらは後の段階で解除されるかもしれません）
 
 .. _library-selectors:
 .. index:: selector
 
-Function Signatures and Selectors in Libraries
-==============================================
+ライブラリの関数シグネチャと関数セレクター
+===============================================
 
 .. While external calls to public or external library functions are possible, the calling convention for such calls
 .. is considered to be internal to Solidity and not the same as specified for the regular :ref:`contract ABI<ABI>`.
@@ -264,44 +239,42 @@ Function Signatures and Selectors in Libraries
 .. and storage pointers. For that reason, the function signatures used to compute the 4-byte selector are computed
 .. following an internal naming schema and arguments of types not supported in the contract ABI use an internal encoding.
 
-パブリック・ライブラリ関数や外部ライブラリ関数の外部呼び出しは可能ですが、そのような呼び出しのための呼び出し規約はSolidity内部のものとみなされ、通常の :ref:`contract ABI<ABI>` に指定されているものとは異なります。外部ライブラリ関数は、再帰的構造体やストレージ・ポインタなど、外部コントラクト関数よりも多くの引数タイプをサポートしています。そのため、4バイトセレクタの計算に使用される関数シグネチャは、内部のネーミングスキーマに従って計算され、コントラクトABIでサポートされていない型の引数は、内部のエンコーディングを使用します。
+パブリックライブラリ関数や外部ライブラリ関数の外部呼び出しは可能ですが、そのような呼び出しのための呼び出し規約はSolidity内部のものとみなされ、通常の :ref:`コントラクトABI<ABI>` に指定されているものとは異なります。
+外部ライブラリ関数は、再帰的構造体やストレージポインタなど、外部コントラクト関数よりも多くの引数タイプをサポートしています。
+そのため、4バイトセレクタの計算に使用される関数シグネチャは、内部のネーミングスキーマに従って計算され、コントラクトABIでサポートされていない型の引数は、内部のエンコーディングを使用します。
 
-.. The following identifiers are used for the types in the signatures:
-
-シグネチャーのタイプには、以下の識別子が使われています。
+シグネチャの型には、以下の識別子が使われています。
 
 .. - Value types, non-storage ``string`` and non-storage ``bytes`` use the same identifiers as in the contract ABI.
-
-- 値型、非記憶型 ``string`` 、非記憶型 ``bytes`` はコントラクトABIと同じ識別子を使用しています。
-
 .. - Non-storage array types follow the same convention as in the contract ABI, i.e. ``<type>[]`` for dynamic arrays and
 ..   ``<type>[M]`` for fixed-size arrays of ``M`` elements.
-
-- 非蓄積型の配列タイプはコントラクトABIと同じ規則に従っています。すなわち、動的配列は ``<type>[]`` 、 ``M`` 要素の固定サイズ配列は ``<type>[M]`` です。
-
 .. - Non-storage structs are referred to by their fully qualified name, i.e. ``C.S`` for ``contract C { struct S { ... } }``.
+.. - Storage pointer mappings use ``mapping(<keyType> => <valueType>) storage`` where ``<keyType>`` and ``<valueType>`` are
+..   the identifiers for the key and value types of the mapping, respectively.
+.. - Other storage pointer types use the type identifier of their corresponding non-storage type, but append a single space
+..   followed by ``storage`` to it.
+
+- 値型、非ストレージ ``string`` 、非ストレージ ``bytes`` はコントラクトABIと同じ識別子を使用しています。
+
+- 非ストレージ型の配列タイプはコントラクトABIと同じ規則に従っています。すなわち、動的配列は ``<type>[]`` 、 ``M`` 要素の固定サイズ配列は ``<type>[M]`` です。
 
 - ストレージを持たない構造体は、完全修飾名で参照されます。
 
-.. - Storage pointer mappings use ``mapping(<keyType> => <valueType>) storage`` where ``<keyType>`` and ``<valueType>`` are
-..   the identifiers for the key and value types of the mapping, respectively.
-
 - ストレージポインターマッピングでは、 ``<keyType>`` と ``<valueType>`` がそれぞれマッピングのキータイプとバリュータイプの識別子である ``mapping(<keyType> => <valueType>) storage`` を使用します。
-
-.. - Other storage pointer types use the type identifier of their corresponding non-storage type, but append a single space
-..   followed by ``storage`` to it.
 
 - 他のストレージポインタタイプは、対応する非ストレージタイプのタイプ識別子を使用しますが、それに1つのスペースとそれに続く ``storage`` が追加されます。
 
 .. The argument encoding is the same as for the regular contract ABI, except for storage pointers, which are encoded as a
 .. ``uint256`` value referring to the storage slot to which they point.
 
-引数のエンコーディングは、通常のコントラクトABIと同じです。ただし、ストレージ・ポインタは、それが指し示すストレージ・スロットを参照する ``uint256`` 値としてエンコーディングされます。
+引数のエンコーディングは、通常のコントラクトABIと同じです。
+ただし、ストレージポインタは、それが指し示すストレージ・スロットを参照する ``uint256`` 値としてエンコーディングされます。
 
 .. Similarly to the contract ABI, the selector consists of the first four bytes of the Keccak256-hash of the signature.
 .. Its value can be obtained from Solidity using the ``.selector`` member as follows:
 
-コントラクトABIと同様に、セレクタは署名のKeccak256ハッシュの最初の4バイトで構成されています。その値は、 ``.selector`` メンバーを使ってSolidityから以下のように取得できる。
+コントラクトABIと同様に、セレクタは署名のKeccak256ハッシュの最初の4バイトで構成されています。
+その値は、 ``.selector`` メンバーを使ってSolidityから以下のように取得できます。
 
 .. code-block:: solidity
 
@@ -320,14 +293,14 @@ Function Signatures and Selectors in Libraries
 
 .. _call-protection:
 
-Call Protection For Libraries
-=============================
+ライブラリのためのコールプロテクション
+=======================================
 
 .. As mentioned in the introduction, if a library's code is executed
 .. using a ``CALL`` instead of a ``DELEGATECALL`` or ``CALLCODE``,
 .. it will revert unless a ``view`` or ``pure`` function is called.
 
-冒頭で述べたように、 ``DELEGATECALL`` や ``CALLCODE`` ではなく ``CALL`` を使ってライブラリのコードを実行すると、 ``view`` や ``pure`` の関数が呼ばれない限り元に戻ります。
+冒頭で述べたように、 ``DELEGATECALL`` や ``CALLCODE`` ではなく ``CALL`` を使ってライブラリのコードを実行すると、 ``view`` や ``pure`` の関数が呼ばれない限りリバートします。
 
 .. The EVM does not provide a direct way for a contract to detect
 .. whether it was called using ``CALL`` or not, but a contract
@@ -336,7 +309,8 @@ Call Protection For Libraries
 .. to the address used at construction time to determine the mode
 .. of calling.
 
-EVMは、コントラクトが ``CALL`` を使用して呼び出されたかどうかを検出する直接的な方法を提供していませんが、コントラクトは ``ADDRESS``  opcodeを使用して、現在「どこで」実行されているかを調べることができます。生成されたコードは、このアドレスをコンストラクション時に使用されたアドレスと比較して、呼び出しのモードを決定します。
+EVMは、コントラクトが ``CALL`` を使用して呼び出されたかどうかを検出する直接的な方法を提供していませんが、コントラクトは ``ADDRESS`` オペコードを使用して、現在「どこで」実行されているかを調べることができます。
+生成されたコードは、このアドレスをコンストラクション時に使用されたアドレスと比較して、呼び出しのモードを決定します。
 
 .. More specifically, the runtime code of a library always starts
 .. with a push instruction, which is a zero of 20 bytes at
@@ -348,7 +322,9 @@ EVMは、コントラクトが ``CALL`` を使用して呼び出されたかど�
 .. code compares the current address against this constant
 .. for any non-view and non-pure function.
 
-具体的には、ライブラリのランタイムコードは常にプッシュ命令で始まり、コンパイル時には20バイトのゼロになっています。デプロイコードが実行されると、この定数がメモリ上で現在のアドレスに置き換えられ、この変更されたコードがコントラクトに格納されます。実行時には、これによりデプロイ時のアドレスがスタックにプッシュされる最初の定数となり、ディスパッチャコードは、ビューではない、ピュアではない関数の場合、現アドレスとこの定数を比較します。
+具体的には、ライブラリのランタイムコードは常にプッシュ命令で始まり、コンパイル時には20バイトのゼロになっています。
+デプロイコードが実行されると、この定数がメモリ上で現在のアドレスに置き換えられ、この変更されたコードがコントラクトに格納されます。
+実行時には、これによりデプロイ時のアドレスがスタックにプッシュされる最初の定数となり、ディスパッチャコードは、ビューではない、ピュアではない関数の場合、現アドレスとこの定数を比較します。
 
 .. This means that the actual code stored on chain for a library
 .. is different from the code reported by the compiler as
