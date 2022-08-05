@@ -1,10 +1,8 @@
 .. index:: ! inheritance, ! base class, ! contract;base, ! deriving
 
 ***********
-Inheritance
+継承
 ***********
-
-.. Solidity supports multiple inheritance including polymorphism.
 
 Solidityは、ポリモーフィズムを含む多重継承をサポートしています。
 
@@ -15,7 +13,9 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. hierarchy using the ``virtual`` and ``override`` keywords.
 .. See :ref:`Function Overriding <function-overriding>` for more details.
 
-ポリモーフィズムとは、関数の呼び出し（内部および外部）が、継承階層の中で最も派生したコントラクト内の同名の関数（およびパラメータ型）を常に実行することを意味します。この機能は、 ``virtual`` キーワードと ``override`` キーワードを使って、階層内の各関数で明示的に有効にする必要があります。詳細は :ref:`Function Overriding <function-overriding>` を参照してください。
+ポリモーフィズムとは、関数の呼び出し（内部および外部）が、継承階層の中で最も派生したコントラクト内の同名の関数（およびパラメータ型）を常に実行することを意味します。
+この機能は、 ``virtual`` キーワードと ``override`` キーワードを使って、階層内の各関数で明示的に有効にする必要があります。
+詳細は :ref:`関数オーバーライド <function-overriding>` を参照してください。
 
 .. It is possible to call functions further up in the inheritance
 .. hierarchy internally by explicitly specifying the contract
@@ -31,22 +31,22 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. to functions of base contracts also just use internal function calls
 .. (``super.f(..)`` will use JUMP and not a message call).
 
-コントラクトが他のコントラクトを継承する場合、ブロックチェーン上には1つのコントラクトのみが作成され、作成されたコントラクトにはすべてのベースコントラクトのコードがコンパイルされます。つまり、ベースコントラクトの関数に対する内部呼び出しも、すべて内部関数呼び出しを使用するだけです（ ``super.f(..)`` はJUMPを使用し、メッセージ呼び出しではありません）。
+コントラクトが他のコントラクトを継承する場合、ブロックチェーン上には1つのコントラクトのみが作成され、作成されたコントラクトにはすべてのベースコントラクトのコードがコンパイルされます。
+つまり、ベースコントラクトの関数に対する内部呼び出しも、すべて内部関数呼び出しを使用するだけです（ ``super.f(..)`` はJUMPを使用し、メッセージ呼び出しではありません）。
 
 .. State variable shadowing is considered as an error.  A derived contract can
 .. only declare a state variable ``x``, if there is no visible state variable
 .. with the same name in any of its bases.
 
-状態変数のシャドウイングはエラーとみなされます。  派生コントラクトは、そのベースのいずれかに同名の可視ステート変数が存在しない場合にのみ、ステート変数 ``x`` を宣言できます。
+状態変数のシャドーイングはエラーとみなされます。
+派生コントラクトは、そのベースのいずれかに同名の可視ステート変数が存在しない場合にのみ、ステート変数 ``x`` を宣言できます。
 
 .. The general inheritance system is very similar to
 .. `Python's <https://docs.python.org/3/tutorial/classes.html#inheritance>`_,
 .. especially concerning multiple inheritance, but there are also
 .. some :ref:`differences <multi-inheritance>`.
 
-一般的な相続制度は `Python's <https://docs.python.org/3/tutorial/classes.html#inheritance>`_ と非常に似ており、特に複数の相続に関しては、 :ref:`differences <multi-inheritance>` もあります。
-
-.. Details are given in the following example.
+一般的な継承システムは `Pythonのもの <https://docs.python.org/3/tutorial/classes.html#inheritance>`_ と非常に似ていますが、複数の継承に関しては、 :ref:`異なる点 <multi-inheritance>` もあります。
 
 詳細は以下の例を参照してください。
 
@@ -60,22 +60,19 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         address payable owner;
     }
 
-    // Use `is` to derive from another contract. Derived
-    // contracts can access all non-private members including
-    // internal functions and state variables. These cannot be
-    // accessed externally via `this`, though.
+    // 他のコントラクトから派生させるには、`is`を使用します。
+    // 派生したコントラクトは、内部関数や状態変数を含む、プライベートでないすべてのメンバにアクセスすることができます。
+    // しかし、これらは `this` を介して外部からアクセスすることはできません。
     contract Destructible is Owned {
-        // The keyword `virtual` means that the function can change
-        // its behaviour in derived classes ("overriding").
+        // キーワード `virtual` は、その関数が派生クラスでその振る舞いを変更できる (「オーバーライド」) ことを意味します。
         function destroy() virtual public {
             if (msg.sender == owner) selfdestruct(owner);
         }
     }
 
-    // These abstract contracts are only provided to make the
-    // interface known to the compiler. Note the function
-    // without body. If a contract does not implement all
-    // functions it can only be used as an interface.
+    // これらの抽象コントラクトは、コンパイラにインターフェイスを知らせるためにのみ提供されています。
+    // ボディを持たない関数に注意してください。
+    // コントラクトがすべての関数を実装していない場合、インターフェースとしてのみ使用することができます。
     abstract contract Config {
         function lookup(uint id) public virtual returns (address adr);
     }
@@ -85,45 +82,37 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         function unregister() public virtual;
     }
 
-    // Multiple inheritance is possible. Note that `owned` is
-    // also a base class of `Destructible`, yet there is only a single
-    // instance of `owned` (as for virtual inheritance in C++).
+    // 多重継承が可能です。
+    // `owned` は `Destructible` のベースクラスでもあるが、 `owned` のインスタンスは一つしかないことに注意（C++ の仮想継承と同じ）。
     contract Named is Owned, Destructible {
         constructor(bytes32 name) {
             Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
             NameReg(config.lookup(1)).register(name);
         }
 
-        // Functions can be overridden by another function with the same name and
-        // the same number/types of inputs.  If the overriding function has different
-        // types of output parameters, that causes an error.
-        // Both local and message-based function calls take these overrides
-        // into account.
-        // If you want the function to override, you need to use the
-        // `override` keyword. You need to specify the `virtual` keyword again
-        // if you want this function to be overridden again.
+        // 関数は、同じ名前、同じ入力の数/型の別の関数によってオーバーライドできます。
+        // オーバーライドされた関数が異なる型の出力パラメータを持っている場合、それはエラーの原因となります。
+        // ローカル関数とメッセージベースの関数呼び出しの両方が、これらのオーバーライドを考慮に入れています。
+        // 関数をオーバーライドしたい場合は、`override` キーワードを使用する必要があります。
+        // また、この関数を再びオーバーライドしたい場合は、`virtual`キーワードを指定する必要があります。
         function destroy() public virtual override {
             if (msg.sender == owner) {
                 Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
                 NameReg(config.lookup(1)).unregister();
-                // It is still possible to call a specific
-                // overridden function.
+                // 特定のオーバーライドされた関数を呼び出すことは可能です。
                 Destructible.destroy();
             }
         }
     }
 
-    // If a constructor takes an argument, it needs to be
-    // provided in the header or modifier-invocation-style at
-    // the constructor of the derived contract (see below).
+    // コンストラクタが引数を取る場合、派生コントラクトのコンストラクタでヘッダまたは修飾子を呼び出すスタイルで提供する必要があります(下記参照)。
     contract PriceFeed is Owned, Destructible, Named("GoldFeed") {
         function updateInfo(uint newInfo) public {
             if (msg.sender == owner) info = newInfo;
         }
 
-        // Here, we only specify `override` and not `virtual`.
-        // This means that contracts deriving from `PriceFeed`
-        // cannot change the behaviour of `destroy` anymore.
+        // ここでは、 `override` のみを指定し、 `virtual` は指定しない。
+        // これは、 `PriceFeed` から派生したコントラクトは、もう `destroy` の挙動を変更できないことを意味します。
         function destroy() public override(Destructible, Named) { Named.destroy(); }
         function get() public view returns(uint r) { return info; }
 
@@ -134,7 +123,8 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. destruction request. The way this is done is problematic, as
 .. seen in the following example:
 
-上記では、破壊要求を「送金」するために ``Destructible.destroy()`` を呼び出していることに注意してください。この方法は、次の例に見られるように、問題があります。
+上記では、破壊要求を「送金」するために ``Destructible.destroy()`` を呼び出していることに注意してください。
+この方法は、次の例に見られるように、問題があります。
 
 .. code-block:: solidity
 
@@ -153,11 +143,11 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
     }
 
     contract Base1 is Destructible {
-        function destroy() public virtual override { /* do cleanup 1 */ Destructible.destroy(); }
+        function destroy() public virtual override { /* cleanup 1 */ Destructible.destroy(); }
     }
 
     contract Base2 is Destructible {
-        function destroy() public virtual override { /* do cleanup 2 */ Destructible.destroy(); }
+        function destroy() public virtual override { /* cleanup 2 */ Destructible.destroy(); }
     }
 
     contract Final is Base1, Base2 {
@@ -168,7 +158,8 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. explicitly in the final override, but this function will bypass
 .. ``Base1.destroy``. The way around this is to use ``super``:
 
-``Final.destroy()`` への呼び出しは、最終的なオーバーライドで明示的に指定しているので ``Base2.destroy`` を呼び出しますが、この関数は ``Base1.destroy`` をバイパスします。これを回避する方法は、 ``super`` を使うことです。
+``Final.destroy()`` への呼び出しは、最終的なオーバーライドで明示的に指定しているので ``Base2.destroy`` を呼び出しますが、この関数は ``Base1.destroy`` をバイパスします。
+これを回避する方法は、 ``super`` を使うことです。
 
 .. code-block:: solidity
 
@@ -187,11 +178,11 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
     }
 
     contract Base1 is Destructible {
-        function destroy() public virtual override { /* do cleanup 1 */ super.destroy(); }
+        function destroy() public virtual override { /* cleanup 1 */ super.destroy(); }
     }
 
     contract Base2 is Destructible {
-        function destroy() public virtual override { /* do cleanup 2 */ super.destroy(); }
+        function destroy() public virtual override { /* cleanup 2 */ super.destroy(); }
     }
 
     contract Final is Base1, Base2 {
@@ -209,26 +200,29 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. although its type is known. This is similar for ordinary
 .. virtual method lookup.
 
-``Base2`` が ``super`` の関数を呼び出す場合、単純にそのベースコントラクトの1つでこの関数を呼び出すのではない。  むしろ、最終的な継承グラフの次のベースコントラクトでこの関数を呼び出すので、 ``Base1.destroy()`` を呼び出すことになります（最終的な継承順序は--最も派生したコントラクトから始まることに注意してください: Final、Base2、Base1、Destructible、owned）。superを使うときに呼び出される実際の関数は、型はわかっていても、使われるクラスのコンテキストではわかりません。これは通常の仮想メソッドの検索でも同様です。
+``Base2`` が ``super`` の関数を呼び出す場合、単純にそのベースコントラクトの1つでこの関数を呼び出すのではない。
+むしろ、最終的な継承グラフの次のベースコントラクトでこの関数を呼び出すので、 ``Base1.destroy()`` を呼び出すことになります（最終的な継承順序は--最も派生したコントラクトから始まることに注意してください: Final、Base2、Base1、Destructible、owned）。
+superを使うときに呼び出される実際の関数は、型はわかっていても、使われるクラスのコンテキストではわかりません。
+これは通常の仮想メソッドの検索でも同様です。
 
 .. index:: ! overriding;function
 
 .. _function-overriding:
 
-Function Overriding
+関数オーバーライド
 ===================
 
-.. Base functions can be overridden by inheriting contracts to change their
-.. behavior if they are marked as ``virtual``. The overriding function must then
-.. use the ``override`` keyword in the function header.
 .. The overriding function may only change the visibility of the overridden function from ``external`` to ``public``.
 .. The mutability may be changed to a more strict one following the order:
 .. ``nonpayable`` can be overridden by ``view`` and ``pure``. ``view`` can be overridden by ``pure``.
 .. ``payable`` is an exception and cannot be changed to any other mutability.
 
-ベース関数は、コントラクトを継承することでオーバーライドでき、 ``virtual`` としてマークされている場合は、その動作を変更できます。オーバーライドされた関数は、関数ヘッダーで ``override`` キーワードを使用しなければなりません。オーバーライドされた関数は、オーバーライドされた関数の可視性を ``external`` から ``public`` に変更するだけです。変異可能性は、順序に従って、より厳密なものに変更できます。 ``nonpayable`` は ``view`` と ``pure`` でオーバーライドできます。 ``nonpayable`` は ``view`` と ``pure`` でオーバーライドでき、 ``view`` は ``pure`` でオーバーライドできます。 ``payable`` は例外で、他のミュータビリティに変更できません。
-
-.. The following example demonstrates changing mutability and visibility:
+ベース関数は、コントラクトを継承することでオーバーライドでき、 ``virtual`` としてマークされている場合は、その動作を変更できます。
+オーバーライドされた関数は、関数ヘッダーで ``override`` キーワードを使用しなければなりません。
+オーバーライドされた関数は、オーバーライドされた関数の可視性を ``external`` から ``public`` に変更するだけです。
+ミュータビリティは、順序に従って、より厳密なものに変更できます。
+``nonpayable`` は ``view`` と ``pure`` でオーバーライドでき、 ``view`` は ``pure`` でオーバーライドできます。
+``payable`` は例外で、他のミュータビリティに変更できません。
 
 次の例では、mutabilityとvisibilityの変更を行っています。
 
@@ -256,7 +250,9 @@ Function Overriding
 .. Additionally, if a contract inherits the same function from multiple (unrelated)
 .. bases, it has to explicitly override it:
 
-多重継承では、同じ関数を定義する最も派生したベースコントラクトを、 ``override`` キーワードの後に明示的に指定する必要があります。言い換えれば、同じ関数を定義し、まだ別のベースコントラクトによってオーバーライドされていないすべてのベースコントラクトを指定しなければなりません（継承グラフのあるパス上で）。さらに、コントラクトが複数の（関連性のない）ベースから同じ関数を継承する場合は、明示的にオーバーライドしなければなりません。
+多重継承では、同じ関数を定義する最も派生したベースコントラクトを、 ``override`` キーワードの後に明示的に指定する必要があります。
+言い換えれば、同じ関数を定義し、まだ別のベースコントラクトによってオーバーライドされていないすべてのベースコントラクトを指定しなければなりません（継承グラフのあるパス上で）。
+さらに、コントラクトが複数の（関連性のない）ベースから同じ関数を継承する場合は、明示的にオーバーライドしなければなりません。
 
 .. code-block:: solidity
 
@@ -275,8 +271,7 @@ Function Overriding
 
     contract Inherited is Base1, Base2
     {
-        // Derives from multiple bases defining foo(), so we must explicitly
-        // override it
+        // foo()を定義している複数のベースから派生しているので、明示的にオーバーライドする必要があります。
         function foo() public override(Base1, Base2) {}
     }
 
@@ -295,7 +290,7 @@ Function Overriding
     contract A { function f() public pure{} }
     contract B is A {}
     contract C is A {}
-    // No explicit override required
+    // 明示的なオーバーライドは必要ありません
     contract D is B, C {}
 
 .. More formally, it is not required to override a function (directly or
@@ -313,20 +308,16 @@ Function Overriding
 .. and ends at a contract mentioning a function with that signature
 .. that does not override.
 
-この意味で、シグネチャのオーバーライド・パスとは、対象となるコントラクトから始まり、オーバーライドしないそのシグネチャを持つ関数に言及しているコントラクトで終わる、継承グラフを通るパスのことです。
+この意味で、シグネチャのオーバーライドパスとは、対象となるコントラクトから始まり、オーバーライドしないそのシグネチャを持つ関数に言及しているコントラクトで終わる、継承グラフを通るパスのことです。
 
 .. If you do not mark a function that overrides as ``virtual``, derived
 .. contracts can no longer change the behaviour of that function.
 
 オーバーライドする関数を ``virtual`` としてマークしていない場合、派生コントラクトはもはやその関数の動作を変更できません。
 
-.. .. note::
-
-..   Functions with the ``private`` visibility cannot be ``virtual``.
-
 .. note::
 
-  ``private`` の可視性を持つ関数は ``virtual`` できません。
+  ``private`` の可視性を持つ関数は ``virtual`` にできません。
 
 .. .. note::
 
@@ -336,7 +327,8 @@ Function Overriding
 
 .. note::
 
-  実装のない関数は、インターフェイスの外では ``virtual`` とマークされなければなりません。インターフェースでは、すべての関数は自動的に ``virtual`` とみなされます。
+    実装のない関数は、インターフェイスの外では ``virtual`` とマークされなければなりません。
+    インターフェースでは、すべての関数は自動的に ``virtual`` とみなされます。
 
 .. .. note::
 
@@ -346,13 +338,9 @@ Function Overriding
 
 .. note::
 
-  Solidity 0.8.8からは、複数のベースで定義されている場合を除き、インターフェース関数をオーバーライドする際に ``override`` キーワードは必要ありません。
+    Solidity 0.8.8からは、複数のベースで定義されている場合を除き、インターフェース関数をオーバーライドする際に ``override`` キーワードは必要ありません。
 
-.. Public state variables can override external functions if the
-.. parameter and return types of the function matches the getter function
-.. of the variable:
-
-パブリックステート変数は、関数のパラメータと戻り値の型が変数のゲッター関数と一致する場合、外部関数をオーバーライドできます。
+パブリックな状態変数は、関数のパラメータと戻り値の型が変数のゲッター関数と一致する場合、外部関数をオーバーライドできます。
 
 .. code-block:: solidity
 
@@ -376,21 +364,23 @@ Function Overriding
 
 .. note::
 
-  パブリックステート変数は、外部関数をオーバーライドできますが、それ自体をオーバーライドできません。
+    パブリックな状態変数は、外部関数をオーバーライドできますが、それ自体をオーバーライドできません。
 
 .. index:: ! overriding;modifier
 
 .. _modifier-overriding:
 
-Modifier Overriding
-===================
+修飾子オーバーライド
+=======================
 
 .. Function modifiers can override each other. This works in the same way as
 .. :ref:`function overriding <function-overriding>` (except that there is no overloading for modifiers). The
 .. ``virtual`` keyword must be used on the overridden modifier
 .. and the ``override`` keyword must be used in the overriding modifier:
 
-関数の修飾子はお互いにオーバーライドできます。これは、 :ref:`function overriding <function-overriding>` と同じように動作します（修飾子にオーバーロードがないことを除く）。 ``virtual`` キーワードはオーバーライドする修飾子に使用し、 ``override`` キーワードはオーバーライドする修飾子に使用しなければなりません。
+関数の修飾子はお互いにオーバーライドできます。
+これは、 :ref:`関数オーバーライド <function-overriding>` と同じように動作します（修飾子にオーバーロードがないことを除く）。
+``virtual`` キーワードはオーバーライドする修飾子に使用し、 ``override`` キーワードはオーバーライドする修飾子に使用しなければなりません。
 
 .. code-block:: solidity
 
@@ -436,19 +426,15 @@ Modifier Overriding
 
 .. _constructor:
 
-Constructors
-============
-
-.. A constructor is an optional function declared with the ``constructor`` keyword
-.. which is executed upon contract creation, and where you can run contract
-.. initialisation code.
+コンストラクタ
+=================
 
 コンストラクタは、 ``constructor`` キーワードで宣言されたオプションの関数で、コントラクトの作成時に実行され、コントラクトの初期化コードを実行できます。
 
 .. Before the constructor code is executed, state variables are initialised to
 .. their specified value if you initialise them inline, or their :ref:`default value<default-value>` if you do not.
 
-コンストラクタのコードが実行される前に、ステート変数は、インラインで初期化した場合は指定した値に、初期化しなかった場合は :ref:`default value<default-value>` に初期化されます。
+コンストラクタのコードが実行される前に、ステート変数は、インラインで初期化した場合は指定した値に、初期化しなかった場合は :ref:`デフォルト値 <default-value>` に初期化されます。
 
 .. After the constructor has run, the final code of the contract is deployed
 .. to the blockchain. The deployment of
@@ -458,7 +444,10 @@ Constructors
 .. It does not include the constructor code or internal functions that are
 .. only called from the constructor.
 
-コンストラクタの実行後、コントラクトの最終コードがブロックチェーンにデプロイされます。コードのデプロイには、コードの長さに応じた追加のガスがかかります。このコードには、パブリック・インターフェースの一部であるすべての関数と、そこから関数呼び出しによって到達可能なすべての関数が含まれます。コンストラクタのコードや、コンストラクタからしか呼び出されない内部関数は含まれません。
+コンストラクタの実行後、コントラクトの最終コードがブロックチェーンにデプロイされます。
+コードのデプロイには、コードの長さに応じた追加のガスがかかります。
+このコードには、パブリックインターフェースの一部であるすべての関数と、そこから関数呼び出しによって到達可能なすべての関数が含まれます。
+コンストラクタのコードや、コンストラクタからしか呼び出されない内部関数は含まれません。
 
 .. If there is no
 .. constructor, the contract will assume the default constructor, which is
@@ -487,32 +476,29 @@ Constructors
 .. the contract has to be marked :ref:`abstract <abstract-contract>`, because these parameters
 .. cannot be assigned valid values from outside but only through the constructors of derived contracts.
 
-コンストラクタで内部パラメータを使用できます（たとえば、ストレージポインタなど）。この場合、コントラクトは :ref:`abstract <abstract-contract>` マークを付けなければなりません。なぜなら、これらのパラメータは外部から有効な値を割り当てることができず、派生コントラクトのコンストラクタを通してのみ有効だからです。
-
-.. .. warning ::
-..     Prior to version 0.4.22, constructors were defined as functions with the same name as the contract.
-..     This syntax was deprecated and is not allowed anymore in version 0.5.0.
+コンストラクタで内部パラメータを使用できます（たとえば、ストレージポインタなど）。
+この場合、コントラクトは :ref:`abstract <abstract-contract>` マークを付けなければなりません。
+なぜなら、これらのパラメータは外部から有効な値を割り当てることができず、派生コントラクトのコンストラクタを通してのみ有効だからです。
 
 .. warning ::
-    バージョン0.4.22より前のバージョンでは、コンストラクタはコントラクトと同じ名前の関数として定義されていました。この構文は非推奨で、バージョン0.5.0ではもう認められていません。
-
-.. .. warning ::
-..     Prior to version 0.7.0, you had to specify the visibility of constructors as either
-..     ``internal`` or ``public``.
+    バージョン0.4.22より前のバージョンでは、コンストラクタはコントラクトと同じ名前の関数として定義されていました。
+    この構文は非推奨で、バージョン0.5.0ではもう認められていません。
 
 .. warning ::
     バージョン0.7.0より前のバージョンでは、コンストラクタの可視性を ``internal`` または ``public`` のいずれかに指定する必要がありました。
 
 .. index:: ! base;constructor
 
-Arguments for Base Constructors
+ベースコンストラクタの引数
 ===============================
 
 .. The constructors of all the base contracts will be called following the
 .. linearization rules explained below. If the base constructors have arguments,
 .. derived contracts need to specify all of them. This can be done in two ways:
 
-すべての基本コントラクトのコンストラクタは、以下に説明する線形化規則に従って呼び出されます。基本コントラクトのコンストラクタに引数がある場合、派生コントラクトはそのすべてを指定する必要があります。これは2つの方法で行うことができます。
+すべてのベースコントラクトのコンストラクタは、以下に説明する線形化規則に従って呼び出されます。
+ベースコントラクトのコンストラクタに引数がある場合、派生コントラクトはそのすべてを指定する必要があります。
+これは2つの方法で行うことができます。
 
 .. code-block:: solidity
 
@@ -524,12 +510,12 @@ Arguments for Base Constructors
         constructor(uint _x) { x = _x; }
     }
 
-    // Either directly specify in the inheritance list...
+    // 継承リストに直接指定するか...
     contract Derived1 is Base(7) {
         constructor() {}
     }
 
-    // or through a "modifier" of the derived constructor.
+    // または派生コンストラクタの"修飾子"を介して行われます。
     contract Derived2 is Base {
         constructor(uint _y) Base(_y * _y) {}
     }
@@ -545,7 +531,11 @@ Arguments for Base Constructors
 .. inheritance list or in modifier-style in the derived constructor.
 .. Specifying arguments in both places is an error.
 
-1つの方法は、継承リストに直接記載する方法です（ ``is Base(7)`` ）。  もう1つは、派生したコンストラクタの一部としてモディファイアを呼び出す方法です（ ``Base(_y * _y)`` ）。コンストラクタの引数が定数で、コントラクトの動作を定義したり、記述したりする場合は、最初の方法が便利です。ベースのコンストラクタの引数が派生コントラクトの引数に依存する場合は、2 番目の方法を使用する必要があります。引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。両方の場所で引数を指定するとエラーになります。
+1つの方法は、継承リストに直接記載する方法です（ ``is Base(7)`` ）。
+もう1つは、派生したコンストラクタの一部として修飾子を呼び出す方法です（ ``Base(_y * _y)`` ）。
+コンストラクタの引数が定数で、コントラクトの動作を定義したり、記述したりする場合は、最初の方法が便利です。
+ベースのコンストラクタの引数が派生コントラクトの引数に依存する場合は、2 番目の方法を使用する必要があります。
+引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。両方の場所で引数を指定するとエラーになります。
 
 .. If a derived contract does not specify the arguments to all of its base
 .. contracts' constructors, it will be abstract.
@@ -556,7 +546,7 @@ Arguments for Base Constructors
 
 .. _multi-inheritance:
 
-Multiple Inheritance and Linearization
+多重継承とリニアライゼーション
 ======================================
 
 .. Languages that allow multiple inheritance have to deal with
@@ -570,19 +560,25 @@ Multiple Inheritance and Linearization
 .. in the order from "most base-like" to "most derived".
 .. Note that this order is the reverse of the one used in Python.
 
-多重継承が可能な言語は、いくつかの問題を抱えています。  ひとつは「 `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_ 」です。SolidityはPythonに似ていますが、ベースクラスの有向非環状グラフ（DAG）に特定の順序を強制するために「 `C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_ 」を使用しています。この結果、単調性という望ましい特性が得られますが、いくつかの継承グラフが使えなくなります。特に、 ``is`` 指令でのベースクラスの順序は重要で、「最もベースに近いもの」から「最も派生したもの」の順に直接ベースコントラクトをリストアップする必要があります。この順序は、Pythonで使われている順序とは逆であることに注意してください。
+多重継承が可能な言語は、いくつかの問題を抱えています。
+ひとつは「 `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_ 」です。
+SolidityはPythonに似ていますが、ベースクラスの有向非環状グラフ（DAG）に特定の順序を強制するために「 `C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_ 」を使用しています。
+この結果、単調性という望ましい特性が得られますが、いくつかの継承グラフが使えなくなります。
+特に、 ``is`` 指令でのベースクラスの順序は重要で、「最もベースに近いもの」から「最も派生したもの」の順に直接ベースコントラクトをリストアップする必要があります。
+この順序は、Pythonで使われている順序とは逆であることに注意してください。
 
 .. Another simplifying way to explain this is that when a function is called that
 .. is defined multiple times in different contracts, the given bases
 .. are searched from right to left (left to right in Python) in a depth-first manner,
 .. stopping at the first match. If a base contract has already been searched, it is skipped.
 
-これを別の方法で簡単に説明すると、異なるコントラクトで複数回定義された関数が呼び出された場合、与えられたベースは右から左（Pythonでは左から右）へと深さ優先で検索され、最初にマッチしたもので停止します。もしベースコントラクトが既に検索されていたら、その部分はスキップされます。
+これを別の方法で簡単に説明すると、異なるコントラクトで複数回定義された関数が呼び出された場合、与えられたベースは右から左（Pythonでは左から右）へと深さ優先で検索され、最初にマッチしたもので停止します。
+もしベースコントラクトが既に検索されていたら、その部分はスキップされます。
 
 .. In the following code, Solidity will give the
 .. error "Linearization of inheritance graph impossible".
 
-以下のコードでは、Solidityが "Linearization of inheritance graph impossible "というエラーを出します。
+以下のコードでは、Solidityが "Linearization of inheritance graph impossible" というエラーを出します。
 
 .. code-block:: solidity
 
@@ -591,7 +587,7 @@ Multiple Inheritance and Linearization
 
     contract X {}
     contract A is X {}
-    // This will not compile
+    // これはコンパイルできません
     contract C is A, X {}
 
 .. The reason for this is that ``C`` requests ``X`` to override ``A``
@@ -609,7 +605,9 @@ Multiple Inheritance and Linearization
 
 .. One area where inheritance linearization is especially important and perhaps not as clear is when there are multiple constructors in the inheritance hierarchy. The constructors will always be executed in the linearized order, regardless of the order in which their arguments are provided in the inheriting contract's constructor.  For example:
 
-継承の直線化が特に重要でありながら、あまり明確ではないのが、継承階層に複数のコンストラクタが存在する場合です。コンストラクタは、継承するコントラクトのコンストラクタで引数が提供された順番に関係なく、常に線形化された順番で実行されます。  例えば、以下のようになります。
+継承の直線化が特に重要でありながら、あまり明確ではないのが、継承階層に複数のコンストラクタが存在する場合です。
+コンストラクタは、継承するコントラクトのコンストラクタで引数が提供された順番に関係なく、常に線形化された順番で実行されます。
+例えば、以下のようになります。
 
 .. code-block:: solidity
 
@@ -624,7 +622,7 @@ Multiple Inheritance and Linearization
         constructor() {}
     }
 
-    // Constructors are executed in the following order:
+    // コンストラクターは、以下の順序で実行されます。
     //  1 - Base1
     //  2 - Base2
     //  3 - Derived1
@@ -632,7 +630,7 @@ Multiple Inheritance and Linearization
         constructor() Base1() Base2() {}
     }
 
-    // Constructors are executed in the following order:
+    // コンストラクターは、以下の順序で実行されます。
     //  1 - Base2
     //  2 - Base1
     //  3 - Derived2
@@ -640,7 +638,7 @@ Multiple Inheritance and Linearization
         constructor() Base2() Base1() {}
     }
 
-    // Constructors are still executed in the following order:
+    // コンストラクターは、変わらず以下の順序で実行されます。
     //  1 - Base2
     //  2 - Base1
     //  3 - Derived3
@@ -648,17 +646,12 @@ Multiple Inheritance and Linearization
         constructor() Base1() Base2() {}
     }
 
-Inheriting Different Kinds of Members of the Same Name
+同じ名前の異なる種類のメンバーの継承
 ======================================================
 
-.. It is an error when any of the following pairs in a contract have the same name due to inheritance:
-..   - a function and a modifier
-..   - a function and an event
-..   - an event and a modifier
-
-コントラクト内の以下のペアが継承により同じ名前になっている場合はエラーとなります。 - 関数と修飾子 - 関数とイベント - イベントと修飾子
-
-.. As an exception, a state variable getter can override an external function.
-.. 
+コントラクト内の以下のペアが継承により同じ名前になっている場合はエラーとなります。
+    - 関数と修飾子
+    - 関数とイベント
+    - イベントと修飾子
 
 例外として、ステート変数のゲッターが外部関数をオーバーライドできます。
