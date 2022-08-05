@@ -3,7 +3,7 @@
 .. _visibility-and-getters:
 
 **********************
-Visibility and Getters
+可視性とゲッター
 **********************
 
 .. Solidity knows two kinds of function calls: internal
@@ -12,13 +12,15 @@ Visibility and Getters
 .. ones that do. Because of that, there are four types of visibility for
 .. functions and state variables.
 
-Solidityは、実際のEVMコール（「メッセージコール」とも呼ばれる）を作成しない内部のものと、作成する外部のものの2種類の関数コールを認識しています。そのため、関数とステート変数の可視性には4つのタイプがあります。
+Solidityは、実際のEVMコール（「メッセージコール」とも呼ばれる）を作成しない内部のものと、作成する外部のものの2種類の関数コールを認識しています。
+そのため、関数とステート変数の可視性には4つのタイプがあります。
 
 .. Functions have to be specified as being ``external``,
 .. ``public``, ``internal`` or ``private``.
 .. For state variables, ``external`` is not possible.
 
-関数は、 ``external`` 、 ``public`` 、 ``internal`` 、 ``private`` のいずれかを指定する必要があります。状態変数の場合、 ``external`` は指定できません。
+関数は、 ``external`` 、 ``public`` 、 ``internal`` 、 ``private`` のいずれかを指定する必要があります。
+状態変数の場合、 ``external`` は指定できません。
 
 .. ``external``
 ..     External functions are part of the contract interface,
@@ -27,7 +29,8 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
 ..     internally (i.e. ``f()`` does not work, but ``this.f()`` works).
 
 ``external``
-    外部関数はコントラクト・インターフェースの一部であり、他のコントラクトやトランザクションを介して呼び出すことができることを意味します。外部関数 ``f`` は、内部で呼び出すことはできません（すなわち、 ``f()`` は動作しませんが、 ``this.f()`` は動作します）。
+    外部関数はコントラクトインターフェースの一部であり、他のコントラクトやトランザクションを介して呼び出すことができることを意味します。
+    外部関数 ``f`` は、内部で呼び出すことはできません（すなわち、 ``f()`` は動作しませんが、 ``this.f()`` は動作します）。
 
 .. ``public``
 ..     Public functions are part of the contract interface
@@ -36,7 +39,8 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
 ..     function (see below) is generated.
 
 ``public``
-    パブリック関数は、コントラクト・インターフェースの一部であり、内部またはメッセージ経由で呼び出すことができます。パブリックな状態の変数に対しては、自動的にゲッター関数（下記参照）が生成されます。
+    パブリック関数は、コントラクトインターフェースの一部であり、内部またはメッセージ経由で呼び出すことができます。
+    パブリックな状態の変数に対しては、自動的にゲッター関数（下記参照）が生成されます。
 
 .. ``internal``
 ..     Those functions and state variables can only be
@@ -45,15 +49,11 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
 ..     This is the default visibility level for state variables.
 
 ``internal``
-    それらの関数とステート変数は、 ``this`` を使用せずに、内部的にのみ（すなわち、現在のコントラクトまたはそのコントラクトから派生したコントラクトの中から）アクセスできます。これはステート変数のデフォルトの可視性レベルです。
-
-.. ``private``
-..     Private functions and state variables are only
-..     visible for the contract they are defined in and not in
-..     derived contracts.
+    それらの関数とステート変数は、 ``this`` を使用せずに、内部的にのみ（すなわち、現在のコントラクトまたはそのコントラクトから派生したコントラクトの中から）アクセスできます。
+    これはステート変数のデフォルトの可視性レベルです。
 
 ``private``
-    プライベート関数とステート変数は、それらが定義されているコントラクトでのみ表示され、派生コントラクトでは表示されません。
+    プライベート関数とプレイベートステート変数は、それらが定義されているコントラクトでのみ利用でき、派生コントラクトでは利用できません。
 
 .. .. note::
 
@@ -65,7 +65,8 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
 
 .. note::
 
-    コントラクトの中にあるものはすべて、ブロックチェーンの外部にいるすべてのオブザーバーから見えるようになっています。何かを ``private`` にすることで、他のコントラクトが情報を読んだり修正したりすることを防ぐことができるだけで、ブロックチェーンの外の全世界からは見える状態になります。
+    コントラクトの中にあるものはすべて、ブロックチェーンの外部にいるすべてのオブザーバーから見えるようになっています。
+    何かを ``private`` にしても、他のコントラクトが情報を読んだり修正したりすることを防ぐことができるだけで、ブロックチェーンの外の全世界からは見える状態になります。
 
 .. The visibility specifier is given after the type for
 .. state variables and between parameter list and
@@ -88,7 +89,8 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
 .. ``data`` in state storage, but is not able to call ``f``. Contract ``E`` is derived from
 .. ``C`` and, thus, can call ``compute``.
 
-次の例では、 ``D`` は ``c.getData()`` を呼び出して状態記憶装置の ``data`` の値を取り出すことができますが、 ``f`` を呼び出すことはできません。コントラクト ``E`` は ``C`` から派生したものであるため、 ``compute`` を呼び出すことができます。
+次の例では、 ``D`` は ``c.getData()`` を呼び出して状態記憶装置の ``data`` の値を取り出すことができますが、 ``f`` を呼び出すことはできません。
+コントラクト ``E`` は ``C`` から派生したものであるため、 ``compute`` を呼び出すことができます。
 
 .. code-block:: solidity
 
@@ -104,7 +106,7 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
         function compute(uint a, uint b) internal pure returns (uint) { return a + b; }
     }
 
-    // This will not compile
+    // これはコンパイルできません
     contract D {
         function readData() public {
             C c = new C();
@@ -118,14 +120,14 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
     contract E is C {
         function g() public {
             C c = new C();
-            uint val = compute(3, 5); // access to internal member (from derived to parent contract)
+            uint val = compute(3, 5); // 内部メンバへのアクセス（親コントラクトから派生したもの）
         }
     }
 
 .. index:: ! getter;function, ! function;getter
 .. _getter-functions:
 
-Getter Functions
+ゲッター関数
 ================
 
 .. The compiler automatically creates getter functions for
@@ -135,7 +137,10 @@ Getter Functions
 .. variable ``data``. State variables can be initialized
 .. when they are declared.
 
-コンパイラは、すべての **public** ステート変数のゲッター関数を自動的に作成します。以下のコントラクトでは、コンパイラーは ``data`` という関数を生成します。この関数は引数を取らず、ステート変数 ``data`` の値である ``uint`` を返します。状態変数は、宣言時に初期化できます。
+コンパイラは、すべての **public** ステート変数のゲッター関数を自動的に作成します。
+以下のコントラクトでは、コンパイラーは ``data`` という関数を生成します。
+この関数は引数を取らず、ステート変数 ``data`` の値である ``uint`` を返します。
+状態変数は、宣言時に初期化できます。
 
 .. code-block:: solidity
 
@@ -158,7 +163,9 @@ Getter Functions
 .. it evaluates to a state variable.  If it is accessed externally
 .. (i.e. with ``this.``), it evaluates to a function.
 
-ゲッター関数は外部から見えるようになっています。シンボルが内部的にアクセスされた場合（すなわち、 ``this.`` なし）、それは状態変数として評価されます。  外部からアクセスされた場合（つまり ``this.`` あり）、それは関数として評価されます。
+ゲッター関数は外部から見えるようになっています。
+シンボルが内部的にアクセスされた場合（すなわち、 ``this.`` なし）、それは状態変数として評価されます。
+外部からアクセスされた場合（つまり ``this.`` あり）、それは関数として評価されます。
 
 .. code-block:: solidity
 
@@ -169,7 +176,7 @@ Getter Functions
         uint public data;
         function x() public returns (uint) {
             data = 3; // internal access
-            return this.data(); // external access
+            return this.data(); // 外部アクセス
         }
     }
 
@@ -180,7 +187,10 @@ Getter Functions
 .. ``myArray(0)``. If you want to return an entire array in one call, then you need
 .. to write a function, for example:
 
-配列型の ``public`` ステート変数を持っている場合、生成されたゲッター関数を介して配列の単一要素を取り出すことしかできません。このメカニズムは、配列全体を返すときの高いガスコストを避けるために存在します。引数を使って、例えば ``myArray(0)`` のように、どの個別要素を返すかを指定できます。一度の呼び出しで配列全体を返したい場合は、例えば、関数を書く必要があります。
+配列型の ``public`` ステート変数を持っている場合、生成されたゲッター関数を介して配列の単一要素を取り出すことしかできません。
+このメカニズムは、配列全体を返すときの高いガスコストを避けるために存在します。
+引数を使って、例えば ``myArray(0)`` のように、どの個別要素を返すかを指定できます。
+一度の呼び出しで配列全体を返したい場合は、例えば、関数を書く必要があります。
 
 .. code-block:: solidity
 
@@ -188,17 +198,17 @@ Getter Functions
     pragma solidity >=0.4.16 <0.9.0;
 
     contract arrayExample {
-        // public state variable
+        // パブリック状態変数
         uint[] public myArray;
 
-        // Getter function generated by the compiler
+        // コンパイラが生成するゲッター関数
         /*
         function myArray(uint i) public view returns (uint) {
             return myArray[i];
         }
         */
 
-        // function that returns entire array
+        // 配列全体を返す関数
         function getArray() public view returns (uint[] memory) {
             return myArray;
         }
@@ -234,7 +244,8 @@ Getter Functions
 .. exception of byte arrays) in the struct are omitted because there is no good way
 .. to select individual struct members or provide a key for the mapping:
 
-次のような形式の関数を生成します。構造体のマッピングと配列（バイト配列を除く）は、個々の構造体メンバーを選択する良い方法がないため、またはマッピングのキーを提供するために省略されています。
+次のような形式の関数を生成します。
+構造体のマッピングと配列（バイト配列を除く）は、個々の構造体メンバーを選択する、あるいはマッピングにキーを提供する良い方法がないため、省略されています。
 
 .. code-block:: solidity
 

@@ -3,7 +3,7 @@
 .. _functions:
 
 *********
-Functions
+関数
 *********
 
 .. Functions can be defined inside and outside of contracts.
@@ -14,7 +14,8 @@ Functions
 .. :ref:`visibility<visibility-and-getters>`. Their code is included in all contracts
 .. that call them, similar to internal library functions.
 
-コントラクト外の関数は「フリー関数」とも呼ばれ、常に暗黙の ``internal``   :ref:`visibility<visibility-and-getters>` を持っています。そのコードは、内部のライブラリ関数と同様に、それらを呼び出したすべてのコントラクトに含まれます。
+コントラクト外の関数は「フリー関数」とも呼ばれ、常に暗黙の ``internal`` :ref:`visibility<visibility-and-getters>` を持っています。
+そのコードは、内部のライブラリ関数と同様に、それらを呼び出したすべてのコントラクトに含まれます。
 
 .. code-block:: solidity
 
@@ -48,23 +49,22 @@ Functions
 
 .. note::
 
-    コントラクトの外で定義された関数は、常にコントラクトのコンテキストで実行されます。変数 ``this`` へのアクセス、他のコントラクトの呼び出し、Etherの送信、呼び出したコントラクトの破棄などが可能です。コントラクトの内側で定義された関数との主な違いは、フリー関数は、そのスコープ内にないストレージ変数や関数に直接アクセスできないことです。
+    コントラクトの外で定義された関数は、常にコントラクトのコンテキストで実行されます。
+    変数 ``this`` へのアクセス、他のコントラクトの呼び出し、Etherの送信、呼び出したコントラクトの破棄などが可能です。
+    コントラクトの内側で定義された関数との主な違いは、フリー関数は、そのスコープ内にないストレージ変数や関数に直接アクセスできないことです。
 
 .. _function-parameters-return-variables:
 
-Function Parameters and Return Variables
+関数パラメータと返り値
 ========================================
 
 .. Functions take typed parameters as input and may, unlike in many other
 .. languages, also return an arbitrary number of values as output.
 
-関数は入力として型付けされたパラメータを受け取り、他の多くの言語とは異なり、出力として任意の数の値を返すこともできます。
+関数は入力として型付けされたパラメータを受け取り、他の多くの言語とは異なり、出力として任意の数の値を返せます。
 
-Function Parameters
+関数パラメータ
 -------------------
-
-.. Function parameters are declared the same way as variables, and the name of
-.. unused parameters can be omitted.
 
 関数のパラメータは変数と同じように宣言され、使わないパラメータの名前は省略できます。
 
@@ -101,9 +101,10 @@ Function Parameters
 
 .. note::
 
-  :ref:`external function<external-function-calls>` が入力パラメータとして多次元配列を受け付けることができません。この機能は、ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にした場合に可能です。
+    :ref:`外部関数<external-function-calls>` が入力パラメータとして多次元配列を受け付けることができません。
+    この機能は、ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にした場合に可能です。
 
-  :ref:`internal function<external-function-calls>` は機能を有効にしなくても多次元配列を受け付けることができます。
+    :ref:`内部関数<external-function-calls>` は機能を有効にしなくても多次元配列を受け付けることができます。
 
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
@@ -182,34 +183,34 @@ return変数を持つ関数を終了するためにearly  ``return`` を使用�
 
 .. note::
 
-    内部関数以外では、多次元の動的配列や構造体など、いくつかの型を返すことができません。ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にすると、より多くの型が利用できるようになりますが、 ``mapping`` 型はまだ1つのコントラクト内に限られており、送金できません。
+    内部関数以外では、多次元の動的配列や構造体など、いくつかの型を返すことができません。
+    ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にすると、より多くの型が利用できるようになりますが、 ``mapping`` 型はまだ1つのコントラクト内に限られており、送信できません。
 
 .. _multi-return:
 
-Returning Multiple Values
+複数の値を返す
 -------------------------
 
 .. When a function has multiple return types, the statement ``return (v0, v1, ..., vn)`` can be used to return multiple values.
 .. The number of components must be the same as the number of return variables
 .. and their types have to match, potentially after an :ref:`implicit conversion <types-conversion-elementary-types>`.
 
-関数が複数の戻り値の型を持つ場合、ステートメント ``return (v0, v1, ..., vn)`` は複数の値を返すために使用できます。構成要素の数は戻り値の変数の数と同じでなければならず、それらの型は一致しなければならず、潜在的には :ref:`implicit conversion <types-conversion-elementary-types>` の後になります。
+関数が複数の戻り値の型を持つ場合、 ``return (v0, v1, ..., vn)`` という文を複数の値を返すために使用できます。
+構成要素の数は戻り値の変数の数と同じでなければならず、また、 :ref:`暗黙の変換 <types-conversion-elementary-types>` の後にそれらの型は一致しなければなりません。
 
 .. _state-mutability:
 
-State Mutability
-================
+ステートのミュータビリティ
+===========================
 
 .. index:: ! view function, function;view
 
 .. _view-functions:
 
-View Functions
+View関数
 --------------
 
-.. Functions can be declared ``view`` in which case they promise not to modify the state.
-
-関数は ``view`` 宣言でき、その場合は状態を変更しないことが約束されます。
+関数は ``view`` を宣言でき、その場合は状態を変更しないことが約束されます。
 
 .. .. note::
 
@@ -223,7 +224,10 @@ View Functions
 
 .. note::
 
-  コンパイラのEVMターゲットがByzantium以降（デフォルト）の場合、 ``view`` 関数が呼び出されるとオペコード ``STATICCALL`` が使用され、EVM実行の一部として状態が変更されないように強制されます。ライブラリ ``view`` 関数では、 ``DELEGATECALL`` と ``STATICCALL`` の組み合わせがないため、 ``DELEGATECALL`` が使用されます。   つまり、ライブラリ ``view`` 関数には、状態の変更を防ぐランタイムチェックがありません。ライブラリのコードは通常、コンパイル時に知られており、スタティック・チェッカーはコンパイル時のチェックを行うため、このことがセキュリティに悪影響を及ぼすことはありません。
+    コンパイラのEVMのターゲットがByzantium以降（デフォルト）の場合、 ``view`` 関数が呼び出されるとオペコード ``STATICCALL`` が使用され、EVM実行の一部として状態が変更されないように強制されます。
+    ライブラリ ``view`` 関数では、 ``DELEGATECALL`` と ``STATICCALL`` の組み合わせがないため、 ``DELEGATECALL`` が使用されます。
+    つまり、ライブラリ ``view`` 関数には、状態の変更を防ぐランタイムチェックがありません。
+    ライブラリのコードは通常、コンパイル時に知られており、静的チェッカーはコンパイル時のチェックを行うため、このことがセキュリティに悪影響を及ぼすことはありません。
 
 .. The following statements are considered modifying the state:
 
@@ -239,10 +243,10 @@ View Functions
 .. #. Using inline assembly that contains certain opcodes.
 
 #. 状態変数への書き込み。
-#. :ref:`Emitting events <events>` 。
-#. :ref:`Creating other contracts <creating-contracts>` 。
+#. :ref:`イベントの発火<events>` 。
+#. :ref:`他のコントラクトの作成<creating-contracts>` 。
 #. ``selfdestruct`` の使用。
-#. コールでのイーサの送金。
+#. コールでのEtherの送金。
 #. ``view`` または ``pure`` と表示されていない関数の呼び出し。
 #. 低レベルコールの使用。
 #. 特定のオペコードを含むインラインアセンブリの使用。
@@ -258,21 +262,14 @@ View Functions
         }
     }
 
-.. .. note::
+.. note::
 
-..   ``constant`` on functions used to be an alias to ``view``, but this was dropped in version 0.5.0.
+    関数の ``constant`` は、かつては ``view`` の別名でしたが、バージョン0.5.0で廃止されました。
+
 
 .. note::
 
-  関数の ``constant`` は、かつては ``view`` の別名でしたが、バージョン0.5.0で廃止されました。
-
-.. .. note::
-
-..   Getter methods are automatically marked ``view``.
-
-.. note::
-
-  ゲッターメソッドは自動的に ``view`` と表示されます。
+    ゲッターメソッドは自動的に ``view`` とマークされます。
 
 .. .. note::
 
@@ -285,13 +282,15 @@ View Functions
 
 .. note::
 
-  バージョン0.5.0以前のコンパイラでは、 ``view`` 関数に ``STATICCALL`` オペコードを使用していませんでした。   これにより、無効な明示的型変換を使用して、 ``view`` 関数の状態を変更できました。    ``view`` 関数に ``STATICCALL`` を使用することで、EVMのレベルで状態の変更を防ぐことができます。
+    バージョン0.5.0以前のコンパイラでは、 ``view`` 関数に ``STATICCALL`` オペコードを使用していませんでした。
+    これにより、無効な明示的型変換を使用して、 ``view`` 関数の状態を変更できました。
+    ``view`` 関数に ``STATICCALL`` を使用することで、EVMのレベルで状態の変更を防ぐことができます。
 
 .. index:: ! pure function, function;pure
 
 .. _pure-functions:
 
-Pure Functions
+Pure関数
 --------------
 
 .. Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
@@ -299,7 +298,9 @@ Pure Functions
 .. only its inputs and ``msg.data``, but without any knowledge of the current blockchain state.
 .. This means that reading from ``immutable`` variables can be a non-pure operation.
 
-関数は ``pure`` を宣言でき、その場合、状態を読み取ったり変更したりしないことが約束されます。特に、 ``pure`` 関数をコンパイル時に、入力と ``msg.data`` のみを与えて評価することが可能でなければなりませんが、現在のブロックチェーンの状態については一切知りません。これは、 ``immutable`` 変数からの読み取りが非純粋な操作である可能性があることを意味する。
+関数は ``pure`` を宣言でき、その場合、状態を読み取ったり変更したりしないことが約束されます。
+特に、 ``pure`` 関数をコンパイル時に、入力と ``msg.data`` のみを与えて評価することが可能でなければなりませんが、現在のブロックチェーンの状態については一切知りません。
+これは、 ``immutable`` 変数からの読み取りが非純粋な操作である可能性があることを意味します。
 
 .. .. note::
 
@@ -308,29 +309,26 @@ Pure Functions
 
 .. note::
 
-  コンパイラのEVMターゲットがByzantium以降（デフォルト）の場合、オペコード ``STATICCALL`` が使用されます。これは、状態が読み取られないことを保証するものではありませんが、少なくとも修正されないことを保証するものです。
+    コンパイラのEVMターゲットがByzantium以降（デフォルト）の場合、オペコード ``STATICCALL`` が使用されます。
+    これは、状態が読み取られないことを保証するものではありませんが、少なくとも修正されないことを保証するものです。
 
 .. In addition to the list of state modifying statements explained above, the following are considered reading from the state:
 
-上記で説明した州の修飾文のリストに加えて、以下のものは州からの読み取りとみなされます。
+上記で説明したステートの修飾文のリストに加えて、以下のものはステートからの読み取りとみなされます。
 
 .. #. Reading from state variables.
+.. #. Accessing ``address(this).balance`` or ``<address>.balance``.
+.. #. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
+.. #. Calling any function not marked ``pure``.
+.. #. Using inline assembly that contains certain opcodes.
 
 #. 状態変数からの読み出し。
 
-.. #. Accessing ``address(this).balance`` or ``<address>.balance``.
-
 #. ``address(this).balance`` または ``<address>.balance`` へのアクセス。
-
-.. #. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
 
 #. ``block`` 、 ``tx`` 、 ``msg`` （ ``msg.sig`` 、 ``msg.data`` を除く）のメンバーのいずれかにアクセスすること。
 
-.. #. Calling any function not marked ``pure``.
-
-#. ``pure`` マークの付いていない関数を呼び出すこと。
-
-.. #. Using inline assembly that contains certain opcodes.
+#. ``pure`` とマークされていない関数を呼び出すこと。
 
 #. 特定のオペコードを含むインラインアセンブリの使用。
 
@@ -348,7 +346,7 @@ Pure Functions
 .. Pure functions are able to use the ``revert()`` and ``require()`` functions to revert
 .. potential state changes when an :ref:`error occurs <assert-and-require>`.
 
-純粋な関数は、 :ref:`error occurs <assert-and-require>` が発生したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化を戻すことができます。
+Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化を戻すことができます。
 
 .. Reverting a state change is not considered a "state modification", as only changes to the
 .. state made previously in code that did not have the ``view`` or ``pure`` restriction
@@ -381,7 +379,9 @@ Pure Functions
 
 .. note::
 
-  バージョン0.5.0以前のコンパイラでは、 ``pure`` 関数に ``STATICCALL`` オペコードを使用していませんでした。   これにより、無効な明示的型変換を使用して、 ``pure`` 関数の状態を変更できました。    ``pure`` 関数に ``STATICCALL`` を使用することで、EVMのレベルで状態の変更を防ぐことができます。
+    バージョン0.5.0以前のコンパイラでは、 ``pure`` 関数に ``STATICCALL`` オペコードを使用していませんでした。
+    これにより、無効な明示的型変換を使用して、 ``pure`` 関数の状態を変更できました。
+    ``pure`` 関数に ``STATICCALL`` を使用することで、EVMのレベルで状態の変更を防ぐことができます。
 
 .. .. note::
 
@@ -393,18 +393,20 @@ Pure Functions
 
 .. note::
 
-  バージョン0.4.17以前では、コンパイラは ``pure`` が状態を読んでいないことを強制していませんでした。   これはコンパイル時の型チェックで、コントラクトの型の間で無効な明示的変換を行うことで回避できます。コンパイラはコントラクトの型が状態を変更する操作を行わないことを検証できますが、実行時に呼び出されるコントラクトが実際にその型であることをチェックできないからです。
+    バージョン0.4.17以前では、コンパイラは ``pure`` が状態を読んでいないことを強制していませんでした。
+    これはコンパイル時の型チェックで、コントラクトの型の間で無効な明示的変換を行うことで回避できます。
+    コンパイラはコントラクトの型が状態を変更する操作を行わないことを検証できますが、実行時に呼び出されるコントラクトが実際にその型であることをチェックできないからです。
 
 .. _special-functions:
 
-Special Functions
+特殊な関数
 =================
 
 .. index:: ! receive ether function, function;receive ! receive
 
 .. _receive-ether-function:
 
-Receive Ether Function
+Receive Ether関数
 ----------------------
 
 .. A contract can have at most one ``receive`` function, declared using
@@ -414,7 +416,9 @@ Receive Ether Function
 .. ``external`` visibility and ``payable`` state mutability.
 .. It can be virtual, can override and can have modifiers.
 
-コントラクトは最大で1つの ``receive`` 関数を持つことができ、 ``receive() external payable { ... }`` を使って宣言されます（ ``function`` キーワードなし）。この関数は、引数を持つことができず、何も返すことができず、 ``external`` の可視性と ``payable`` の状態変更性を持たなければなりません。この関数は仮想的であり、オーバーライドでき、修飾子を持つことができます。
+コントラクトは最大で1つの ``receive`` 関数を持つことができ、 ``receive() external payable { ... }`` を使って宣言されます（ ``function`` キーワードなし）。
+この関数は、引数を持つことができず、何も返すことができず、 ``external`` の可視性と ``payable`` の状態変更性を持たなければなりません。
+この関数は仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
 .. The receive function is executed on a
 .. call to the contract with empty calldata. This is the function that is executed
@@ -425,7 +429,10 @@ Receive Ether Function
 .. contract cannot receive Ether through regular transactions and throws an
 .. exception.
 
-receive関数は、空のcalldataを持つコントラクトへの呼び出しで実行されます。これは、プレーンなEther送金（例:  ``.send()`` または ``.transfer()`` 経由）で実行される関数です。このような関数が存在せず、payable  :ref:`fallback function <fallback-function>` が存在する場合は、プレーンなEther送金時にフォールバック関数が呼び出されます。receive Ether関数もpayable fallback関数も存在しない場合、コントラクトは通常のトランザクションで Ether を受信できず、例外が発生します。
+receive関数は、空のcalldataを持つコントラクトへの呼び出しで実行されます。
+これは、プレーンなEther送金（例:  ``.send()`` または ``.transfer()`` 経由）で実行される関数です。
+このような関数が存在せず、payableな :ref:`fallback関数 <fallback-function>` が存在する場合は、プレーンなEther送金時にフォールバック関数が呼び出されます。
+receive Ether関数もpayable fallback関数も存在しない場合、コントラクトは通常のトランザクションでEtherを受信できず、例外が発生します。
 
 .. In the worst case, the ``receive`` function can only rely on 2300 gas being
 .. available (for example when ``send`` or ``transfer`` is used), leaving little
@@ -435,20 +442,17 @@ receive関数は、空のcalldataを持つコントラクトへの呼び出し�
 最悪の場合、 ``receive`` 関数は2300のガスが使えることに頼るしかなく（ ``send`` や ``transfer`` を使用した場合など）、基本的なロギング以外の操作を行う余裕はありません。以下のような操作は、2300ガスの規定値よりも多くのガスを消費します。
 
 .. - Writing to storage
+.. - Creating a contract
+.. - Calling an external function which consumes a large amount of gas
+.. - Sending Ether
 
 - ストレージへの書き込み
 
-.. - Creating a contract
-
--  コントラクトの作成
-
-.. - Calling an external function which consumes a large amount of gas
+- コントラクトの作成
 
 - 大量のガスを消費する外部関数の呼び出し
 
-.. - Sending Ether
-
-- イーサの送信
+- Etherの送信
 
 .. .. warning::
 
@@ -461,7 +465,8 @@ receive関数は、空のcalldataを持つコントラクトへの呼び出し�
 
 .. warning::
 
-    Etherを直接受信するコントラクト（関数呼び出しなし、つまり ``send`` または ``transfer`` を使用）で、Receive Ether関数またはPayable Fallback関数を定義していないものは、例外をスローし、Etherを送り返します（Solidity v0.4.0以前は異なっていました）。そのため、コントラクトでEtherを受信したい場合は、receive Ether関数を実装する必要があります（Etherの受信にpayable fallback関数を使用することは、インターフェースの混乱で失敗しないため、推奨されません）。
+    Etherを直接受信するコントラクト（関数呼び出しなし、つまり ``send`` または ``transfer`` を使用）で、receive Ether関数またはpayable fallback関数を定義していないものは、例外をスローし、Etherを送り返します（Solidity v0.4.0以前は異なっていました）。
+    そのため、コントラクトでEtherを受信したい場合は、receive Ether関数を実装する必要があります（Etherの受信にpayable fallback関数を使用することは、インターフェースの混乱で失敗しないため、推奨されません）。
 
 .. .. warning::
 
@@ -481,21 +486,19 @@ receive関数は、空のcalldataを持つコントラクトへの呼び出し�
 
     Etherを受け取る関数を持たないコントラクトは、 *coinbaseトランザクション* （別名: *minerブロックリワード* ）の受信者として、または ``selfdestruct`` の宛先としてEtherを受け取ることができます。
 
-    コントラクトは、そのようなEther送金に反応できず、したがって、それらを拒否することもできません。これはEVMの設計上の選択であり、Solidityはこれを回避できません。
+    コントラクトは、そのようなEther送金に反応できず、したがって、それらを拒否することもできません。
+    これはEVMの設計上の選択であり、Solidityはこれを回避できません。
 
-    また、 ``address(this).balance`` は、コントラクトに実装されている手動の会計処理（受信イーサ関数でカウンタを更新するなど）の合計よりも高くなる可能性があることを意味しています。
+    また、 ``address(this).balance`` は、コントラクトに実装されている手動の会計処理（receive Ether関数でカウンタを更新するなど）の合計よりも高くなる可能性があることを意味しています。
 
-.. Below you can see an example of a Sink contract that uses function ``receive``.
-
-下の図は、関数 ``receive`` を使用したSinkコントラクトの例です。
+関数 ``receive`` を使用したSinkコントラクトの例です。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // This contract keeps all Ether sent to it with no way
-    // to get it back.
+    // このコントラクトは、送られてきたEtherをすべて保持し、それを取り戻す方法はない。
     contract Sink {
         event Received(address, uint);
         receive() external payable {
@@ -507,7 +510,7 @@ receive関数は、空のcalldataを持つコントラクトへの呼び出し�
 
 .. _fallback-function:
 
-Fallback Function
+Fallback関数
 -----------------
 
 .. A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
@@ -516,7 +519,9 @@ Fallback Function
 .. This function must have ``external`` visibility. A fallback function can be virtual, can override
 .. and can have modifiers.
 
-コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。この関数は ``external`` 可視性を持たなければなりません。フォールバック関数は、仮想的であり、オーバーライドでき、修飾子を持つことができます。
+コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。
+この関数は ``external`` 可視性を持たなければなりません。
+フォールバック関数は、仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
 .. The fallback function is executed on a call to the contract if none of the other
 .. functions match the given function signature, or if no data was supplied at
@@ -524,7 +529,8 @@ Fallback Function
 .. The fallback function always receives data, but in order to also receive Ether
 .. it must be marked ``payable``.
 
-フォールバック関数は、他の関数が与えられた関数シグネチャに一致しない場合、またはデータが全く供給されず :ref:`receive Ether function <receive-ether-function>` がない場合、コントラクトへの呼び出しで実行されます。フォールバック関数は常にデータを受信しますが、Etherも受信するためには、 ``payable`` とマークされていなければなりません。
+フォールバック関数は、他の関数が与えられた関数シグネチャに一致しない場合、またはデータが全く供給されず :ref:`receive Ether関数 <receive-ether-function>` がない場合、コントラクトへの呼び出しで実行されます。
+フォールバック関数は常にデータを受信しますが、Etherも受信するためには、 ``payable`` とマークされていなければなりません。
 
 .. If the version with parameters is used, ``_input`` will contain the full data sent to the contract
 .. (equal to ``msg.data``) and can return data in ``_output``. The returned data will not be
@@ -537,12 +543,9 @@ Fallback Function
 .. available (see :ref:`receive Ether function <receive-ether-function>`
 .. for a brief description of the implications of this).
 
-最悪の場合、受信関数の代わりに支払い可能なフォールバック関数も使用されている場合、2300ガスが使用可能であることだけに頼ることができます（この意味については、 :ref:`receive Ether function <receive-ether-function>` を参照してください）。
+最悪の場合、受信関数の代わりに支払い可能なフォールバック関数も使用されている場合、2300ガスが使用可能であることだけに頼ることができます（この意味については、 :ref:`receive Ether関数 <receive-ether-function>` を参照してください）。
 
-.. Like any function, the fallback function can execute complex
-.. operations as long as there is enough gas passed on to it.
-
-他の関数と同様に、フォールバック関数も、十分な量のガスが渡されている限り、複雑な処理を実行できます。
+他の関数と同様に、fallback関数も、十分な量のガスが渡されている限り、複雑な処理を実行できます。
 
 .. .. warning::
 
@@ -554,7 +557,8 @@ Fallback Function
 
 .. warning::
 
-    ``payable`` フォールバック関数は、 :ref:`receive Ether function <receive-ether-function>` が存在しない場合、プレーンなEther送金に対しても実行されます。Ether送金をインターフェイスの混乱と区別するために、payable fallback関数を定義する場合は、必ず受信Ether関数も定義することをお勧めします。
+    ``payable`` フォールバック関数は、 :ref:`receive Ether関数<receive-ether-function>` が存在しない場合、プレーンなEther送金に対しても実行されます。
+    Ether送金をインターフェイスの混乱と区別するために、payable fallback関数を定義する場合は、必ずreceive Ether関数も定義することをお勧めします。
 
 .. .. note::
 
@@ -568,7 +572,9 @@ Fallback Function
 
 .. note::
 
-    入力データをデコードしたい場合は、最初の4バイトで関数セレクタをチェックし、 ``abi.decode`` と配列スライス構文を併用することで、ABIエンコードされたデータをデコードできます。      ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``  この方法は最後の手段としてのみ使用し、代わりに適切な関数を使用すべきであることに注意してください。
+    入力データをデコードしたい場合は、最初の4バイトで関数セレクタをチェックし、 ``abi.decode`` と配列スライス構文を併用することで、ABIエンコードされたデータをデコードできます。
+    ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``
+    この方法は最後の手段としてのみ使用し、代わりに適切な関数を使用すべきであることに注意してください。
 
 .. code-block:: solidity
 
@@ -577,26 +583,19 @@ Fallback Function
 
     contract Test {
         uint x;
-        // This function is called for all messages sent to
-        // this contract (there is no other function).
-        // Sending Ether to this contract will cause an exception,
-        // because the fallback function does not have the `payable`
-        // modifier.
+        // この関数はこのコントラクトに送られるすべてのメッセージに対して呼び出されます（他の関数は存在しません）。
+        // このコントラクトにEtherを送信すると例外が発生します。なぜなら、fallback関数が `payable` 修飾子を持たないからです。
         fallback() external { x = 1; }
     }
 
     contract TestPayable {
         uint x;
         uint y;
-        // This function is called for all messages sent to
-        // this contract, except plain Ether transfers
-        // (there is no other function except the receive function).
-        // Any call with non-empty calldata to this contract will execute
-        // the fallback function (even if Ether is sent along with the call).
+        // この関数は、プレーンなEther送金を除く、このコントラクトに送信されるすべてのメッセージに対して呼び出されます（受信関数以外の関数は存在しません）。
+        // このコントラクトへの空でないcalldataを持つ呼び出しは、フォールバック関数を実行します（呼び出しと一緒にEtherが送信された場合でも同様です）。
         fallback() external payable { x = 1; y = msg.value; }
 
-        // This function is called for plain Ether transfers, i.e.
-        // for every call with empty calldata.
+        // この関数は、プレーンなEther送金、すなわち空のcalldataを持つすべてのコールに対して呼び出されます。
         receive() external payable { x = 2; y = msg.value; }
     }
 
@@ -604,32 +603,32 @@ Fallback Function
         function callTest(Test test) public returns (bool) {
             (bool success,) = address(test).call(abi.encodeWithSignature("nonExistingFunction()"));
             require(success);
-            // results in test.x becoming == 1.
+            // test.xが1になる
 
-            // address(test) will not allow to call ``send`` directly, since ``test`` has no payable
-            // fallback function.
-            // It has to be converted to the ``address payable`` type to even allow calling ``send`` on it.
+            // address(test) は ``send`` を直接呼び出すことはできません。
+            // なぜなら、 ``test`` には支払い可能なフォールバック関数がないからです。
+            // その上で ``send`` を呼び出すには ``address payable`` 型に変換する必要があります。
             address payable testPayable = payable(address(test));
 
-            // If someone sends Ether to that contract,
-            // the transfer will fail, i.e. this returns false here.
+            // 誰かがそのコントラクトにEtherを送ると、送金は失敗します。
+            // つまり、ここではfalseが返されます。
             return testPayable.send(2 ether);
         }
 
         function callTestPayable(TestPayable test) public returns (bool) {
             (bool success,) = address(test).call(abi.encodeWithSignature("nonExistingFunction()"));
             require(success);
-            // results in test.x becoming == 1 and test.y becoming 0.
+            // test.xが1、test.yが0になります
             (success,) = address(test).call{value: 1}(abi.encodeWithSignature("nonExistingFunction()"));
             require(success);
-            // results in test.x becoming == 1 and test.y becoming 1.
+            // test.xが1、test.yが1になります
 
-            // If someone sends Ether to that contract, the receive function in TestPayable will be called.
-            // Since that function writes to storage, it takes more gas than is available with a
-            // simple ``send`` or ``transfer``. Because of that, we have to use a low-level call.
+            // 誰かがそのコントラクトにEtherを送ると、TestPayableのreceive関数が呼び出されます。
+            // この関数はストレージに書き込むので、単純な ``send`` や ``transfer`` よりも多くのガスを消費します。
+            // そのため、低レベルの呼び出しを使用する必要があります。
             (success,) = address(test).call{value: 2 ether}("");
             require(success);
-            // results in test.x becoming == 2 and test.y becoming 2 ether.
+            // test.xが2、test.yが2 etherになります。
 
             return true;
         }
@@ -639,7 +638,7 @@ Fallback Function
 
 .. _overload-function:
 
-Function Overloading
+関数のオーバーロード
 ====================
 
 .. A contract can have multiple functions of the same name but with different parameter
@@ -648,7 +647,9 @@ Function Overloading
 .. The following example shows overloading of the function
 .. ``f`` in the scope of contract ``A``.
 
-コントラクトは、同じ名前でパラメータの種類が異なる複数の関数を持つことができます。この処理は「オーバーロード」と呼ばれ、継承された関数にも適用されます。次の例では、コントラクト ``A`` のスコープ内での関数 ``f`` のオーバーロードを示しています。
+コントラクトは、同じ名前でパラメータの種類が異なる複数の関数を持つことができます。
+この処理は「オーバーロード」と呼ばれ、継承された関数にも適用されます。
+次の例では、コントラクト ``A`` のスコープ内での関数 ``f`` のオーバーロードを示しています。
 
 .. code-block:: solidity
 
@@ -669,14 +670,15 @@ Function Overloading
 .. Overloaded functions are also present in the external interface. It is an error if two
 .. externally visible functions differ by their Solidity types but not by their external types.
 
-オーバーロードされた関数は、外部インターフェイスにも存在します。外部から見える2つの関数が、Solidityの型ではなく、外部の型で異なる場合はエラーになります。
+オーバーロードされた関数は、外部インターフェイスにも存在します。
+外部から見える2つの関数が、Solidityの型ではなく、外部の型で異なる場合はエラーになります。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.4.16 <0.9.0;
 
-    // This will not compile
+    // これはコンパイルできません
     contract A {
         function f(B _in) public pure returns (B out) {
             out = _in;
@@ -695,7 +697,7 @@ Function Overloading
 
 上記の両方の ``f`` 関数のオーバーロードは、Solidity内では異なるものと考えられていますが、最終的にはABI用のアドレスタイプを受け入れます。
 
-Overload resolution and Argument matching
+オーバーロードの解決と引数のマッチング
 -----------------------------------------
 
 .. Overloaded functions are selected by matching the function declarations in the current scope
@@ -703,7 +705,9 @@ Overload resolution and Argument matching
 .. if all arguments can be implicitly converted to the expected types. If there is not exactly one
 .. candidate, resolution fails.
 
-オーバーロードされた関数は、現在のスコープ内の関数宣言と、関数呼び出しで提供される引数を照合することで選択されます。すべての引数が期待される型に暗黙的に変換できる場合、関数はオーバーロードの候補として選択されます。正確に1つの候補がない場合、解決は失敗します。
+オーバーロードされた関数は、現在のスコープ内の関数宣言と、関数呼び出しで提供される引数を照合することで選択されます。
+すべての引数が期待される型に暗黙的に変換できる場合、関数はオーバーロードの候補として選択されます。
+正確に1つの候補がない場合、解決は失敗します。
 
 .. .. note::
 
@@ -711,7 +715,7 @@ Overload resolution and Argument matching
 
 .. note::
 
-    過負荷解消のためのリターンパラメータは考慮されません。
+    オーバーロードの解決にリターンパラメータは考慮されません。
 
 .. code-block:: solidity
 
@@ -733,4 +737,5 @@ Overload resolution and Argument matching
 .. converted to ``uint8``.
 .. 
 
-``f(50)`` を呼び出すと、 ``50`` は暗黙のうちに ``uint8`` 型と ``uint256`` 型の両方に変換できるため、型エラーが発生します。一方、 ``f(256)`` は、 ``256`` が暗黙のうちに ``uint8`` に変換できないため、 ``f(uint256)`` のオーバーロードとなります。
+``f(50)`` を呼び出すと、 ``50`` は暗黙のうちに ``uint8`` 型と ``uint256`` 型の両方に変換できるため、型エラーが発生します。
+一方、 ``f(256)`` は、 ``256`` が暗黙のうちに ``uint8`` に変換できないため、 ``f(uint256)`` のオーバーロードとなります。
