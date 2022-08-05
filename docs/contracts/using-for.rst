@@ -6,33 +6,16 @@
 Using For
 *********
 
-.. The directive ``using A for B;`` can be used to attach library
-.. functions (from the library ``A``) to any type (``B``)
-.. in the context of a contract.
-.. These functions will receive the object they are called on
-.. as their first parameter (like the ``self`` variable in Python).
+``using A for B;`` ディレクティブは、コントラクトの文脈において、（ライブラリ ``A`` の）ライブラリ関数を任意の型（ ``B`` ）にアタッチするために使用できます。
+これらの関数は、呼び出されたオブジェクトを最初のパラメータとして受け取ります（Pythonの ``self`` 変数のようなものです）。
 
-``using A for B;`` 指令は、コントラクトの文脈において、（ ``A`` ライブラリの）ライブラリ関数を任意の型（ ``B`` ）にアタッチするために使用できます。これらの関数は、呼び出されたオブジェクトを最初のパラメータとして受け取ります（Pythonの ``self`` 変数のようなものです）。
+``using A for *;`` の効果は、ライブラリ ``A`` の関数が *あらゆる* タイプに付けられることです。
 
-.. The effect of ``using A for *;`` is that the functions from
-.. the library ``A`` are attached to *any* type.
+どちらの場合も、最初のパラメータの型がオブジェクトの型と一致しないものも含めて、ライブラリの *すべての* 関数がアタッチされます。
+関数が呼び出された時点で型がチェックされ、関数のオーバーロードの解決が行われます。
 
-``using A for *;`` の効果は、ライブラリ ``A`` の関数が*あらゆる*タイプに付けられることです。
-
-.. In both situations, *all* functions in the library are attached,
-.. even those where the type of the first parameter does not
-.. match the type of the object. The type is checked at the
-.. point the function is called and function overload
-.. resolution is performed.
-
-どちらの場合も、最初のパラメータの型がオブジェクトの型と一致しないものも含めて、ライブラリの*すべての*関数がアタッチされます。関数が呼び出された時点で型がチェックされ、関数のオーバーロードの解決が行われます。
-
-.. The ``using A for B;`` directive is active only within the current
-.. contract, including within all of its functions, and has no effect
-.. outside of the contract in which it is used. The directive
-.. may only be used inside a contract, not inside any of its functions.
-
-``using A for B;``  ディレクティブは、すべての関数を含む現在のコントラクトの中でのみ有効であり、使用されているコントラクトの外では何の影響も受けません。 ``using A for B;``  ディレクティブは、コントラクトの内部でのみ使用でき、コントラクトのどの関数の中でも使用できません。
+``using A for B;`` ディレクティブは、現在のコントラクト（そのすべての関数を含む）の中でのみ有効であり、使用されているコントラクトの外では何の影響も受けません。
+また、コントラクトの内部でのみ使用でき、コントラクトのどの関数の中でも使用できません。
 
 .. Let us rewrite the set example from the
 .. :ref:`libraries` in this way:
@@ -44,7 +27,7 @@ Using For
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // This is the same code as before, just without comments
+    // これは前と同じコードで、コメントがないだけです。
     struct Data { mapping(uint => bool) flags; }
 
     library Set {
@@ -53,7 +36,7 @@ Using For
             returns (bool)
         {
             if (self.flags[value])
-                return false; // already there
+                return false; // すでに存在する
             self.flags[value] = true;
             return true;
         }
@@ -63,7 +46,7 @@ Using For
             returns (bool)
         {
             if (!self.flags[value])
-                return false; // not there
+                return false; // 存在しない
             self.flags[value] = false;
             return true;
         }
@@ -78,21 +61,17 @@ Using For
     }
 
     contract C {
-        using Set for Data; // this is the crucial change
+        using Set for Data; // ここが重要な変更点
         Data knownValues;
 
         function register(uint value) public {
-            // Here, all variables of type Data have
-            // corresponding member functions.
-            // The following function call is identical to
-            // `Set.insert(knownValues, value)`
+            // ここでは、Data型のすべての変数に対応するメンバ関数があります。
+            // 以下の関数呼び出しは， `Set.insert(knownValues, value)` と同じです．
             require(knownValues.insert(value));
         }
     }
 
-.. It is also possible to extend elementary types in that way:
-
-また、そのようにして基本型を拡張することも可能です。
+また、そのようにして基本型（値型）を拡張することも可能です。
 
 .. code-block:: solidity
 
@@ -120,7 +99,7 @@ Using For
         }
 
         function replace(uint _old, uint _new) public {
-            // This performs the library function call
+            // これは、ライブラリ関数呼び出しを実行します
             uint index = data.indexOf(_old);
             if (index == type(uint).max)
                 data.push(_new);
@@ -136,4 +115,6 @@ Using For
 .. functions are called.
 .. 
 
-すべての外部ライブラリ呼び出しは、実際のEVM関数呼び出しであることに注意してください。つまり、メモリや値の型を渡す場合は、 ``self`` 変数であってもコピーが実行されます。コピーが行われない唯一の状況は、ストレージ参照変数が使用されている場合や、内部ライブラリ関数が呼び出されている場合です。
+すべての外部ライブラリ呼び出しは、実際のEVM関数呼び出しであることに注意してください。
+つまり、メモリや値の型を渡す場合は、 ``self`` 変数であってもコピーが実行されます。
+コピーが行われない唯一の状況は、ストレージ参照変数が使用されている場合や、内部ライブラリ関数が呼び出されている場合です。
