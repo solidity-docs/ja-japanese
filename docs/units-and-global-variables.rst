@@ -491,7 +491,7 @@ bytesのメンバー
 
 ``type(I).interfaceId``:
     ``bytes4`` 値で、与えられたインターフェース ``I`` の `EIP-165 <https://eips.ethereum.org/EIPS/eip-165>`_ インターフェース識別子を含む。
-    この識別子は、インターフェイス自身の中で定義されたすべての関数セレクタの ``XOR`` として定義され、すべての継承された関数は除外されます。
+    この識別子は、インターフェース自身の中で定義されたすべての関数セレクタの ``XOR`` として定義され、すべての継承された関数は除外されます。
 
 .. The following properties are available for an integer type ``T``:
 

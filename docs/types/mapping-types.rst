@@ -38,7 +38,7 @@
 .. of contract functions that are publicly visible.
 .. These restrictions are also true for arrays and structs that contain mappings.
 
-マッピングのデータロケーションは ``storage`` のみであるため、ステート変数、関数内のストレージ参照型、ライブラリ関数のパラメータとして使用できます。
+マッピングのデータロケーションは ``storage`` のみであるため、状態変数、関数内のストレージ参照型、ライブラリ関数のパラメータとして使用できます。
 これらは、一般に公開されているコントラクト関数のパラメータやリターンパラメータとしては使用できません。
 これらの制限は、マッピングを含む配列や構造体にも当てはまります。
 
@@ -48,7 +48,7 @@
 .. If ``_ValueType`` is an array or a mapping, the getter has one parameter for
 .. each ``_KeyType``, recursively.
 
-マッピング型のステート変数を ``public`` としてマークすると、Solidityが :ref:`ゲッター <visibility-and-getters>` を作成してくれます。 ``_KeyType`` はゲッターのパラメータになります。
+マッピング型の状態変数を ``public`` としてマークすると、Solidityが :ref:`ゲッター <visibility-and-getters>` を作成してくれます。 ``_KeyType`` はゲッターのパラメータになります。
 ``_ValueType`` が値型または構造体の場合、ゲッターは ``_ValueType`` を返します。
 ``_ValueType`` が配列やマッピングの場合は、ゲッターは ``_KeyType`` ごとに1つのパラメータを再帰的に持ちます。
 

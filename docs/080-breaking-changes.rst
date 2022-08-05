@@ -78,7 +78,7 @@ Silent Changes of the Semantics
 
 .. * The type ``byte`` has been removed. It was an alias of ``bytes1``.
 
-* タイプ ``byte`` は削除されました。これは ``bytes1`` の別名でした。
+* 型 ``byte`` は削除されました。これは ``bytes1`` の別名でした。
 
 New Restrictions
 ================
@@ -112,7 +112,7 @@ New Restrictions
 
   3. リテラルと列挙型の間の明示的な変換は、リテラルが列挙型の値を表すことができる場合にのみ許可されます。
 
-  4. リテラルと ``address`` 型の間の明示的な変換（例:  ``address(literal)`` ）は、 ``address payable`` の代わりに ``address`` 型を持つ。明示的な変換を使用することで、支払可能なアドレス・タイプを得ることができます、すなわち、 ``payable(literal)`` 。
+  4. リテラルと ``address`` 型の間の明示的な変換（例:  ``address(literal)`` ）は、 ``address payable`` の代わりに ``address`` 型を持つ。明示的な変換を使用することで、支払可能なアドレス型を得ることができます、すなわち、 ``payable(literal)`` 。
 
 .. * :ref:`Address literals<address_literals>` have the type ``address`` instead of ``address
 ..   payable``. They can be converted to ``address payable`` by using an explicit conversion, e.g.
@@ -154,11 +154,11 @@ New Restrictions
 
   ここで、 ``T`` と ``S`` は型であり、 ``x`` は ``S`` 型の任意の変数である、明示的な変換 ``T(x)`` を表すために ``T(S)`` という表記を使用してみましょう。このような許されない変換の例としては、 ``uint16(int8)`` があります。 ``uint16(int8)`` は幅（8ビットから16ビット）と符号（符号付き整数から符号なし整数）の両方を変更するからです。変換を行うためには、中間型を経由しなければなりません。先ほどの例では、 ``uint16(uint8(int8))`` または ``uint16(int16(int8))`` となります。この2つの変換方法では、例えば ``-1`` の場合、異なる結果が得られることに注意してください。以下は、この規則によって許されない変換の例です。
 
-  - ``address(uint)`` と ``uint(address)`` : タイプ・カテゴリーと幅の両方を変換します。これをそれぞれ ``address(uint160(uint))`` と ``uint(uint160(address))`` に置き換える。
+  - ``address(uint)`` と ``uint(address)`` : 型カテゴリーと幅の両方を変換します。これをそれぞれ ``address(uint160(uint))`` と ``uint(uint160(address))`` に置き換える。
 
-  - ``payable(uint160)`` , ``payable(bytes20)`` , ``payable(integer-literal)`` : タイプカテゴリと状態変異性の両方を変換する。これをそれぞれ ``payable(address(uint160))`` , ``payable(address(bytes20))`` , ``payable(address(integer-literal))`` に置き換える。なお、 ``payable(0)`` は有効であり、例外です。
+  - ``payable(uint160)`` , ``payable(bytes20)`` , ``payable(integer-literal)`` : 型カテゴリと状態変異性の両方を変換する。これをそれぞれ ``payable(address(uint160))`` , ``payable(address(bytes20))`` , ``payable(address(integer-literal))`` に置き換える。なお、 ``payable(0)`` は有効であり、例外です。
 
-  - ``int80(bytes10)`` と ``bytes10(int80)`` : タイプ・カテゴリーと記号の両方を変換します。これをそれぞれ ``int80(uint80(bytes10))`` と ``bytes10(uint80(int80)`` に置き換える。
+  - ``int80(bytes10)`` と ``bytes10(int80)`` : 型カテゴリーと記号の両方を変換します。これをそれぞれ ``int80(uint80(bytes10))`` と ``bytes10(uint80(int80)`` に置き換える。
 
   - ``Contract(uint)`` : type-categoryとwidthの両方を変換しています。これを ``Contract(address(uint160(uint)))`` に置き換える。
 
@@ -188,7 +188,7 @@ New Restrictions
 ..   public functions and events. The exception is to make it possible to declare interfaces of contracts
 ..   implemented in languages other than Solidity that do permit such function names.
 
-* ``this`` 、 ``super`` 、 ``_`` という名前の宣言は、パブリック関数とイベントを除いて禁止されています。この例外は、Solidity以外の言語で実装されたコントラクトのインターフェイスを宣言できるようにするためのもので、このような関数名を許可している。
+* ``this`` 、 ``super`` 、 ``_`` という名前の宣言は、パブリック関数とイベントを除いて禁止されています。この例外は、Solidity以外の言語で実装されたコントラクトのインターフェースを宣言できるようにするためのもので、このような関数名を許可している。
 
 .. * Remove support for the ``\b``, ``\f``, and ``\v`` escape sequences in code.
 ..   They can still be inserted via hexadecimal escapes, e.g. ``\x08``, ``\x0c``, and ``\x0b``, respectively.
@@ -232,7 +232,7 @@ New Restrictions
 
   - ``address(b)`` ここで、 ``b`` は ``bytes20`` 型の変数です。 ``b`` を ``address payable`` 型に変換するには、2つの明示的な変換、すなわち ``payable(address(b))`` を用いてください。
 
-  - ``address(c)`` （ ``c`` はコントラクト）。以前は、この変換のリターンタイプは、コントラクトがEtherを受信できるかどうかに依存していました（受信関数または支払可能なフォールバック関数を持つことにより）。 ``payable(c)`` 変換は ``address payable`` 型で、コントラクト ``c`` がEtherを受け取ることができる場合にのみ許可されます。一般的には、以下の明示的な変換を用いることで、常に ``c`` を ``address payable`` 型に変換できる。 ``payable(address(c))`` . ``address(this)`` は、 ``address(c)`` と同じカテゴリーに属し、同じルールが適用されることに注意してください。
+  - ``address(c)`` （ ``c`` はコントラクト）。以前は、この変換のリターン型は、コントラクトがEtherを受信できるかどうかに依存していました（受信関数または支払可能なフォールバック関数を持つことにより）。 ``payable(c)`` 変換は ``address payable`` 型で、コントラクト ``c`` がEtherを受け取ることができる場合にのみ許可されます。一般的には、以下の明示的な変換を用いることで、常に ``c`` を ``address payable`` 型に変換できる。 ``payable(address(c))`` . ``address(this)`` は、 ``address(c)`` と同じカテゴリーに属し、同じルールが適用されることに注意してください。
 
 .. * The ``chainid`` builtin in inline assembly is now considered ``view`` instead of ``pure``.
 
@@ -292,7 +292,7 @@ How to update your code
 
 .. - Change ``msg.sender.transfer(x)`` to ``payable(msg.sender).transfer(x)`` or use a stored variable of ``address payable`` type.
 
-- ``msg.sender.transfer(x)`` を ``payable(msg.sender).transfer(x)`` に変更するか、 ``address payable`` タイプのstored変数を使用する。
+- ``msg.sender.transfer(x)`` を ``payable(msg.sender).transfer(x)`` に変更するか、 ``address payable`` 型のstored変数を使用する。
 
 .. - Change ``x**y**z`` to ``(x**y)**z``.
 

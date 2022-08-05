@@ -624,7 +624,7 @@ Title Case for Headings
 
 .. * Local and State Variable Names.
 
-* ローカルおよびステート変数名。
+* ローカルおよび状態変数名。
 
 .. * Order of Layout.
 

@@ -43,7 +43,7 @@ Explicitness Requirements
 ..   parallel bases, all bases must be listed in parentheses after the keyword
 ..   like so: ``override(Base1, Base2)``.
 
-* 関数は、 ``virtual`` キーワードでマークされているか、インターフェイスで定義されている場合にのみオーバーライドできるようになりました。インターフェイスの外で実装されていない関数は、 ``virtual`` とマークされなければなりません。関数やモディファイアをオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。複数の並列ベースで定義された関数やモディファイアをオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります。 ``override(Base1, Base2)`` .
+* 関数は、 ``virtual`` キーワードでマークされているか、インターフェースで定義されている場合にのみオーバーライドできるようになりました。インターフェースの外で実装されていない関数は、 ``virtual`` とマークされなければなりません。関数やモディファイアをオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。複数の並列ベースで定義された関数やモディファイアをオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります。 ``override(Base1, Base2)`` .
 
 .. * Member-access to ``length`` of arrays is now always read-only, even for storage arrays. It is no
 ..   longer possible to resize storage arrays by assigning a new value to their length. Use ``push()``,
@@ -77,7 +77,7 @@ Explicitness Requirements
 ..   declare a state variable ``x``, if there is no visible state variable with
 ..   the same name in any of its bases.
 
-* ステート変数のシャドウイングが禁止されました。派生コントラクトは、そのベースのいずれかに同名の可視ステート変数が存在しない場合にのみ、ステート変数 ``x`` を宣言できます。
+* 状態変数のシャドーイングが禁止されました。派生コントラクトは、そのベースのいずれかに同名の可視状態変数が存在しない場合にのみ、状態変数 ``x`` を宣言できます。
 
 
 Semantic and Syntactic Changes
@@ -135,7 +135,7 @@ New Features
 ..   ``x`` must be of type ``address``.
 
 * :ref:`try/catch statement <try-catch>` では、失敗した外部呼び出しに反応できます。
-* ``struct`` および ``enum`` タイプは、ファイルレベルで宣言できます。
+* ``struct`` および ``enum`` 型は、ファイルレベルで宣言できます。
 * 例えば ``abi.decode(msg.data[4:], (uint, uint))`` は関数呼び出しのペイロードをデコードする低レベルな方法です。
 * Natspecは開発者向けドキュメントで複数のリターン・パラメータをサポートし、 ``@param`` と同じネーミング・チェックを実施します。
 * YulとInline Assemblyには、現在の関数を終了させる ``leave`` という新しいステートメントがあります。
@@ -209,7 +209,7 @@ How to update your code
 
 .. * Change ``address(f)`` to ``f.address`` for ``f`` being of external function type.
 
-*  ``f`` が外部関数タイプのため、 ``address(f)`` を ``f.address`` に変更。
+*  ``f`` が外部関数型のため、 ``address(f)`` を ``f.address`` に変更。
 
 .. * Replace ``function () external [payable] { ... }`` by either ``receive() external payable { ... }``,
 ..   ``fallback() external [payable] { ... }`` or both. Prefer

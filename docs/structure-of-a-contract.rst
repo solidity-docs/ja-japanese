@@ -14,10 +14,10 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 
 .. _structure-state-variables:
 
-ステート変数
+状態変数
 ===============
 
-ステート変数は、コントラクトストレージに値が永続的に保存される変数です。
+状態変数は、コントラクトストレージに値が永続的に保存される変数です。
 
 .. code-block:: solidity
 
@@ -25,11 +25,11 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
     pragma solidity >=0.4.0 <0.9.0;
 
     contract SimpleStorage {
-        uint storedData; // ステート変数
+        uint storedData; // 状態変数
         // ...
     }
 
-有効なステート変数の型については :ref:`types` セクションを、可視性についての可能な選択肢については :ref:`visibility-and-getters` を参照してください。
+有効な状態変数の型については :ref:`types` セクションを、可視性についての可能な選択肢については :ref:`visibility-and-getters` を参照してください。
 
 .. _structure-functions:
 

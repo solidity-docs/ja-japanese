@@ -112,12 +112,12 @@ Functions and Events
 .. * Type Checker: Disallow ``virtual`` for library functions:
 ..   Since libraries cannot be inherited from, library functions should not be virtual.
 
-* タイプチェッカー。ライブラリ関数の ``virtual`` を禁止する。ライブラリは継承できないので、ライブラリ関数は仮想関数であってはならない。
+* 型チェッカー。ライブラリ関数の ``virtual`` を禁止する。ライブラリは継承できないので、ライブラリ関数は仮想関数であってはならない。
 
 .. * Multiple events with the same name and parameter types in the same
 ..   inheritance hierarchy are disallowed.
 
-* 同一の継承階層に同一名称、同一パラメータタイプのイベントが複数存在することは認められません。
+* 同一の継承階層に同一名称、同一パラメータ型のイベントが複数存在することは認められません。
 
 .. * ``using A for B`` only affects the contract it is mentioned in.
 ..   Previously, the effect was inherited. Now, you have to repeat the ``using``
@@ -146,7 +146,7 @@ Declarations
 ..   Previously, this keyword would parse but result in a type error and
 ..   a suggestion about which type to use. Now, it results in a parser error.
 
-* キーワード「 ``var`` 」が使用できなくなりました。以前は、このキーワードは解析されますが、タイプエラーが発生し、どのタイプを使用すべきかの提案がありました。現在は、パーサーエラーとなります。
+* キーワード「 ``var`` 」が使用できなくなりました。以前は、このキーワードは解析されますが、型エラーが発生し、どの型を使用すべきかの提案がありました。現在は、パーサーエラーとなります。
 
 Interface Changes
 =================

@@ -197,7 +197,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
 .. Using ``x`` itself will result in an error.
 
-ローカルストレージ変数やステート変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
+ローカルストレージ変数や状態変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
 そのため、変数の「アドレス」は、スロットとそのスロット内のバイトオフセットで構成されます。
 変数 ``x`` が指すスロットを取得するには ``x.slot`` を、バイトオフセットを取得するには ``x.offset`` を使います。
 ``x`` をそのまま使うとエラーになります。
@@ -209,7 +209,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 
 また、ローカルストレージの変数ポインタの ``.slot`` 部に代入することもできます。
 これら（構造体、配列、マッピング）の場合、 ``.offset`` 部は常にゼロです。
-ただし、ステート変数の ``.slot`` または ``.offset`` 部分に代入できません。
+ただし、状態変数の ``.slot`` または ``.offset`` 部分に代入できません。
 
 .. Local Solidity variables are available for assignments, for example:
 
@@ -256,7 +256,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. shadow any declaration visible in the scope of the inline assembly block
 .. (including variable, contract and function declarations).
 
-Solidity 0.6.0以降、インラインアセンブリ変数の名前は、インラインアセンブリブロックのスコープ内で見える宣言（変数宣言、コントラクト宣言、関数宣言を含む）をシャドウイングできません。
+Solidity 0.6.0以降、インラインアセンブリ変数の名前は、インラインアセンブリブロックのスコープ内で見える宣言（変数宣言、コントラクト宣言、関数宣言を含む）をシャドーイングできません。
 
 .. Since Solidity 0.7.0, variables and functions declared inside the
 .. inline assembly block may not contain ``.``, but using ``.`` is

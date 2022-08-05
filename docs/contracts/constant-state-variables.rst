@@ -22,7 +22,7 @@
 .. 32 bytes are reserved, even if they would fit in fewer bytes. Due to this, constant values
 .. can sometimes be cheaper than immutable values.
 
-通常のステート変数と比較して、定数変数やイミュータブル変数のガスコストは非常に低くなります。
+通常の状態変数と比較して、定数変数やイミュータブル変数のガスコストは非常に低くなります。
 定数変数の場合、それに割り当てられた式は、アクセスされるすべての場所にコピーされ、また毎回再評価されます。
 これにより、局所的な最適化が可能になります。
 イミュータブルの変数は、構築時に一度だけ評価され、その値はコード内のアクセスされるすべての場所にコピーされます。
