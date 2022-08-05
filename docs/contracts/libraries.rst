@@ -132,7 +132,7 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 .. internal functions in libraries in order to implement
 .. custom types without the overhead of external function calls:
 
-次の例は、外部関数呼び出しのオーバーヘッドなしにカスタムタイプを実装するために、 :ref:`メモリに保存された型 <data-location>` とライブラリの内部関数を使用する方法を示しています。
+次の例は、外部関数呼び出しのオーバーヘッドなしにカスタム型を実装するために、 :ref:`メモリに保存された型 <data-location>` とライブラリの内部関数を使用する方法を示しています。
 
 .. code-block:: solidity
     :force:
@@ -240,7 +240,7 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 .. following an internal naming schema and arguments of types not supported in the contract ABI use an internal encoding.
 
 パブリックライブラリ関数や外部ライブラリ関数の外部呼び出しは可能ですが、そのような呼び出しのための呼び出し規約はSolidity内部のものとみなされ、通常の :ref:`コントラクトABI<ABI>` に指定されているものとは異なります。
-外部ライブラリ関数は、再帰的構造体やストレージポインタなど、外部コントラクト関数よりも多くの引数タイプをサポートしています。
+外部ライブラリ関数は、再帰的構造体やストレージポインタなど、外部コントラクト関数よりも多くの引数型をサポートしています。
 そのため、4バイトセレクタの計算に使用される関数シグネチャは、内部のネーミングスキーマに従って計算され、コントラクトABIでサポートされていない型の引数は、内部のエンコーディングを使用します。
 
 シグネチャの型には、以下の識別子が使われています。
@@ -256,13 +256,13 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 
 - 値型、非ストレージ ``string`` 、非ストレージ ``bytes`` はコントラクトABIと同じ識別子を使用しています。
 
-- 非ストレージ型の配列タイプはコントラクトABIと同じ規則に従っています。すなわち、動的配列は ``<type>[]`` 、 ``M`` 要素の固定サイズ配列は ``<type>[M]`` です。
+- 非ストレージ型の配列型はコントラクトABIと同じ規則に従っています。すなわち、動的配列は ``<type>[]`` 、 ``M`` 要素の固定サイズ配列は ``<type>[M]`` です。
 
 - ストレージを持たない構造体は、完全修飾名で参照されます。
 
-- ストレージポインターマッピングでは、 ``<keyType>`` と ``<valueType>`` がそれぞれマッピングのキータイプとバリュータイプの識別子である ``mapping(<keyType> => <valueType>) storage`` を使用します。
+- ストレージポインターマッピングでは、 ``<keyType>`` と ``<valueType>`` がそれぞれマッピングのキー型とバリュー型の識別子である ``mapping(<keyType> => <valueType>) storage`` を使用します。
 
-- 他のストレージポインタタイプは、対応する非ストレージタイプのタイプ識別子を使用しますが、それに1つのスペースとそれに続く ``storage`` が追加されます。
+- 他のストレージポインタ型は、対応する非ストレージ型の型識別子を使用しますが、それに1つのスペースとそれに続く ``storage`` が追加されます。
 
 .. The argument encoding is the same as for the regular contract ABI, except for storage pointers, which are encoded as a
 .. ``uint256`` value referring to the storage slot to which they point.

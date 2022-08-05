@@ -543,7 +543,7 @@ Function Declarations
 .. in Solidity since they are never part of an external interface of a contract and
 .. are part of a namespace separate from the one for Solidity functions.
 
-Yulでは、関数の定義が可能です。これらはコントラクトの外部インターフェイスの一部ではなく、Solidityの関数とは別の名前空間に属しているので、Solidityの関数と混同してはいけません。
+Yulでは、関数の定義が可能です。これらはコントラクトの外部インターフェースの一部ではなく、Solidityの関数とは別の名前空間に属しているので、Solidityの関数と混同してはいけません。
 
 .. For the EVM, Yul functions take their
 .. arguments (and a return PC) from the stack and also put the results onto the
@@ -672,7 +672,7 @@ Restrictions on the Grammar
 .. not allowed (i.e. a switch with a ``bool`` expression that has both a
 .. true and a false case do not allow a default case).
 
-スイッチには、少なくとも1つのケース（デフォルトのケースを含む）が必要です。すべてのケースの値は、同じタイプで明確な値を持つ必要があります。式のタイプのすべての可能な値がカバーされている場合、デフォルトのケースは許可されません（つまり、trueとfalseの両方のケースを持つ ``bool`` 式のスイッチは、デフォルトのケースを許可しません）。
+スイッチには、少なくとも1つのケース（デフォルトのケースを含む）が必要です。すべてのケースの値は、同じ型で明確な値を持つ必要があります。式の型のすべての可能な値がカバーされている場合、デフォルトのケースは許可されません（つまり、trueとfalseの両方のケースを持つ ``bool`` 式のスイッチは、デフォルトのケースを許可しません）。
 
 .. Every expression evaluates to zero or more values. Identifiers and Literals
 .. evaluate to exactly
@@ -944,7 +944,7 @@ EVM Dialect
 .. is ``u256``, the 256-bit native type of the Ethereum Virtual Machine.
 .. Since it is the default type of this dialect, it can be omitted.
 
-Yulのデフォルトの方言は、現在選択されているEVMのバージョンのEVMの方言です。この方言で使用できるタイプは、Ethereum Virtual Machineの256ビットのネイティブタイプである ``u256`` のみです。これはこの方言のデフォルトタイプなので、省略できます。
+Yulのデフォルトの方言は、現在選択されているEVMのバージョンのEVMの方言です。この方言で使用できる型は、Ethereum Virtual Machineの256ビットのネイティブ型である ``u256`` のみです。これはこの方言のデフォルト型なので、省略できます。
 
 .. The following table lists all builtin functions
 .. (depending on the EVM version) and provides a short description of the

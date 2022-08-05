@@ -558,7 +558,7 @@ Fallback関数
 .. warning::
 
     ``payable`` フォールバック関数は、 :ref:`receive Ether関数<receive-ether-function>` が存在しない場合、プレーンなEther送金に対しても実行されます。
-    Ether送金をインターフェイスの混乱と区別するために、payable fallback関数を定義する場合は、必ずreceive Ether関数も定義することをお勧めします。
+    Ether送金をインターフェースの混乱と区別するために、payable fallback関数を定義する場合は、必ずreceive Ether関数も定義することをお勧めします。
 
 .. .. note::
 
@@ -670,7 +670,7 @@ Fallback関数
 .. Overloaded functions are also present in the external interface. It is an error if two
 .. externally visible functions differ by their Solidity types but not by their external types.
 
-オーバーロードされた関数は、外部インターフェイスにも存在します。
+オーバーロードされた関数は、外部インターフェースにも存在します。
 外部から見える2つの関数が、Solidityの型ではなく、外部の型で異なる場合はエラーになります。
 
 .. code-block:: solidity
@@ -695,7 +695,7 @@ Fallback関数
 .. Both ``f`` function overloads above end up accepting the address type for the ABI although
 .. they are considered different inside Solidity.
 
-上記の両方の ``f`` 関数のオーバーロードは、Solidity内では異なるものと考えられていますが、最終的にはABI用のアドレスタイプを受け入れます。
+上記の両方の ``f`` 関数のオーバーロードは、Solidity内では異なるものと考えられていますが、最終的にはABI用のアドレス型を受け入れます。
 
 オーバーロードの解決と引数のマッチング
 -----------------------------------------

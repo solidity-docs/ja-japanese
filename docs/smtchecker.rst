@@ -675,7 +675,7 @@ CHCエンジンで安全性が証明された性質については、SMTChecker�
 .. The user can choose the type of invariants to be reported using the CLI option ``--model-checker-invariants "contract,reentrancy"`` or as an array in the field ``settings.modelChecker.invariants`` in the :ref:`JSON input<compiler-api>`.
 .. By default the SMTChecker does not report invariants.
 
-ユーザーは、CLIオプション ``--model-checker-invariants "contract,reentrancy"`` を使用して、または :ref:`JSON input<compiler-api>` のフィールド ``settings.modelChecker.invariants`` で配列として報告される不変量のタイプを選択できます。デフォルトでは、SMTCheckerはインバリアントを報告しません。
+ユーザーは、CLIオプション ``--model-checker-invariants "contract,reentrancy"`` を使用して、または :ref:`JSON input<compiler-api>` のフィールド ``settings.modelChecker.invariants`` で配列として報告される不変量の型を選択できます。デフォルトでは、SMTCheckerはインバリアントを報告しません。
 
 Division and Modulo With Slack Variables
 ========================================
@@ -1060,7 +1060,7 @@ Solidityでは、同じ :ref:`data location<data-location>` を持つ参照型�
 .. if ``d`` was assigned, we would need to clear knowledge about ``array`` and
 .. vice-versa.
 
-``array`` と ``d`` は、タイプが ``uint[]`` であっても、ストレージに配置されているため、知識を消去しないことに注意してください。  しかし、もし ``d`` が割り当てられていたら、 ``array`` に関する知識をクリアする必要があり、その逆もまた然りです。
+``array`` と ``d`` は、型が ``uint[]`` であっても、ストレージに配置されているため、知識を消去しないことに注意してください。  しかし、もし ``d`` が割り当てられていたら、 ``array`` に関する知識をクリアする必要があり、その逆もまた然りです。
 
 Contract Balance
 ================

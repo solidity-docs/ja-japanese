@@ -117,7 +117,7 @@ Explicitness Requirements
   function and constructor, and ``external`` to every fallback or interface
   function that does not specify its visibility already.
 
-* 関数の明示的な可視化が必須になりました。すべての関数とコンストラクタに ``public`` を追加し、可視性を指定していないすべてのフォールバック関数やインターフェイス関数に ``external`` を追加します。
+* 関数の明示的な可視化が必須になりました。すべての関数とコンストラクタに ``public`` を追加し、可視性を指定していないすべてのフォールバック関数やインターフェース関数に ``external`` を追加します。
 
 .. * Explicit data location for all variables of struct, array or mapping types is
   now mandatory. This is also applied to function parameters and return
@@ -136,7 +136,7 @@ Explicitness Requirements
   ``c.transfer(...)`` to ``address(c).transfer(...)``,
   and ``c.balance`` to ``address(c).balance``.
 
-* 名前空間を分離するために、コントラクト・タイプには ``address`` メンバーが含まれなくなりました。そのため、 ``address`` メンバを使用する前に、コントラクト・タイプの値を明示的にアドレスに変換する必要があります。例:  ``c`` がコントラクトの場合、 ``c.transfer(...)`` を ``address(c).transfer(...)`` に、 ``c.balance`` を ``address(c).balance`` に変更します。
+* 名前空間を分離するために、コントラクト型には ``address`` メンバーが含まれなくなりました。そのため、 ``address`` メンバを使用する前に、コントラクト型の値を明示的にアドレスに変換する必要があります。例:  ``c`` がコントラクトの場合、 ``c.transfer(...)`` を ``address(c).transfer(...)`` に、 ``c.balance`` を ``address(c).balance`` に変更します。
 
 .. * Explicit conversions between unrelated contract types are now disallowed. You can only
   convert from a contract type to one of its base or ancestor types. If you are sure that
@@ -146,7 +146,7 @@ Explicitness Requirements
   ``b`` is a contract of type ``B``, you can still convert ``b`` to type ``A`` using ``A(address(b))``.
   Note that you still need to watch out for matching payable fallback functions, as explained below.
 
-* 関連性のないコントラクトタイプ間の明示的な変換ができなくなりました。あるコントラクトタイプから、そのベースまたは祖先のタイプの1つへの変換のみが可能です。あるコントラクトが、変換したいコントラクトタイプを継承していないものの、互換性があると確信している場合、最初に ``address`` に変換することでこれを回避できます。例:  ``A`` と ``B`` がコントラクトタイプで、 ``B`` は ``A`` から継承されず、 ``b`` は ``B`` タイプのコントラクトである場合、 ``A(address(b))`` を使って ``b`` を ``A`` タイプに変換できます。なお、以下に説明するように、マッチング・ペイバック・フォールバック関数にも注意する必要があります。
+* 関連性のないコントラクト型間の明示的な変換ができなくなりました。あるコントラクト型から、そのベースまたは祖先の型の1つへの変換のみが可能です。あるコントラクトが、変換したいコントラクト型を継承していないものの、互換性があると確信している場合、最初に ``address`` に変換することでこれを回避できます。例:  ``A`` と ``B`` がコントラクト型で、 ``B`` は ``A`` から継承されず、 ``b`` は ``B`` 型のコントラクトである場合、 ``A(address(b))`` を使って ``b`` を ``A`` 型に変換できます。なお、以下に説明するように、マッチング・ペイバック・フォールバック関数にも注意する必要があります。
 
 .. * The ``address`` type  was split into ``address`` and ``address payable``,
   where only ``address payable`` provides the ``transfer`` function.  An
@@ -159,7 +159,7 @@ Explicitness Requirements
   is only used on ``msg.sender`` instead of stored addresses and ``msg.sender``
   is an ``address payable``.
 
-*  ``address`` タイプは ``address`` と ``address payable`` に分割され、 ``address payable`` のみが ``transfer`` 関数を提供しています。 ``address payable`` を直接 ``address`` に変換できますが、その逆はできません。 ``address`` から ``address payable`` への変換は、 ``uint160`` による変換で可能です。 ``c`` がコントラクトの場合、 ``address(c)`` は、 ``c`` に支払い可能なフォールバック関数がある場合に限り、 ``address payable`` になる。 :ref:`withdraw pattern<withdrawal_pattern>` を使用している場合、 ``transfer`` はストアド・アドレスではなく ``msg.sender`` でのみ使用され、 ``msg.sender`` は ``address payable`` になるので、コードを変更する必要はほとんどありません。
+*  ``address`` 型は ``address`` と ``address payable`` に分割され、 ``address payable`` のみが ``transfer`` 関数を提供しています。 ``address payable`` を直接 ``address`` に変換できますが、その逆はできません。 ``address`` から ``address payable`` への変換は、 ``uint160`` による変換で可能です。 ``c`` がコントラクトの場合、 ``address(c)`` は、 ``c`` に支払い可能なフォールバック関数がある場合に限り、 ``address payable`` になる。 :ref:`withdraw pattern<withdrawal_pattern>` を使用している場合、 ``transfer`` はストアド・アドレスではなく ``msg.sender`` でのみ使用され、 ``msg.sender`` は ``address payable`` になるので、コードを変更する必要はほとんどありません。
 
 .. * Conversions between ``bytesX`` and ``uintY`` of different size are now
   disallowed due to ``bytesX`` padding on the right and ``uintY`` padding on
@@ -172,7 +172,7 @@ Explicitness Requirements
   example ``uint8(bytes3(0x291807))`` would be converted to ``uint8(uint24(bytes3(0x291807)))``
   (the result is ``0x07``).
 
-* 異なるサイズの ``bytesX`` と ``uintY`` の間の変換は、 ``bytesX`` のパディングが右に、 ``uintY`` のパディングが左にあるため、予期しない変換結果を引き起こす可能性があるため、許可されなくなりました。変換の前に、タイプ内でサイズを調整する必要があるようになりました。例えば、 ``bytes4`` (4バイト)を ``uint64`` (8バイト)に変換するには、まず ``bytes4`` の変数を ``bytes8`` に変換し、次に ``uint64`` に変換します。 ``uint32`` で変換すると逆にパディングされてしまいます。v0.5.0以前のバージョンでは、 ``bytesX`` と ``uintY`` の間の変換は ``uint8X`` を経由します。例えば、 ``uint8(bytes3(0x291807))`` は ``uint8(uint24(bytes3(0x291807)))`` に変換されます（結果は ``0x07`` ）。
+* 異なるサイズの ``bytesX`` と ``uintY`` の間の変換は、 ``bytesX`` のパディングが右に、 ``uintY`` のパディングが左にあるため、予期しない変換結果を引き起こす可能性があるため、許可されなくなりました。変換の前に、型内でサイズを調整する必要があるようになりました。例えば、 ``bytes4`` (4バイト)を ``uint64`` (8バイト)に変換するには、まず ``bytes4`` の変数を ``bytes8`` に変換し、次に ``uint64`` に変換します。 ``uint32`` で変換すると逆にパディングされてしまいます。v0.5.0以前のバージョンでは、 ``bytesX`` と ``uintY`` の間の変換は ``uint8X`` を経由します。例えば、 ``uint8(bytes3(0x291807))`` は ``uint8(uint24(bytes3(0x291807)))`` に変換されます（結果は ``0x07`` ）。
 
 .. * Using ``msg.value`` in non-payable functions (or introducing it via a
   modifier) is disallowed as a security feature. Turn the function into
@@ -442,7 +442,7 @@ Interoperability With Older Contracts
     }
 .. This will no longer compile with Solidity v0.5.0. However, you can define a compatible interface for it:
 
-これはSolidity v0.5.0ではコンパイルされなくなります。ただし、互換性のあるインターフェイスを定義することは可能です:
+これはSolidity v0.5.0ではコンパイルされなくなります。ただし、互換性のあるインターフェースを定義することは可能です:
 
 .. code-block:: solidity
 
@@ -460,7 +460,7 @@ Interoperability With Older Contracts
 .. interface for older contracts, you should only use ``view`` in place of ``constant`` in case you are absolutely sure that
 .. the function will work with ``staticcall``.
 
-オリジナルのコントラクトでは ``constant`` と宣言されていたにもかかわらず、 ``anotherOldFunction`` を ``view`` と宣言していないことに注意してください。これは、Solidity v0.5.0から ``view`` 関数の呼び出しに ``staticcall`` が使われるようになったことによります。v0.5.0以前は ``constant`` キーワードが強制されていなかったため、 ``constant`` と宣言された関数を ``staticcall`` で呼び出しても、 ``constant`` 関数がストレージを変更しようとする可能性があるため、元に戻る可能性があります。したがって、古いコントラクトのインターフェイスを定義する際には、その関数が ``staticcall`` で動作することが絶対的に確認できる場合にのみ、 ``constant`` の代わりに ``view`` を使用する必要があります。
+オリジナルのコントラクトでは ``constant`` と宣言されていたにもかかわらず、 ``anotherOldFunction`` を ``view`` と宣言していないことに注意してください。これは、Solidity v0.5.0から ``view`` 関数の呼び出しに ``staticcall`` が使われるようになったことによります。v0.5.0以前は ``constant`` キーワードが強制されていなかったため、 ``constant`` と宣言された関数を ``staticcall`` で呼び出しても、 ``constant`` 関数がストレージを変更しようとする可能性があるため、元に戻る可能性があります。したがって、古いコントラクトのインターフェースを定義する際には、その関数が ``staticcall`` で動作することが絶対的に確認できる場合にのみ、 ``constant`` の代わりに ``view`` を使用する必要があります。
 
 .. Given the interface defined above, you can now easily use the already deployed pre-0.5.0 contract:
 

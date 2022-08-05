@@ -39,7 +39,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. with the same name in any of its bases.
 
 状態変数のシャドーイングはエラーとみなされます。
-派生コントラクトは、そのベースのいずれかに同名の可視ステート変数が存在しない場合にのみ、ステート変数 ``x`` を宣言できます。
+派生コントラクトは、そのベースのいずれかに同名の可視状態変数が存在しない場合にのみ、状態変数 ``x`` を宣言できます。
 
 .. The general inheritance system is very similar to
 .. `Python's <https://docs.python.org/3/tutorial/classes.html#inheritance>`_,
@@ -61,7 +61,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
     }
 
     // 他のコントラクトから派生させるには、`is`を使用します。
-    // 派生したコントラクトは、内部関数や状態変数を含む、プライベートでないすべてのメンバにアクセスすることができます。
+    // 派生したコントラクトは、内部関数や状態変数を含む、プライベートでないすべてのメンバにアクセスできます。
     // しかし、これらは `this` を介して外部からアクセスすることはできません。
     contract Destructible is Owned {
         // キーワード `virtual` は、その関数が派生クラスでその振る舞いを変更できる (「オーバーライド」) ことを意味します。
@@ -70,9 +70,9 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         }
     }
 
-    // これらの抽象コントラクトは、コンパイラにインターフェイスを知らせるためにのみ提供されています。
+    // これらの抽象コントラクトは、コンパイラにインターフェースを知らせるためにのみ提供されています。
     // ボディを持たない関数に注意してください。
-    // コントラクトがすべての関数を実装していない場合、インターフェースとしてのみ使用することができます。
+    // コントラクトがすべての関数を実装していない場合、インターフェースとしてのみ使用できます。
     abstract contract Config {
         function lookup(uint id) public virtual returns (address adr);
     }
@@ -327,7 +327,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 
 .. note::
 
-    実装のない関数は、インターフェイスの外では ``virtual`` とマークされなければなりません。
+    実装のない関数は、インターフェースの外では ``virtual`` とマークされなければなりません。
     インターフェースでは、すべての関数は自動的に ``virtual`` とみなされます。
 
 .. .. note::
@@ -434,7 +434,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. Before the constructor code is executed, state variables are initialised to
 .. their specified value if you initialise them inline, or their :ref:`default value<default-value>` if you do not.
 
-コンストラクタのコードが実行される前に、ステート変数は、インラインで初期化した場合は指定した値に、初期化しなかった場合は :ref:`デフォルト値 <default-value>` に初期化されます。
+コンストラクタのコードが実行される前に、状態変数は、インラインで初期化した場合は指定した値に、初期化しなかった場合は :ref:`デフォルト値 <default-value>` に初期化されます。
 
 .. After the constructor has run, the final code of the contract is deployed
 .. to the blockchain. The deployment of
@@ -654,4 +654,4 @@ SolidityはPythonに似ていますが、ベースクラスの有向非環状グ
     - 関数とイベント
     - イベントと修飾子
 
-例外として、ステート変数のゲッターが外部関数をオーバーライドできます。
+例外として、状態変数のゲッターが外部関数をオーバーライドできます。

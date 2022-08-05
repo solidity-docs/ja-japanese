@@ -56,7 +56,7 @@ Private Information and Randomness
 .. Everything you use in a smart contract is publicly visible, even
 .. local variables and state variables marked ``private``.
 
-スマートコントラクトで使用しているものはすべて公開されており、ローカル変数や ``private`` と書かれたステート変数も公開されています。
+スマートコントラクトで使用しているものはすべて公開されており、ローカル変数や ``private`` と書かれた状態変数も公開されています。
 
 .. Using random numbers in smart contracts is quite tricky if you do not want
 .. miners to be able to cheat.
@@ -397,7 +397,7 @@ Clearing Mappings
 .. ``mapping`` is also ignored in assignments of structs or arrays containing a
 .. ``mapping``.
 
-Solidityのタイプ ``mapping`` （ :ref:`mapping-types` 参照）は、ストレージのみのキー・バリュー・データ構造で、ゼロ以外の値が割り当てられたキーを追跡しません。  そのため、書き込まれたキーに関する余分な情報を持たないマッピングのクリーニングは不可能です。 ``mapping`` が動的記憶配列の基本型として使用されている場合、配列を削除したりポップしたりしても ``mapping`` の要素には影響しません。  例えば、ダイナミック・ストレージ・アレイのベース・タイプである ``struct`` のメンバー・フィールドのタイプとして ``mapping`` が使用されている場合も同様です。  また、 ``mapping`` を含む構造体や配列の代入においても、 ``mapping`` は無視されます。
+Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレージのみのキー・バリュー・データ構造で、ゼロ以外の値が割り当てられたキーを追跡しません。  そのため、書き込まれたキーに関する余分な情報を持たないマッピングのクリーニングは不可能です。 ``mapping`` が動的記憶配列の基本型として使用されている場合、配列を削除したりポップしたりしても ``mapping`` の要素には影響しません。  例えば、ダイナミックストレージアレイのベース型である ``struct`` のメンバーフィールドの型として ``mapping`` が使用されている場合も同様です。  また、 ``mapping`` を含む構造体や配列の代入においても、 ``mapping`` は無視されます。
 
 .. code-block:: solidity
 
@@ -449,7 +449,7 @@ Minor Details
 .. - Types that do not occupy the full 32 bytes might contain "dirty higher order bits".
 ..   This is especially important if you access ``msg.data``
 
-- 32バイトを完全に占有しないタイプには、「ダーティな高次ビット」が含まれている可能性があります。   これは特に、 ``msg.data``
+- 32バイトを完全に占有しない型には、「ダーティな高次ビット」が含まれている可能性があります。   これは特に、 ``msg.data``
 
 .. - it poses a malleability risk:
 ..   You can craft transactions that call a function ``f(uint8 x)`` with a raw byte argument

@@ -312,7 +312,7 @@ Compiler Input and Output JSON Description
 .. more complex and automated setups is the so-called JSON-input-output interface.
 .. The same interface is provided by all distributions of the compiler.
 
-Solidity コンパイラとのインターフェイスとして、特に複雑な自動化されたセットアップには、いわゆる JSON-input-output インターフェイスを使用することをお勧めします。このインターフェイスは、コンパイラのすべてのディストリビューションで提供されています。
+Solidity コンパイラとのインターフェースとして、特に複雑な自動化されたセットアップには、いわゆる JSON-input-output インターフェースを使用することをお勧めします。このインターフェースは、コンパイラのすべてのディストリビューションで提供されています。
 
 .. The fields are generally subject to change,
 .. some are optional (as noted), but we try to only make backwards compatible changes.

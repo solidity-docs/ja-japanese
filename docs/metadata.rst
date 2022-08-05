@@ -247,7 +247,7 @@ Usage for Source Code Verification
 .. Excess data corresponds to the constructor input data, which should be decoded
 .. according to the interface and presented to the user.
 
-コンパイルを確認するために、IPFS/Swarmからメタデータファイルのリンクを介してソースを取得できます。その入力に対して、正しいバージョンのコンパイラ（「公式」コンパイラの一部であることが確認されている）が、指定された設定で起動される。結果のバイトコードは、作成トランザクションのデータまたは ``CREATE``  opcodeデータと比較される。メタデータのハッシュはバイトコードの一部であるため、これによりメタデータが自動的に検証されます。余ったデータはコンストラクタの入力データに対応しており、インターフェイスに従ってデコードし、ユーザーに提示する必要があります。
+コンパイルを確認するために、IPFS/Swarmからメタデータファイルのリンクを介してソースを取得できます。その入力に対して、正しいバージョンのコンパイラ（「公式」コンパイラの一部であることが確認されている）が、指定された設定で起動される。結果のバイトコードは、作成トランザクションのデータまたは ``CREATE``  opcodeデータと比較される。メタデータのハッシュはバイトコードの一部であるため、これによりメタデータが自動的に検証されます。余ったデータはコンストラクタの入力データに対応しており、インターフェースに従ってデコードし、ユーザーに提示する必要があります。
 
 .. In the repository `sourcify <https://github.com/ethereum/sourcify>`_
 .. (`npm package <https://www.npmjs.com/package/source-verify>`_) you can see

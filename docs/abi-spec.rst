@@ -13,7 +13,7 @@ Basic Design
 .. from outside the blockchain and for contract-to-contract interaction. Data is encoded according to its type,
 .. as described in this specification. The encoding is not self describing and thus requires a schema in order to decode.
 
-コントラクト・アプリケーション・バイナリ・インターフェース（ABI）は、Ethereumエコシステム内のコントラクトと対話するための標準的な方法であり、ブロックチェーンの外側からも、コントラクト間の対話のためにも使用されます。データは、この仕様書に記載されているように、そのタイプに応じてエンコードされます。符号化は自己記述的ではないため、デコードするためにはスキーマが必要です。
+コントラクト・アプリケーション・バイナリ・インターフェース（ABI）は、Ethereumエコシステム内のコントラクトと対話するための標準的な方法であり、ブロックチェーンの外側からも、コントラクト間の対話のためにも使用されます。データは、この仕様書に記載されているように、その型に応じてエンコードされます。符号化は自己記述的ではないため、デコードするためにはスキーマが必要です。
 
 .. We assume the interface functions of a contract are strongly typed, known at compilation time and static.
 .. We assume that all contracts will have the interface definitions of any contracts they call available at compile-time.
@@ -22,7 +22,7 @@ Basic Design
 
 .. This specification does not address contracts whose interface is dynamic or otherwise known only at run-time.
 
-この仕様では、インターフェイスが動的であるなど、実行時にしかわからないコントラクトは扱わない。
+この仕様では、インターフェースが動的であるなど、実行時にしかわからないコントラクトは扱わない。
 
 .. _abi_function_selector:
 .. index:: selector
@@ -37,7 +37,7 @@ Function Selector
 .. the function name with the parenthesised list of parameter types. Parameter types are split by a single
 .. comma - no spaces are used.
 
-関数呼び出しのコールデータの最初の4バイトは、呼び出される関数を指定します。これは、関数のシグネチャのKeccak-256ハッシュの最初（左、ビッグエンディアンの高次）の4バイトです。シグネチャは、データ位置指定子のない基本プロトタイプの正規表現として定義されています。つまり、関数名と括弧で囲まれたパラメータタイプのリストです。パラメータタイプは1つのコンマで分割され、スペースは使用されません。
+関数呼び出しのコールデータの最初の4バイトは、呼び出される関数を指定します。これは、関数のシグネチャのKeccak-256ハッシュの最初（左、ビッグエンディアンの高次）の4バイトです。シグネチャは、データ位置指定子のない基本プロトタイプの正規表現として定義されています。つまり、関数名と括弧で囲まれたパラメータ型のリストです。パラメータ型は1つのコンマで分割され、スペースは使用されません。
 
 .. .. note::
 
@@ -64,7 +64,7 @@ Types
 
 .. The following elementary types exist:
 
-次のような初級タイプがあります。
+次のような基本型があります。
 
 .. - ``uint<M>``: unsigned integer type of ``M`` bits, ``0 < M <= 256``, ``M % 8 == 0``. e.g. ``uint32``, ``uint8``, ``uint256``.
 
@@ -104,7 +104,7 @@ Types
 
 .. - ``bytes<M>``: binary type of ``M`` bytes, ``0 < M <= 32``.
 
-- ``bytes<M>`` :  ``M`` バイトのバイナリタイプ、 ``0 < M <= 32`` 。
+- ``bytes<M>`` :  ``M`` バイトのバイナリ型、 ``0 < M <= 32`` 。
 
 .. - ``function``: an address (20 bytes) followed by a function selector (4 bytes). Encoded identical to ``bytes24``.
 
@@ -112,7 +112,7 @@ Types
 
 .. The following (fixed-size) array type exists:
 
-次のような（固定サイズの）配列タイプが存在します。
+次のような（固定サイズの）配列型が存在します。
 
 .. - ``<type>[M]``: a fixed-length array of ``M`` elements, ``M >= 0``, of the given type.
 
@@ -128,7 +128,7 @@ Types
 
 .. The following non-fixed-size types exist:
 
-以下のような非固定サイズのタイプが存在する。
+以下のような非固定サイズの型が存在する。
 
 .. - ``bytes``: dynamic sized byte sequence.
 
@@ -148,7 +148,7 @@ Types
 
 .. - ``(T1,T2,...,Tn)``: tuple consisting of the types ``T1``, ..., ``Tn``, ``n >= 0``
 
-- ``(T1,T2,...,Tn)`` :  ``T1`` , ...,  ``Tn`` ,  ``n >= 0`` の各タイプからなるタプル
+- ``(T1,T2,...,Tn)`` :  ``T1`` , ...,  ``Tn`` ,  ``n >= 0`` の各型からなるタプル
 
 .. It is possible to form tuples of tuples, arrays of tuples and so on. It is also possible to form zero-tuples (where ``n == 0``).
 
@@ -214,11 +214,11 @@ Formal Specification of the Encoding
 .. We distinguish static and dynamic types. Static types are encoded in-place and dynamic types are
 .. encoded at a separately allocated location after the current block.
 
-ここでは、スタティック型とダイナミック型を区別します。スタティックタイプはその場でエンコードされ、ダイナミックタイプは現在のブロックの後に別個に割り当てられた場所でエンコードされます。
+ここでは、スタティック型とダイナミック型を区別します。スタティック型はその場でエンコードされ、ダイナミック型は現在のブロックの後に別個に割り当てられた場所でエンコードされます。
 
 .. **Definition:** The following types are called "dynamic":
 
-**Definition:**  次のようなタイプを「ダイナミック」と呼びます。
+**Definition:**  次のような型を「ダイナミック」と呼びます。
 
 .. * ``bytes``
 
@@ -242,7 +242,7 @@ Formal Specification of the Encoding
 
 .. All other types are called "static".
 
-それ以外のタイプは「スタティック」と呼ばれます。
+それ以外の型は「スタティック」と呼ばれます。
 
 .. **Definition:** ``len(a)`` is the number of bytes in a binary string ``a``.
 .. The type of ``len(a)`` is assumed to be ``uint256``.
@@ -279,7 +279,7 @@ Formal Specification of the Encoding
 ..   the head parts only depend on the types and not the values. The value of ``head(X(i))`` is the offset
 ..   of the beginning of ``tail(X(i))`` relative to the start of ``enc(X)``.
 
-- ``k >= 0`` と任意のタイプ ``T1`` , ...,  ``Tk`` のための ``(T1,...,Tk)``
+- ``k >= 0`` と任意の型 ``T1`` , ...,  ``Tk`` のための ``(T1,...,Tk)``
 
   ``enc(X) = head(X(1)) ... head(X(k)) tail(X(1)) ... tail(X(k))``
 
@@ -293,7 +293,7 @@ Formal Specification of the Encoding
 
     ``head(X(i)) = enc(len( head(X(1)) ... head(X(k)) tail(X(1)) ... tail(X(i-1)) ))``   ``tail(X(i)) = enc(X(i))``
 
-  なお、動的なケースでは、ヘッドパーツの長さはタイプにのみ依存し、値には依存しないため、 ``head(X(i))`` はよく定義されています。 ``head(X(i))`` の値は、 ``enc(X)`` の開始位置に対する ``tail(X(i))`` の開始位置のオフセットです。
+  なお、動的なケースでは、ヘッドパーツの長さは型にのみ依存し、値には依存しないため、 ``head(X(i))`` はよく定義されています。 ``head(X(i))`` の値は、 ``enc(X)`` の開始位置に対する ``tail(X(i))`` の開始位置のオフセットです。
 
 .. - ``T[k]`` for any ``T`` and ``k``:
 
@@ -306,7 +306,7 @@ Formal Specification of the Encoding
 
   ``enc(X) = enc((X[0], ..., X[k-1]))``
 
-  つまり、同じタイプの ``k`` 要素を持つタプルであるかのようにエンコードされます。
+  つまり、同じ型の ``k`` 要素を持つタプルであるかのようにエンコードされます。
 
 .. - ``T[]`` where ``X`` has ``k`` elements (``k`` is assumed to be of type ``uint256``):
 
@@ -327,7 +327,7 @@ Formal Specification of the Encoding
 ..   ``uint256`` followed by the actual value of ``X`` as a byte sequence, followed by
 ..   the minimum number of zero-bytes such that ``len(enc(X))`` is a multiple of 32.
 
-- 長さ ``k`` の ``bytes`` （これはタイプ ``uint256`` であると仮定される）。
+- 長さ ``k`` の ``bytes`` （これは型 ``uint256`` であると仮定される）。
 
   ``enc(X) = enc(k) pad_right(X)`` 、すなわち、バイト数は ``uint256`` に続いて ``X`` の実際の値をバイト列として符号化し、その後に ``len(enc(X))`` が32の倍数になるような最小数のゼロバイトが続く。
 
@@ -339,7 +339,7 @@ Formal Specification of the Encoding
 
 - ``string`` です。
 
-  ``enc(X) = enc(enc_utf8(X))`` 、つまり ``X`` はUTF-8でエンコードされ、この値は ``bytes`` タイプと解釈され、さらにエンコードされます。なお、この後のエンコードで使用する長さは、文字数ではなく、UTF-8でエンコードされた文字列のバイト数です。
+  ``enc(X) = enc(enc_utf8(X))`` 、つまり ``X`` はUTF-8でエンコードされ、この値は ``bytes`` 型と解釈され、さらにエンコードされます。なお、この後のエンコードで使用する長さは、文字数ではなく、UTF-8でエンコードされた文字列のバイト数です。
 
 .. - ``uint<M>``: ``enc(X)`` is the big-endian encoding of ``X``, padded on the higher-order
 ..   (left) side with zero-bytes such that the length is 32 bytes.
@@ -467,7 +467,7 @@ Examples
 
 .. - ``0xfce353f6``: the Method ID. This is derived from the signature ``bar(bytes3[2])``.
 
-- ``0xfce353f6`` : メソッドID。これはシグネチャー ``bar(bytes3[2])`` から得られる。
+- ``0xfce353f6`` : メソッドID。これはシグネチャ ``bar(bytes3[2])`` から得られる。
 
 .. - ``0x6162630000000000000000000000000000000000000000000000000000000000``: the first part of the first
 ..   parameter, a ``bytes3`` value ``"abc"`` (left-aligned).
@@ -498,7 +498,7 @@ Examples
 
 .. - ``0x0000000000000000000000000000000000000000000000000000000000000060``: the location of the data part of the first parameter (dynamic type), measured in bytes from the start of the arguments block. In this case, ``0x60``.
 
-- ``0x0000000000000000000000000000000000000000000000000000000000000060`` : 第1パラメータ（ダイナミックタイプ）のデータ部の位置で、引数ブロックの先頭からのバイト数で表します。この場合は ``0x60`` 。
+- ``0x0000000000000000000000000000000000000000000000000000000000000060`` : 第1パラメータ（ダイナミック型）のデータ部の位置で、引数ブロックの先頭からのバイト数で表します。この場合は ``0x60`` 。
 
 .. - ``0x0000000000000000000000000000000000000000000000000000000000000001``: the second parameter: boolean true.
 
@@ -506,7 +506,7 @@ Examples
 
 .. - ``0x00000000000000000000000000000000000000000000000000000000000000a0``: the location of the data part of the third parameter (dynamic type), measured in bytes. In this case, ``0xa0``.
 
-- ``0x00000000000000000000000000000000000000000000000000000000000000a0`` : 3番目のパラメータ（ダイナミックタイプ）のデータ部分の位置で、単位はバイトです。ここでは ``0xa0`` とします。
+- ``0x00000000000000000000000000000000000000000000000000000000000000a0`` : 3番目のパラメータ（ダイナミック型）のデータ部分の位置で、単位はバイトです。ここでは ``0xa0`` とします。
 
 .. - ``0x0000000000000000000000000000000000000000000000000000000000000004``: the data part of the first argument, it starts with the length of the byte array in elements, in this case, 4.
 
@@ -940,7 +940,7 @@ JSON
 
   *  ``type`` : パラメータの正規の型（詳細は後述）。
 
-  *  ``components`` : タプルタイプに使用されます（詳細は後述）。
+  *  ``components`` : タプル型に使用されます（詳細は後述）。
 
 .. - ``outputs``: an array of objects similar to ``inputs``.
 
@@ -1005,7 +1005,7 @@ JSON
 
   *  ``type`` : パラメータの正規の型（詳細は後述）。
 
-  *  ``components`` : タプルタイプに使用されます（詳細は後述）。
+  *  ``components`` : タプル型に使用されます（詳細は後述）。
 
   *  ``indexed`` : フィールドがログのトピックの一部である場合は ``true`` 、ログのデータセグメントの一つである場合は ``false`` 。
 
@@ -1039,7 +1039,7 @@ JSON
 
   *  ``type`` : パラメータの正規の型（詳細は後述）。
 
-  *  ``components`` : タプルタイプに使用されます（詳細は後述）。
+  *  ``components`` : タプル型に使用されます（詳細は後述）。
 
 .. .. note::
 
@@ -1219,11 +1219,11 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 
 .. - types shorter than 32 bytes are concatenated directly, without padding or sign extension
 
-- 32バイト以下のタイプは、パディングや符号拡張なしに、直接連結されます。
+- 32バイト以下の型は、パディングや符号拡張なしに、直接連結されます。
 
 .. - dynamic types are encoded in-place and without the length.
 
-- ダイナミックタイプは、その場で長さを変えずにエンコードされます。
+- ダイナミック型は、その場で長さを変えずにエンコードされます。
 
 .. - array elements are padded, but still encoded in-place
 
@@ -1268,7 +1268,7 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 .. - Dynamically-sized types like ``string``, ``bytes`` or ``uint[]`` are encoded
 ..   without their length field.
 
-- ``string`` 、 ``bytes`` 、 ``uint[]`` のような動的なサイズのタイプは、長さフィールドなしでエンコードされます。
+- ``string`` 、 ``bytes`` 、 ``uint[]`` のような動的なサイズの型は、長さフィールドなしでエンコードされます。
 
 .. - The encoding of ``string`` or ``bytes`` does not apply padding at the end
 ..   unless it is part of an array or struct (then it is padded to a multiple of

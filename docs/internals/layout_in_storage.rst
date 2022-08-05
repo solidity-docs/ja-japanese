@@ -8,7 +8,7 @@
 
 コントラクトの状態変数はストレージにコンパクトに格納され、複数の値が同じストレージスロットを使用することがあります。
 動的なサイズの配列やマッピング（後述）を除き、データはスロット ``0`` に格納された最初の状態変数から順に連続して格納されます。
-各変数には、そのタイプに応じてバイト単位のサイズが決定されます。
+各変数には、その型に応じてバイト単位のサイズが決定されます。
 32バイトに満たない複数の連続したアイテムは、以下のルールに従って、可能な限り1つのストレージスロットにまとめられます。
 
 - ストレージスロットの最初のアイテムは、下位にアラインされ格納されます。
@@ -21,7 +21,7 @@
 .. C3-linearized order of contracts starting with the most base-ward contract. If allowed
 .. by the above rules, state variables from different contracts do share the same storage slot.
 
-継承を使用しているコントラクトでは、ステート変数の順序は、最も下位のコントラクトから始まるコントラクトのC3線形化された順序によって決定されます。
+継承を使用しているコントラクトでは、状態変数の順序は、最も下位のコントラクトから始まるコントラクトのC3線形化された順序によって決定されます。
 上記のルールで許可されていれば、異なるコントラクトの状態変数が同じストレージスロットを共有することができます。
 
 .. The elements of structs and arrays are stored after each other, just as if they were given
@@ -92,7 +92,7 @@
 .. :ref:`rules above <storage-inplace-encoding>` and the elements they contain are stored starting at a different
 .. storage slot that is computed using a Keccak-256 hash.
 
-マッピングや動的なサイズの配列タイプは、そのサイズが予測できないため、前後の状態変数の間に格納することはできません。
+マッピングや動的なサイズの配列型は、そのサイズが予測できないため、前後の状態変数の間に格納することはできません。
 その代わりに、それらは :ref:`上記のルール<storage-inplace-encoding>` に対して32バイトしか占有しないとみなされ、含まれる要素はKeccak-256ハッシュを使用して計算された別のストレージスロットから開始して格納されます。
 
 .. Assume the storage location of the mapping or array ends up being a slot ``p``
@@ -128,7 +128,7 @@
 
 マッピングキー ``k`` に対応する値は ``keccak256(h(k) . p)`` に位置し、 ``.`` は連結、 ``h`` はキーの型に応じて適用される関数である。
 
-- 値タイプの場合、 ``h`` はメモリに値を格納するときと同じように、値を32バイトにパディングします。
+- 値型の場合、 ``h`` はメモリに値を格納するときと同じように、値を32バイトにパディングします。
 
 - 文字列やバイト配列の場合、 ``h`` はパディングされていないデータの ``keccak256`` ハッシュを計算します。
 
