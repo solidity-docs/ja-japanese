@@ -1,7 +1,7 @@
 lexer grammar SolidityLexer;
 
 /**
- * Keywords reserved for future use in Solidity.
+ * 将来Solidityで使用するために予約されたキーワード。
  */
 ReservedKeywords:
 	'after' | 'alias' | 'apply' | 'auto' | 'byte' | 'case' | 'copyof' | 'default' | 'define' | 'final'
@@ -38,7 +38,7 @@ False: 'false';
 Fixed: 'fixed' | ('fixed' [1-9][0-9]* 'x' [1-9][0-9]*);
 From: 'from'; // not a real keyword
 /**
- * Bytes types of fixed length.
+ * 固定長のバイト型。
  */
 FixedBytes:
 	'bytes1' | 'bytes2' | 'bytes3' | 'bytes4' | 'bytes5' | 'bytes6' | 'bytes7' | 'bytes8' |
@@ -61,7 +61,7 @@ Memory: 'memory';
 Modifier: 'modifier';
 New: 'new';
 /**
- * Unit denomination for numbers.
+ * 数値の単位表記。
  */
 NumberUnit: 'wei' | 'gwei' | 'ether' | 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' | 'years';
 Override: 'override';
@@ -73,8 +73,8 @@ Receive: 'receive';
 Return: 'return';
 Returns: 'returns';
 /**
- * Sized signed integer types.
- * int is an alias of int256.
+ * サイズが決められた符号付き整数型。
+ * intはint256のエイリアスです。
  */
 SignedIntegerType:
 	'int' | 'int8' | 'int16' | 'int24' | 'int32' | 'int40' | 'int48' | 'int56' | 'int64' |
@@ -90,8 +90,8 @@ Type: 'type';
 Ufixed: 'ufixed' | ('ufixed' [1-9][0-9]+ 'x' [1-9][0-9]+);
 Unchecked: 'unchecked';
 /**
- * Sized unsigned integer types.
- * uint is an alias of uint256.
+ * サイズが決められた符号無し整数型。
+ * uintはuint256のエイリアスです。
  */
 UnsignedIntegerType:
 	'uint' | 'uint8' | 'uint16' | 'uint24' | 'uint32' | 'uint40' | 'uint48' | 'uint56' | 'uint64' |
@@ -161,11 +161,11 @@ DoubleQuote: '"';
 SingleQuote: '\'';
 
 /**
- * A non-empty quoted string literal restricted to printable characters.
+ * 印字可能な文字に制限された、クォートで囲まれた空でない文字列リテラル。
  */
 NonEmptyStringLiteral: '"' DoubleQuotedStringCharacter+ '"' | '\'' SingleQuotedStringCharacter+ '\'';
 /**
- * An empty string literal
+ * 空の文字列リテラル
  */
 EmptyStringLiteral: '"' '"' | '\'' '\'';
 
@@ -176,17 +176,17 @@ fragment DoubleQuotedStringCharacter: DoubleQuotedPrintable | EscapeSequence;
 //@doc:inline
 fragment SingleQuotedStringCharacter: SingleQuotedPrintable | EscapeSequence;
 /**
- * Any printable character except single quote or back slash.
+ * シングルクォート、バックスラッシュ以外の印字可能な文字。
  */
 fragment SingleQuotedPrintable: [\u0020-\u0026\u0028-\u005B\u005D-\u007E];
 /**
- * Any printable character except double quote or back slash.
+ * ダブルクォート、バックスラッシュ以外の印刷可能な文字。
  */
 fragment DoubleQuotedPrintable: [\u0020-\u0021\u0023-\u005B\u005D-\u007E];
 /**
-  * Escape sequence.
-  * Apart from common single character escape sequences, line breaks can be escaped
-  * as well as four hex digit unicode escapes \\uXXXX and two digit hex escape sequences \\xXX are allowed.
+  * エスケープシーケンス。
+  * 一般的な1文字のエスケープシーケンスとは別に、改行もエスケープできます。
+  * また、4桁の16進数のUnicodeエスケープ \uXXXX と2桁の16進数のエスケープシーケンス \xXX が使用可能です。
   */
 fragment EscapeSequence:
 	'\\' (
@@ -195,7 +195,7 @@ fragment EscapeSequence:
 		| 'x' HexCharacter HexCharacter
 	);
 /**
- * A single quoted string literal allowing arbitrary unicode characters.
+ * 任意のUnicode文字を使用できるシングルクォートで囲まれた文字列リテラル。
  */
 UnicodeStringLiteral:
 	'unicode"' DoubleQuotedUnicodeStringCharacter* '"'
@@ -207,11 +207,11 @@ fragment SingleQuotedUnicodeStringCharacter: ~['\r\n\\] | EscapeSequence;
 
 // Note that this will also be used for Yul hex string literals.
 /**
- * Hex strings need to consist of an even number of hex digits that may be grouped using underscores.
+ * 16進文字列は、偶数長の16進数の数字で構成され、アンダースコアを用いてグループ化できる必要があります。
  */
 HexString: 'hex' (('"' EvenHexDigits? '"') | ('\'' EvenHexDigits? '\''));
 /**
- * Hex numbers consist of a prefix and an arbitrary number of hex digits that may be delimited by underscores.
+ * 16進数は、プレフィックスと、アンダースコアで区切られた任意の数の16進数の数字で構成されています。
  */
 HexNumber: '0' 'x' HexDigits;
 //@doc:inline
@@ -222,9 +222,8 @@ fragment EvenHexDigits: HexCharacter HexCharacter ('_'? HexCharacter HexCharacte
 fragment HexCharacter: [0-9A-Fa-f];
 
 /**
- * A decimal number literal consists of decimal digits that may be delimited by underscores and
- * an optional positive or negative exponent.
- * If the digits contain a decimal point, the literal has fixed point type.
+ * 10進数リテラルは、アンダースコアで区切られた10進数の数字と、オプションで正または負の指数で構成されています。
+ * 桁に小数点が含まれている場合、リテラルは固定小数点型となります。
  */
 DecimalNumber: (DecimalDigits | (DecimalDigits? '.' DecimalDigits)) ([eE] '-'? DecimalDigits)?;
 //@doc:inline
@@ -232,8 +231,7 @@ fragment DecimalDigits: [0-9] ('_'? [0-9])* ;
 
 
 /**
- * An identifier in solidity has to start with a letter, a dollar-sign or an underscore and
- * may additionally contain numbers after the first symbol.
+ * Solidityの識別子は、アルファベット、ドル記号、アンダースコアで始まる必要があり、最初の記号の後であれば数字を含むことができます。
  */
 Identifier: IdentifierStart IdentifierPart*;
 //@doc:inline
@@ -272,7 +270,7 @@ YulTrue: 'true';
 YulHex: 'hex';
 
 /**
- * Builtin functions in the EVM Yul dialect.
+ * EVMのオペコードに対応するYulのビルトイン関数。
  */
 YulEVMBuiltin:
 	'stop' | 'add' | 'sub' | 'mul' | 'div' | 'sdiv' | 'mod' | 'smod' | 'exp' | 'not'
@@ -297,9 +295,9 @@ YulComma: ',';
 YulArrow: '->';
 
 /**
- * Yul identifiers consist of letters, dollar signs, underscores and numbers, but may not start with a number.
- * In inline assembly there cannot be dots in user-defined identifiers. Instead see yulPath for expressions
- * consisting of identifiers with dots.
+ * Yul識別子は、アルファベット、ドル記号、アンダースコア、数字で構成されますが、数字で始めることはできません。
+ * インラインアセンブリでは、ユーザー定義識別子にドットを使用することはできません。
+ * ドットを含む識別子で構成される式については、yulPathを参照してください。
  */
 YulIdentifier: YulIdentifierStart YulIdentifierPart*;
 //@doc:inline
@@ -307,17 +305,15 @@ fragment YulIdentifierStart: [a-zA-Z$_];
 //@doc:inline
 fragment YulIdentifierPart: [a-zA-Z0-9$_];
 /**
- * Hex literals in Yul consist of a prefix and one or more hexadecimal digits.
+ * Yulの16進数リテラルは、プレフィックスと1桁以上の16進数で構成されています。
  */
 YulHexNumber: '0' 'x' [0-9a-fA-F]+;
 /**
- * Decimal literals in Yul may be zero or any sequence of decimal digits without leading zeroes.
+ * Yulの10進数リテラルは、0または先頭の0を除いた任意の10進数の数字列です。
  */
 YulDecimalNumber: '0' | ([1-9] [0-9]*);
 /**
- * String literals in Yul consist of one or more double-quoted or single-quoted strings
- * that may contain escape sequences and printable characters except unescaped line breaks or
- * unescaped double-quotes or single-quotes, respectively.
+ * Yulの文字列リテラルは、1つ以上のダブルクォートまたはシングルクォートで囲まれた文字列からなり、それぞれエスケープされていない改行やエスケープされていないダブルクォートやシングルクォート以外のエスケープシーケンスや印字可能な文字が含まれることがある。
  */
 YulStringLiteral:
 	'"' DoubleQuotedStringCharacter* '"'
@@ -332,8 +328,9 @@ YulLINE_COMMENT: '//' ~[\r\n]* -> channel(HIDDEN) ;
 mode PragmaMode;
 
 /**
- * Pragma token. Can contain any kind of symbol except a semicolon.
- * Note that currently the solidity parser only allows a subset of this.
+ * Pragmaトークン。
+ * セミコロン以外のあらゆる種類の記号を含むことができます。
+ * 現在、Solidityパーサーはこのサブセットしか許さないことに注意してください。
  */
 //@doc:name pragma-token
 //@doc:no-diagram
