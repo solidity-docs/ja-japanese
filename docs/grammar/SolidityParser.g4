@@ -1,13 +1,12 @@
 /**
- * Solidity is a statically typed, contract-oriented, high-level language for implementing smart contracts on the Ethereum platform.
+ * Solidityは、Ethereumプラットフォーム上でスマートコントラクトを実装するための、静的型付けでコントラクト指向の高水準言語です。
  */
 parser grammar SolidityParser;
 
 options { tokenVocab=SolidityLexer; }
 
 /**
- * On top level, Solidity allows pragmas, import directives, and
- * definitions of contracts, interfaces, libraries, structs, enums and constants.
+ * Solidityでは、プラグマ、importディレクティブ、コントラクト、インターフェース、ライブラリ、構造体、列挙型、定数などの定義が可能です。
  */
 sourceUnit: (
 	pragmaDirective
@@ -27,7 +26,7 @@ sourceUnit: (
 pragmaDirective: Pragma PragmaToken+ PragmaSemicolon;
 
 /**
- * Import directives import identifiers from different files.
+ * importディレクティブは、異なるファイルから識別子をインポートします。
  */
 importDirective:
 	Import (
@@ -39,30 +38,30 @@ importDirective:
 //@doc:name aliases
 importAliases: symbol=identifier (As alias=identifier)?;
 /**
- * Path of a file to be imported.
+ * インポートするファイルのパス。
  */
 path: NonEmptyStringLiteral;
 /**
- * List of aliases for symbols to be imported.
+ * インポートするシンボルのエイリアスのリスト。
  */
 symbolAliases: LBrace aliases+=importAliases (Comma aliases+=importAliases)* RBrace;
 
 /**
- * Top-level definition of a contract.
+ * コントラクトのトップレベルの定義。
  */
 contractDefinition:
 	Abstract? Contract name=identifier
 	inheritanceSpecifierList?
 	LBrace contractBodyElement* RBrace;
 /**
- * Top-level definition of an interface.
+ * インターフェースのトップレベルの定義。
  */
 interfaceDefinition:
 	Interface name=identifier
 	inheritanceSpecifierList?
 	LBrace contractBodyElement* RBrace;
 /**
- * Top-level definition of a library.
+ * ライブラリのトップレベルの定義。
  */
 libraryDefinition: Library name=identifier LBrace contractBodyElement* RBrace;
 
@@ -71,16 +70,15 @@ inheritanceSpecifierList:
 	Is inheritanceSpecifiers+=inheritanceSpecifier
 	(Comma inheritanceSpecifiers+=inheritanceSpecifier)*?;
 /**
- * Inheritance specifier for contracts and interfaces.
- * Can optionally supply base constructor arguments.
+ * コントラクトとインターフェースの継承指定子です。
+ * オプションでベースコンストラクタの引数を与えることができます。
  */
 inheritanceSpecifier: name=identifierPath arguments=callArgumentList?;
 
 /**
- * Declarations that can be used in contracts, interfaces and libraries.
+ * コントラクト、インターフェース、ライブラリで使用可能な宣言。
  *
- * Note that interfaces and libraries may not contain constructors, interfaces may not contain state variables
- * and libraries may not contain fallback, receive functions nor non-constant state variables.
+ * インターフェースとライブラリはコンストラクタを含むことができず、インターフェースは状態変数を含むことができず、ライブラリはフォールバック、receive関数、非定数の状態変数を含むことができないことに注意してください。
  */
 contractBodyElement:
 	constructorDefinition
@@ -98,34 +96,34 @@ contractBodyElement:
 //@doc:inline
 namedArgument: name=identifier Colon value=expression;
 /**
- * Arguments when calling a function or a similar callable object.
- * The arguments are either given as comma separated list or as map of named arguments.
+ * 関数や類似の呼び出し可能なオブジェクトを呼び出す際の引数。
+ * 引数はカンマで区切られたリストか、名前付き引数のマップとして与えられます。
  */
 callArgumentList: LParen ((expression (Comma expression)*)? | LBrace (namedArgument (Comma namedArgument)*)? RBrace) RParen;
 /**
- * Qualified name.
+ * 適格な名称。
  */
 identifierPath: identifier (Period identifier)*;
 
 /**
- * Call to a modifier. If the modifier takes no arguments, the argument list can be skipped entirely
- * (including opening and closing parentheses).
+ * 修飾子の呼び出し。
+ * 修飾子が引数を取らない場合、引数リストは完全にスキップすることができます（開閉括弧を含む）。
  */
 modifierInvocation: identifierPath callArgumentList?;
 /**
- * Visibility for functions and function types.
+ * 関数と関数型の可視性。
  */
 visibility: Internal | External | Private | Public;
 /**
- * A list of parameters, such as function arguments or return values.
+ * 関数の引数や戻り値などのパラメータのリスト。
  */
 parameterList: parameters+=parameterDeclaration (Comma parameters+=parameterDeclaration)*;
 //@doc:inline
 parameterDeclaration: type=typeName location=dataLocation? name=identifier?;
 /**
- * Definition of a constructor.
- * Must always supply an implementation.
- * Note that specifying internal or public visibility is deprecated.
+ * コンストラクタの定義。
+ * 常に実装を提供する必要があります。
+ * internalあるいはpublicの指定は非推奨であることに注意してください。
  */
 constructorDefinition
 locals[boolean payableSet = false, boolean visibilitySet = false]
@@ -140,20 +138,19 @@ locals[boolean payableSet = false, boolean visibilitySet = false]
 	body=block;
 
 /**
- * State mutability for function types.
- * The default mutability 'non-payable' is assumed if no mutability is specified.
+ * 関数型に対するミュータビリティの指定。
+ * ミュータビリティが指定されていない場合は、デフォルトのミュータビリティ「non-payable」が指定される。
  */
 stateMutability: Pure | View | Payable;
 /**
- * An override specifier used for functions, modifiers or state variables.
- * In cases where there are ambiguous declarations in several base contracts being overridden,
- * a complete list of base contracts has to be given.
+ * 関数、修飾子、状態変数に使用されるオーバーライド指定子。
+ * オーバーライドされる複数のベースコントラクトにあいまいな宣言がある場合、基本コントラクトの完全なリストを指定する必要があります。
  */
 overrideSpecifier: Override (LParen overrides+=identifierPath (Comma overrides+=identifierPath)* RParen)?;
 /**
- * The definition of contract, library and interface functions.
- * Depending on the context in which the function is defined, further restrictions may apply,
- * e.g. functions in interfaces have to be unimplemented, i.e. may not contain a body block.
+ * コントラクト、ライブラリ、インターフェース関数の定義。
+ * 関数が定義されているコンテキストによっては、さらなる制約が適用される場合があります。
+ * 例えば、インターフェイスの関数は未実装、つまりボディブロックを含んではなりません。
  */
 functionDefinition
 locals[
@@ -175,9 +172,8 @@ locals[
 	(Returns LParen returnParameters=parameterList RParen)?
 	(Semicolon | body=block);
 /**
- * The definition of a modifier.
- * Note that within the body block of a modifier, the underscore cannot be used as identifier,
- * but is used as placeholder statement for the body of a function to which the modifier is applied.
+ * 修飾子の定義。
+ * 修飾子の本体ブロック内では、アンダースコアは識別子として使用できませんが、修飾子が適用される関数本体のプレースホルダー文として使用できることに注意してください。
  */
 modifierDefinition
 locals[
@@ -194,7 +190,7 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * Definition of the special fallback function.
+ * fallback関数の定義。
  */
 fallbackFunctionDefinition
 locals[
@@ -217,7 +213,7 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * Definition of the special receive function.
+ * receive関数の定義。
  */
 receiveFunctionDefinition
 locals[
@@ -238,25 +234,25 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * Definition of a struct. Can occur at top-level within a source unit or within a contract, library or interface.
+ * 構造体の定義。ソースユニット、コントラクト、ライブラリ、インターフェースのトップレベルで定義できます。
  */
 structDefinition: Struct name=identifier LBrace members=structMember+ RBrace;
 /**
- * The declaration of a named struct member.
+ * 名前付き構造体メンバの宣言。
  */
 structMember: type=typeName name=identifier Semicolon;
 /**
- * Definition of an enum. Can occur at top-level within a source unit or within a contract, library or interface.
+ * enumの定義。ソースユニット、コントラクト、ライブラリ、インターフェースのトップレベルで定義できます。
  */
 enumDefinition:	Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
 /**
- * Definition of a user defined value type. Can occur at top-level within a source unit or within a contract, library or interface.
+ * ユーザー定義の値型を定義。ソースユニット、コントラクト、ライブラリ、インターフェースのトップレベルで定義できます。
  */
 userDefinedValueTypeDefinition:
 	Type name=identifier Is elementaryTypeName[true] Semicolon;
 
 /**
- * The declaration of a state variable.
+ * 状態変数の宣言。
  */
 stateVariableDeclaration
 locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean overrideSpecifierSet = false]
@@ -275,7 +271,7 @@ locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean 
 	Semicolon;
 
 /**
- * The declaration of a constant variable.
+ * 定数変数の宣言。
  */
 constantVariableDeclaration
 :
@@ -286,11 +282,11 @@ constantVariableDeclaration
 	Semicolon;
 
 /**
- * Parameter of an event.
+ * イベントのパラメータ。
  */
 eventParameter: type=typeName Indexed? name=identifier?;
 /**
- * Definition of an event. Can occur in contracts, libraries or interfaces.
+ * イベントの定義。コントラクト、ライブラリ、インターフェースで定義できます。
  */
 eventDefinition:
 	Event name=identifier
@@ -299,11 +295,11 @@ eventDefinition:
 	Semicolon;
 
 /**
- * Parameter of an error.
+ * エラーのパラメータ。
  */
 errorParameter: type=typeName name=identifier?;
 /**
- * Definition of an error.
+ * エラーの定義。
  */
 errorDefinition:
 	Error name=identifier
@@ -311,13 +307,12 @@ errorDefinition:
 	Semicolon;
 
 /**
- * Using directive to bind library functions to types.
- * Can occur within contracts and libraries.
+ * ディレクティブを使用して、ライブラリ関数を型にバインドする。
+ * コントラクトやライブラリの中で使えます。
  */
 usingDirective: Using identifierPath For (Mul | typeName) Semicolon;
 /**
- * A type name can be an elementary type, a function type, a mapping type, a user-defined type
- * (e.g. a contract or struct) or an array type.
+ * 型名には、基本型、関数型、マッピング型、ユーザ定義型（コントラクトや構造体など）、配列型があります。
  */
 typeName: elementaryTypeName[true] | functionTypeName | mappingType | identifierPath | typeName LBrack expression? RBrack;
 elementaryTypeName[boolean allowAddressPayable]: Address | {$allowAddressPayable}? Address Payable | Bool | String | Bytes | SignedIntegerType | UnsignedIntegerType | FixedBytes | Fixed | Ufixed;
@@ -332,17 +327,14 @@ locals [boolean visibilitySet = false, boolean mutabilitySet = false]
 	(Returns LParen returnParameters=parameterList RParen)?;
 
 /**
- * The declaration of a single variable.
+ * 単一の変数の宣言。
  */
 variableDeclaration: type=typeName location=dataLocation? name=identifier;
 dataLocation: Memory | Storage | Calldata;
 
 /**
- * Complex expression.
- * Can be an index access, an index range access, a member access, a function call (with optional function call options),
- * a type conversion, an unary or binary expression, a comparison or assignment, a ternary expression,
- * a new-expression (i.e. a contract creation or the allocation of a dynamic memory array),
- * a tuple, an inline array or a primary expression (i.e. an identifier, literal or type name).
+ * 複合式。
+ * インデックスアクセス、インデックス範囲アクセス、メンバーアクセス、関数呼び出し（関数呼び出しオプション付き）、型変換、単項式または二項式、比較または代入、三項式、new式（コントラクトの作成または動的メモリ配列の割り当て）、タプル、インライン配列、一次式（識別子、リテラル、型名など）であることが可能です。
  */
 expression:
 	expression LBrack index=expression? RBrack # IndexAccess
@@ -381,36 +373,36 @@ expression:
 assignOp: Assign | AssignBitOr | AssignBitXor | AssignBitAnd | AssignShl | AssignSar | AssignShr | AssignAdd | AssignSub | AssignMul | AssignDiv | AssignMod;
 tupleExpression: LParen (expression? ( Comma expression?)* ) RParen;
 /**
- * An inline array expression denotes a statically sized array of the common type of the contained expressions.
+ * インライン配列式は、含まれる式の共通型の静的な大きさの配列を示します。
  */
 inlineArrayExpression: LBrack (expression ( Comma expression)* ) RBrack;
 
 /**
- * Besides regular non-keyword Identifiers, some keywords like 'from' and 'error' can also be used as identifiers.
+ * 通常の非キーワード識別子以外に、'from' や 'error' などのキーワードも識別子として使用することができます。
  */
 identifier: Identifier | From | Error | Revert;
 
 literal: stringLiteral | numberLiteral | booleanLiteral | hexStringLiteral | unicodeStringLiteral;
 booleanLiteral: True | False;
 /**
- * A full string literal consists of either one or several consecutive quoted strings.
+ * 完全な文字列リテラルは、1つまたは複数の連続した引用符で囲まれた文字列で構成されています。
  */
 stringLiteral: (NonEmptyStringLiteral | EmptyStringLiteral)+;
 /**
- * A full hex string literal that consists of either one or several consecutive hex strings.
+ * 1つまたは複数の連続した16進文字列で構成される完全な16進文字列リテラル。
  */
 hexStringLiteral: HexString+;
 /**
- * A full unicode string literal that consists of either one or several consecutive unicode strings.
+ * 1つまたは複数の連続したUnicode文字列で構成される完全なUnicode文字列リテラル。
  */
 unicodeStringLiteral: UnicodeStringLiteral+;
 
 /**
- * Number literals can be decimal or hexadecimal numbers with an optional unit.
+ * 数値リテラルは10進数または16進数で、単位は任意です。
  */
 numberLiteral: (DecimalNumber | HexNumber) NumberUnit?;
 /**
- * A curly-braced block of statements. Opens its own scope.
+ * 波括弧で囲まれた文のブロック。独自のスコープを持ちます。
  */
 block:
 	LBrace ( statement | uncheckedBlock )* RBrace;
@@ -436,53 +428,53 @@ statement:
 //@doc:inline
 simpleStatement: variableDeclarationStatement | expressionStatement;
 /**
- * If statement with optional else part.
+ * if文。else部はオプション。
  */
 ifStatement: If LParen expression RParen statement (Else statement)?;
 /**
- * For statement with optional init, condition and post-loop part.
+ * for文。init、condition、post-loop部はオプション。
  */
 forStatement: For LParen (simpleStatement | Semicolon) (expressionStatement | Semicolon) expression? RParen statement;
 whileStatement: While LParen expression RParen statement;
 doWhileStatement: Do statement While LParen expression RParen Semicolon;
 /**
- * A continue statement. Only allowed inside for, while or do-while loops.
+ * continue文。for、while、do-whileループ内でのみ使用可能。
  */
 continueStatement: Continue Semicolon;
 /**
- * A break statement. Only allowed inside for, while or do-while loops.
+ * break文。for、while、do-whileループ内でのみ使用可能。
  */
 breakStatement: Break Semicolon;
 /**
- * A try statement. The contained expression needs to be an external function call or a contract creation.
+ * try文。含まれる式は、外部関数呼び出しまたはコントラクトの作成である必要があります。
  */
 tryStatement: Try expression (Returns LParen returnParameters=parameterList RParen)? block catchClause+;
 /**
- * The catch clause of a try statement.
+ * try文のcatch句。
  */
 catchClause: Catch (identifier? LParen (arguments=parameterList) RParen)? block;
 
 returnStatement: Return expression? Semicolon;
 /**
- * An emit statement. The contained expression needs to refer to an event.
+ * emit文。含まれる式は、イベントを参照する必要があります。
  */
 emitStatement: Emit expression callArgumentList Semicolon;
 /**
- * A revert statement. The contained expression needs to refer to an error.
+ * revert文。含まれる式は、エラーを参照する必要があります。
  */
 revertStatement: Revert expression callArgumentList Semicolon;
 /**
- * An inline assembly block.
- * The contents of an inline assembly block use a separate scanner/lexer, i.e. the set of keywords and
- * allowed identifiers is different inside an inline assembly block.
+ * インラインアセンブリブロック。
+ * インラインアセンブリブロックのコンテンツは、別の字句解析器（scanner/lexer）を使用します。
+ * つまり、インラインアセンブリブロックの内部では、キーワードと許可された識別子のセットが異なります。
  */
 assemblyStatement: Assembly AssemblyDialect? AssemblyLBrace yulStatement* YulRBrace;
 
 //@doc:inline
 variableDeclarationList: variableDeclarations+=variableDeclaration (Comma variableDeclarations+=variableDeclaration)*;
 /**
- * A tuple of variable names to be used in variable declarations.
- * May contain empty fields.
+ * 変数宣言で使用される変数名のタプルです。
+ * 空のフィールドを含むことができます。
  */
 variableDeclarationTuple:
 	LParen
@@ -490,23 +482,22 @@ variableDeclarationTuple:
 		(Comma (variableDeclarations+=variableDeclaration)?)*
 	RParen;
 /**
- * A variable declaration statement.
- * A single variable may be declared without initial value, whereas a tuple of variables can only be
- * declared with initial value.
+ * 変数宣言文。
+ * 単一の変数は初期値なしで宣言できますが、変数のタプルは初期値付きでしか宣言できません。
  */
 variableDeclarationStatement: ((variableDeclaration (Assign expression)?) | (variableDeclarationTuple Assign expression)) Semicolon;
 expressionStatement: expression Semicolon;
 
 mappingType: Mapping LParen key=mappingKeyType DoubleArrow value=typeName RParen;
 /**
- * Only elementary types or user defined types are viable as mapping keys.
+ * マッピングのキーとして使用できるのは、基本型またはユーザー定義型のみです。
  */
 mappingKeyType: elementaryTypeName[false] | identifierPath;
 
 /**
- * A Yul statement within an inline assembly block.
- * continue and break statements are only valid within for loops.
- * leave statements are only valid within function bodies.
+ * インラインアセンブリブロック内のYul文。
+ * continue文とbreak文は、forループ内でのみ有効です。
+ * leave文は、関数のボディの中でのみ有効です。
  */
 yulStatement:
 	yulBlock
@@ -524,16 +515,15 @@ yulStatement:
 yulBlock: YulLBrace yulStatement* YulRBrace;
 
 /**
- * The declaration of one or more Yul variables with optional initial value.
- * If multiple variables are declared, only a function call is a valid initial value.
+ * 1つまたは複数のYul変数の宣言で、初期値は任意。
+ * 複数の変数が宣言されている場合、初期値として有効なのは関数呼び出しのみです。
  */
 yulVariableDeclaration:
 	(YulLet variables+=YulIdentifier (YulAssign yulExpression)?)
 	| (YulLet variables+=YulIdentifier (YulComma variables+=YulIdentifier)* (YulAssign yulFunctionCall)?);
 
 /**
- * Any expression can be assigned to a single Yul variable, whereas
- * multi-assignments require a function call on the right-hand side.
+ * どんな式でも1つのYul変数に代入できますが、複数代入する場合は右辺に関数呼び出しが必要です。
  */
 yulAssignment: yulPath YulAssign yulExpression | (yulPath (YulComma yulPath)+) YulAssign yulFunctionCall;
 
@@ -544,8 +534,7 @@ yulForStatement: YulFor init=yulBlock cond=yulExpression post=yulBlock body=yulB
 //@doc:inline
 yulSwitchCase: YulCase yulLiteral yulBlock;
 /**
- * A Yul switch statement can consist of only a default-case (deprecated) or
- * one or more non-default cases optionally followed by a default-case.
+ * Yul switch文は、default-caseのみ（非推奨）、または1つ以上のnon-default case（オプションでdefault-caseが続く）から構成できます。
  */
 yulSwitchStatement:
 	YulSwitch yulExpression
@@ -561,13 +550,11 @@ yulFunctionDefinition:
 	body=yulBlock;
 
 /**
- * While only identifiers without dots can be declared within inline assembly,
- * paths containing dots can refer to declarations outside the inline assembly block.
+ * インラインアセンブリ内ではドットのない識別子しか宣言できませんが、ドットを含むパスはインラインアセンブリブロックの外の宣言を参照できます。
  */
 yulPath: YulIdentifier (YulPeriod YulIdentifier)*;
 /**
- * A call to a function with return values can only occur as right-hand side of an assignment or
- * a variable declaration.
+ * 戻り値のある関数の呼び出しは、代入や変数宣言の右辺としてのみ発生します。
  */
 yulFunctionCall: (YulIdentifier | YulEVMBuiltin) YulLParen (yulExpression (YulComma yulExpression)*)? YulRParen;
 yulBoolean: YulTrue | YulFalse;
