@@ -17,7 +17,8 @@ Withdrawal from Contracts
 .. introduces a potential security risk. You may read
 .. more about this on the :ref:`security_considerations` page.
 
-効果後の送金方法としては、出金パターンの使用が推奨されます。エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクト ``transfer`` コールですが、これは潜在的なセキュリティ・リスクがあるため推奨されません。これについては、 :ref:`security_considerations` のページで詳しく説明しています。
+効果後の送金方法としては、出金パターンの使用が推奨されます。エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクト ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
+これについては、 :ref:`security_considerations` のページで詳しく説明しています。
 
 .. The following is an example of the withdrawal pattern in practice in
 .. a contract where the goal is to send the most money to the
@@ -300,7 +301,7 @@ Example
 .. are handled by the modifier ``timedTransitions``, which
 .. should be used for all functions.
 
-時限式の自動トランジションはモディファイア ``timedTransitions`` で処理されます。
+時限式の自動トランジションは修飾子 ``timedTransitions`` で処理されます。
 
 .. .. note::
 
@@ -335,7 +336,11 @@ Example
 
 .. note::
 
-    **Modifier May be Skipped** です。     これは、バージョン0.4.0以前のSolidityにのみ適用されます。     修飾子は、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNext修飾子のコードをスキップできます。その場合は、それらの関数から手動でnextStageを呼び出すようにしてください。     バージョン0.4.0からは、モディファイアのコードは、関数が明示的にreturnしても実行されます。
+    **Modifier May be Skipped** です。
+    これは、バージョン0.4.0以前のSolidityにのみ適用されます。
+    修飾子は、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNext修飾子のコードをスキップできます。
+    その場合は、それらの関数から手動でnextStageを呼び出すようにしてください。
+    バージョン0.4.0からは、修飾子のコードは、関数が明示的にreturnしても実行されます。
 
 .. code-block:: solidity
     :force:

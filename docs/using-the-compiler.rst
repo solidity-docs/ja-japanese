@@ -222,7 +222,7 @@ Target Options
 
 .. - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
 
-- 他のアカウントへのアクセスのためのガスコストが増加し、ガス推定とオプティマイザーに関連する。
+- 他のアカウントへのアクセスのためのガスコストが増加し、ガス推定とオプティマイザに関連する。
 
 .. - All gas sent by default for external calls, previously a certain amount had to be retained.
 
@@ -234,7 +234,7 @@ Target Options
 
 .. - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
 
-- ``exp`` オペコードのガスコストが増加し、ガス推定とオプティマイザーに関連する。
+- ``exp`` オペコードのガスコストが増加し、ガス推定とオプティマイザに関連する。
 
 .. - ``byzantium``
 
@@ -266,9 +266,7 @@ Target Options
 
 .. - Shifting operators use shifting opcodes and thus need less gas.
 
-- シフティング・オペレーターは、シフティング・オペコードを使用するため、より少ないガスで済みます。
-
-.. - ``petersburg``
+- シフト演算子は、シフトオペコードを使用するため、より少ないガスで済みます。
 
 - ``petersburg``
 

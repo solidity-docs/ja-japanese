@@ -11,6 +11,7 @@ term_list = [
     ("ストレージ", ("記憶",)),
     ("でき", ("することができ",)),
     ("ます。", ("る。",)),
+    ("です。", ("だ。",)),
     ("", ("・",)),
     ("型", ("タイプ",)),
     ("シグネチャ", ("シグネチャー",)),
@@ -25,4 +26,4 @@ for correct_term, wrong_terms in term_list:
             lines = open(file).readlines()
             for i, line in enumerate(lines):
                 if wrong_term in line:
-                    print(f"{file}:{i} '{wrong_term}' => '{correct_term}'")
+                    print(f"{file}:{i + 1} '{wrong_term}' => '{correct_term}'")

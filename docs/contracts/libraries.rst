@@ -268,7 +268,7 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 .. ``uint256`` value referring to the storage slot to which they point.
 
 引数のエンコーディングは、通常のコントラクトABIと同じです。
-ただし、ストレージポインタは、それが指し示すストレージ・スロットを参照する ``uint256`` 値としてエンコーディングされます。
+ただし、ストレージポインタは、それが指し示すストレージスロットを参照する ``uint256`` 値としてエンコーディングされます。
 
 .. Similarly to the contract ABI, the selector consists of the first four bytes of the Keccak256-hash of the signature.
 .. Its value can be obtained from Solidity using the ``.selector`` member as follows:

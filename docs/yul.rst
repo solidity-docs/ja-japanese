@@ -82,7 +82,8 @@ Yulのデザインは、いくつかの目標を達成しようとしていま�
 .. which allows specializing Yul to the requirements of different
 .. target platforms and feature sets.
 
-言語をシンプルかつ柔軟に保つために、Yulは純粋な形では組み込みの操作や関数、型を持っていません。これらは、Yulの方言を指定する際に、そのセマンティクスとともに追加されます。これにより、さまざまなターゲット・プラットフォームや機能セットの要件に合わせて、Yulを特殊化できます。
+言語をシンプルかつ柔軟に保つために、Yulは純粋な形では組み込みの操作や関数、型を持っていません。
+これらは、Yulの方言を指定する際に、そのセマンティクスとともに追加されます。これにより、さまざまなターゲットプラットフォームや機能セットの要件に合わせて、Yulを特殊化できます。
 
 .. Currently, there is only one specified dialect of Yul. This dialect uses
 .. the EVM opcodes as builtin functions
@@ -149,7 +150,9 @@ Stand-Alone Usage
 .. to code as data to deploy contracts. This Yul mode is available for the commandline compiler
 .. (use ``--strict-assembly``) and for the :ref:`standard-json interface <compiler-api>`:
 
-Yulは、Solidityコンパイラを使用して、EVM方言でスタンドアローンの形で使用できます。これは :ref:`Yul object notation <yul-object>` を使用するので、コードをデータとして参照してコントラクトをデプロイすることが可能です。このYulモードは、コマンドライン・コンパイラ（ ``--strict-assembly`` を使用）と :ref:`standard-json interface <compiler-api>` で使用できます。
+Yulは、Solidityコンパイラを使用して、EVM方言でスタンドアローンの形で使用できます。
+これは :ref:`Yul object notation <yul-object>` を使用するので、コードをデータとして参照してコントラクトをデプロイすることが可能です。
+このYulモードは、コマンドラインコンパイラ（ ``--strict-assembly`` を使用）と :ref:`standard-json interface <compiler-api>` で使用できます。
 
 .. code-block:: json
 
@@ -414,7 +417,7 @@ Variable Declarations
 .. already after the variable has been used for
 .. the last time, even though it is still in scope.
 
-オプティマイザーの設定によっては、変数が最後に使用された後、まだスコープ内にあるにもかかわらず、コンパイラがスタック・スロットを解放することがあります。
+オプティマイザの設定によっては、変数が最後に使用された後、まだスコープ内にあるにもかかわらず、コンパイラがスタック・スロットを解放することがあります。
 
 Assignments
 -----------
@@ -963,7 +966,7 @@ Yulのデフォルトの方言は、現在選択されているEVMのバージ�
 .. In the following, ``mem[a...b)`` signifies the bytes of memory starting at position ``a`` up to
 .. but not including position ``b`` and ``storage[p]`` signifies the storage contents at slot ``p``.
 
-以下では、 ``mem[a...b)`` は位置 ``a`` から位置 ``b`` までのメモリのバイトを意味し、 ``storage[p]`` はスロット ``p`` の記憶内容を意味します。
+以下では、 ``mem[a...b)`` は位置 ``a`` から位置 ``b`` までのメモリのバイトを意味し、 ``storage[p]`` はスロット ``p`` のストレージ内容を意味します。
 
 .. Since Yul manages local variables and control-flow,
 .. opcodes that interfere with these features are not available. This includes
@@ -1261,7 +1264,8 @@ verbatim
 .. that are not known to the Yul compiler. It also allows you to create
 .. bytecode sequences that will not be modified by the optimizer.
 
-``verbatim...`` 組み込み関数のセットでは、Yulコンパイラーが知らないオペコードのバイトコードを作成できます。また、オプティマイザーによって変更されないバイトコード・シーケンスを作成することもできます。
+``verbatim...`` 組み込み関数のセットでは、Yulコンパイラーが知らないオペコードのバイトコードを作成できます。
+また、オプティマイザによって変更されないバイトコードシーケンスを作成することもできます。
 
 .. The functions are ``verbatim_<n>i_<m>o("<data>", ...)``, where
 
@@ -1313,7 +1317,7 @@ verbatim
 .. the stack layout, which means that e.g. using ``verbatim`` to modify
 .. the stack height can lead to undefined behaviour.
 
-``verbatim`` は、任意のオペコードや、Solidityコンパイラにとって未知のオペコードを生成するために使用できるため、オプティマイザと ``verbatim`` を併用する際には注意が必要です。オプティマイザーがオフになっていても、コード・ジェネレーターはスタック・レイアウトを決定しなければなりません。つまり、 ``verbatim`` を使ってスタックの高さを変更すると、未定義の動作になる可能性があります。
+``verbatim`` は、任意のオペコードや、Solidityコンパイラにとって未知のオペコードを生成するために使用できるため、オプティマイザと ``verbatim`` を併用する際には注意が必要です。オプティマイザがオフになっていても、コードジェネレーターはスタックレイアウトを決定しなければなりません。つまり、 ``verbatim`` を使ってスタックの高さを変更すると、未定義の動作になる可能性があります。
 
 .. The following is a non-exhaustive list of restrictions on
 .. verbatim bytecode that are not checked by
@@ -1412,7 +1416,7 @@ Yulオブジェクトは、名前の付いたコードおよびデータセク�
 
 .. note::
 
-    ``.`` を含む名前のデータ・オブジェクトやサブ・オブジェクトを定義できますが、 ``.`` は他のオブジェクトの内部にあるオブジェクトにアクセスするためのセパレータとして使用されるため、 ``datasize`` 、 ``dataoffset`` 、 ``datacopy`` を介してアクセスできません。
+    ``.`` を含む名前のデータオブジェクトやサブオブジェクトを定義できますが、 ``.`` は他のオブジェクトの内部にあるオブジェクトにアクセスするためのセパレータとして使用されるため、 ``datasize`` 、 ``dataoffset`` 、 ``datacopy`` を介してアクセスできません。
 
 .. .. note::
 
@@ -1510,18 +1514,18 @@ Yul Optimizer
 .. The Yul optimizer operates on Yul code and uses the same language for input, output and
 .. intermediate states. This allows for easy debugging and verification of the optimizer.
 
-Yulオプティマイザーは、Yulコード上で動作し、入力、出力、中間状態を同じ言語で表現します。これにより、オプティマイザーのデバッグや検証が容易になります。
+Yulオプティマイザは、Yulコード上で動作し、入力、出力、中間状態を同じ言語で表現します。これにより、オプティマイザのデバッグや検証が容易になります。
 
 .. Please refer to the general :ref:`optimizer documentation <optimizer>`
 .. for more details about the different optimization stages and how to use the optimizer.
 
-各最適化ステージの詳細やオプティマイザーの使用方法については、一般的な :ref:`optimizer documentation <optimizer>` を参照してください。
+各最適化ステージの詳細やオプティマイザの使用方法については、一般的な :ref:`optimizer documentation <optimizer>` を参照してください。
 
 .. If you want to use Solidity in stand-alone Yul mode, you activate the optimizer using ``--optimize``
 .. and optionally specify the :ref:`expected number of contract executions <optimizer-parameter-runs>` with
 .. ``--optimize-runs``:
 
-Solidityをスタンドアローンのユルいモードで使いたい場合は、 ``--optimize`` でオプティマイザーを起動し、オプションで ``--optimize-runs`` で :ref:`expected number of contract executions <optimizer-parameter-runs>` を指定します。
+Solidityをスタンドアローンのユルいモードで使いたい場合は、 ``--optimize`` でオプティマイザを起動し、オプションで ``--optimize-runs`` で :ref:`expected number of contract executions <optimizer-parameter-runs>` を指定します。
 
 .. code-block:: sh
 
@@ -1529,7 +1533,7 @@ Solidityをスタンドアローンのユルいモードで使いたい場合は
 
 .. In Solidity mode, the Yul optimizer is activated together with the regular optimizer.
 
-Solidityモードでは、通常のオプティマイザーと一緒にYulオプティマイザーが作動します。
+Solidityモードでは、通常のオプティマイザと一緒にYulオプティマイザが作動します。
 
 Optimization Step Sequence
 --------------------------
@@ -1537,7 +1541,7 @@ Optimization Step Sequence
 .. By default the Yul optimizer applies its predefined sequence of optimization steps to the generated assembly.
 .. You can override this sequence and supply your own using the ``--yul-optimizations`` option:
 
-デフォルトでは、Yulオプティマイザーは、生成されたアセンブリに対して、定義済みの最適化ステップのシーケンスを適用します。 ``--yul-optimizations`` オプションを使用すると、このシーケンスをオーバーライドして、独自のシーケンスを提供できます。
+デフォルトでは、Yulオプティマイザは、生成されたアセンブリに対して、定義済みの最適化ステップのシーケンスを適用します。 ``--yul-optimizations`` オプションを使用すると、このシーケンスをオーバーライドして、独自のシーケンスを提供できます。
 
 .. code-block:: sh
 

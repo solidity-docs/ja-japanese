@@ -117,7 +117,7 @@ Workflow for Pull Requests
 .. and instead, ``git rebase`` your branch. This will help us review your change
 .. more easily.
 
-フォーク後に ``develop`` からの変更を取り込む必要がある場合 (たとえば、潜在的なマージ・コンフリクトを解決するため)、 ``git merge`` の使用を避け、代わりに ``git rebase`` でブランチを作成してください。そうすることで、あなたの変更をより簡単に確認できます。
+フォーク後に ``develop`` からの変更を取り込む必要がある場合 (たとえば、潜在的なマージコンフリクトを解決するため)、 ``git merge`` の使用を避け、代わりに ``git rebase`` でブランチを作成してください。そうすることで、あなたの変更をより簡単に確認できます。
 
 .. Additionally, if you are writing a new feature, please ensure you add appropriate
 .. test cases under ``test/`` (see below).
@@ -171,7 +171,8 @@ Running the Tests
 .. `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest``.
 .. Running ``build/test/soltest`` or its wrapper ``scripts/soltest.sh`` is sufficient for most changes.
 
-Solidityには様々なタイプのテストがあり、そのほとんどが `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ アプリケーション ``soltest`` にバンドルされています。ほとんどの変更には、 ``build/test/soltest`` またはそのラッパー ``scripts/soltest.sh`` を実行すれば十分です。
+Solidityには様々なタイプのテストがあり、そのほとんどが `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ アプリケーション ``soltest`` にバンドルされています。
+ほとんどの変更には、 ``build/test/soltest`` またはそのラッパー ``scripts/soltest.sh`` を実行すれば十分です。
 
 .. The ``./scripts/tests.sh`` script executes most Solidity tests automatically,
 .. including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
@@ -305,7 +306,10 @@ Writing and Running Syntax Tests
 .. These files must contain annotations, stating the expected result(s) of the respective test.
 .. The test suite compiles and checks them against the given expectations.
 
-構文テストは、コンパイラが無効なコードに対して正しいエラーメッセージを生成し、有効なコードを適切に受け入れるかどうかをチェックします。これらのテストは  ``tests/libsolidity/syntaxTests``  フォルダー内の個々のファイルに格納されます。これらのファイルには、それぞれのテストで期待される結果を記載した注釈を含める必要があります。テスト・スイートは、これらのファイルをコンパイルし、期待される結果に対してチェックします。
+構文テストは、コンパイラが無効なコードに対して正しいエラーメッセージを生成し、有効なコードを適切に受け入れるかどうかをチェックします。
+これらのテストは  ``tests/libsolidity/syntaxTests``  フォルダー内の個々のファイルに格納されます。
+これらのファイルには、それぞれのテストで期待される結果を記載した注釈を含める必要があります。
+テストスイートは、これらのファイルをコンパイルし、期待される結果に対してチェックします。
 
 .. For example: ``./test/libsolidity/syntaxTests/double_stateVariable_declaration.sol``
 

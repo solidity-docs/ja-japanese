@@ -385,7 +385,7 @@ Cleanup
 .. The new code generator performs cleanup after any operation that can result in dirty bits.
 .. The hope is that the optimizer will be powerful enough to eliminate redundant cleanup operations.
 
-古いコード・ジェネレータは、ダーティ・ビットの値によって結果が影響を受ける可能性のある操作の前にのみ、クリーンアップを行います。新しいコードジェネレータでは、ダーティビットが発生する可能性のある操作の後にクリーンアップを行います。オプティマイザーが強力になり、冗長なクリーンアップ処理がなくなることを期待しています。
+古いコードジェネレータは、ダーティビットの値によって結果が影響を受ける可能性のある操作の前にのみ、クリーンアップを行います。新しいコードジェネレータでは、ダーティビットが発生する可能性のある操作の後にクリーンアップを行います。オプティマイザが強力になり、冗長なクリーンアップ処理がなくなることを期待しています。
 
 .. For example:
 

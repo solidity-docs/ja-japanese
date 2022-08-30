@@ -13,7 +13,9 @@ Basic Design
 .. from outside the blockchain and for contract-to-contract interaction. Data is encoded according to its type,
 .. as described in this specification. The encoding is not self describing and thus requires a schema in order to decode.
 
-コントラクト・アプリケーション・バイナリ・インターフェース（ABI）は、Ethereumエコシステム内のコントラクトと対話するための標準的な方法であり、ブロックチェーンの外側からも、コントラクト間の対話のためにも使用されます。データは、この仕様書に記載されているように、その型に応じてエンコードされます。符号化は自己記述的ではないため、デコードするためにはスキーマが必要です。
+Contract Application Binary Interface (ABI)は、Ethereumエコシステム内のコントラクトと対話するための標準的な方法であり、ブロックチェーンの外側からも、コントラクト間の対話のためにも使用されます。
+データは、この仕様書に記載されているように、その型に応じてエンコードされます。
+符号化は自己記述的ではないため、デコードするためにはスキーマが必要です。
 
 .. We assume the interface functions of a contract are strongly typed, known at compilation time and static.
 .. We assume that all contracts will have the interface definitions of any contracts they call available at compile-time.
@@ -37,7 +39,10 @@ Function Selector
 .. the function name with the parenthesised list of parameter types. Parameter types are split by a single
 .. comma - no spaces are used.
 
-関数呼び出しのコールデータの最初の4バイトは、呼び出される関数を指定します。これは、関数のシグネチャのKeccak-256ハッシュの最初（左、ビッグエンディアンの高次）の4バイトです。シグネチャは、データ位置指定子のない基本プロトタイプの正規表現として定義されています。つまり、関数名と括弧で囲まれたパラメータ型のリストです。パラメータ型は1つのコンマで分割され、スペースは使用されません。
+関数呼び出しのコールデータの最初の4バイトは、呼び出される関数を指定します。
+これは、関数のシグネチャのKeccak-256ハッシュの最初（左、ビッグエンディアンの高次）の4バイトです。
+シグネチャは、データ位置指定子のない基本プロトタイプの正規表現として定義されています。
+つまり、関数名と括弧で囲まれたパラメータ型のリストです。パラメータ型は1つのコンマで分割され、スペースは使用されません。
 
 .. .. note::
 
@@ -344,7 +349,7 @@ Formal Specification of the Encoding
 .. - ``uint<M>``: ``enc(X)`` is the big-endian encoding of ``X``, padded on the higher-order
 ..   (left) side with zero-bytes such that the length is 32 bytes.
 
-- ``uint<M>`` です。 ``enc(X)`` は、 ``X`` のビッグエンディアン・エンコーディングで、高次（左）側に0バイトをパディングし、長さが32バイトになるようにしたものです。
+- ``uint<M>`` です。 ``enc(X)`` は、 ``X`` のビッグエンディアンのエンコーディングで、高次（左）側に0バイトをパディングし、長さが32バイトになるようにしたものです。
 
 .. - ``address``: as in the ``uint160`` case
 
@@ -812,7 +817,7 @@ Events
 .. alongside the Keccak hash of the event signature to form the topics of the log entry.
 .. Those which are not indexed form the byte array of the event.
 
-イベント名と一連のイベント・パラメータが与えられると、それらを2つのサブシリーズに分割する。インデックスが付けられているものは、最大で3つ（非匿名イベントの場合）または4つ（匿名イベントの場合）あり、イベント署名のKeccakハッシュと一緒にログエントリのトピックを形成するために使用される。インデックスが付けられていないものは、イベントのバイト配列を形成する。
+イベント名と一連のイベントパラメータが与えられると、それらを2つのサブシリーズに分割する。インデックスが付けられているものは、最大で3つ（非匿名イベントの場合）または4つ（匿名イベントの場合）あり、イベント署名のKeccakハッシュと一緒にログエントリのトピックを形成するために使用される。インデックスが付けられていないものは、イベントのバイト配列を形成する。
 
 .. In effect, a log entry using this ABI is described as:
 
