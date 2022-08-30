@@ -294,7 +294,7 @@ Conversions
 .. * Explicit and implicit conversions from hex literals to ``bytesXX`` types
   of different size is now disallowed.
 
-* 16進数のリテラルから異なるサイズの ``bytesXX`` 型への明示的・暗黙的な変換ができなくなりました。
+* 16進数のリテラルから異なるサイズの ``bytesXX`` 型への明示的および暗黙的な変換ができなくなりました。
 
 Literals and Suffixes
 ---------------------

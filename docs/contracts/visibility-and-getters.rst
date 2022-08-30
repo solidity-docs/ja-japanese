@@ -89,7 +89,7 @@ Solidityは、実際のEVMコール（「メッセージコール」とも呼ば
 .. ``data`` in state storage, but is not able to call ``f``. Contract ``E`` is derived from
 .. ``C`` and, thus, can call ``compute``.
 
-次の例では、 ``D`` は ``c.getData()`` を呼び出して状態記憶装置の ``data`` の値を取り出すことができますが、 ``f`` を呼び出すことはできません。
+次の例では、 ``D`` は ``c.getData()`` を呼び出してステートのストレージ内にある ``data`` の値を取り出すことができますが、 ``f`` を呼び出すことはできません。
 コントラクト ``E`` は ``C`` から派生したものであるため、 ``compute`` を呼び出すことができます。
 
 .. code-block:: solidity

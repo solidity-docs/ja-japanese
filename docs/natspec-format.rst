@@ -30,7 +30,7 @@ Solidityコントラクトでは、コメントの特別な形式を使用して
 .. It is recommended that Solidity contracts are fully annotated using NatSpec for
 .. all public interfaces (everything in the ABI).
 
-Solidityのコントラクトは、すべてのパブリック・インターフェース（ABI内のすべて）に対してNatSpecを使用して完全にアノテーションすることが推奨されます。
+Solidityのコントラクトは、すべてのパブリックインターフェース（ABI内のすべて）に対してNatSpecを使用して完全にアノテーションすることが推奨されます。
 
 .. NatSpec includes the formatting for comments that the smart contract author will
 .. use, and which are understood by the Solidity compiler. Also detailed below is
@@ -194,7 +194,7 @@ Solidityコンパイラは、SolidityソースコードからNatSpecドキュメ
 
 .. if a function is being called and the input ``a`` is assigned a value of 10.
 
-関数が呼び出され、入力 ``a`` に10の値が割り当てられている場合。
+関数が呼び出され、入力 ``a`` に10の値が代入された場合。
 
 .. Specifying these dynamic expressions is outside the scope of the Solidity
 .. documentation and you may read more at

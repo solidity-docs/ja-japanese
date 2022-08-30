@@ -249,7 +249,7 @@ NG:
 
 .. Assignment Statements
 
-アサインメント・ステートメント
+代入文
 
 .. Yes:
 
@@ -835,7 +835,7 @@ NG:
 
 .. 5. Custom modifiers
 
-5. カスタムモディファイア
+5. カスタム修飾子
 
 .. Yes:
 
@@ -1287,11 +1287,11 @@ Order of Layout
 
 .. 1. Pragma statements
 
-1. プラグマ・ステートメント
+1. プラグマ文
 
 .. 2. Import statements
 
-2. ステートメントの取り込み
+2. インポート文
 
 .. 3. Interfaces
 
@@ -1645,7 +1645,7 @@ Solidityのコントラクトには、NatSpecコメントを含めることが�
 
 .. It is recommended that Solidity contracts are fully annotated using :ref:`NatSpec <natspec>` for all public interfaces (everything in the ABI).
 
-Solidityのコントラクトは、すべてのパブリック・インターフェース（ABIのすべて）に対して :ref:`NatSpec <natspec>` を使って完全にアノテーションすることを推奨します。
+Solidityのコントラクトは、すべてのパブリックインターフェース（ABIのすべて）に対して :ref:`NatSpec <natspec>` を使って完全にアノテーションすることを推奨します。
 
 .. Please see the section about :ref:`NatSpec <natspec>` for a detailed explanation.
 .. 

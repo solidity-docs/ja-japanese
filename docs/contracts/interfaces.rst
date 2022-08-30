@@ -66,7 +66,7 @@
 .. Types defined inside interfaces and other contract-like structures
 .. can be accessed from other contracts: ``Token.TokenType`` or ``Token.Coin``.
 
-インターフェースや他のコントラクトに似た構造の中で定義されたタイプは、他のコントラクトからアクセスできます。
+インターフェースや他のコントラクトに似た構造の中で定義された型は、他のコントラクトからアクセスできます。
 ``Token.TokenType`` または ``Token.Coin`` 。
 
 .. warning:

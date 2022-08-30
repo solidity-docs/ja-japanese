@@ -330,11 +330,11 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 .. Destructuring Assignments and Returning Multiple Values
 
-代入のデストラクティングと複数の値の返却
--------------------------------------------------------
+代入のデストラクティングと複数の値のリターン
+--------------------------------------------
 
 Solidityは内部的にタプル型を許可しています。
-つまり、潜在的に異なるタイプのオブジェクトのリストで、その数はコンパイル時に一定となります。
+つまり、潜在的に異なる型のオブジェクトのリストで、その数はコンパイル時に一定となります。
 これらのタプルは、同時に複数の値を返すために使用できます。
 これらの値は、新たに宣言された変数や既存の変数（または一般的なLValue）に代入できます。
 
@@ -992,7 +992,7 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 .. It is planned to support other types of error data in the future.
 .. The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
 
-将来的には、他のタイプのエラーデータにも対応する予定です。
+将来的には、他の型のエラーデータにも対応する予定です。
 文字列 ``Error`` と ``Panic`` は、現在、そのまま解析され、識別子としては扱われません。
 
 .. In order to catch all error cases, you have to have at least the clause

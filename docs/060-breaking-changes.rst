@@ -43,7 +43,7 @@ Explicitness Requirements
 ..   parallel bases, all bases must be listed in parentheses after the keyword
 ..   like so: ``override(Base1, Base2)``.
 
-* 関数は、 ``virtual`` キーワードでマークされているか、インターフェースで定義されている場合にのみオーバーライドできるようになりました。インターフェースの外で実装されていない関数は、 ``virtual`` とマークされなければなりません。関数やモディファイアをオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。複数の並列ベースで定義された関数やモディファイアをオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります。 ``override(Base1, Base2)`` .
+* 関数は、 ``virtual`` キーワードでマークされているか、インターフェースで定義されている場合にのみオーバーライドできるようになりました。インターフェースの外で実装されていない関数は、 ``virtual`` とマークされなければなりません。関数や修飾子をオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。複数の並列ベースで定義された関数や修飾子をオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります。 ``override(Base1, Base2)`` .
 
 .. * Member-access to ``length`` of arrays is now always read-only, even for storage arrays. It is no
 ..   longer possible to resize storage arrays by assigning a new value to their length. Use ``push()``,
@@ -187,7 +187,7 @@ Yul Optimizer
 .. with ``--optimize``. It can be disabled by calling the compiler with ``--no-optimize-yul``.
 .. This mostly affects code that uses ABI coder v2.
 
-レガシーのバイトコード・オプティマイザーとともに、 :doc:`Yul <yul>` オプティマイザーが  ``--optimize``  でコンパイラーを呼び出したときにデフォルトで有効になりました。これを無効にするには、 ``--no-optimize-yul``  でコンパイラを呼び出します。これは主に ABI coder v2 を使用しているコードに影響します。
+レガシーのバイトコードオプティマイザとともに、 :doc:`Yul <yul>` オプティマイザが  ``--optimize``  でコンパイラーを呼び出したときにデフォルトで有効になりました。これを無効にするには、 ``--no-optimize-yul``  でコンパイラを呼び出します。これは主に ABI coder v2 を使用しているコードに影響します。
 
 C API Changes
 ~~~~~~~~~~~~~
