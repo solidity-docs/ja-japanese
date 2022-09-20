@@ -43,7 +43,8 @@
 ..     the source mapping assigns an integer identifier of ``-1``. This may happen for
 ..     bytecode sections stemming from compiler-generated inline assembly statements.
 
-... note :: 特定のソースファイルに関連付けられていない命令の場合、ソースマッピングでは ``-1`` という整数の識別子が割り当てられます。これは、コンパイラによって生成されたインラインアセンブリステートメントに由来するバイトコードセクションで発生する可能性があります。
+.. note :: 
+    特定のソースファイルに関連付けられていない命令の場合、ソースマッピングでは ``-1`` という整数の識別子が割り当てられます。これは、コンパイラによって生成されたインラインアセンブリステートメントに由来するバイトコードセクションで発生する可能性があります。
 
 .. The source mappings inside the AST use the following
 .. notation:
@@ -91,8 +92,6 @@ AST内部のソースマッピングは以下の表記を使用しています�
 - フィールドが空の場合は、直前の要素の値が使用されます。
 
 - ``:`` がない場合、以下のすべてのフィールドは空であるとみなされます。
-
-.. This means the following source mappings represent the same information:
 
 これは、次のソースマッピングが同じ情報を表していることを意味します。
 
