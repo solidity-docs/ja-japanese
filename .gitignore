@@ -7,3 +7,5 @@
 # Python bytecode
 *.pyc
 __pycache__
+
+.vscode
