@@ -66,7 +66,7 @@ Documentation Example
 ..    comments. See the `Vyper
 ..    documentation <https://vyper.readthedocs.io/en/latest/natspec.html>`__.
 
-- Vyperの場合は、 ``"""`` を内側のコンテンツにインデントして、コメントをむき出しにして使います。 `Vyper    documentation <https://vyper.readthedocs.io/en/latest/natspec.html>`_ _を参照してください。
+- Vyperの場合は、 ``"""`` を内側のコンテンツにインデントして、コメントをむき出しにして使います。 `Vyper documentation <https://vyper.readthedocs.io/en/latest/natspec.html>`_ _を参照してください。
 
 .. The following example shows a contract and a function using all available tags.
 
@@ -87,7 +87,6 @@ Documentation Example
   これは将来的に変更される可能性があります。
 
 .. code-block:: Solidity
-
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.2 < 0.9.0;
 
@@ -129,7 +128,6 @@ Documentation Example
             return 3;
         }
     }
-
 .. _header-tags:
 
 Tags
@@ -145,14 +143,22 @@ Tags
 =============== ====================================================================================== =============================
 Tag                                                                                                    Context
 =============== ====================================================================================== =============================
-``@title``      A title that should describe the contract/interface                                    contract, library, interface
-``@author``     The name of the author                                                                 contract, library, interface
-``@notice``     Explain to an end user what this does                                                  contract, library, interface, function, public state variable, event
-``@dev``        Explain to a developer any extra details                                               contract, library, interface, function, state variable, event
-``@param``      Documents a parameter just like in Doxygen (must be followed by parameter name)        function, event
-``@return``     Documents the return variables of a contract's function                                function, public state variable
-``@inheritdoc`` Copies all missing tags from the base function (must be followed by the contract name) function, public state variable
-``@custom:...`` Custom tag, semantics is application-defined                                           everywhere
+.. ``@title``      A title that should describe the contract/interface                                  contract, library, interface
+``@title``      コントラクトやインターフェースを説明すべき名前                                                  contract, library, interface
+..``@author``     The name of the author                                                                contract, library, interface
+``@author``     著名者                                                                                   contract, library, interface
+..``@notice``     Explain to an end user what this does                                                 contract, library, interface, function, public state variable, event
+``@notice``     これがどういうことを行うのかをエンドユーザーに説明する                                           contract, library, interface, function, public state variable, event
+..``@dev``        Explain to a developer any extra details                                              contract, library, interface, function, state variable, event
+``@dev``        開発者に対し、さらに付け加えなければいけない情報を説明する                                        contract, library, interface, function, state variable, event
+..``@param``      Documents a parameter just like in Doxygen (must be followed by parameter name)       function, event
+``@param``      Doxygen のように (must be followed by parameter name) パラメータを文章化する 
+..``@return``     Documents the return variables of a contract's function                               function, public state variable
+``@return``     コントラクトの返り値の変数をドキュメント化します                                                function, public state variable
+.. ``@inheritdoc`` Copies all missing tags from the base function (must be followed by the contract name)function, public state variable
+``@inheritdoc`` ベース関数から不足しているタグをすべてコピーする（その後にコントラクト名を付ける必要がある）            function, public state variable
+..``@custom:...`` Custom tag, semantics is application-defined                                           everywhere
+``@custom:...`` カスタムタグ、セマンティクスはアプリケーションで定義されている                                      everywhere
 =============== ====================================================================================== =============================
 
 .. If your function returns multiple values, like ``(int quotient, int remainder)``
@@ -323,4 +329,3 @@ Developer Documentation
       },
       "title" : "A simulator for trees"
     }
-
