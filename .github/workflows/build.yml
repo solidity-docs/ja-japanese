@@ -1,0 +1,27 @@
+name: build
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          # cache: 'pip' # ERROR
+      - run: pip install -r docs/requirements.txt
+
+      - name: Build
+        working-directory: ./docs
+        run: make html
+
