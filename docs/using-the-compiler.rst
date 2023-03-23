@@ -242,7 +242,7 @@ Target Options
 
 .. - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
 
-- オプコード ``returndatacopy`` 、 ``returndatasize`` 、 ``staticcall`` はアセンブリで利用可能です。
+- オペコード ``returndatacopy`` 、 ``returndatasize`` 、 ``staticcall`` はアセンブリで利用可能です。
 
 .. - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
 
