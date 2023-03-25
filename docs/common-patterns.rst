@@ -1,34 +1,28 @@
-###############
-Common Patterns
-###############
+############
+共通パターン
+############
 
 .. index:: withdrawal
 
 .. _withdrawal_pattern:
 
-*************************
-Withdrawal from Contracts
-*************************
+**********************
+コントラクトからの出金
+**********************
 
-.. The recommended method of sending funds after an effect
-.. is using the withdrawal pattern. Although the most intuitive
-.. method of sending Ether, as a result of an effect, is a
-.. direct ``transfer`` call, this is not recommended as it
-.. introduces a potential security risk. You may read
-.. more about this on the :ref:`security_considerations` page.
+.. The recommended method of sending funds after an effect is using the withdrawal pattern.
+.. Although the most intuitive method of sending Ether, as a result of an effect, is a direct ``transfer`` call, this is not recommended as it introduces a potential security risk. 
+.. You may read more about this on the :ref:`security_considerations` page.
 
-効果後の送金方法としては、出金パターンの使用が推奨されます。エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクト ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
+エフェクト後の送金方法としては、出金パターンの使用が推奨されます。
+エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクト ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
 これについては、 :ref:`security_considerations` のページで詳しく説明しています。
 
-.. The following is an example of the withdrawal pattern in practice in
-.. a contract where the goal is to send the most money to the
-.. contract in order to become the "richest", inspired by
-.. `King of the Ether <https://www.kingoftheether.com/>`_.
+.. The following is an example of the withdrawal pattern in practice in a contract where the goal is to send the most money to the contract in order to become the "richest", inspired by `King of the Ether <https://www.kingoftheether.com/>`_.
 
 `King of the Ether <https://www.kingoftheether.com/>`_ をヒントに、「一番のお金持ち」になるために一番多くのお金を送ることを目的としたコントラクトにおいて、実際に行われている出金パターンの例を以下に示します。
 
-.. In the following contract, if you are no longer the richest,
-.. you receive the funds of the person who is now the richest.
+.. In the following contract, if you are no longer the richest, you receive the funds of the person who is now the richest.
 
 次のコントラクトでは、自分が一番お金持ちでなくなった場合、今一番お金持ちになった人の資金を受け取ります。
 
@@ -43,8 +37,7 @@ Withdrawal from Contracts
 
         mapping (address => uint) pendingWithdrawals;
 
-        /// The amount of Ether sent was not higher than
-        /// the currently highest amount.
+        /// Etherの送信量が現在最も多い量より多くなかった
         error NotEnoughEther();
 
         constructor() payable {
@@ -81,8 +74,7 @@ Withdrawal from Contracts
         address payable public richest;
         uint public mostSent;
 
-        /// The amount of Ether sent was not higher than
-        /// the currently highest amount.
+        /// Etherの送信量が現在最も多い量より多くなかった
         error NotEnoughEther();
 
         constructor() payable {
@@ -92,15 +84,14 @@ Withdrawal from Contracts
 
         function becomeRichest() public payable {
             if (msg.value <= mostSent) revert NotEnoughEther();
-            // This line can cause problems (explained below).
+            // この行は問題を引き起こす可能性があります（以下で説明します）。
             richest.transfer(msg.value);
             richest = payable(msg.sender);
             mostSent = msg.value;
         }
     }
 
-.. Notice that, in this example, an attacker could trap the
-.. contract into an unusable state by causing ``richest`` to be
+.. Notice that, in this example, an attacker could trap the contract into an unusable state by causing ``richest`` to be
 .. the address of a contract that has a receive or fallback function
 .. which fails (e.g. by using ``revert()`` or by just
 .. consuming more than the 2300 gas stipend transferred to them). That way,
@@ -108,19 +99,18 @@ Withdrawal from Contracts
 .. "poisoned" contract, it will fail and thus also ``becomeRichest``
 .. will fail, with the contract being stuck forever.
 
-この例では、攻撃者は、失敗する受信関数やフォールバック関数を持つコントラクトのアドレスを ``richest`` にすることで、コントラクトを使用不能な状態に陥れることができることに注意してください（例えば、 ``revert()`` を使用したり、送金された2300ガスの俸給を超えて消費したりすることなど）。そうすれば、「毒された」コントラクトに資金を届けるために ``transfer`` が呼び出されるたびに、それは失敗し、したがって ``becomeRichest`` も失敗して、コントラクトは永遠に動けなくなります。
+この例では、攻撃者は、失敗する受信関数やフォールバック関数を持つコントラクトのアドレスを ``richest`` にすることで、コントラクトを使用不能な状態に陥れることができることに注意してください（例えば、 ``revert()`` を使用したり、送金された2300ガス制限を超えて消費したりすることなど）。
+そうすれば、「毒された」コントラクトに資金を届けるために ``transfer`` が呼び出されるたびに、それは失敗し、したがって ``becomeRichest`` も失敗して、コントラクトは永遠に動けなくなります。
 
-.. In contrast, if you use the "withdraw" pattern from the first example,
-.. the attacker can only cause his or her own withdraw to fail and not the
-.. rest of the contract's workings.
+.. In contrast, if you use the "withdraw" pattern from the first example, the attacker can only cause his or her own withdraw to fail and not the rest of the contract's workings.
 
-一方、最初の例の「draw」パターンを使用した場合、攻撃者は自分のdrawが失敗するだけで、コントラクトの残りの部分の働きを引き起こすことはできません。
+一方、最初の例のwithdrawパターンを使用した場合、攻撃者は自分の出金が失敗するだけで、コントラクトの残りの部分の働きを引き起こすことはできません。
 
 .. index:: access;restricting
 
-******************
-Restricting Access
-******************
+************
+アクセス制限
+************
 
 .. Restricting access is a common pattern for contracts.
 .. Note that you can never restrict any human or computer
@@ -129,26 +119,26 @@ Restricting Access
 .. by using encryption, but if your contract is supposed
 .. to read the data, so will everyone else.
 
-アクセスを制限することはコントラクトの一般的なパターンです。トランザクションの内容やコントラクトの状態を人間やコンピュータに読まれないように制限できないことに注意してください。暗号化することで多少難しくできますが、あなたのコントラクトがデータを読めることになっていれば、他の人も読めてしまいます。
+アクセスを制限することはコントラクトの一般的なパターンです。
+トランザクションの内容やコントラクトの状態を人間やコンピュータに読まれないように制限できないことに注意してください。
+暗号化することで多少難しくできますが、あなたのコントラクトがデータを読めることになっていれば、他の人も読めてしまいます。
 
 .. You can restrict read access to your contract's state
 .. by **other contracts**. That is actually the default
 .. unless you declare your state variables ``public``.
 
-コントラクトの状態に対する読み取りアクセスを **other contracts** で制限できます。これは、状態変数を ``public`` で宣言しない限り、実際にはデフォルトです。
+コントラクトの状態に対する読み取りアクセスを **other contracts** で制限できます。
+これは、状態変数を ``public`` で宣言しない限り、実際にはデフォルトです。
 
-.. Furthermore, you can restrict who can make modifications
-.. to your contract's state or call your contract's
-.. functions and this is what this section is about.
+.. Furthermore, you can restrict who can make modifications to your contract's state or call your contract's functions and this is what this section is about.
 
 さらに、コントラクトの状態を変更したり、コントラクトの関数を呼び出すことができる人を制限できますが、これがこのセクションの目的です。
 
 .. index:: function;modifier
 
-.. The use of **function modifiers** makes these
-.. restrictions highly readable.
+.. The use of **function modifiers** makes these restrictions highly readable.
 
-**function modifiers** を使用することで、これらの制限を非常に読みやすくしています。
+**関数モディファイア** を使用することで、これらの制限を非常に読みやすくしています。
 
 .. code-block:: solidity
     :force:
@@ -157,45 +147,33 @@ Restricting Access
     pragma solidity ^0.8.4;
 
     contract AccessRestriction {
-        // These will be assigned at the construction
-        // phase, where `msg.sender` is the account
-        // creating this contract.
+        // これらはコンストラクション段階で代入され、`msg.sender`はこのコントラクトを作成するアカウントです
         address public owner = msg.sender;
         uint public creationTime = block.timestamp;
 
-        // Now follows a list of errors that
-        // this contract can generate together
-        // with a textual explanation in special
-        // comments.
+        // 次に、このコントラクトで発生しうるエラーの一覧とテキストによる説明を特殊なコメントで示します
 
-        /// Sender not authorized for this
-        /// operation.
+        /// この操作を実行する権限が送信者にありません
         error Unauthorized();
 
-        /// Function called too early.
+        /// 関数の呼び出しが早すぎます
         error TooEarly();
 
-        /// Not enough Ether sent with function call.
+        /// 関数コールで送信されるEtherが不足しています
         error NotEnoughEther();
 
-        // Modifiers can be used to change
-        // the body of a function.
-        // If this modifier is used, it will
-        // prepend a check that only passes
-        // if the function is called from
-        // a certain address.
+        // モディファイアは、関数のボディを変更するために使用できます
+        // このモディファイアを使用すると、特定のアドレスから関数が呼び出された場合にのみ実行されるチェックが前置されます
         modifier onlyBy(address _account)
         {
             if (msg.sender != _account)
                 revert Unauthorized();
-            // Do not forget the "_;"! It will
-            // be replaced by the actual function
-            // body when the modifier is used.
+            // "_;" を忘れないでください！
+            // モディファイアが使用されると、実際の関数ボディに置き換えられます
             _;
         }
 
-        /// Make `_newOwner` the new owner of this
-        /// contract.
+        /// `_newOwner` をこのコントラクトの新しいオーナーにします
         function changeOwner(address _newOwner)
             public
             onlyBy(owner)
@@ -209,9 +187,8 @@ Restricting Access
             _;
         }
 
-        /// Erase ownership information.
-        /// May only be called 6 weeks after
-        /// the contract has been created.
+        /// 所有者情報を消去します
+        /// コントラクトが作成されてから6週間後にのみ呼び出すことができます
         function disown()
             public
             onlyBy(owner)
@@ -220,12 +197,9 @@ Restricting Access
             delete owner;
         }
 
-        // This modifier requires a certain
-        // fee being associated with a function call.
-        // If the caller sent too much, he or she is
-        // refunded, but only after the function body.
-        // This was dangerous before Solidity version 0.4.0,
-        // where it was possible to skip the part after `_;`.
+        // このモディファイアは、関数呼び出しに関連する一定の料金を要求します
+        // 呼び出し側が過剰に送金した場合、払い戻されますが、関数ボディの後にのみ払い戻されます
+        // これは Solidity バージョン 0.4.0 以前では危険で、`_;` の後の部分をスキップすることが可能でした
         modifier costs(uint _amount) {
             if (msg.value < _amount)
                 revert NotEnoughEther();
@@ -241,12 +215,11 @@ Restricting Access
             costs(200 ether)
         {
             owner = _newOwner;
-            // just some example condition
+            // これは条件の一例です
             if (uint160(owner) & 0 == 1)
-                // This did not refund for Solidity
-                // before version 0.4.0.
+                // バージョン0.4.0以前のSolidityでは、返金されませんでした
                 return;
-            // refund overpaid fees
+            // 過払い金を返還します
         }
     }
 
@@ -258,48 +231,31 @@ Restricting Access
 
 .. index:: state machine
 
-*************
-State Machine
-*************
+**************
+ステートマシン
+**************
 
-.. Contracts often act as a state machine, which means
-.. that they have certain **stages** in which they behave
-.. differently or in which different functions can
-.. be called. A function call often ends a stage
-.. and transitions the contract into the next stage
-.. (especially if the contract models **interaction**).
-.. It is also common that some stages are automatically
-.. reached at a certain point in **time**.
+.. Contracts often act as a state machine, which means that they have certain **stages** in which they behave differently or in which different functions can be called.
+.. A function call often ends a stage and transitions the contract into the next stage (especially if the contract models **interaction**).
+.. It is also common that some stages are automatically reached at a certain point in **time**.
 
-コントラクトはしばしばステートマシンとして動作します。つまり、異なる動作をする特定の **stages** を持っていたり、異なる関数を呼び出すことができるということです。関数の呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させる（特にコントラクトが **interaction** をモデルとしている場合）。また、いくつかのステージが **time** のある時点で自動的に到達することも一般的です。
+コントラクトはしばしばステートマシンとして動作します。
+つまり、異なる動作をする特定の **ステージ** を持っていたり、異なる関数を呼び出すことができるということです。
+関数の呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させる（特にコントラクトが **インタラクション** をモデルとしている場合）。
+また、 **ある時点** で自動的に到達するステージもあるのが一般的です。
 
-.. An example for this is a blind auction contract which
-.. starts in the stage "accepting blinded bids", then
-.. transitions to "revealing bids" which is ended by
-.. "determine auction outcome".
+.. An example for this is a blind auction contract which starts in the stage "accepting blinded bids", then transitions to "revealing bids" which is ended by "determine auction outcome".
 
-例えば、ブラインドオークションのコントラクトでは、「ブラインド入札を受け付ける」という段階から始まり、「入札を公開する」に移行し、「オークションの結果を決定する」で終了します。
+例えば、ブラインドオークションのコントラクトでは、「ブラインド入札を受け付ける」というステージから始まり、「入札を公開する」に移行し、「オークションの結果を決定する」で終了します。
 
 .. index:: function;modifier
 
-.. Function modifiers can be used in this situation
-.. to model the states and guard against
-.. incorrect usage of the contract.
-
 このような場合、関数修飾子を使って状態をモデル化し、コントラクトの間違った使い方を防ぐことができます。
 
-Example
-=======
+例
+==
 
-.. In the following example,
-.. the modifier ``atStage`` ensures that the function can
-.. only be called at a certain stage.
-
-次の例では、修飾子 ``atStage`` によって、ある段階でしかその関数を呼び出すことができないようにしています。
-
-.. Automatic timed transitions
-.. are handled by the modifier ``timedTransitions``, which
-.. should be used for all functions.
+次の例では、修飾子 ``atStage`` によって、あるステージでしかその関数を呼び出すことができないようにしています。
 
 時限式の自動トランジションは修飾子 ``timedTransitions`` で処理されます。
 
@@ -313,7 +269,8 @@ Example
 
 .. note::
 
-    **Modifier Order Matters** .     atStageがtimedTransitionsと組み合わされている場合は、新しいステージが考慮されるように、後者の後に言及するようにしてください。
+    **モディファイアの順序に関して**: 
+    atStageがtimedTransitionsと組み合わされている場合は、新しいステージが考慮されるように、後者の後に言及するようにしてください。
 
 .. Finally, the modifier ``transitionNext`` can be used
 .. to automatically go to the next stage when the
@@ -336,7 +293,7 @@ Example
 
 .. note::
 
-    **Modifier May be Skipped** です。
+    **モディファイアは省略可能**: 
     これは、バージョン0.4.0以前のSolidityにのみ適用されます。
     修飾子は、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNext修飾子のコードをスキップできます。
     その場合は、それらの関数から手動でnextStageを呼び出すようにしてください。
@@ -356,10 +313,10 @@ Example
             AreWeDoneYet,
             Finished
         }
-        /// Function cannot be called at this time.
+        /// 現時点では関数を呼び出せません
         error FunctionInvalidAtThisStage();
 
-        // This is the current stage.
+        // これが現在のステージです
         Stages public stage = Stages.AcceptingBlindedBids;
 
         uint public creationTime = block.timestamp;
@@ -374,9 +331,8 @@ Example
             stage = Stages(uint(stage) + 1);
         }
 
-        // Perform timed transitions. Be sure to mention
-        // this modifier first, otherwise the guards
-        // will not take the new stage into account.
+        // 時間指定でトランジションを行います
+        // 必ずこのモディファイアを最初に指定してください、そうしないとガードは新しいステージを考慮しません
         modifier timedTransitions() {
             if (stage == Stages.AcceptingBlindedBids &&
                         block.timestamp >= creationTime + 10 days)
@@ -384,18 +340,18 @@ Example
             if (stage == Stages.RevealBids &&
                     block.timestamp >= creationTime + 12 days)
                 nextStage();
-            // The other stages transition by transaction
+            // トランザクションによる他のステージへの推移
             _;
         }
 
-        // Order of the modifiers matters here!
+        // モディファイアの順序が重要です！
         function bid()
             public
             payable
             timedTransitions
             atStage(Stages.AcceptingBlindedBids)
         {
-            // We will not implement that here
+            // 実装は省略します
         }
 
         function reveal()
@@ -405,8 +361,7 @@ Example
         {
         }
 
-        // This modifier goes to the next stage
-        // after the function is done.
+        // このモディファイアは、関数が終わった後、次のステージに移行します
         modifier transitionNext()
         {
             _;
