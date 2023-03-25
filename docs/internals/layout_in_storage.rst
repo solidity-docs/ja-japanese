@@ -22,7 +22,7 @@
 .. by the above rules, state variables from different contracts do share the same storage slot.
 
 継承を使用しているコントラクトでは、状態変数の順序は、最も下位のコントラクトから始まるコントラクトのC3線形化された順序によって決定されます。
-上記のルールで許可されていれば、異なるコントラクトの状態変数が同じストレージスロットを共有することができます。
+上記のルールで許可されていれば、異なるコントラクトの状態変数が同じストレージスロットを共有できます。
 
 .. The elements of structs and arrays are stored after each other, just as if they were given
 .. as individual values.

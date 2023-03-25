@@ -230,8 +230,8 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 .. _library-selectors:
 .. index:: selector
 
-ライブラリの関数シグネチャと関数セレクター
-===============================================
+ライブラリの関数シグネチャと関数セレクタ
+========================================
 
 .. While external calls to public or external library functions are possible, the calling convention for such calls
 .. is considered to be internal to Solidity and not the same as specified for the regular :ref:`contract ABI<ABI>`.

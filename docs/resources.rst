@@ -222,7 +222,7 @@ Solidity Tools
 .. * `solgraph <https://github.com/raineorshine/solgraph>`_
 ..     Visualize Solidity control flow and highlight potential security vulnerabilities.
 
-* `solgraph <https://github.com/raineorshine/solgraph>`_  Solidityの制御フローを可視化し、潜在的なセキュリティの脆弱性を明らかにする。
+* `solgraph <https://github.com/raineorshine/solgraph>`_  Solidityのコントロールフローを可視化し、潜在的なセキュリティの脆弱性を明らかにする。
 
 .. * `Solhint <https://github.com/protofire/solhint>`_
 ..     Solidity linter that provides security, style guide and best practice rules for smart contract validation.

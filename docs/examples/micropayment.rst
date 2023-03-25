@@ -272,7 +272,7 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
             selfdestruct(sender);
         }
 
-        /// 送信者はいつでも有効期限を延長することができます。
+        /// 送信者はいつでも有効期限を延長できます。
         function extend(uint256 newExpiration) external {
             require(msg.sender == sender);
             require(newExpiration > expiration);

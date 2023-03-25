@@ -712,7 +712,7 @@ Unicodeリテラル
 
 * ``.address`` は、関数のコントラクトのアドレスを返します。
 
-* ``.selector`` が :ref:`ABI関数セレクター<abi_function_selector>` を返します。
+* ``.selector`` が :ref:`ABI関数セレクタ<abi_function_selector>` を返します。
 
 .. note::
 
@@ -744,7 +744,7 @@ Unicodeリテラル
     pragma solidity >=0.4.16 <0.9.0;
 
     library ArrayUtils {
-        // 内部関数は、同じコードコンテキストの一部となるため、内部ライブラリ関数で使用することができる
+        // 内部関数は、同じコードコンテキストの一部となるため、内部ライブラリ関数で使用できる
         function map(uint[] memory self, function (uint) pure returns (uint) f)
             internal
             pure

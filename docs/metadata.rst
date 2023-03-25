@@ -57,7 +57,7 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
         "destructible": {
           // 必須: ソースファイルのkeccak256ハッシュ
           "keccak256": "0x234...",
-          // 必須（「url」が使用されていない場合）：ソースファイルのリテラルコンテンツ
+          // 必須（「url」が使用されていない場合）: ソースファイルのリテラルコンテンツ
           "content": "contract destructible is owned { function destroy() { if (msg.sender == owner) selfdestruct(owner); } }"
         }
       },

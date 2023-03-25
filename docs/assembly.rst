@@ -161,7 +161,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. The selector consists of four right-aligned bytes.
 .. Both values are can be assigned to. For example:
 
-外部関数ポインターの場合、アドレスと関数セレクターは ``x.address`` と ``x.selector`` を使ってアクセスできます。
+外部関数ポインターの場合、アドレスと関数セレクタは ``x.address`` と ``x.selector`` を使ってアクセスできます。
 セレクタは右揃えの4バイトで構成されています。
 いずれの値も代入可能です。
 例えば、以下のようになります。

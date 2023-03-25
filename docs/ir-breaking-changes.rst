@@ -365,7 +365,7 @@ Internal function pointers
 .. calls through function pointers always have to use an internal dispatch function that uses the ``switch`` statement to select
 .. the right function.
 
-新しいコード・ジェネレータでは、ファンクション・ポインターは、順番に割り当てられる内部IDを使用します。ジャンプによる呼び出しができないため、関数ポインタによる呼び出しは、常に ``switch`` 文を使って正しい関数を選択する内部ディスパッチ関数を使用する必要があります。
+新しいコードジェネレータでは、関数ポインタは、順番に割り当てられる内部IDを使用します。ジャンプによる呼び出しができないため、関数ポインタによる呼び出しは、常に ``switch`` 文を使って正しい関数を選択する内部ディスパッチ関数を使用する必要があります。
 
 .. The ID ``0`` is reserved for uninitialized function pointers which then cause a panic in the dispatch function when called.
 

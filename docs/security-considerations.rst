@@ -369,21 +369,16 @@ Solidityには、これらのオーバーフローを処理する2つのモー�
 マッピングのクリア
 ==================
 
-.. The Solidity type ``mapping`` (see :ref:`mapping-types`) is a storage-only
-.. key-value data structure that does not keep track of the keys that were
-.. assigned a non-zero value.  Because of that, cleaning a mapping without extra
-.. information about the written keys is not possible.
-.. If a ``mapping`` is used as the base type of a dynamic storage array, deleting
-.. or popping the array will have no effect over the ``mapping`` elements.  The
-.. same happens, for example, if a ``mapping`` is used as the type of a member
-.. field of a ``struct`` that is the base type of a dynamic storage array.  The
-.. ``mapping`` is also ignored in assignments of structs or arrays containing a
-.. ``mapping``.
+.. The Solidity type ``mapping`` (see :ref:`mapping-types`) is a storage-only key-value data structure that does not keep track of the keys that were assigned a non-zero value.
+.. Because of that, cleaning a mapping without extra information about the written keys is not possible.
+.. If a ``mapping`` is used as the base type of a dynamic storage array, deleting or popping the array will have no effect over the ``mapping`` elements.
+.. The same happens, for example, if a ``mapping`` is used as the type of a member field of a ``struct`` that is the base type of a dynamic storage array.
+.. The ``mapping`` is also ignored in assignments of structs or arrays containing a ``mapping``.
 
 Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレージのみのキーバリューデータ構造で、ゼロ以外の値が割り当てられたキーを追跡しません。
 そのため、書き込まれたキーに関する余分な情報を持たないマッピングのクリーニングは不可能です。
-``mapping`` が動的記憶配列の基本型として使用されている場合、配列を削除したりポップしたりしても ``mapping`` の要素には影響しません。
-例えば、ダイナミックストレージ配列のベース型である ``struct`` のメンバーフィールドの型として ``mapping`` が使用されている場合も同様です。
+``mapping`` が動的ストレージ配列の基本型として使用されている場合、配列を削除したりポップしたりしても ``mapping`` の要素には影響しません。
+例えば、動的ストレージ配列のベース型である ``struct`` のメンバーフィールドの型として ``mapping`` が使用されている場合も同様です。
 また、 ``mapping`` を含む構造体や配列の代入においても、 ``mapping`` は無視されます。
 
 .. code-block:: solidity
@@ -412,24 +407,17 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
         }
     }
 
-.. Consider the example above and the following sequence of calls: ``allocate(10)``,
-.. ``writeMap(4, 128, 256)``.
+.. Consider the example above and the following sequence of calls: ``allocate(10)``, ``writeMap(4, 128, 256)``.
 .. At this point, calling ``readMap(4, 128)`` returns 256.
-.. If we call ``eraseMaps``, the length of state variable ``array`` is zeroed, but
-.. since its ``mapping`` elements cannot be zeroed, their information stays alive
-.. in the contract's storage.
-.. After deleting ``array``, calling ``allocate(5)`` allows us to access
-.. ``array[4]`` again, and calling ``readMap(4, 128)`` returns 256 even without
-.. another call to ``writeMap``.
+.. If we call ``eraseMaps``, the length of state variable ``array`` is zeroed, but since its ``mapping`` elements cannot be zeroed, their information stays alive in the contract's storage.
+.. After deleting ``array``, calling ``allocate(5)`` allows us to access ``array[4]`` again, and calling ``readMap(4, 128)`` returns 256 even without another call to ``writeMap``.
 
 上の例で、次のような一連のコールを考えてみましょう: ``allocate(10)``, ``writeMap(4, 128, 256)`` 。
 この時点で、 ``readMap(4, 128)`` を呼び出すと256を返します。
-``eraseMaps`` を呼び出すと、状態変数 ``array`` の長さはゼロになりますが、その ``mapping`` 要素はゼロにできないので、その情報はコントラクトの記憶装置の中で生き続けます。
+``eraseMaps`` を呼び出すと、状態変数 ``array`` の長さはゼロになりますが、その ``mapping`` 要素はゼロにできないので、その情報はコントラクトのストレージの中で生き続けます。
 ``array`` を削除した後、 ``allocate(5)`` を呼び出すと、再び ``array[4]`` にアクセスできるようになり、 ``readMap(4, 128)`` を呼び出すと、 ``writeMap`` を再度呼び出さなくても256を返します。
 
-.. If your ``mapping`` information must be deleted, consider using a library similar to
-.. `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_,
-.. allowing you to traverse the keys and delete their values in the appropriate ``mapping``.
+.. If your ``mapping`` information must be deleted, consider using a library similar to `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_, allowing you to traverse the keys and delete their values in the appropriate ``mapping``.
 
 ``mapping`` の情報を削除する必要がある場合は、 `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_ と同様のライブラリを使用することを検討し、適切な ``mapping`` でキーをトラバースしてその値を削除できます。
 
@@ -442,7 +430,7 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
 ..   Both are fed to the contract and both will look like the number ``1`` as far as ``x`` is concerned, but ``msg.data`` will be different, so if you use ``keccak256(msg.data)`` for anything, you will get different results.
 
 - 32バイトを完全に占有しない型には、「ダーティな高次ビット」が含まれている可能性があります。
-  これは ``msg.data`` にアクセスする場合に特に重要で、不正改造の危険性があります：
+  これは ``msg.data`` にアクセスする場合に特に重要で、不正改造の危険性があります:
   関数 ``f(uint8 x)`` を生のバイト引数 ``0xff000001`` で呼び出すトランザクションと、 ``0x00000001`` で呼び出すトランザクションを作ることができます。
   両方ともコントラクトに供給され、 ``x`` に関しては両方とも ``1`` という数字に見えますが、 ``msg.data`` は異なるものになりますので、何かに ``keccak256(msg.data)`` を使うと、異なる結果になります。
 

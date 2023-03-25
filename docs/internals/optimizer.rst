@@ -176,7 +176,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 .. optimizer module finds a ``JUMPI`` whose condition evaluates to a constant, it transforms it
 .. to an unconditional jump.
 
-すべての ``JUMP`` 命令と ``JUMPI`` 命令のターゲットがわかっていれば、プログラムの完全な制御フローグラフを作成できます。
+すべての ``JUMP`` 命令と ``JUMPI`` 命令のターゲットがわかっていれば、プログラムの完全なコントロールフローグラフを作成できます。
 一つだけわからないターゲットがある場合（ジャンプターゲットは原理的に入力から計算できるため、このようなことが起こりうる）、ブロックの入力状態に関する知識をすべて消去しなければならない。
 なぜなら、そのブロックは未知の ``JUMP`` のターゲットになりうるからです。
 opcode-based optimizerモジュールは、条件が定数で評価される ``JUMPI`` を見つけた場合、それを無条件ジャンプに変換します。
@@ -510,7 +510,7 @@ ForLoopConditionIntoBody
 .. apply to iteration condition expressions (the ``C`` in the following example).
 
 この変換は、forループのループ反復条件をループ本体に移動させるものです。
-:ref:`expression-splitter` は反復条件式（以下の例では ``C`` ）には適用されないので、この変換が必要です。
+:ref:`expression-splitter` は反復条件式（以下の例では ``C`` ）には適用されないため、この変換が必要です。
 
 .. code-block:: text
 
@@ -585,8 +585,8 @@ VarDeclInitializer
 .. so that the following expressions still only need to reference SSA variables.
 
 このコンポーネントの目的は、プログラムをより長い形式にして、他のコンポーネントがより簡単に作業できるようにすることです。
-最終的な表現は、Static-Single-Assignment (SSA)形式に似ていますが、制御フローの異なるブランチからの値を結合する明示的な「ファイ」関数を使用しないという違いがあります（そのような機能はYul言語には存在しません）。
-代わりに、制御フローがマージされる際に、いずれかのブランチで変数が再代入されると、その現在の値を保持する新しいSSA変数が宣言されるため、以下の式では依然としてSSA変数を参照するだけでよい。
+最終的な表現は、Static-Single-Assignment (SSA)形式に似ていますが、コントロールフローの異なるブランチからの値を結合する明示的な「ファイ」関数を使用しないという違いがあります（そのような機能はYul言語には存在しません）。
+代わりに、コントロールフローがマージされる際に、いずれかのブランチで変数が再代入されると、その現在の値を保持する新しいSSA変数が宣言されるため、以下の式では依然としてSSA変数を参照するだけでよい。
 
 変換例は以下の通りです。
 
@@ -641,7 +641,7 @@ VarDeclInitializer
 .. as long as these values are still valid in the new context.
 
 このスニペットで再代入されている変数は ``b`` のみであることに注意してください。
-``b`` は制御フローに応じて異なる値を持つため、この再代入を避けることはできません。
+``b`` はコントロールフローに応じて異なる値を持つため、この再代入を避けることはできません。
 他のすべての変数は、一度定義されるとその値が変わることはありません。
 この特性の利点は、新しいコンテキストでこれらの値が有効である限り、変数を自由に移動させたり、変数への参照を初期値で交換したりできることです（その逆も同様）。
 
@@ -688,7 +688,7 @@ ExpressionSplitterは、 ``add(mload(0x123), mul(mload(0x456), 0x20))`` のよ�
 .. this "outlining" of the inner expressions in all cases. We can sidestep this limitation by applying
 .. :ref:`for-loop-condition-into-body` to move the iteration condition into loop body.
 
-これは、ループの制御フローが、すべてのケースで内部式の「アウトライン化」を許可していないため、ループの反復条件には適用されません。
+これは、ループのコントロールフローが、すべてのケースで内部式の「アウトライン化」を許可していないため、ループの反復条件には適用されません。
 :ref:`for-loop-condition-into-body` を適用して反復条件をループ本体に移動させることで、この制限を回避できます。
 
 .. The final program should be in a form such that (with the exception of loop conditions)
@@ -755,7 +755,7 @@ SSATransform
 
 さらに、 ``a`` に使われている ``i`` の現在の値を常に記録し、 ``a`` への各参照を ``a_i`` に置き換えます。
 変数 ``a`` の現在値のマッピングは、それが代入された各ブロックの終了時、およびforループ本体やポストブロック内で代入された場合はforループのinitブロックの終了時にクリアされます。
-上記のルールで変数の値がクリアされ、その変数がブロック外で宣言された場合、ループのポスト/ボディブロックの先頭や、If/Switch/ForLoop/Block文の直後など、制御フローが合流する位置に新たなSSA変数が作成されます。
+上記のルールで変数の値がクリアされ、その変数がブロック外で宣言された場合、ループのポスト/ボディブロックの先頭や、If/Switch/ForLoop/Block文の直後など、コントロールフローが合流する位置に新たなSSA変数が作成されます。
 
 このステージの後、不要な中間代入を削除するために、Redundant Assign Eliminatorを使用することをお勧めします。
 
@@ -820,7 +820,7 @@ Redundant Assign Eliminatorは、 ``a`` の値が使用されていないため�
 .. Of course the intricate parts of determining whether an assignment is redundant or not
 .. are connected to joining control flow.
 
-もちろん、代入が冗長であるかどうかを判断する複雑な部分は、制御フローの結合につながっています。
+もちろん、代入が冗長であるかどうかを判断する複雑な部分は、コントロールフローの結合につながっています。
 
 .. The component works as follows in detail:
 
@@ -852,7 +852,7 @@ ASTは、情報収集のステップと実際の削除のステップの2回に�
 .. Conflicting values are resolved in the following way:
 
 コントロールフローが分岐するポイントでは、マッピングのコピーが各ブランチに引き渡されます。
-制御フローが合流するポイントでは、2つのブランチから送られてきた2つのマッピングが次のようにして結合されます。
+コントロールフローが合流するポイントでは、2つのブランチから送られてきた2つのマッピングが次のようにして結合されます。
 1つのマッピングにしかないステートメントや同じ状態のステートメントは、変更されずに使用されます。
 相反する値は次のようにして解決されます。
 
@@ -867,9 +867,9 @@ ASTは、情報収集のステップと実際の削除のステップの2回に�
 .. In other words, we create three control flow paths: Zero runs of the loop,
 .. one run and two runs and then combine them at the end.
 
-for-loopでは、condition、body、post-partを2回訪れ、conditionでの制御フローの結合を考慮します。
-つまり、3つの制御フローの経路を作ります。
-つまり、0回のループ、1回のループ、2回のループの3つの制御フローを作成し、最後にそれらを結合します。
+for-loopでは、condition、body、post-partを2回訪れ、conditionでのコントロールフローの結合を考慮します。
+つまり、3つのコントロールフローの経路を作ります。
+つまり、0回のループ、1回のループ、2回のループの3つのコントロールフローを作成し、最後にそれらを結合します。
 
 .. Simulating a third run or even more is unnecessary, which can be seen as follows:
 
@@ -982,7 +982,7 @@ ASTをトラバースしながら、各変数の現在の値を追跡します�
 .. for loop, all variables are cleared that will be assigned during the
 .. body or the post block.
 
-制御フローの分岐点では、制御フローのいずれかの経路で代入された、または代入される可能性のある変数についての知識がクリアされます。
+コントロールフローの分岐点では、コントロールフローのいずれかの経路で代入された、または代入される可能性のある変数についての知識がクリアされます。
 たとえば、forループに入ると、bodyまたはpostブロックで代入される予定のすべての変数がクリアされます。
 
 式スケールの単純化
@@ -1133,7 +1133,7 @@ ConditionalSimplifier
 .. The Conditional Simplifier inserts assignments to condition variables if the value can be determined
 .. from the control-flow.
 
-条件付きシンプリファイアは、制御フローから値が決定できる場合、条件変数への割り当てを挿入します。
+条件付きシンプリファイアは、コントロールフローから値が決定できる場合、条件変数への割り当てを挿入します。
 
 .. Destroys SSA form.
 
@@ -1153,7 +1153,7 @@ SSAフォームを破棄します。
 .. - after if statement with terminating control-flow, insert "<condition> := 0"
 
 - スイッチケースで「<condition> := <caseLabel>」を挿入する。
-- 終了制御フローのif文の後に、「<条件> := 0」を挿入する。
+- 終了コントロールフローのif文の後に、「<条件> := 0」を挿入する。
 
 今後の機能:
 
@@ -1196,7 +1196,7 @@ ControlFlowSimplifier
 - シングルケースのスイッチをifに変える
 - pop(expression)とbodyでデフォルトケースのみのswitchに変更する
 - スイッチを、ケースボディが一致するconst exprに置き換える
-- ``for`` を終端制御フローに置き換える、 ``if`` による他のブレーク/コンティニューなしで
+- ``for`` を終端コントロールフローに置き換える、 ``if`` による他のブレーク/コンティニューなしで
 - 関数の最後にある ``leave`` を削除する
 
 .. None of these operations depend on the data flow. The StructuralSimplifier

@@ -759,7 +759,7 @@ Constrained Horn Clauses (CHC)
 .. by this engine. Internal function calls are supported, and external function
 .. calls assume the called code is unknown and can do anything.
 
-コントラクトのコントロールフローグラフ（CFG）は、Horn節のシステムとしてモデル化されており、コントラクトのライフサイクルは、すべてのパブリック／エクスターナル関数を非決定的に訪れることができるループで表現されています。このようにして、任意の関数を解析する際には、無制限の数のトランザクションにおけるコントラクト全体の動作が考慮されます。ループはこのエンジンで完全にサポートされています。内部関数の呼び出しはサポートされており、外部関数の呼び出しは、呼び出されたコードが未知であり、何でもできると仮定します。
+コントラクトのコントロールフローグラフ（CFG）は、Horn節のシステムとしてモデル化されており、コントラクトのライフサイクルは、すべてのpublic/external関数を非決定的に訪れることができるループで表現されています。このようにして、任意の関数を解析する際には、無制限の数のトランザクションにおけるコントラクト全体の動作が考慮されます。ループはこのエンジンで完全にサポートされています。internal関数の呼び出しはサポートされており、external関数の呼び出しは、呼び出されたコードが未知であり、何でもできると仮定します。
 
 .. The CHC engine is much more powerful than BMC in terms of what it can prove,
 .. and might require more computing resources.
@@ -808,7 +808,7 @@ SMT and Horn solvers
 
   -  ``solc`` がコンパイルされていれば
 
-  - Linuxシステムにバージョン4.8.xのダイナミック ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
+  - Linuxシステムにバージョン4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
   -  ``soljson.js``  (Solidity 0.6.9 以降)では静的に、つまりコンパイラの Javascript バイナリを使用しています。
 
@@ -1104,7 +1104,7 @@ Real World Assumptions
 .. Another similar assumption taken by the SMTChecker is that an address' balance
 .. can never overflow.
 
-SolidityやEVMでは表現できますが、実際には発生しないと思われるシナリオもあります。そのようなケースの1つが、プッシュ時にダイナミックストレージの配列の長さがオーバーフローすることです。 ``push`` 操作が長さ2^256 - 1の配列に適用された場合、その長さは静かにオーバーフローします。しかし、実際にはこのようなことは起こり得ません。なぜなら、配列をそこまで成長させるために必要な演算を実行するには、何十億年もかかるからです。SMTCheckerのもう一つの類似した仮定は、アドレスの残高がオーバーフローすることはないというものです。
+SolidityやEVMでは表現できますが、実際には発生しないと思われるシナリオもあります。そのようなケースの1つが、プッシュ時に動的ストレージの配列の長さがオーバーフローすることです。 ``push`` 操作が長さ2^256 - 1の配列に適用された場合、その長さは静かにオーバーフローします。しかし、実際にはこのようなことは起こり得ません。なぜなら、配列をそこまで成長させるために必要な演算を実行するには、何十億年もかかるからです。SMTCheckerのもう一つの類似した仮定は、アドレスの残高がオーバーフローすることはないというものです。
 
 .. A similar idea was presented in `EIP-1985 <https://eips.ethereum.org/EIPS/eip-1985>`_.
 .. 

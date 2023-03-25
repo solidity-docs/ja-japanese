@@ -199,9 +199,7 @@ Maximum Line Length
 
 4. 終端要素である :code: `);`  は、それ自体で最終行に配置する必要があります。
 
-.. Function Calls
-
-ファンクションコール
+関数コール
 
 .. Yes:
 

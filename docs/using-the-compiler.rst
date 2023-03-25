@@ -250,7 +250,7 @@ Target Options
 
 .. - It is possible to access dynamic data returned from function calls.
 
-- ファンクションコールから返されたダイナミックデータにアクセスすることが可能です。
+- 関数コールから返された動的データにアクセスすることが可能です。
 
 .. - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
 
