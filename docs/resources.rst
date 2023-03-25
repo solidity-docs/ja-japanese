@@ -162,7 +162,7 @@ Solidity Tools
 .. * `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_
 ..     Tool to generate Solidity interface source from a given ABI JSON.
 
-* `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_  与えられたABI JSONからSolidityインターフェース・ソースを生成するツール。
+* `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_  与えられたABI JSONからSolidityインターフェースソースを生成するツール。
 
 .. * `Doxity <https://github.com/DigixGlobal/doxity>`_
 ..     Documentation Generator for Solidity.
@@ -197,7 +197,7 @@ Solidity Tools
 .. * `PIET <https://piet.slock.it/>`_
 ..     A tool to develop, audit and use Solidity smart contracts through a simple graphical interface.
 
-* `PIET <https://piet.slock.it/>`_  シンプルなグラフィカル・インターフェースを介してSolidityスマート・コントラクトを開発、監査、使用するためのツールです。
+* `PIET <https://piet.slock.it/>`_  シンプルなグラフィカルインターフェースを介してSolidityスマートコントラクトを開発、監査、使用するためのツールです。
 
 .. * `sol2uml <https://www.npmjs.com/package/sol2uml>`_
 ..     Unified Modeling Language (UML) class diagram generator for Solidity contracts.

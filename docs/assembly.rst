@@ -1,8 +1,8 @@
 .. _inline-assembly:
 
-########################
+####################
 インラインアセンブリ
-########################
+####################
 
 .. index:: ! assembly, ! asm, ! evmasm
 
@@ -14,10 +14,9 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
 
 .. .. warning::
 
-..     Inline assembly is a way to access the Ethereum Virtual Machine
-..     at a low level. This bypasses several important safety
-..     features and checks of Solidity. You should only use it for
-..     tasks that need it, and only if you are confident with using it.
+..     Inline assembly is a way to access the Ethereum Virtual Machine at a low level.
+..     This bypasses several important safety features and checks of Solidity.
+..     You should only use it for tasks that need it, and only if you are confident with using it.
 
 .. warning::
 
@@ -41,7 +40,7 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
 つまり、異なるインラインアセンブリブロックで定義されたYul関数を呼び出したり、Yul変数にアクセスしたりできません。
 
 例
--------
+--
 
 .. The following example provides library code to access the code of another contract and
 .. load it into a ``bytes`` variable. This is possible with "plain Solidity" too, by using
@@ -128,7 +127,7 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
     }
 
 外部変数、外部関数、外部ライブラリへのアクセス
----------------------------------------------------------
+----------------------------------------------
 
 .. You can access Solidity variables and other identifiers by using their name.
 
@@ -159,7 +158,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. For external function pointers the address and the function selector can be
 .. accessed using ``x.address`` and ``x.selector``.
 .. The selector consists of four right-aligned bytes.
-.. Both values are can be assigned to. For example:
+.. Both values are can be assigned to. 
 
 外部関数ポインターの場合、アドレスと関数セレクタは ``x.address`` と ``x.selector`` を使ってアクセスできます。
 セレクタは右揃えの4バイトで構成されています。
@@ -265,7 +264,7 @@ Solidity 0.6.0以降、インラインアセンブリ変数の名前は、イン
 Solidity 0.7.0以降、インラインアセンブリブロック内で宣言された変数や関数は ``.`` を含むことができませんが、インラインアセンブリブロックの外からSolidityの変数にアクセスするために ``.`` を使用することは有効です。
 
 避けるべきこと
----------------
+--------------
 
 .. Inline assembly might have a quite high-level look, but it actually is extremely
 .. low-level. Function calls, loops, ifs and switches are converted by simple
@@ -280,7 +279,7 @@ Solidity 0.7.0以降、インラインアセンブリブロック内で宣言さ
 .. _conventions-in-solidity:
 
 Solidityの慣習
------------------------
+--------------
 
 .. In contrast to EVM assembly, Solidity has types which are narrower than 256 bits,
 .. e.g. ``uint24``. For efficiency, most arithmetic operations ignore the fact that

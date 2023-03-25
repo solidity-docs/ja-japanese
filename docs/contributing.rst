@@ -431,7 +431,7 @@ Running the Fuzzer via AFL
 .. and fails whenever it encounters an internal compiler error, segmentation fault or similar, but
 .. does not fail if e.g., the code contains an error. This way, fuzzing tools can find internal problems in the compiler.
 
-ファジングとは、多かれ少なかれランダムな入力に対してプログラムを実行し、例外的な実行状態（セグメンテーション・フォールトや例外など）を見つける技術です。最近のFuzzerは賢く、入力の内部で有向検索を行います。私たちは ``solfuzzer`` と呼ばれる特殊なバイナリを持っています。 ``solfuzzer`` はソースコードを入力として受け取り、内部のコンパイラエラーやセグメンテーションフォールトなどに遭遇するたびに失敗しますが、例えばコードにエラーが含まれている場合は失敗しません。このようにして、ファジングツールはコンパイラの内部問題を見つけることができます。
+ファジングとは、多かれ少なかれランダムな入力に対してプログラムを実行し、例外的な実行状態（セグメンテーションフォールトや例外など）を見つける技術です。最近のFuzzerは賢く、入力の内部で有向検索を行います。私たちは ``solfuzzer`` と呼ばれる特殊なバイナリを持っています。 ``solfuzzer`` はソースコードを入力として受け取り、内部のコンパイラエラーやセグメンテーションフォールトなどに遭遇するたびに失敗しますが、例えばコードにエラーが含まれている場合は失敗しません。このようにして、ファジングツールはコンパイラの内部問題を見つけることができます。
 
 .. We mainly use `AFL <https://lcamtuf.coredump.cx/afl/>`_ for fuzzing. You need to download and
 .. install the AFL packages from your repositories (afl, afl-clang) or build them manually.
@@ -529,7 +529,7 @@ AFLのドキュメントでは、コーパス（最初の入力ファイル）�
 .. Often it finds many similar source files that produce the same error. You can
 .. use the tool ``scripts/uniqueErrors.sh`` to filter out the unique errors.
 
-ファザーは、 ``/tmp/fuzzer_reports`` の失敗につながるソースファイルを作成します。多くの場合、同じエラーを発生させる多くの類似したソース・ファイルを見つけます。ツール ``scripts/uniqueErrors.sh`` を使って、固有のエラーをフィルタリングできます。
+ファザーは、 ``/tmp/fuzzer_reports`` の失敗につながるソースファイルを作成します。多くの場合、同じエラーを発生させる多くの類似したソースファイルを見つけます。ツール ``scripts/uniqueErrors.sh`` を使って、固有のエラーをフィルタリングできます。
 
 Whiskers
 ========
@@ -708,7 +708,7 @@ CIプロセスでは、PRを作成する際に ``./test/cmdlineTests.sh`` スク
 .. Ensure that all code examples begin with a ``pragma`` version that spans the largest where the contract code is valid.
 .. For example ``pragma solidity >=0.4.0 <0.9.0;``.
 
-すべてのコード例は、コントラクト・コードが有効な最大の範囲をカバーする ``pragma`` バージョンで始まるようにする。例えば、 ``pragma solidity >=0.4.0 <0.9.0;`` 。
+すべてのコード例は、コントラクトコードが有効な最大の範囲をカバーする ``pragma`` バージョンで始まるようにします。例えば、 ``pragma solidity >=0.4.0 <0.9.0;`` などとしてください。
 
 Running Documentation Tests
 ---------------------------
@@ -716,7 +716,7 @@ Running Documentation Tests
 .. Make sure your contributions pass our documentation tests by running ``./scripts/docs.sh`` that installs dependencies
 .. needed for documentation and checks for any problems such as broken links or syntax issues.
 
-ドキュメントに必要な依存関係をインストールし、リンク切れや構文の問題などの問題をチェックする ``./scripts/docs.sh`` を実行することで、あなたの貢献が私たちのドキュメント・テストに合格することを確認してください。
+ドキュメントに必要な依存関係をインストールし、リンク切れや構文の問題などの問題をチェックする ``./scripts/docs.sh`` を実行することで、あなたの貢献が私たちのドキュメントテストに合格することを確認してください。
 
 Solidity Language Design
 ========================

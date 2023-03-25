@@ -196,7 +196,7 @@ solcのリリースビルドでは、上記のようにバージョンを3バイ
 
 さらに、ウォレットはNatSpecユーザードキュメントを使用して、ユーザーがコントラクトと対話する際には必ず確認メッセージを表示し、併せてトランザクション署名の承認を要求できます。
 
-詳しくは、 :doc:`Ethereum Natural Language Specification (NatSpec) format <natspec-format>` をご覧ください。
+詳しくは、 :doc:`Ethereum Natural Language Specification (NatSpec) フォーマット <natspec-format>` をご覧ください。
 
 ソースコード検証の方法
 ======================

@@ -25,7 +25,8 @@ Virtual Filesystem
 .. When you use the :ref:`import statement <import>`, you specify an *import path* that references a
 .. source unit name.
 
-コンパイラは内部データベース（*virtual filesystem*、略して*VFS*）を保持しており、各ソース・ユニットには不透明で構造化されていない識別子である一意の*ソース・ユニット名*が割り当てられています。 :ref:`import statement <import>` を使用する際には、ソース・ユニット名を参照する*インポート・パス*を指定します。
+コンパイラは内部データベース（ *virtual filesystem* 、略して *VFS* ）を保持しており、各ソースユニットには不透明で構造化されていない識別子である一意の *ソースユニット名* が割り当てられています。
+:ref:`import statement <import>` を使用する際には、ソースユニット名を参照する *インポートパス* を指定します。
 
 .. index:: ! import callback, ! Host Filesystem Loader
 .. _import-callback:
@@ -42,7 +43,11 @@ Import Callback
 .. If there is no callback available when one is needed or if it fails to locate the source code,
 .. compilation fails.
 
-VFSには、コンパイラーが入力として受け取ったファイルのみが最初に入力されます。使用するコンパイラの種類によって異なる *import コールバック* を使用して、コンパイル中に追加のファイルを読み込むことができます (後述)。コンパイラは、VFS内のインポート・パスに一致するソース・ユニット名が見つからない場合、コールバックを起動し、その名前で配置されるソース・コードを取得する役割を果たします。インポート コールバックは、ソース ユニット名をパスとしてだけでなく、任意の方法で自由に解釈できます。必要なときに利用可能なコールバックがない場合や、ソースコードの取得に失敗した場合は、コンパイルに失敗します。
+VFSには、コンパイラーが入力として受け取ったファイルのみが最初に入力されます。
+使用するコンパイラの種類によって異なる *import コールバック* を使用して、コンパイル中に追加のファイルを読み込むことができます（後述）。
+コンパイラは、VFS内のインポートパスに一致するソースユニット名が見つからない場合、コールバックを起動し、その名前で配置されるソースコードを取得する役割を果たします。
+インポートコールバックは、ソースユニット名をパスとしてだけでなく、任意の方法で自由に解釈できます。
+必要なときに利用可能なコールバックがない場合や、ソースコードの取得に失敗した場合は、コンパイルに失敗します。
 
 .. The command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback
 .. that interprets a source unit name as a path in the local filesystem.
@@ -54,7 +59,10 @@ VFSには、コンパイラーが入力として受け取ったファイルの�
 .. lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
 .. <https://remix-ide.readthedocs.io/en/latest/import.html>`_.
 
-コマンドライン・コンパイラには、ソース・ユニット名をローカル・ファイルシステムのパスとして解釈する初歩的なコールバックである*Host Filesystem Loader*が用意されています。 `JavaScript interface <https://github.com/ethereum/solc-js>`_ はデフォルトでは提供していませんが、ユーザーが提供することもできます。このメカニズムを使用して、ローカル・ファイルシステム以外の場所からソース・コードを取得できます（ブラウザでコンパイラを実行している場合など、アクセスできない場合もあります）。例えば、 `Remix IDE <https://remix.ethereum.org/>`_ は汎用性の高いコールバックを提供しており、これを利用して `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry <https://remix-ide.readthedocs.io/en/latest/import.html>`_ .
+コマンドラインコンパイラには、ソースユニット名をローカルファイルシステムのパスとして解釈する初歩的なコールバックである *Host Filesystem Loader* が用意されています。
+`JavaScriptインターフェース <https://github.com/ethereum/solc-js>`_ はデフォルトでは提供していませんが、ユーザーが提供することもできます。
+このメカニズムを使用して、ローカルファイルシステム以外の場所からソースコードを取得できます（ブラウザでコンパイラを実行している場合など、アクセスできない場合もあります）。
+例えば、 `Remix IDE <https://remix.ethereum.org/>`_ は汎用性の高いコールバックを提供しており、これを利用して `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry <https://remix-ide.readthedocs.io/en/latest/import.html>`_ .
 
 .. .. note::
 
@@ -87,7 +95,7 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
 #. **solc / command-line interface**
 
-   コンパイラのコマンドライン・インターフェースを使用してファイルをコンパイルする際に、Solidityコードを含むファイルへの1つまたは複数のパスを指定します。
+   コンパイラのコマンドラインインターフェースを使用してファイルをコンパイルする際に、Solidityコードを含むファイルへの1つまたは複数のパスを指定します。
 
    .. code-block:: bash
 
@@ -110,7 +118,7 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
 #. **Standard JSON**
 
-   :ref:`Standard JSON <compiler-api>`  APIを使用する場合（ `JavaScript interface    <https://github.com/ethereum/solc-js>`_ または ``--standard-json`` コマンドライン・オプションを使用）、すべてのソース・ファイルのコンテンツなどを含むJSONフォーマットの入力を提供します。
+   :ref:`Standard JSON <compiler-api>`  APIを使用する場合（ `JavaScript interface    <https://github.com/ethereum/solc-js>`_ または ``--standard-json`` コマンドラインオプションを使用）、すべてのソースファイルのコンテンツなどを含むJSONフォーマットの入力を提供します。
 
    .. code-block:: json
 
@@ -261,7 +269,10 @@ Direct Imports
 .. For example ``/project/lib/math.sol`` and ``/project/lib/../lib///math.sol`` are considered
 .. completely different in the VFS even though they refer to the same file on disk.
 
-ソースが仮想ファイルシステムで利用できない場合、コンパイラはソースユニット名をインポートコールバックに渡します。ホスト・ファイルシステム・ローダはこの名前をパスとして使用し、ディスク上のファイルを検索しようとします。このとき、プラットフォーム固有の正規化ルールが働き、VFSでは異なるとされていた名前が、実際には同じファイルが読み込まれることがあります。例えば、 ``/project/lib/math.sol`` と ``/project/lib/../lib///math.sol`` は、ディスク上の同じファイルを参照しているにもかかわらず、VFSでは全く異なるものとみなされます。
+ソースが仮想ファイルシステムで利用できない場合、コンパイラはソースユニット名をインポートコールバックに渡します。
+ホストファイルシステムローダーはこの名前をパスとして使用し、ディスク上のファイルを検索しようとします。
+このとき、プラットフォーム固有の正規化ルールが働き、VFSでは異なるとされていた名前が、実際には同じファイルが読み込まれることがあります。
+例えば、 ``/project/lib/math.sol`` と ``/project/lib/../lib///math.sol`` は、ディスク上の同じファイルを参照しているにもかかわらず、VFSでは全く異なるものとみなされます。
 
 .. .. note::
 
@@ -424,7 +435,9 @@ Base Path and Include Paths
 .. ``@openzeppelin/contracts/utils/Strings.sol``, you can use these options to tell the compiler that
 .. the library can be found in one of the npm package directories:
 
-ベースパスをプロジェクトのルートディレクトリに設定し、インクルードパスを使って、プロジェクトが依存するライブラリを含む追加の場所を指定することをお勧めします。これにより、プロジェクトのファイルシステム上の位置にかかわらず、これらのライブラリから統一的にインポートできます。例えば、npmを使用してパッケージをインストールし、コントラクトが ``@openzeppelin/contracts/utils/Strings.sol`` をインポートする場合、これらのオプションを使用して、npmパッケージ・ディレクトリのいずれかにライブラリが存在することをコンパイラに伝えることができます。
+ベースパスをプロジェクトのルートディレクトリに設定し、インクルードパスを使って、プロジェクトが依存するライブラリを含む追加の場所を指定することをお勧めします。
+これにより、プロジェクトのファイルシステム上の位置にかかわらず、これらのライブラリから統一的にインポートできます。
+例えば、npmを使用してパッケージをインストールし、コントラクトが ``@openzeppelin/contracts/utils/Strings.sol`` をインポートする場合、これらのオプションを使用して、npmパッケージディレクトリのいずれかにライブラリが存在することをコンパイラに伝えることができます。
 
 .. code-block:: bash
 
@@ -436,7 +449,7 @@ Base Path and Include Paths
 .. Your contract will compile (with the same exact metadata) no matter whether you install the library
 .. in the local or global package directory or even directly under your project root.
 
-ライブラリをローカル・パッケージ・ディレクトリやグローバル・パッケージ・ディレクトリにインストールしても、あるいはプロジェクト・ルートの直下にインストールしても、コントラクトは（同じメタデータで）コンパイルされます。
+ライブラリをローカルパッケージディレクトリやグローバルパッケージディレクトリにインストールしても、あるいはプロジェクトルートの直下にインストールしても、コントラクトは（同じメタデータで）コンパイルされます。
 
 .. By default the base path is empty, which leaves the source unit name unchanged.
 .. When the source unit name is a relative path, this results in the file being looked up in the
@@ -467,7 +480,9 @@ Base Path and Include Paths
 
 .. note::
 
-    インクルードパスとベースパスは、インポートの解決を曖昧にしない限り、重なっても構いません。     たとえば、ベースパス内のディレクトリをインクルード・ディレクトリとして指定したり、別のインクルード・ディレクトリのサブディレクトリであるインクルード・ディレクトリを持つことができます。     ホスト・ファイルシステム・ローダーに渡されたソース・ユニット名が、複数のインクルード・パスまたはインクルード・パスとベース・パスの組み合わせで既存のパスを表している場合にのみ、コンパイラはエラーを発行します。
+    インクルードパスとベースパスは、インポートの解決を曖昧にしない限り、重なっても構いません。
+    例えば、ベースパス内のディレクトリをインクルードディレクトリとして指定したり、別のインクルードディレクトリのサブディレクトリであるインクルードディレクトリを持つことができます。
+    ホストファイルシステムローダーに渡されたソースユニット名が、複数のインクルードパスまたはインクルードパスとベースパスの組み合わせで既存のパスを表している場合にのみ、コンパイラはエラーを発行します。
 
 .. _cli-path-normalization-and-stripping:
 
@@ -526,7 +541,7 @@ CLI Path Normalization and Stripping
 ..   `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ and the actual case on
 ..   disk is different.
 
-- ファイルシステムでは大文字・小文字を区別しないが、 `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ とディスク上の実際の大文字・小文字が異なる場合でも、パスの元の大文字・小文字は保存される。
+- ファイルシステムでは大文字と小文字を区別しないが、 `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ とディスク上の実際の大文字と小文字が異なる場合でも、パスの元の大文字と小文字は保存される。
 
 .. .. note::
 
@@ -539,7 +554,9 @@ CLI Path Normalization and Stripping
 
 .. note::
 
-    プラットフォームに依存しないパスを作ることができない場合があります。     例えば、Windowsでは、コンパイラが現在のドライブのルート・ディレクトリを ``/`` として参照することで、ドライブ・レターの使用を避けることができますが、他のドライブにつながるパスにはドライブ・レターが必要です。     このような状況を回避するには、すべてのファイルが同じドライブ上の単一のディレクトリ・ツリーで利用できるようにする必要があります。
+    プラットフォームに依存しないパスを作ることができない場合があります。
+    例えば、Windowsでは、コンパイラが現在のドライブのルートディレクトリを ``/`` として参照することで、ドライブレターの使用を避けることができますが、他のドライブにつながるパスにはドライブレターが必要です。
+    このような状況を回避するには、すべてのファイルが同じドライブ上の単一のディレクトリツリーで利用できるようにする必要があります。
 
 .. After normalization the compiler attempts to make the source file path relative.
 .. It tries the base path first and then the include paths in the order they were given.
@@ -551,7 +568,12 @@ CLI Path Normalization and Stripping
 .. This makes the conversion unambiguous and ensures that the relative path does not start with ``../``.
 .. The resulting file path becomes the source unit name.
 
-正規化後、コンパイラはソースファイルのパスを相対化しようとします。まずベース パスを試し、次にインクルード パスを指定された順に試します。ベース・パスが空であったり、指定されていない場合は、カレント・ワーキング・ディレクトリへのパス（すべてのシンボリック・リンクが解決されている）と同じであるかのように扱われます。この結果は、正規化されたディレクトリパスが正規化されたファイルパスの正確なプレフィックスである場合にのみ受け入れられます。そうでなければ、ファイルパスは絶対的なままです。これにより、変換が曖昧にならず、相対パスが ``../`` で始まらないことが保証されます。変換後のファイルパスがソースユニット名となります。
+正規化後、コンパイラはソースファイルのパスを相対化しようとします。
+まずベースパスを試し、次にインクルードパスを指定された順に試します。
+ベースパスが空であったり、指定されていない場合は、カレントワーキングディレクトリへのパス（すべてのシンボリックリンクが解決されている）と同じであるかのように扱われます。
+この結果は、正規化されたディレクトリパスが正規化されたファイルパスの正確なプレフィックスである場合にのみ受け入れられます。
+そうでなければ、ファイルパスは絶対的なままです。
+これにより、変換が曖昧にならず、相対パスが ``../`` で始まらないことが保証されます。変換後のファイルパスがソースユニット名となります。
 
 .. .. note::
 
@@ -572,11 +594,13 @@ CLI Path Normalization and Stripping
 
 .. note::
 
-    ストリッピングによって生成される相対パスは、ベースパスおよびインクルードパス内で一意でなければなりません。     例えば、次のコマンドで ``/project/contract.sol`` と ``/lib/contract.sol`` の両方が存在する場合、コンパイラはエラーを発行します。
+    ストリッピングによって生成される相対パスは、ベースパスおよびインクルードパス内で一意でなければなりません。
+    例えば、次のコマンドで ``/project/contract.sol`` と ``/lib/contract.sol`` の両方が存在する場合、コンパイラはエラーを発行します。
 
 .. note::
 
-    バージョン 0.8.8 より前の CLI では、パス・ストリッピングは行われず、適用される正規化はパス・セパレータの変換のみでした。     古いバージョンのコンパイラーを使用する場合は、ベースパスからコンパイラーを起動し、コマンドラインでは相対パスのみを使用することをお勧めします。
+    バージョン 0.8.8 より前の CLI では、パスストリッピングは行われず、適用される正規化はパスセパレータの変換のみでした。
+    古いバージョンのコンパイラーを使用する場合は、ベースパスからコンパイラーを起動し、コマンドラインでは相対パスのみを使用することをお勧めします。
 
 .. index:: ! allowed paths, ! --allow-paths, remapping; target
 .. _allowed-paths:

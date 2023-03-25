@@ -55,7 +55,7 @@ Base Path and Import Remapping
 .. The commandline compiler will automatically read imported files from the filesystem, but
 .. it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
 
-コマンドライン・コンパイラは、インポートされたファイルをファイルシステムから自動的に読み込みますが、以下のように ``prefix=path`` を使って :ref:`path redirects <import-remapping>` を提供することも可能です。
+コマンドラインコンパイラは、インポートされたファイルをファイルシステムから自動的に読み込みますが、以下のように ``prefix=path`` を使って :ref:`path redirects <import-remapping>` を提供することも可能です。
 
 .. code-block:: bash
 
@@ -778,7 +778,7 @@ Error Types
 .. 11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
 .. 1
 
-11. ``CompilerError`` : コンパイラー・スタックの無効な使用 - これは問題として報告する必要があります。1
+11. ``CompilerError`` : コンパイラースタックの無効な使用 - これは問題として報告する必要があります。1
 
 .. 12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
 .. 1
@@ -877,7 +877,11 @@ How it Works
 .. If no errors occur, your contracts are up to date and can be compiled with
 .. the latest version of the compiler.
 
-その結果、ソースのアップグレードによって修正される可能性のあるコンパイルエラーが発生することがあります。エラーが発生しなければ、ソース・アップグレードは報告されていないので、これで終了です。エラーが発生し、あるアップグレード・モジュールがソース・アップグレードを報告した場合は、最初に報告されたものが適用され、与えられたすべてのソース・ファイルに対して再びコンパイルが行われます。ソース・アップグレードが報告されている限り、前のステップが繰り返されます。それでもエラーが発生した場合は、 ``--verbose``  を渡すことでエラーをログに記録できます。エラーが発生しなければ、コントラクトは最新の状態になっており、最新バージョンのコンパイラでコンパイルできます。
+その結果、ソースのアップグレードによって修正される可能性のあるコンパイルエラーが発生することがあります。
+エラーが発生しなければ、ソースアップグレードは報告されていないので、これで終了です。
+エラーが発生し、あるアップグレード・モジュールがソース・アップグレードを報告した場合は、最初に報告されたものが適用され、与えられたすべてのソースファイルに対して再びコンパイルが行われます。
+ソースアップグレードが報告されている限り、前のステップが繰り返されます。
+それでもエラーが発生した場合は、 ``--verbose``  を渡すことでエラーをログに記録できます。エラーが発生しなければ、コントラクトは最新の状態になっており、最新バージョンのコンパイラでコンパイルできます。
 
 .. _upgrade-modules:
 
