@@ -1,8 +1,8 @@
 .. index: variable cleanup
 
-*********************
+********************
 変数のクリーンアップ
-*********************
+********************
 
 .. When a value is shorter than 256 bit, in some cases the remaining bits
 .. must be cleaned.

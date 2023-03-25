@@ -2,9 +2,9 @@
 
 .. _constants:
 
-*******************************************
+****************************************
 定数の状態変数とイミュータブルの状態変数
-*******************************************
+****************************************
 
 状態変数は ``constant`` または ``immutable`` として宣言できます。
 どちらの場合も、コントラクトが構築された後は、変数を変更できません。
@@ -58,7 +58,7 @@
     }
 
 定数
-========
+====
 
 .. For ``constant`` variables, the value has to be a constant at compile time and it has to be
 .. assigned where the variable is declared. Any expression
@@ -83,7 +83,7 @@
 この機能はまだ完全には使用できません。
 
 イミュータブル
-=================
+==============
 
 .. Variables declared as ``immutable`` are a bit less restricted than those
 .. declared as ``constant``: Immutable variables can be assigned an arbitrary

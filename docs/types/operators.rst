@@ -2,7 +2,7 @@
 
 
 演算子
-=========
+======
 
 Arithmetic and bit operators can be applied even if the two operands do not have the same type.
 For example, you can compute ``y = x + z``, where ``x`` is a ``uint8`` and ``z`` has
@@ -29,8 +29,8 @@ left operand for the operation and the result.
 
 .. index:: assignment, lvalue, ! compound operators
 
-Compound and Increment/Decrement Operators
-------------------------------------------
+複合演算子、インクリメント/デクリメント演算子
+---------------------------------------------
 
 .. If ``a`` is an LValue (i.e. a variable or something that can be assigned to), the
 .. following operators are available as shorthands:

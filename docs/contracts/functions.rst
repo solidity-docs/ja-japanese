@@ -2,9 +2,9 @@
 
 .. _functions:
 
-*********
+****
 関数
-*********
+****
 
 .. Functions can be defined inside and outside of contracts.
 
@@ -56,7 +56,7 @@
 .. _function-parameters-return-variables:
 
 関数パラメータと返り値
-========================================
+======================
 
 .. Functions take typed parameters as input and may, unlike in many other
 .. languages, also return an arbitrary number of values as output.
@@ -64,7 +64,7 @@
 関数は入力として型付けされたパラメータを受け取り、他の多くの言語とは異なり、出力として任意の数の値を返せます。
 
 関数パラメータ
--------------------
+--------------
 
 関数のパラメータは変数と同じように宣言され、使わないパラメータの名前は省略できます。
 
@@ -108,13 +108,13 @@
 
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
-Return Variables
-----------------
+リターン変数
+------------
 
 .. Function return variables are declared with the same syntax after the
 .. ``returns`` keyword.
 
-関数の戻り値変数は、 ``returns`` キーワードの後に同じ構文で宣言されます。
+関数のリターン変数は、 ``returns`` キーワードの後に同じ構文で宣言されます。
 
 .. For example, suppose you want to return two results: the sum and the product of
 .. two integers passed as function parameters, then you use something like:

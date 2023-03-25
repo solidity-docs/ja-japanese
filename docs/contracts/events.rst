@@ -2,9 +2,9 @@
 
 .. _events:
 
-**********
+********
 イベント
-**********
+********
 
 .. Solidity events give an abstraction on top of the EVM's logging functionality.
 .. Applications can subscribe and listen to these events through the RPC interface of an Ethereum client.
@@ -158,8 +158,8 @@ JavaScript APIでの使用方法は以下の通りです。
        }
     }
 
-イベントを理解するための追加ソース
-==============================================
+イベントを理解するための追加資料
+================================
 
 - `Javascriptドキュメント <https://github.com/ethereum/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
 

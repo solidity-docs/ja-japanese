@@ -1,8 +1,8 @@
 .. index:: storage, state variable, mapping
 
-************************************
+**********************************
 ストレージ内の状態変数のレイアウト
-************************************
+**********************************
 
 .. _storage-inplace-encoding:
 
@@ -82,7 +82,7 @@
     つまり、このセクションで説明されているルールを変更することは、言語の破壊的な変更とみなされ、その重大な性質のため、実行する前に非常に慎重に検討する必要があります。
 
 マッピングと動的配列
-===========================
+====================
 
 .. _storage-hashed-encoding:
 
@@ -175,7 +175,7 @@
 .. _bytes-and-string:
 
 ``bytes`` と ``string``
-------------------------
+-----------------------
 
 .. ``bytes`` and ``string`` are encoded identically.
 .. In general, the encoding is similar to ``bytes1[]``, in the sense that there is a slot for the array itself and
@@ -208,7 +208,7 @@
   実験的なIRベースのコンパイラパイプラインでコンパイルしている場合、無効にエンコードされたスロットを読み込むと ``Panic(0x22)`` エラーが発生します。
 
 JSON出力
-===========
+========
 
 .. _storage-layout-top-level:
 

@@ -1,8 +1,8 @@
 .. index:: source mappings
 
-******************
+****************
 ソースマッピング
-******************
+****************
 
 .. As part of the AST output, the compiler provides the range of the source
 .. code that is represented by the respective node in the AST. This can be
