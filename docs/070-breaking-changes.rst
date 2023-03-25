@@ -74,7 +74,7 @@ Inline Assembly
 .. * Disallow ``.`` in user-defined function and variable names in inline assembly.
 ..   It is still valid if you use Solidity in Yul-only mode.
 
-* インライン・アセンブリのユーザー定義関数および変数名に ``.`` を使用できないようにしました。SolidityをYul-onlyモードで使用している場合も有効です。
+* インラインアセンブリのユーザー定義関数および変数名に ``.`` を使用できないようにしました。SolidityをYul-onlyモードで使用している場合も有効です。
 
 .. * Slot and offset of storage pointer variable ``x`` are accessed via ``x.slot``
 ..   and ``x.offset`` instead of ``x_slot`` and ``x_offset``.

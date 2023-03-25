@@ -949,18 +949,15 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
         }
     }
 
-.. The ``try`` keyword has to be followed by an expression representing an external function call
-.. or a contract creation (``new ContractName()``).
-.. Errors inside the expression are not caught (for example if it is a complex expression
-.. that also involves internal function calls), only a revert happening inside the external
-.. call itself. The ``returns`` part (which is optional) that follows declares return variables
-.. matching the types returned by the external call. In case there was no error,
-.. these variables are assigned and the contract's execution continues inside the
-.. first success block. If the end of the success block is reached, execution continues after the ``catch`` blocks.
+.. The ``try`` keyword has to be followed by an expression representing an external function call or a contract creation (``new ContractName()``).
+.. Errors inside the expression are not caught (for example if it is a complex expression that also involves internal function calls), only a revert happening inside the external call itself.
+.. The ``returns`` part (which is optional) that follows declares return variables matching the types returned by the external call.
+.. In case there was no error, these variables are assigned and the contract's execution continues inside the first success block.
+.. If the end of the success block is reached, execution continues after the ``catch`` blocks.
 
 ``try`` キーワードの後には、外部関数の呼び出しやコントラクトの作成（ ``new ContractName()`` ）を表す式が続く必要があります。
 式の内部のエラーは捕捉されず（例えば、内部の関数呼び出しを含む複雑な式の場合）、外部呼び出し自体の内部で起こるリバートのみが捕捉されます。
-続く ``returns`` 部（オプション）では、外部呼び出しが返す型に一致する戻り変数を宣言します。
+続く ``returns`` 部（オプション）では、外部呼び出しが返す型に一致するリターン変数を宣言します。
 エラーがなかった場合、これらの変数が代入され、コントラクトの実行は最初の成功ブロック内で継続されます。
 成功ブロックの終わりに達した場合は、 ``catch`` ブロックの後に実行が続きます。
 

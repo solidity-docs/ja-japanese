@@ -2,9 +2,9 @@
 
 .. _events:
 
-**********
+********
 イベント
-**********
+********
 
 .. Solidity events give an abstraction on top of the EVM's logging functionality.
 .. Applications can subscribe and listen to these events through the RPC interface of an Ethereum client.
@@ -114,7 +114,7 @@ Solidityのイベントは、EVMのロギング機能の上に抽象化を与え
 
         function deposit(bytes32 _id) public payable {
             // イベントは `emit` を使って発行され、その後にイベント名と引数 (もしあれば) が括弧で囲まれます。
-            // このような呼び出しは (深くネストされていても) JavaScript API から `Deposit` をフィルタリングすることで検出することができます。
+            // このような呼び出しは (深くネストされていても) JavaScript API から `Deposit` をフィルタリングすることで検出できます。
             emit Deposit(msg.sender, _id, msg.value);
         }
     }
@@ -158,8 +158,8 @@ JavaScript APIでの使用方法は以下の通りです。
        }
     }
 
-イベントを理解するための追加ソース
-==============================================
+イベントを理解するための追加資料
+================================
 
 - `Javascriptドキュメント <https://github.com/ethereum/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
 

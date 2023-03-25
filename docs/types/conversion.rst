@@ -3,10 +3,10 @@
 .. _types-conversion-elementary-types:
 
 初等型間の変換
-====================================
+==============
 
 暗黙的な変換
---------------------
+------------
 
 .. An implicit type conversion is automatically applied by the compiler in some cases
 .. during assignments, when passing arguments to functions and when applying operators.
@@ -53,7 +53,7 @@
     uint32 x = y + z;
 
 明示的な変換
---------------------
+------------
 
 .. If the compiler does not allow implicit conversion but you are confident a conversion will work,
 .. an explicit type conversion is sometimes possible. This may
@@ -171,10 +171,10 @@
 .. _types-conversion-literals:
 
 リテラルと初等型間の変換
-=================================================
+========================
 
 整数型
--------------
+------
 
 .. Decimal and hexadecimal number literals can be implicitly converted to any integer type
 .. that is large enough to represent it without truncation:

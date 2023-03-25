@@ -57,7 +57,7 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
         "destructible": {
           // 必須: ソースファイルのkeccak256ハッシュ
           "keccak256": "0x234...",
-          // 必須（「url」が使用されていない場合）：ソースファイルのリテラルコンテンツ
+          // 必須（「url」が使用されていない場合）: ソースファイルのリテラルコンテンツ
           "content": "contract destructible is owned { function destroy() { if (msg.sender == owner) selfdestruct(owner); } }"
         }
       },
@@ -196,7 +196,7 @@ solcのリリースビルドでは、上記のようにバージョンを3バイ
 
 さらに、ウォレットはNatSpecユーザードキュメントを使用して、ユーザーがコントラクトと対話する際には必ず確認メッセージを表示し、併せてトランザクション署名の承認を要求できます。
 
-詳しくは、 :doc:`Ethereum Natural Language Specification (NatSpec) format <natspec-format>` をご覧ください。
+詳しくは、 :doc:`Ethereum Natural Language Specification (NatSpec) フォーマット <natspec-format>` をご覧ください。
 
 ソースコード検証の方法
 ======================

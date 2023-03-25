@@ -1,9 +1,9 @@
 
 .. index: calldata layout
 
-**************************
+************************
 コールデータのレイアウト
-**************************
+************************
 
 .. The input data for a function call is assumed to be in the format defined by the :ref:`ABI
 .. specification <ABI>`. Among others, the ABI specification requires arguments to be padded to multiples of 32

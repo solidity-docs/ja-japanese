@@ -2,7 +2,7 @@
 .. _mapping-types:
 
 マッピング型
-=============
+============
 
 .. Mapping types use the syntax ``mapping(_KeyType => _ValueType)`` and variables
 .. of mapping type are declared using the syntax ``mapping(_KeyType => _ValueType) _VariableName``.
@@ -137,7 +137,7 @@
 .. _iterable-mappings:
 
 イテレート可能なマッピング
-------------------------------
+--------------------------
 
 .. You cannot iterate over mappings, i.e. you cannot enumerate their keys.
 .. It is possible, though, to implement a data structure on
