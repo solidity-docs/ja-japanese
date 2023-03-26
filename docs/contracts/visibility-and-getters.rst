@@ -8,29 +8,6 @@
 可視性とゲッター
 **********************
 
-<<<<<<< HEAD
-.. Solidity knows two kinds of function calls: internal
-.. ones that do not create an actual EVM call (also called
-.. a "message call") and external
-.. ones that do. Because of that, there are four types of visibility for
-.. functions and state variables.
-
-Solidityは、実際のEVMコール（「メッセージコール」とも呼ばれる）を作成しない内部のものと、作成する外部のものの2種類の関数コールを認識しています。
-そのため、関数と状態変数の可視性には4つのタイプがあります。
-
-.. Functions have to be specified as being ``external``,
-.. ``public``, ``internal`` or ``private``.
-.. For state variables, ``external`` is not possible.
-
-関数は、 ``external`` 、 ``public`` 、 ``internal`` 、 ``private`` のいずれかを指定する必要があります。
-状態変数の場合、 ``external`` は指定できません。
-
-.. ``external``
-..     External functions are part of the contract interface,
-..     which means they can be called from other contracts and
-..     via transactions. An external function ``f`` cannot be called
-..     internally (i.e. ``f()`` does not work, but ``this.f()`` works).
-=======
 State Variable Visibility
 =========================
 
@@ -59,7 +36,6 @@ Function Visibility
 Solidity knows two kinds of function calls: external ones that do create an actual EVM message call and internal ones that do not.
 Furthermore, internal functions can be made inaccessible to derived contracts.
 This gives rise to four types of visibility for functions.
->>>>>>> english/develop
 
 ``external``
     外部関数はコントラクトインターフェースの一部であり、他のコントラクトやトランザクションを介して呼び出すことができることを意味します。
@@ -67,40 +43,16 @@ This gives rise to four types of visibility for functions.
 
 .. ``public``
 ..     Public functions are part of the contract interface
-..     and can be either called internally or via
-..     messages. For public state variables, an automatic getter
-..     function (see below) is generated.
+..     and can be either called internally or via message calls.
 
 ``public``
-<<<<<<< HEAD
-    パブリック関数は、コントラクトインターフェースの一部であり、内部またはメッセージ経由で呼び出すことができます。
-    パブリックな状態の変数に対しては、自動的にゲッター関数（下記参照）が生成されます。
+    パブリック関数は、コントラクトインターフェースの一部であり、内部またはメッセージコール経由で呼び出すことができます。
 
 .. ``internal``
 ..     Those functions and state variables can only be
 ..     accessed internally (i.e. from within the current contract
 ..     or contracts deriving from it), without using ``this``.
 ..     This is the default visibility level for state variables.
-
-``internal``
-    それらの関数と状態変数は、 ``this`` を使用せずに、内部的にのみ（すなわち、現在のコントラクトまたはそのコントラクトから派生したコントラクトの中から）アクセスできます。
-    これは状態変数のデフォルトの可視性レベルです。
-
-``private``
-    プライベート関数とプレイベート状態変数は、それらが定義されているコントラクトでのみ利用でき、派生コントラクトでは利用できません。
-
-.. .. note::
-
-..     Everything that is inside a contract is visible to
-..     all observers external to the blockchain. Making something ``private``
-..     only prevents other contracts from reading or modifying
-..     the information, but it will still be visible to the
-..     whole world outside of the blockchain.
-
-.. note::
-=======
-    Public functions are part of the contract interface
-    and can be either called internally or via message calls.
 
 ``internal``
     Internal functions can only be accessed from within the current contract
@@ -113,10 +65,6 @@ This gives rise to four types of visibility for functions.
 
 .. warning::
     |visibility-caveat|
->>>>>>> english/develop
-
-    コントラクトの中にあるものはすべて、ブロックチェーンの外部にいるすべてのオブザーバーから見えるようになっています。
-    何かを ``private`` にしても、他のコントラクトが情報を読んだり修正したりすることを防ぐことができるだけで、ブロックチェーンの外の全世界からは見える状態になります。
 
 .. The visibility specifier is given after the type for
 .. state variables and between parameter list and
