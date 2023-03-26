@@ -94,6 +94,9 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 
 同様に、 ``assert`` が失敗した場合や同様の条件の場合は、ビルトイン型の ``Panic(uint256)`` エラーで復帰します。
 
+Members of Errors
+=================
+
 .. .. note::
 
 ..     Error data should only be used to give an indication of failure, but
@@ -105,21 +108,9 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 .. 
 
 .. note::
-<<<<<<< HEAD
 
     エラーデータは、失敗の兆候を示すためにのみ使用すべきで、コントロールフローの手段としては使用しないでください。
     その理由は、インナーコールのリバートデータは、デフォルトでは外部コールのチェーンを通じて伝搬されるからです。
     つまり、内側の呼び出しは、それを呼び出したコントラクトから来たように見えるリバートデータを「偽造」できるということです。
-=======
-    Error data should only be used to give an indication of failure, but
-    not as a means for control-flow. The reason is that the revert data
-    of inner calls is propagated back through the chain of external calls
-    by default. This means that an inner call
-    can "forge" revert data that looks like it could have come from the
-    contract that called it.
-
-Members of Errors
-=================
 
 - ``error.selector``: A ``bytes4`` value containing the error selector.
->>>>>>> english/develop
