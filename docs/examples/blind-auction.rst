@@ -136,31 +136,9 @@
 
 前回のオープンオークションは、次のようにブラインドオークションに拡張されます。ブラインドオークションの利点は、入札期間の終わりに向けての時間的プレッシャーがないことです。透明なコンピューティングプラットフォーム上でブラインドオークションを行うというのは矛盾しているように聞こえるかもしれませんが、暗号技術がその助けとなります。
 
-<<<<<<< HEAD
 **入札期間** 中、入札者は自分の入札を実際には送信せず、ハッシュ化したものだけを送信します。現在のところ、ハッシュ値が等しい2つの（十分に長い）値を見つけることは実質的に不可能であると考えられているため、入札者はそれによって入札にコミットします。入札期間の終了後、入札者は自分の入札を明らかにしなければならない。入札者は自分の値を暗号化せずに送信し、コントラクトはそのハッシュ値が入札期間中に提供されたものと同じであるかどうかをチェックします。
 
 もう一つの課題は、いかにしてオークションの **バインディングとブラインド** を同時に行うかということです。落札した後にお金を送らないだけで済むようにするには、入札と一緒に送らせるようにするしかありません。イーサリアムでは価値の移転はブラインドできないので、誰でも価値を見ることができます。
-=======
-During the **bidding period**, a bidder does not actually send their bid, but
-only a hashed version of it.  Since it is currently considered practically
-impossible to find two (sufficiently long) values whose hash values are equal,
-the bidder commits to the bid by that.  After the end of the bidding period,
-the bidders have to reveal their bids: They send their values unencrypted, and
-the contract checks that the hash value is the same as the one provided during
-the bidding period.
-
-Another challenge is how to make the auction **binding and blind** at the same
-time: The only way to prevent the bidder from just not sending the money after
-they won the auction is to make them send it together with the bid. Since value
-transfers cannot be blinded in Ethereum, anyone can see the value.
-
-The following contract solves this problem by accepting any value that is
-larger than the highest bid. Since this can of course only be checked during
-the reveal phase, some bids might be **invalid**, and this is on purpose (it
-even provides an explicit flag to place invalid bids with high-value
-transfers): Bidders can confuse competition by placing several high or low
-invalid bids.
->>>>>>> english/develop
 
 以下のコントラクトでは、最高額の入札よりも大きな値を受け入れることで、この問題を解決しています。もちろん、これは公開段階でしかチェックできないので、いくつかの入札は **無効** になるかもしれませんが、これは意図的なものです（高額な送金で無効な入札を行うための明示的なフラグも用意されています）。入札者は、高額または低額の無効な入札を複数回行うことで、競争を混乱させることができます。
 
