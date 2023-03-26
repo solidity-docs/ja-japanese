@@ -4,9 +4,9 @@
 変数のクリーンアップ
 ********************
 
-.. When a value is shorter than 256 bit, in some cases the remaining bits
-.. must be cleaned.
-.. The Solidity compiler is designed to clean such remaining bits before any operations
+.. Ultimately, all values in the EVM are stored in 256 bit words.
+.. Thus, in some cases, when the type of a value has less than 256 bits, it is necessary to clean the remaining bits.
+.. The Solidity compiler is designed to do such cleaning before any operations
 .. that might be adversely affected by the potential garbage in the remaining bits.
 .. For example, before writing a value to  memory, the remaining bits need
 .. to be cleared because the memory contents can be used for computing
@@ -15,7 +15,10 @@
 .. because otherwise the garbled value can be observed.
 
 値が256ビットよりも短い場合、場合によっては残りのビットをクリーンアップする必要があります。
-Solidityのコンパイラは、残りのビットに含まれる潜在的なゴミによって悪影響を受ける可能性のある演算の前に、そのような残りのビットを消去するように設計されています。
+最終的に、EVM内のすべての値は256ビットのワードで保存されます。
+したがって、値の型が256ビット未満である場合、残りのビットをクリーニングする必要があるケースがあります。
+Solidityのコンパイラは、残りのビットに含まれる潜在的なゴミによって悪影響を受ける可能性のある演算の前に、このようなクリーニングを行うように設計されています。
+
 例えば、値をメモリに書き込む前に、残りのビットをクリアする必要があります。
 これは、メモリの内容がハッシュの計算に使用されたり、メッセージコールのデータとして送信されたりする可能性があるためです。
 同様に、ストレージに値を格納する前に、残りのビットを消去する必要があります。
@@ -45,14 +48,70 @@ Solidityのコンパイラは、残りのビットに含まれる潜在的なゴ
 
 .. Different types have different rules for cleaning up invalid values:
 
-型によって、無効な値を処理するためのルールが異なります。
+The following table describes the cleaning rules applied to different types,
+where ``higher bits`` refers to the remaining bits in case the type has less than 256 bits.
 
 .. csv-table::
-   :header: "型", "有効な値", "無効な値が意味するもの"
+   :header: "型", "有効な値", "無効な値のクリーンアップ"
    :widths: 10, 10, 30
 
-   "n個のメンバーのenum", "0 から n-1", "例外"
-   "bool", "0 あるいは 1", "1"
-   "符号付き整数", "符号拡張されたワード", "現在はサイレントにラップされますが、将来的には例外がスローされるようになります。"
-   "符号なし整数", "上位ビットがゼロ", "現在はサイレントにラップされますが、将来的には例外がスローされるようになります。"
+   "n個のメンバーのenum", "0 から n-1", "例外を投げる"
+   "bool", "0 あるいは 1", "1になる"
+   "符号付き整数", "higher bits set to the sign bit", "currently silently signextends to a valid  value, i.e. all higher bits are set to the sign bit; may throw an exception in the future"
+   "符号なし整数", "上位ビットがゼロ", "currently silently masks to a valid value, i.e. all higher bits are set to zero; may throw an exception in the future"
 
+Note that valid and invalid values are dependent on their type size.
+Consider ``uint8``, the unsigned 8-bit type, which has the following valid values:
+
+.. code-block:: none
+
+    0000...0000 0000 0000
+    0000...0000 0000 0001
+    0000...0000 0000 0010
+    ....
+    0000...0000 1111 1111
+
+Any invalid value will have the higher bits set to zero:
+
+.. code-block:: none
+
+    0101...1101 0010 1010   invalid value
+    0000...0000 0010 1010   cleaned value
+
+For ``int8``, the signed 8-bit type, the valid values are:
+
+Negative
+
+.. code-block:: none
+
+    1111...1111 1111 1111
+    1111...1111 1111 1110
+    ....
+    1111...1111 1000 0000
+
+Positive
+
+.. code-block:: none
+
+    0000...0000 0000 0000
+    0000...0000 0000 0001
+    0000...0000 0000 0010
+    ....
+    0000...0000 1111 1111
+
+The compiler will ``signextend`` the sign bit, which is 1 for negative and 0 for
+positive values, overwriting the higher bits:
+
+Negative
+
+.. code-block:: none
+
+    0010...1010 1111 1111   invalid value
+    1111...1111 1111 1111   cleaned value
+
+Positive
+
+.. code-block:: none
+
+    1101...0101 0000 0100   invalid value
+    0000...0000 0000 0100   cleaned value

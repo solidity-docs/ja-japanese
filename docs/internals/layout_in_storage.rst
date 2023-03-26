@@ -75,11 +75,13 @@
 ..      any change to the rules outlined in this section is considered a breaking change
 ..      of the language and due to its critical nature should be considered very carefully before
 ..      being executed.
+..      In the event of such a breaking change, we would want to release a compatibility mode in which the compiler would generate bytecode supporting the old layout.
 
 .. note::
 
     ストレージの状態変数のレイアウトは、ストレージへのポインタをライブラリに渡すことができるため、Solidityの外部インターフェースの一部とみなされます。
     つまり、このセクションで説明されているルールを変更することは、言語の破壊的な変更とみなされ、その重大な性質のため、実行する前に非常に慎重に検討する必要があります。
+    このような変更があった場合、コンパイラが古いレイアウトをサポートするバイトコードを生成する互換モードをリリースしたいと思います。
 
 マッピングと動的配列
 ====================
@@ -124,13 +126,13 @@
 .. The value corresponding to a mapping key ``k`` is located at ``keccak256(h(k) . p)``
 .. where ``.`` is concatenation and ``h`` is a function that is applied to the key depending on its type:
 .. - for value types, ``h`` pads the value to 32 bytes in the same way as when storing the value in memory.
-.. - for strings and byte arrays, ``h`` computes the ``keccak256`` hash of the unpadded data.
+.. - for strings and byte arrays, ``h(k)`` is just the unpadded data.
 
 マッピングキー ``k`` に対応する値は ``keccak256(h(k) . p)`` に位置し、 ``.`` は連結、 ``h`` はキーの型に応じて適用される関数である。
 
 - 値型の場合、 ``h`` はメモリに値を格納するときと同じように、値を32バイトにパディングします。
 
-- 文字列やバイト配列の場合、 ``h`` はパディングされていないデータの ``keccak256`` ハッシュを計算します。
+- 文字列やバイト配列の場合、 ``h(k)`` は、パディングされていないデータです。
 
 .. If the mapping value is a
 .. non-value type, the computed slot marks the start of the data. If the value is of struct type,
@@ -199,13 +201,12 @@
 .. .. note::
 
 ..   Handling invalidly encoded slots is currently not supported but may be added in the future.
-..   If you are compiling via the experimental IR-based compiler pipeline, reading an invalidly encoded
-..   slot results in a ``Panic(0x22)`` error.
+..   If you are compiling via IR, reading an invalidly encoded slot results in a ``Panic(0x22)`` error.
 
 .. note::
 
   無効にエンコードされたスロットの処理は現在サポートされていませんが、将来的に追加される可能性があります。
-  実験的なIRベースのコンパイラパイプラインでコンパイルしている場合、無効にエンコードされたスロットを読み込むと ``Panic(0x22)`` エラーが発生します。
+  IR経由でコンパイルしている場合、不正にエンコードされたスロットを読むと ``Panic(0x22)`` エラーが発生します。
 
 JSON出力
 ========
@@ -221,7 +222,7 @@ JSON出力
 出力されるのは、 ``storage`` と ``types`` の2つのキーを含むJSONオブジェクトです。
 ``storage`` オブジェクトは配列で、各要素は次のような形をしています。
 
-.. code::
+.. code-block:: json
 
     {
         "astId": 2,
@@ -262,7 +263,7 @@ JSON出力
 
 与えられた ``type`` 、この場合 ``t_uint256`` は、 ``types`` の中の要素を表しており、その形は
 
-.. code::
+.. code-block:: json
 
     {
         "encoding": "inplace",
@@ -335,13 +336,13 @@ JSON出力
         uint y;
         S s;
         address addr;
-        mapping (uint => mapping (address => bool)) map;
+        mapping(uint => mapping(address => bool)) map;
         uint[] array;
         string s1;
         bytes b1;
     }
 
-.. code:: json
+.. code-block:: json
 
     {
       "storage": [

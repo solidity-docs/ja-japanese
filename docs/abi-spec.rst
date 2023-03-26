@@ -19,7 +19,7 @@
 この仕様では、インターフェースが動的である、あるいは、実行時にしかわからないコントラクトは扱いません。
 
 .. _abi_function_selector:
-.. index:: selector
+.. index:: ! selector; of a function
 
 関数セレクタ
 ============
@@ -227,9 +227,9 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 - ``X`` が ``k`` の要素を持つ ``T[]`` （ ``k`` は ``uint256`` 型とします）。
 
-  ``enc(X) = enc(k) enc([X[0], ..., X[k-1]])``
+  ``enc(X) = enc(k) enc((X[0], ..., X[k-1]))``
 
-  つまり、静的なサイズ ``k`` の配列のようにエンコードされ、その前に要素数が付けられます。
+  つまり、同じ型の ``k`` 個の要素を持つタプル（静的サイズ ``k`` の配列）であるかのようにエンコードされ、その前に要素数が付きます。
 
 - 長さ ``k`` の ``bytes`` （これは型 ``uint256`` であると仮定されます）。
 
@@ -351,15 +351,15 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 動的型の使用法
 ==============
 
-シグネチャが ``f(uint,uint32[],bytes10,bytes)`` で値が  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` である関数の呼び出しは、以下のようにエンコードされます。
+シグネチャが ``f(uint256,uint32[],bytes10,bytes)`` で値が  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` である関数の呼び出しは、以下のようにエンコードされます。
 
-.. We take the first four bytes of ``sha3("f(uint256,uint32[],bytes10,bytes)")``, i.e. ``0x8be65246``.
+.. We take the first four bytes of ``keccak("f(uint256,uint32[],bytes10,bytes)")``, i.e. ``0x8be65246``.
 .. Then we encode the head parts of all four arguments. For the static types ``uint256`` and ``bytes10``,
 .. these are directly the values we want to pass, whereas for the dynamic types ``uint32[]`` and ``bytes``,
 .. we use the offset in bytes to the start of their data area, measured from the start of the value
 .. encoding (i.e. not counting the first four bytes containing the hash of the function signature). These are:
 
-まず ``sha3("f(uint256,uint32[],bytes10,bytes)")`` の最初の4バイト、つまり ``0x8be65246`` を取ります。
+まず ``keccak("f(uint256,uint32[],bytes10,bytes)")`` の最初の4バイト、つまり ``0x8be65246`` を取ります。
 そして、4つの引数すべてのヘッド部分をエンコードします。
 静的型の ``uint256`` と ``bytes10`` については、これらが直接渡したい値となりますが、動的型の ``uint32[]`` と ``bytes`` については、値のエンコードの開始（つまり、関数シグネチャのハッシュを含む最初の4バイトを数えない）から測定した、データ領域の開始までのオフセットをバイト単位で使用します。
 
@@ -394,10 +394,10 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
       000000000000000000000000000000000000000000000000000000000000000d
       48656c6c6f2c20776f726c642100000000000000000000000000000000000000
 
-.. Let us apply the same principle to encode the data for a function with a signature ``g(uint[][],string[])``
+.. Let us apply the same principle to encode the data for a function with a signature ``g(uint256[][],string[])``
 .. with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
 
-同じ原理で、シグネチャ ``g(uint[][],string[])`` を持つ関数のデータを値 ``([[1, 2], [3]], ["one", "two", "three"])`` でエンコードしてみましょう。
+同じ原理で、シグネチャ ``g(uint256[][],string[])`` を持つ関数のデータを値 ``([[1, 2], [3]], ["one", "two", "three"])`` でエンコードしてみましょう。
 ただし、エンコードの最も基本的な部分から始めます。
 
 .. First we encode the length and data of the first embedded dynamic array ``[1, 2]`` of the first root array ``[[1, 2], [3]]``:
@@ -485,9 +485,9 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 オフセット ``e`` は、7行目（224バイト）である文字列 ``"three"`` のコンテンツの開始を指しているので、 ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0`` 。
 
 .. Note that the encodings of the embedded elements of the root arrays are not dependent on each other
-.. and have the same encodings for a function with a signature ``g(string[],uint[][])``.
+.. and have the same encodings for a function with a signature ``g(string[],uint256[][])``.
 
-なお、ルート配列の埋め込み要素の符号化は互いに依存しておらず、シグネチャ ``g(string[],uint[][])`` を持つ関数では同じ符号化になります。
+なお、ルート配列の埋め込み要素の符号化は互いに依存しておらず、シグネチャ ``g(string[],uint256[][])`` を持つ関数では同じ符号化になります。
 
 .. Then we encode the length of the first root array:
 
@@ -610,6 +610,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 開発者はこのトレードオフを克服し、効率的な検索と任意の可読性の両方を達成するために、同じ値を保持することを意図した2つの引数（1つはインデックス化され、1つはインデックス化されない）を持つイベントを定義できます。
 
 .. _abi_errors:
+.. index:: error, selector; of an error
 
 エラー
 ======
@@ -690,7 +691,7 @@ JSON
   ``view`` （ :ref:`ブロックチェーンのステートを修正しないように指定 <view-functions>` ）、
   ``nonpayable`` （関数はEtherを受け取らない、デフォルト）と ``payable`` （関数はEtherを受け取る）があります。
 
-コンストラクタとフォールバック関数は ``name`` や ``outputs`` を持ちません。フォールバック関数には ``inputs`` もありません。
+コンストラクタ、receive関数、fallback関数は ``name`` や ``outputs`` を持ちません。receive関数とfallback関数には ``inputs`` もありません。
 
 .. note::
 
@@ -888,7 +889,7 @@ JSON
 厳密なエンコーディングモードとは、上記の正式な仕様で定義されているのと全く同じエンコーディングになるモードです。
 つまり、データ領域にオーバーラップを生じさせないようにしながら、オフセットはできるだけ小さくしなければならず、したがってギャップは許されません。
 
-.. Usually, ABI decoders are written in a straightforward way just following offset pointers, but some decoders
+.. Usually, ABI decoders are written in a straightforward way by just following offset pointers, but some decoders
 .. might enforce strict mode. The Solidity ABI decoder currently does not enforce strict mode, but the encoder
 .. always creates data in strict mode.
 
@@ -981,7 +982,7 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 ======================================================
 
 .. Indexed event parameters that are not value types, i.e. arrays and structs are not
-.. stored directly but instead a keccak256-hash of an encoding is stored. 
+.. stored directly but instead a keccak-256 hash of an encoding is stored. 
 
 値型ではないインデックスされたイベントパラメータ（配列や構造体）は、直接保存されず、エンコーディングのkeccak256ハッシュが保存されます。
 このエンコーディングは以下のように定義されています。

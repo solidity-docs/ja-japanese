@@ -8,9 +8,9 @@ Yul
 
 Yul（以前はJULIAやIULIAとも呼ばれていました）は、さまざまなバックエンド用のバイトコードにコンパイルできる中間言語です。
 
-EVM1.0、EVM1.5、Ewasmのサポートが予定されており、3つのプラットフォームに共通する言語として使えるように設計されています。
-YulはすでにスタンドアローンモードやSolidity内の「インラインアセンブリ」で使用でき、中間言語としてYulを使用するSolidityコンパイラの実験的な実装もあります。
-Yulは、すべてのターゲットプラットフォームに等しく恩恵を与えることができるハイレベルな最適化ステージのための良いターゲットです。
+It can be used in stand-alone mode and for "inline assembly" inside Solidity.
+The compiler uses Yul as an intermediate language in the IR-based code generator ("new codegen" or "IR-based codegen").
+Yul is a good target for high-level optimisation stages that can benefit all target platforms equally.
 
 モチベーションとハイレベルな記述
 ================================
@@ -570,10 +570,10 @@ ASTノードが式の場合、Eは2つの状態オブジェクトと式の評価
     E(G, L, <var_1, ..., var_n := rhs>: Assignment) =
         let G1, L1, v1, ..., vn = E(G, L, rhs)
         let L2 be a copy of L1 where L2[$var_i] = vi for i = 1, ..., n
-        G, L2, regular
+        G1, L2, regular
     E(G, L, <for { i1, ..., in } condition post body>: ForLoop) =
         if n >= 1:
-            let G1, L, mode = E(G, L, i1, ..., in)
+            let G1, L1, mode = E(G, L, i1, ..., in)
             // mode has to be regular or leave due to the syntactic restrictions
             if mode is leave then
                 G1, L1 restricted to variables of L, leave
@@ -593,7 +593,7 @@ ASTノードが式の場合、Eは2つの状態オブジェクトと式の評価
                 else:
                     G3, L3, mode = E(G2, L2, post)
                     if mode is leave:
-                        G2, L3, leave
+                        G3, L3, leave
                     otherwise
                         E(G3, L3, for {} condition post body)
     E(G, L, break: BreakContinue) =
@@ -659,7 +659,7 @@ Yulのデフォルトの方言は、現在選択されているEVMのバージ�
 正確なセマンティクスに興味がある場合は、別のドキュメントを参照してください。
 
 ``-`` と書かれたオペコードは結果を返さず、その他のオペコードは正確に1つの値を返します。
-``F`` 、 ``H`` 、 ``B`` 、 ``C`` 、 ``I`` 、 ``L`` と書かれたオペコードは、それぞれFrontier、Homestead、Byzantium、Constantinople、Istanbul、Londonから存在しています。
+``F`` 、 ``H`` 、 ``B`` 、 ``C`` 、 ``I`` 、 ``L`` 、 ``P`` と書かれたオペコードは、それぞれFrontier、Homestead、Byzantium、Constantinople、Istanbul、London、Parisから存在しています。
 
 以下では、 ``mem[a...b)`` は位置 ``a`` から位置 ``b`` までのメモリのバイトを意味し、 ``storage[p]`` はスロット ``p`` のストレージ内容を意味します。
 
@@ -805,7 +805,7 @@ Yulはローカル変数やコントロールフローを管理しているた�
 +-------------------------+-----+-----+------------------------------------------------------------------------+
 | revert(p, s)            | `-` | B   | 実行終了。ステート変化をリバートする。リターンデータはmem[p...(p+s))。 |
 +-------------------------+-----+-----+------------------------------------------------------------------------+
-| selfdestruct(a)         | `-` | F   | 実行終了。現在のコントラクトを破壊し、aに資金を送る。                  |
+| selfdestruct(a)         | `-` | F   | 実行終了。現在のコントラクトを破壊し、aに資金を送る。（非推奨）        |
 +-------------------------+-----+-----+------------------------------------------------------------------------+
 | invalid()               | `-` | F   | invalid命令で実行を終了。                                              |
 +-------------------------+-----+-----+------------------------------------------------------------------------+
@@ -836,7 +836,9 @@ Yulはローカル変数やコントロールフローを管理しているた�
 +-------------------------+-----+-----+------------------------------------------------------------------------+
 | number()                |     | F   | 現在のブロックナンバー。                                               |
 +-------------------------+-----+-----+------------------------------------------------------------------------+
-| difficulty()            |     | F   | 現在のブロックの難易度。                                               |
+| difficulty()            |     | F   | 現在のブロックの難易度。（下記の注意書きも参照）                       |
++-------------------------+-----+-----+------------------------------------------------------------------------+
+| prevrandao()            |     | P   | randomness provided by the beacon chain (see note below)               |
 +-------------------------+-----+-----+------------------------------------------------------------------------+
 | gaslimit()              |     | F   | 現在のブロックのブロックガスリミット。                                 |
 +-------------------------+-----+-----+------------------------------------------------------------------------+
@@ -852,6 +854,21 @@ Yulはローカル変数やコントロールフローを管理しているた�
   より少ないデータを返した場合は、残りのバイトにはまったく手をつけません。
   このメモリ領域のどの部分にリターンデータが含まれているかを確認するには、 ``returndatasize`` オペコードを使用する必要があります。
   残りのバイトは、呼び出し前の値を保持します。
+
+.. note::
+  The `difficulty()` instruction is disallowed in EVM version >= Paris.
+  With the Paris network upgrade the semantics of the instruction that was previously called
+  ``difficulty`` have been changed and the instruction was renamed to ``prevrandao``.
+  It can now return arbitrary values in the full 256-bit range, whereas the highest recorded
+  difficulty value within Ethash was ~54 bits.
+  This change is described in `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_.
+  Please note that irrelevant to which EVM version is selected in the compiler, the semantics of
+  instructions depend on the final chain of deployment.
+
+.. warning::
+    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
+    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour
+    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
 内部の方言では、追加関数があるものもあります。
 
@@ -1044,6 +1061,10 @@ Yulオブジェクトは、名前の付いたコードおよびデータセク�
 
 上記の ``Block`` は、前章で説明したYulコード文法の ``Block`` を指します。
 
+.. note::
+    An object with a name that ends in ``_deployed`` is treated as deployed code by the Yul optimizer.
+    The only consequence of this is a different gas cost heuristic in the optimizer.
+
 .. .. note::
 
 ..     Data objects or sub-objects whose names contain a ``.`` can be defined
@@ -1080,6 +1101,7 @@ Yulオブジェクトの例を以下に示します。
         code {
             function allocate(size) -> ptr {
                 ptr := mload(0x40)
+                // Note that Solidity generated IR code reserves memory offset ``0x60`` as well, but a pure Yul object is free to use memory as it chooses.
                 if iszero(ptr) { ptr := 0x60 }
                 mstore(0x40, add(ptr, size))
             }
@@ -1091,22 +1113,23 @@ Yulオブジェクトの例を以下に示します。
             datacopy(offset, dataoffset("Contract2"), size)
             // コンストラクトパラメータは単一の数値0x1234
             mstore(add(offset, size), 0x1234)
-            pop(create(offset, add(size, 32), 0))
+            pop(create(0, offset, add(size, 32)))
 
             // ランタイムオブジェクトを返す（現在実行中のコードがコンストラクタのコード）
-            size := datasize("runtime")
+            size := datasize("Contract1_deployed")
             offset := allocate(size)
             // これは、Ewasmではメモリからメモリへのコピーに、EVMではコードコピーになる
-            datacopy(offset, dataoffset("runtime"), size)
+            datacopy(offset, dataoffset("Contract1_deployed"), size)
             return(offset, size)
         }
 
         data "Table2" hex"4123"
 
-        object "runtime" {
+        object "Contract1_deployed" {
             code {
                 function allocate(size) -> ptr {
                     ptr := mload(0x40)
+                    // Note that Solidity generated IR code reserves memory offset ``0x60`` as well, but a pure Yul object is free to use memory as it chooses.
                     if iszero(ptr) { ptr := 0x60 }
                     mstore(0x40, add(ptr, size))
                 }
@@ -1124,7 +1147,7 @@ Yulオブジェクトの例を以下に示します。
                 // code here ...
             }
 
-            object "runtime" {
+            object "Contract2_deployed" {
                 code {
                     // code here ...
                 }
@@ -1150,74 +1173,13 @@ SolidityをスタンドアローンのYulモードで使いたい場合は、 ``
 
 Solidityモードでは、通常のオプティマイザと一緒にYulオプティマイザが実行されます。
 
+.. _optimization-step-sequence:
+
 最適化ステップシーケンス
 ------------------------
 
-.. By default the Yul optimizer applies its predefined sequence of optimization steps to the generated assembly.
-
-デフォルトでは、Yulオプティマイザは、生成されたアセンブリに対して、定義済みの最適化ステップのシーケンスを適用します。
-``--yul-optimizations`` オプションを使用すると、このシーケンスをオーバーライドして、独自のシーケンスを提供できます。
-
-.. code-block:: sh
-
-    solc --optimize --ir-optimized --yul-optimizations 'dhfoD[xarrscLMcCTU]uljmul'
-
-ステップの順番は重要で、出力のクオリティに影響します。
-さらに、あるステップを適用すると、既に適用されている他のステップについても新たな最適化の機会が見つかる可能性があるため、ステップを繰り返すことが有益な場合もあります。
-シーケンスの一部を角括弧（ ``[]`` ）で囲むと、結果として得られるアセンブリのサイズが改善されなくなるまで、その部分を繰り返し適用するようにオプティマイザに指示します。
-括弧は1つのシーケンスに複数回使用できますが、入れ子にはできません。
-
-以下のような最適化ステップがあります。
-
-============ ===============================
-略           正式名称
-============ ===============================
-``f``        ``BlockFlattener``
-``l``        ``CircularReferencesPruner``
-``c``        ``CommonSubexpressionEliminator``
-``C``        ``ConditionalSimplifier``
-``U``        ``ConditionalUnsimplifier``
-``n``        ``ControlFlowSimplifier``
-``D``        ``DeadCodeEliminator``
-``v``        ``EquivalentFunctionCombiner``
-``e``        ``ExpressionInliner``
-``j``        ``ExpressionJoiner``
-``s``        ``ExpressionSimplifier``
-``x``        ``ExpressionSplitter``
-``I``        ``ForLoopConditionIntoBody``
-``O``        ``ForLoopConditionOutOfBody``
-``o``        ``ForLoopInitRewriter``
-``i``        ``FullInliner``
-``g``        ``FunctionGrouper``
-``h``        ``FunctionHoister``
-``F``        ``FunctionSpecializer``
-``T``        ``LiteralRematerialiser``
-``L``        ``LoadResolver``
-``M``        ``LoopInvariantCodeMotion``
-``r``        ``RedundantAssignEliminator``
-``R``        ``ReasoningBasedSimplifier`` - highly experimental
-``m``        ``Rematerialiser``
-``V``        ``SSAReverser``
-``a``        ``SSATransform``
-``t``        ``StructuralSimplifier``
-``u``        ``UnusedPruner``
-``p``        ``UnusedFunctionParameterPruner``
-``d``        ``VarDeclInitializer``
-============ ===============================
-
-.. Some steps depend on properties ensured by ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter``.
-.. For this reason the Yul optimizer always applies them before applying any steps supplied by the user.
-
-いくつかのステップは、 ``BlockFlattener`` 、 ``FunctionGrouper`` 、 ``ForLoopInitRewriter`` によって確保される特性に依存します。
-このため、Yulオプティマイザは、ユーザーから提供されたステップを適用する前に、常にこれらのステップを適用します。
-
-.. The ReasoningBasedSimplifier is an optimizer step that is currently not enabled in the default set of steps.
-.. It uses an SMT solver to simplify arithmetic expressions and boolean conditions.
-.. It has not received thorough testing or validation yet and can produce non-reproducible results, so please use with care!
-
-ReasoningBasedSimplifierはオプティマイザのステップで、現在はデフォルトのステップセットでは有効になっていません。
-SMTソルバーを使用して、算術式やブーリアン条件を単純化します。
-まだ十分なテストや検証が行われておらず、再現性のない結果が出る可能性がありますので、ご使用にはご注意ください。
+Detailed information regrading the optimization sequence as well a list of abbreviations is
+available in the :ref:`optimizer docs <optimizer-steps>`.
 
 .. _erc20yul:
 

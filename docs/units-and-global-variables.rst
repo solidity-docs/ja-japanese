@@ -70,7 +70,7 @@ Etherの単位
 
 グローバルな名前空間に常に存在し、主にブロックチェーンに関する情報を提供するために使用されたり、汎用的なユーティリティー関数である特別な変数や関数があります。
 
-.. index:: abi, block, coinbase, difficulty, encode, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin
+.. index:: abi, block, coinbase, difficulty, prevrandao, encode, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin
 
 ブロックとトランザクションのプロパティ
 ----------------------------------------
@@ -83,11 +83,13 @@ Etherの単位
 
 - ``block.coinbase`` (``address payable``): カレントブロックのマイナーのアドレス
 
-- ``block.difficulty`` (``uint``): カレントブロックの難易度
+- ``block.difficulty`` (``uint``): カレントブロックの難易度（ ``EVM < Paris`` ）。For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` (`EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
 
 - ``block.gaslimit`` (``uint``): カレントブロックのガスリミット
 
 - ``block.number`` (``uint``): カレントブロックの番号
+
+- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``)
 
 - ``block.timestamp`` ( ``uint`` ): カレントブロックのタイムスタンプ（Unixエポックからの秒数）
 
@@ -205,6 +207,14 @@ bytesのメンバー
 
 - ``bytes.concat(...) returns (bytes memory)`` :  :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>`。
 
+.. index:: string members
+
+Members of string
+-----------------
+
+- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
+
+
 .. index:: assert, revert, require
 
 エラーハンドリング
@@ -300,7 +310,7 @@ bytesのメンバー
     Homesteadのハードフォークでは、この問題は _transaction_ signaturesで修正されましたが（ `EIP-2 <https://eips.ethereum.org/EIPS/eip-2#specification>`_ 参照）、ecrecover関数は変更されませんでした。
 
     これは、署名を一意にする必要がある場合や、アイテムを識別するために使用する場合を除き、通常は問題になりません。
-    OpenZeppelinには、この問題なしに ``ecrecover`` のラッパーとして使用できる `ECDSAヘルパーライブラリ <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ があります。
+    OpenZeppelinには、この問題なしに ``ecrecover`` のラッパーとして使用できる `ECDSAヘルパーライブラリ <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ があります。
 
 .. .. note::
 
@@ -428,6 +438,11 @@ bytesのメンバー
 
 さらに、現在のコントラクトのすべての関数は、現在の関数を含めて直接呼び出すことができます。
 
+.. warning::
+    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
+    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour
+    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+
 .. note::
 
     バージョン0.5.0以前では、 ``selfdestruct`` と同じセマンティクスを持つ ``suicide`` という関数がありました。
@@ -502,3 +517,14 @@ bytesのメンバー
 
 ``type(T).max``
     型 ``T`` で表現可能な最大の値です。
+
+予約語
+======
+
+これらのキーワードはSolidityで予約されています。将来的には構文の一部になるかもしれません。
+
+``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
+``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
+``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
+``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
+``var``.

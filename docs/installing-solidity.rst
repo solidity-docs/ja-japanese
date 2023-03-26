@@ -9,10 +9,22 @@ Solidityコンパイラのインストール
 バージョニング
 ===============
 
-Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に続き、リリースに加えて **nightlyデベロップメントビルド** も提供されます。
-nightlyビルドは動作を保証するものではなく、最善の努力にもかかわらず、文書化されていない、または壊れた変更が含まれている可能性があります。
-最新のリリースを使用することをお勧めします。
-以下のパッケージインストーラーは最新のリリースを使用しています。
+Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に従っています。
+In addition, patch level releases with major release 0 (i.e. 0.x.y) will not
+contain breaking changes. That means code that compiles with version 0.x.y
+can be expected to compile with 0.x.z where z > y.
+
+In addition to releases, we provide **nightly development builds** with the
+intention of making it easy for developers to try out upcoming features and
+provide early feedback. Note, however, that while the nightly builds are usually
+very stable, they contain bleeding-edge code from the development branch and are
+not guaranteed to be always working. Despite our best efforts, they might
+contain undocumented and/or broken changes that will not become a part of an
+actual release. They are not meant for production use.
+
+When deploying contracts, you should use the latest released version of Solidity. This
+is because breaking changes, as well as new features and bug fixes are introduced regularly.
+We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
 
 Remix
 =====
@@ -101,8 +113,18 @@ nightlyバージョンは、以下のコマンドでインストールできま�
     sudo apt-get update
     sudo apt-get install solc
 
-また、すべての `supported Linux distros <https://snapcraft.io/docs/core/install>`_ でインストール可能な `snap package <https://snapcraft.io/>`_ もリリースしています。solcの最新ステーブル版をインストールするには
-また、 `対応するLinuxディストロ <https://snapcraft.io/docs/core/install>`_ すべてにインストール可能な `snapパッケージ <https://snapcraft.io/>`_ もリリースしています。最新のステーブル版solcをインストールするには、以下のコマンドを実行します。
+Furthermore, some Linux distributions provide their own packages. These packages are not directly
+maintained by us, but usually kept up-to-date by the respective package maintainers.
+
+For example, Arch Linux has packages for the latest development version:
+
+.. code-block:: bash
+
+    pacman -S solidity
+
+There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
+It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
+install the latest stable version of solc:
 
 .. code-block:: bash
 
@@ -117,18 +139,6 @@ nightlyバージョンは、以下のコマンドでインストールできま�
 .. note::
 
     ``solc`` スナップはstrict confinementを使用します。これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。     詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ をご覧ください。
-
-Arch Linuxにも、最新の開発バージョンに限定されますが、パッケージがあります。
-
-.. code-block:: bash
-
-    pacman -S solidity
-
-Gentoo Linuxには、Solidityパッケージを含む `Ethereumオーバーレイ <https://overlays.gentoo.org/#ethereum>`_ があります。オーバーレイの設定後、 ``solc`` はx86_64アーキテクチャでは以下の方法でインストールできます。
-
-.. code-block:: bash
-
-    emerge dev-lang/solidity
 
 macOSパッケージ
 ===============
@@ -255,14 +265,15 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 +-----------------------------------+-------------------------------------------------------+
 | Software                          | Notes                                                 |
 +===================================+=======================================================+
-| `CMake`_ (version 3.13+)          | Cross-platform build file generator.                  |
+| `CMake`_ (version 3.21.3+ on      | Cross-platform build file generator.                  |
+| Windows, 3.13+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77+ on        | C++ libraries.                                        |
+| `Boost`_ (version 1.77 on         | C++ libraries.                                        |
 | Windows, 1.65+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
 | `Git`_                            | Command-line tool for retrieving source code.         |
 +-----------------------------------+-------------------------------------------------------+
-| `z3`_ (version 4.8+, Optional)    | For use with SMT checker.                             |
+| `z3`_ (version 4.8.16+, Optional) | For use with SMT checker.                             |
 +-----------------------------------+-------------------------------------------------------+
 | `cvc4`_ (Optional)                | For use with SMT checker.                             |
 +-----------------------------------+-------------------------------------------------------+
@@ -282,6 +293,20 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 .. note::
 
     デフォルトのビルド構成では、特定のZ3バージョン（コードが最後に更新された時点での最新のもの）が必要です。Z3のリリース間に導入された変更により、わずかに異なる(ただし有効な)結果が返されることがよくあります。私たちのSMTテストはこれらの違いを考慮しておらず、書かれたバージョンとは異なるバージョンで失敗する可能性があります。これは、異なるバージョンを使用したビルドが欠陥であることを意味するものではありません。CMakeに ``-DSTRICT_Z3_VERSION=OFF`` オプションを渡しておけば、上の表にある要件を満たす任意のバージョンでビルドできます。     ただし、この場合、SMT テストをスキップするために  ``scripts/tests.sh``  に  ``--no-smt``  オプションを渡すことを忘れないでください。
+
+.. note::
+    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
+    compiler to treat all warnings as errors.
+    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
+    If you are only interested in creating a release build and do not intend to modify the source code
+    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
+    Doing this is not recommended for general use but may be necessary when using a toolchain we are
+    not testing with or trying to build an older version with newer tools.
+    If you encounter such warnings, please consider
+    `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+
+Minimum Compiler Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 最小コンパイラバージョン
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -317,7 +342,7 @@ SolidityのWindowsビルドには、以下の依存関係をインストール�
 +-----------------------------------+-------------------------------------------------------+
 | `Visual Studio 2019`_  (Optional) | C++ compiler and dev environment.                     |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77+)          | C++ libraries.                                        |
+| `Boost`_ (version 1.77)           | C++ libraries.                                        |
 +-----------------------------------+-------------------------------------------------------+
 
 すでに1つのIDEを持っていて、コンパイラとライブラリだけが必要な場合は、Visual Studio 2019 Build Toolsをインストールできます。
@@ -337,7 +362,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 * C++/CLIのサポート
 
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
-.. _Visual Studio 2019 Build Tools: https://www.visualstudio.com/downloads/#build-tools-for-visual-studio-2019
+.. _Visual Studio 2019 Build Tools: https://visualstudio.microsoft.com/vs/older-downloads/#visual-studio-2019-and-other-products
 
 必要な外部依存パッケージをすべてインストールするためのヘルパー・スクリプトを用意しています。
 
@@ -457,7 +482,7 @@ Solidityバージョンの文字列は、4つの部分で構成されていま�
 
 ローカルに変更があった場合、そのコミットは ``.mod`` でポストフィックスされます。
 
-これらのパーツはSemverの要求に応じて組み合わせられます。SolidityのプレリリースタグはSemverのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
+これらのパーツはSemVerの要求に応じて組み合わせられます。SolidityのプレリリースタグはSemVerのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
 
 リリース例: ``0.4.8+commit.60cc1668.Emscripten.clang``。
 
@@ -466,7 +491,7 @@ Solidityバージョンの文字列は、4つの部分で構成されていま�
 バージョニングについての重要な情報
 ==================================
 
-リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。変更がマージされたときには、semver と変更の重要度に応じてバージョンを上げる必要があります。最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
+リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。変更がマージされたときには、SemVerと変更の重要度に応じてバージョンを上げる必要があります。最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
 
 例:
 

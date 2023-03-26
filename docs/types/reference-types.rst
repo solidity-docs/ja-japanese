@@ -72,7 +72,10 @@
             delete x; // 配列がクリアされ、yも修正されます。
             // ストレージに新しい一時的な無名配列を作成する必要がありますが、ストレージは「静的」に割り当てられているため、次のようにするとうまくいきません。
             // y = memoryArray;
-            // ポインターはリセットされますが、ポインターの指し示す場所がないため、この方法もうまくいきません。
+            // Similarly, "delete y" is not valid, as assignments to local variables
+            // referencing storage objects can only be made from existing storage objects.
+            // It would "reset" the pointer, but there is no sensible location it could point to.
+            // For more details see the documentation of the "delete" operator.
             // delete y;
             g(x); // gを呼び出し、xへの参照を渡します。
             h(x); // hを呼び出し、独立した一時的なコピーをメモリ上に作成します。
@@ -103,7 +106,12 @@
 
 状態変数の配列に ``public`` をマークして、Solidityに :ref:`getter <visibility-and-getters>` を作成させることが可能です。数値インデックスは、getterの必須パラメータとなります。
 
-配列の終端を超えてアクセスすると、アサーションが失敗します。メソッド ``.push()`` と ``.push(value)`` は、配列の最後に新しい要素を追加するために使用でき、 ``.push()`` はゼロ初期化された要素を追加し、その要素への参照を返します。
+配列の終端を超えてアクセスすると、アサーションが失敗します。
+Methods ``.push()`` and ``.push(value)`` can be used to append a new element at the end of a dynamically-sized array, where ``.push()`` appends a zero-initialized element and returns a reference to it.
+
+.. note::
+    Dynamically-sized arrays can only be resized in storage.
+    In memory, such arrays can be of arbitrary size but the size cannot be changed once an array is allocated.
 
 .. index:: ! string, ! bytes
 
@@ -119,9 +127,10 @@
 ``string`` は ``bytes`` と同じですが、長さやインデックスのアクセスはできません。
 
 Solidityには文字列操作関数はありませんが、サードパーティ製の文字列ライブラリがあります。
-また、 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` を使って2つの文字列をそのkeccak256-hashで比較したり、 ``bytes.concat(bytes(s1), bytes(s2))`` を使って2つの文字列を連結できます。
+また、 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` を使って2つの文字列をそのkeccak256-hashで比較したり、 ``string.concat(s1, s2)`` を使って2つの文字列を連結できます。
 
-``bytes1[]`` は要素間に31個のパディングバイトを追加するので、 ``bytes1[]`` よりも ``bytes`` を使用した方が安価です。
+``memory`` で ``bytes1[]`` を使うと要素間に31個のパディングバイトを追加するので、 ``bytes1[]`` よりも ``bytes`` を使用した方が安価です。
+なお、 ``storage`` では、タイトパッキングのためパディングは存在しません。 :ref:`bytesとstring <bytes-and-string>` を参照してください。
 原則として、任意の長さの生バイトデータには ``bytes`` を、任意の長さの文字列（UTF-8）データには ``string`` を使用してください。
 長さを一定のバイト数に制限できる場合は、値型 ``bytes1`` 〜 ``bytes32`` のいずれかを必ず使用してください。その方がはるかに安価です）。
 
@@ -130,31 +139,39 @@ Solidityには文字列操作関数はありませんが、サードパーティ
     ``s`` という文字列のバイト表現にアクセスしたい場合は、 ``bytes(s).length`` / ``bytes(s)[7] = 'x';`` を使います。
     UTF-8表現の低レベルバイトにアクセスしているのであって、個々の文字にアクセスしているわけではないことに注意してください。
 
-.. index:: ! bytes-concat
+.. index:: ! bytes-concat, ! string-concat
 
 .. _bytes-concat:
+.. _string-concat:
 
-``bytes.concat`` 関数
-^^^^^^^^^^^^^^^^^^^^^
+The functions ``bytes.concat`` and ``string.concat``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-``bytes.concat`` を使って可変数の ``bytes`` や ``bytes1 ... bytes32`` を連結できます。
-この関数は、パディングされていない引数の内容を含む単一の ``bytes memory`` 配列を返します。
-文字列のパラメータや他の型を使いたい場合は、まず ``bytes`` や ``bytes1`` / ... / ``bytes32`` に変換する必要があります。
+You can concatenate an arbitrary number of ``string`` values using ``string.concat``.
+The function returns a single ``string memory`` array that contains the contents of the arguments without padding.
+If you want to use parameters of other types that are not implicitly convertible to ``string``, you need to convert them to ``string`` first.
+
+Analogously, the ``bytes.concat`` function can concatenate an arbitrary number of ``bytes`` or ``bytes1 ... bytes32`` values.
+The function returns a single ``bytes memory`` array that contains the contents of the arguments without padding.
+If you want to use string parameters or other types that are not implicitly convertible to ``bytes``, you need to convert them to ``bytes`` or ``bytes1``/.../``bytes32`` first.
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity ^0.8.4;
+    pragma solidity ^0.8.12;
 
     contract C {
-        bytes s = "Storage";
-        function f(bytes calldata c, string memory m, bytes16 b) public view {
-            bytes memory a = bytes.concat(s, c, c[:2], "Literal", bytes(m), b);
-            assert((s.length + c.length + 2 + 7 + bytes(m).length + 16) == a.length);
+        string s = "Storage";
+        function f(bytes calldata bc, string memory sm, bytes16 b) public view {
+            string memory concatString = string.concat(s, string(bc), "Literal", sm);
+            assert((bytes(s).length + bc.length + 7 + bytes(sm).length) == bytes(concatString).length);
+
+            bytes memory concatBytes = bytes.concat(bytes(s), bc, bc[:2], "Literal", bytes(sm), b);
+            assert((bytes(s).length + bc.length + 2 + 7 + bytes(sm).length + b.length) == concatBytes.length);
         }
     }
 
-引数なしで ``bytes.concat`` を呼び出すと、空の ``bytes`` 配列が返されます。
+引数なしで ``string.concat`` あるいは ``bytes.concat`` を呼び出すと、空の配列が返されます。
 
 .. index:: ! array;allocating, new
 
@@ -280,9 +297,10 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
 **push(x)**:
     動的ストレージ配列と ``bytes``（ ``string`` ではありません）には、 ``push(x)`` というメンバ関数があり、配列の最後に与えられた要素を追加するのに使用できます。
     この関数は何も返しません。 
-**pop**:
-    動的ストレージ配列と ``bytes`` （ ``string`` ではありません）には ``pop`` というメンバ関数があり、配列の最後から要素を削除するのに使用できます。
+**pop()**:
+    動的ストレージ配列と ``bytes`` （ ``string`` ではありません）には ``pop()`` というメンバ関数があり、配列の最後から要素を削除するのに使用できます。
     この関数は、削除された要素に対して :ref:`delete<delete>`  を暗黙的に呼び出します。
+    この関数は何も返しません。
 
 .. note::
 
@@ -305,16 +323,17 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
     pragma solidity >=0.6.0 <0.9.0;
 
     contract ArrayContract {
-        uint[2**20] m_aLotOfIntegers;
+        uint[2**20] aLotOfIntegers;
         // 以下は動的配列のペアではなく、ペアの動的配列（つまり長さ2の固定サイズ配列のペア）であることに注意してください。
-        // T[]はT自体が配列であっても、常にTの動的配列となります。
+        // In Solidity, T[k] and T[] are always arrays with elements of type T, even if T itself is an array.
+        // Because of that, bool[2][] is a dynamic array of elements that are bool[2]. This is different from other languages, like C.
         // すべての状態変数のデータロケーションはストレージです。
-        bool[2][] m_pairsOfFlags;
+        bool[2][] pairsOfFlags;
 
         // newPairsはメモリに格納されます - パブリックコントラクト関数の引数として唯一の選択肢です。
         function setAllFlagPairs(bool[2][] memory newPairs) public {
-            // ストレージ配列への代入は、 ``newPairs`` のコピーを実行し、完全な配列 ``m_pairsOfFlags`` を置き換えます。
-            m_pairsOfFlags = newPairs;
+            // ストレージ配列への代入は、 ``newPairs`` のコピーを実行し、完全な配列 ``pairsOfFlags`` を置き換えます。
+            pairsOfFlags = newPairs;
         }
 
         struct StructType {
@@ -335,43 +354,43 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
 
         function setFlagPair(uint index, bool flagA, bool flagB) public {
             // 存在しないインデックスにアクセスすると、例外が発生します。
-            m_pairsOfFlags[index][0] = flagA;
-            m_pairsOfFlags[index][1] = flagB;
+            pairsOfFlags[index][0] = flagA;
+            pairsOfFlags[index][1] = flagB;
         }
 
         function changeFlagArraySize(uint newSize) public {
             // 配列の長さを変更するには、push と pop を使用するのが唯一の方法です。
-            if (newSize < m_pairsOfFlags.length) {
-                while (m_pairsOfFlags.length > newSize)
-                    m_pairsOfFlags.pop();
-            } else if (newSize > m_pairsOfFlags.length) {
-                while (m_pairsOfFlags.length < newSize)
-                    m_pairsOfFlags.push();
+            if (newSize < pairsOfFlags.length) {
+                while (pairsOfFlags.length > newSize)
+                    pairsOfFlags.pop();
+            } else if (newSize > pairsOfFlags.length) {
+                while (pairsOfFlags.length < newSize)
+                    pairsOfFlags.push();
             }
         }
 
         function clear() public {
             // これらは、配列を完全にクリアします。
-            delete m_pairsOfFlags;
-            delete m_aLotOfIntegers;
+            delete pairsOfFlags;
+            delete aLotOfIntegers;
             // これも同じ効果です。
-            m_pairsOfFlags = new bool[2][](0);
+            pairsOfFlags = new bool[2][](0);
         }
 
-        bytes m_byteData;
+        bytes byteData;
 
         function byteArrays(bytes memory data) public {
             // バイト配列（"bytes"）はパディングなしで格納されるため異なりますが、"uint8[]"と同じように扱うことができます。
-            m_byteData = data;
+            byteData = data;
             for (uint i = 0; i < 7; i++)
-                m_byteData.push();
-            m_byteData[3] = 0x08;
-            delete m_byteData[2];
+                byteData.push();
+            byteData[3] = 0x08;
+            delete byteData[2];
         }
 
         function addFlag(bool[2] memory flag) public returns (uint) {
-            m_pairsOfFlags.push(flag);
-            return m_pairsOfFlags.length;
+            pairsOfFlags.push(flag);
+            return pairsOfFlags.length;
         }
 
         function createMemoryArray(uint size) public pure returns (bytes memory) {
@@ -388,6 +407,120 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
             return b;
         }
     }
+
+.. index:: ! array;dangling storage references
+
+Dangling References to Storage Array Elements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When working with storage arrays, you need to take care to avoid dangling references.
+A dangling reference is a reference that points to something that no longer exists or has been
+moved without updating the reference. A dangling reference can for example occur, if you store a
+reference to an array element in a local variable and then ``.pop()`` from the containing array:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.8.0 <0.9.0;
+
+    contract C {
+        uint[][] s;
+
+        function f() public {
+            // Stores a pointer to the last array element of s.
+            uint[] storage ptr = s[s.length - 1];
+            // Removes the last array element of s.
+            s.pop();
+            // Writes to the array element that is no longer within the array.
+            ptr.push(0x42);
+            // Adding a new element to ``s`` now will not add an empty array, but
+            // will result in an array of length 1 with ``0x42`` as element.
+            s.push();
+            assert(s[s.length - 1][0] == 0x42);
+        }
+    }
+
+The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no
+longer refers to a valid element of ``s``. Since the compiler assumes that unused storage
+is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage,
+so the last element of ``s`` after that ``push()`` will have length ``1`` and contain
+``0x42`` as its first element.
+
+Note that Solidity does not allow to declare references to value types in storage. These kinds
+of explicit dangling references are restricted to nested reference types. However, dangling references
+can also occur temporarily when using complex expressions in tuple assignments:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.8.0 <0.9.0;
+
+    contract C {
+        uint[] s;
+        uint[] t;
+        constructor() {
+            // Push some initial values to the storage arrays.
+            s.push(0x07);
+            t.push(0x03);
+        }
+
+        function g() internal returns (uint[] storage) {
+            s.pop();
+            return t;
+        }
+
+        function f() public returns (uint[] memory) {
+            // The following will first evaluate ``s.push()`` to a reference to a new element
+            // at index 1. Afterwards, the call to ``g`` pops this new element, resulting in
+            // the left-most tuple element to become a dangling reference. The assignment still
+            // takes place and will write outside the data area of ``s``.
+            (s.push(), g()[0]) = (0x42, 0x17);
+            // A subsequent push to ``s`` will reveal the value written by the previous
+            // statement, i.e. the last element of ``s`` at the end of this function will have
+            // the value ``0x42``.
+            s.push();
+            return s;
+        }
+    }
+
+It is always safer to only assign to storage once per statement and to avoid
+complex expressions on the left-hand-side of an assignment.
+
+You need to take particular care when dealing with references to elements of
+``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short
+to long layout in storage<bytes-and-string>`.
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.8.0 <0.9.0;
+
+    // This will report a warning
+    contract C {
+        bytes x = "012345678901234567890123456789";
+
+        function test() external returns(uint) {
+            (x.push(), x.push()) = (0x01, 0x02);
+            return x.length;
+        }
+    }
+
+Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short
+layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of
+``x``. However, the second ``x.push()`` switches the bytes array to large layout.
+Now the element that ``x.push()`` referred to is in the data area of the array while
+the reference still points at its original location, which is now a part of the length field
+and the assignment will effectively garble the length of ``x``.
+To be safe, only enlarge bytes arrays by at most one element during a single
+assignment and do not simultaneously index-access the array in the same statement.
+
+While the above describes the behaviour of dangling storage references in the
+current version of the compiler, any code with dangling references should be
+considered to have *undefined behaviour*. In particular, this means that
+any future version of the compiler may change the behaviour of code that
+involves dangling references.
+
+Be sure to avoid dangling references in your code!
 
 .. index:: ! array;slice
 
@@ -425,20 +558,20 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         /// @dev プロキシ（すなわちこのコントラクト）で管理するクライアントコントラクトのアドレス
         address client;
 
-        constructor(address _client) {
-            client = _client;
+        constructor(address client_) {
+            client = client_;
         }
 
         /// 引数のアドレスの基本的な検証を行った後、クライアントが実装する"setOwner(address)"のフォワードコール
-        function forward(bytes calldata _payload) external {
-            bytes4 sig = bytes4(_payload[:4]);
-            // 切り捨て処理のため、bytes4(_payload)も同じ処理
-            // bytes4 sig = bytes4(_payload);
+        function forward(bytes calldata payload) external {
+            bytes4 sig = bytes4(payload[:4]);
+            // 切り捨て処理のため、bytes4(payload)も同じ処理
+            // bytes4 sig = bytes4(payload);
             if (sig == bytes4(keccak256("setOwner(address)"))) {
-                address owner = abi.decode(_payload[4:], (address));
+                address owner = abi.decode(payload[4:], (address));
                 require(owner != address(0), "Address of owner cannot be zero.");
             }
-            (bool status,) = client.delegatecall(_payload);
+            (bool status,) = client.delegatecall(payload);
             require(status, "Forwarded call failed.");
         }
     }
@@ -472,11 +605,11 @@ Solidityでは、構造体の形で新しい型を定義する方法を提供し
             uint fundingGoal;
             uint numFunders;
             uint amount;
-            mapping (uint => Funder) funders;
+            mapping(uint => Funder) funders;
         }
 
         uint numCampaigns;
-        mapping (uint => Campaign) campaigns;
+        mapping(uint => Campaign) campaigns;
 
         function newCampaign(address payable beneficiary, uint goal) public returns (uint campaignID) {
             campaignID = numCampaigns++; // campaignIDは返り値です。 

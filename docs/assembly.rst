@@ -57,19 +57,19 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
     pragma solidity >=0.4.16 <0.9.0;
 
     library GetCode {
-        function at(address _addr) public view returns (bytes memory o_code) {
+        function at(address addr) public view returns (bytes memory code) {
             assembly {
                 // コードのサイズを取得します。これはアセンブリが必要です。
-                let size := extcodesize(_addr)
+                let size := extcodesize(addr)
                 // 出力バイト配列を確保します。
-                // これは、o_code = new bytes(size) を用いて，アセンブリなしで行うこともできます。
-                o_code := mload(0x40)
+                // これは、code = new bytes(size) を用いて、アセンブリなしで行うこともできます。
+                code := mload(0x40)
                 // パディングを含む新しい"memory end"です。
-                mstore(0x40, add(o_code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
+                mstore(0x40, add(code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
                 // メモリにコードサイズを格納します。
-                mstore(o_code, size)
+                mstore(code, size)
                 // 実際のコードを取得します。これはアセンブリが必要です。
-                extcodecopy(_addr, add(o_code, 0x20), 0, size)
+                extcodecopy(addr, add(code, 0x20), 0, size)
             }
         }
     }
@@ -86,45 +86,47 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
 
     library VectorSum {
         // この関数は、現在、オプティマイザが配列アクセスにおける境界チェックを除去しないため、効率が悪くなっています。
-        function sumSolidity(uint[] memory _data) public pure returns (uint sum) {
-            for (uint i = 0; i < _data.length; ++i)
-                sum += _data[i];
+        function sumSolidity(uint[] memory data) public pure returns (uint sum) {
+            for (uint i = 0; i < data.length; ++i)
+                sum += data[i];
         }
 
         // 列へのアクセスは境界内だけであることが分かっているので、チェックを回避できます。
         // 最初のスロットに配列の長さが入っているので、0x20を配列に追加する必要があります。
-        function sumAsm(uint[] memory _data) public pure returns (uint sum) {
-            for (uint i = 0; i < _data.length; ++i) {
+        function sumAsm(uint[] memory data) public pure returns (uint sum) {
+            for (uint i = 0; i < data.length; ++i) {
                 assembly {
-                    sum := add(sum, mload(add(add(_data, 0x20), mul(i, 0x20))))
+                    sum := add(sum, mload(add(add(data, 0x20), mul(i, 0x20))))
                 }
             }
         }
 
         // 上記と同じですが、コード全体をインラインアセンブリで実現します。
-        function sumPureAsm(uint[] memory _data) public pure returns (uint sum) {
+        function sumPureAsm(uint[] memory data) public pure returns (uint sum) {
             assembly {
                 // 長さ（最初の32バイト）を読み込む
-                let len := mload(_data)
+                let len := mload(data)
 
                 // 長さのフィールドをスキップする。
                 //
                 // in-placeでインクリメントできるように一時的な変数を保持する。
                 //
-                // 注: _data をインクリメントすると、このアセンブリブロックの後では _data 変数は使用できなくなります。
-                let data := add(_data, 0x20)
+                // 注: data をインクリメントすると、このアセンブリブロックの後では data 変数は使用できなくなります。
+                let dataElementLocation := add(data, 0x20)
 
                 // 上限に達するまで反復する。
                 for
-                    { let end := add(data, mul(len, 0x20)) }
-                    lt(data, end)
-                    { data := add(data, 0x20) }
+                    { let end := add(dataElementLocation, mul(len, 0x20)) }
+                    lt(dataElementLocation, end)
+                    { dataElementLocation := add(dataElementLocation, 0x20) }
                 {
-                    sum := add(sum, mload(data))
+                    sum := add(sum, mload(dataElementLocation))
                 }
             }
         }
     }
+
+.. index:: selector; of a function
 
 外部変数、外部関数、外部ライブラリへのアクセス
 ----------------------------------------------
@@ -147,22 +149,20 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 このような変数は代入することもできますが、代入はポインタを変更するだけでデータを変更するわけではないので、Solidityのメモリ管理を尊重する責任があることに注意してください。
 :ref:`Solidityの慣習 <conventions-in-solidity>` を参照してください。
 
-.. Similarly, local variables that refer to statically-sized calldata arrays or calldata structs
-.. evaluate to the address of the variable in calldata, not the value itself.
-.. The variable can also be assigned a new offset, but note that no validation to ensure that
-.. the variable will not point beyond ``calldatasize()`` is performed.
+.. Similarly, local variables that refer to statically-sized calldata arrays or calldata structs evaluate to the address of the variable in calldata, not the value itself.
+.. The variable can also be assigned a new offset, but note that no validation is performed to ensure that the variable will not point beyond ``calldatasize()``.
 
 同様に、静的なサイズのcalldata配列やcalldata構造体を参照するローカル変数は、値そのものではなく、calldata内の変数のアドレスに評価されます。
-変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを確認する検証は行われないことに注意してください。
+変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを保証するための検証は行われないことに注意してください。
 
 .. For external function pointers the address and the function selector can be
 .. accessed using ``x.address`` and ``x.selector``.
 .. The selector consists of four right-aligned bytes.
-.. Both values are can be assigned to. 
+.. Both values can be assigned to. 
 
 外部関数ポインターの場合、アドレスと関数セレクタは ``x.address`` と ``x.selector`` を使ってアクセスできます。
 セレクタは右揃えの4バイトで構成されています。
-いずれの値も代入可能です。
+どちらの値も代入可能です。
 例えば、以下のようになります。
 
 .. code-block:: solidity
@@ -281,6 +281,13 @@ Solidity 0.7.0以降、インラインアセンブリブロック内で宣言さ
 Solidityの慣習
 --------------
 
+.. _assembly-typed-variables:
+
+.. Values of Typed Variables
+
+型のある変数の値
+================
+
 .. In contrast to EVM assembly, Solidity has types which are narrower than 256 bits,
 .. e.g. ``uint24``. For efficiency, most arithmetic operations ignore the fact that
 .. types can be shorter than 256
@@ -293,6 +300,11 @@ Solidityの慣習
 EVMアセンブリとは対照的に、Solidityには、 ``uint24`` などの256ビットよりも小さい型があります。
 効率化のため、ほとんどの算術演算では、型が256ビットよりも短い可能性があるという事実は無視され、高次のビットは必要に応じて、つまり、メモリに書き込まれる直前や比較が実行される前に、クリーニングされます。
 つまり、インラインアセンブリ内でこのような変数にアクセスする場合、最初に高次ビットを手動でクリーニングする必要があるかもしれません。
+
+.. _assembly-memory-management:
+
+メモリー管理
+============
 
 .. Solidity manages memory in the following way. There is a "free memory pointer"
 .. at position ``0x40`` in memory. If you want to allocate memory, use the memory
@@ -339,10 +351,108 @@ Solidityのメモリ配列の要素は、常に32バイトの倍数を占めて�
 .. .. warning::
 
 ..     Statically-sized memory arrays do not have a length field, but it might be added later
-..     to allow better convertibility between statically- and dynamically-sized arrays, so
+..     to allow better convertibility between statically and dynamically-sized arrays; so,
 ..     do not rely on this.
 .. 
 
 .. warning::
 
     静的サイズのメモリ配列にはlengthフィールドがありませんが、静的サイズの配列と動的サイズの配列の間でより良い変換を可能にするために、後に追加されるかもしれませんので、これに頼らないようにしてください。
+
+Memory Safety
+=============
+
+Without the use of inline assembly, the compiler can rely on memory to remain in a well-defined
+state at all times. This is especially relevant for :ref:`the new code generation pipeline via Yul IR <ir-breaking-changes>`:
+this code generation path can move local variables from stack to memory to avoid stack-too-deep errors and
+perform additional memory optimizations, if it can rely on certain assumptions about memory use.
+
+While we recommend to always respect Solidity's memory model, inline assembly allows you to use memory
+in an incompatible way. Therefore, moving stack variables to memory and additional memory optimizations are,
+by default, globally disabled in the presence of any inline assembly block that contains a memory operation
+or assigns to Solidity variables in memory.
+
+However, you can specifically annotate an assembly block to indicate that it in fact respects Solidity's memory
+model as follows:
+
+.. code-block:: solidity
+
+    assembly ("memory-safe") {
+        ...
+    }
+
+In particular, a memory-safe assembly block may only access the following memory ranges:
+
+- Memory allocated by yourself using a mechanism like the ``allocate`` function described above.
+- Memory allocated by Solidity, e.g. memory within the bounds of a memory array you reference.
+- The scratch space between memory offset 0 and 64 mentioned above.
+- Temporary memory that is located *after* the value of the free memory pointer at the beginning of the assembly block,
+  i.e. memory that is "allocated" at the free memory pointer without updating the free memory pointer.
+
+Furthermore, if the assembly block assigns to Solidity variables in memory, you need to assure that accesses to
+the Solidity variables only access these memory ranges.
+
+Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block
+reverts or terminates. As an example, the following assembly snippet is not memory safe, because the value of
+``returndatasize()`` may exceed the 64 byte scratch space:
+
+.. code-block:: solidity
+
+    assembly {
+      returndatacopy(0, 0, returndatasize())
+      revert(0, returndatasize())
+    }
+
+On the other hand, the following code *is* memory safe, because memory beyond the location pointed to by the
+free memory pointer can safely be used as temporary scratch space:
+
+.. code-block:: solidity
+
+    assembly ("memory-safe") {
+      let p := mload(0x40)
+      returndatacopy(p, 0, returndatasize())
+      revert(p, returndatasize())
+    }
+
+Note that you do not need to update the free memory pointer if there is no following allocation,
+but you can only use memory starting from the current offset given by the free memory pointer.
+
+If the memory operations use a length of zero, it is also fine to just use any offset (not only if it falls into the scratch space):
+
+.. code-block:: solidity
+
+    assembly ("memory-safe") {
+      revert(0, 0)
+    }
+
+Note that not only memory operations in inline assembly itself can be memory-unsafe, but also assignments to
+Solidity variables of reference type in memory. For example the following is not memory-safe:
+
+.. code-block:: solidity
+
+    bytes memory x;
+    assembly {
+      x := 0x40
+    }
+    x[0x20] = 0x42;
+
+Inline assembly that neither involves any operations that access memory nor assigns to any Solidity variables
+in memory is automatically considered memory-safe and does not need to be annotated.
+
+.. warning::
+    It is your responsibility to make sure that the assembly actually satisfies the memory model. If you annotate
+    an assembly block as memory-safe, but violate one of the memory assumptions, this **will** lead to incorrect and
+    undefined behaviour that cannot easily be discovered by testing.
+
+In case you are developing a library that is meant to be compatible across multiple versions
+of Solidity, you can use a special comment to annotate an assembly block as memory-safe:
+
+.. code-block:: solidity
+
+    /// @solidity memory-safe-assembly
+    assembly {
+        ...
+    }
+
+Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
+backwards-compatibility with older compiler versions, prefer using the dialect string.

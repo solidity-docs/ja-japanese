@@ -292,13 +292,16 @@ Target Options
 
 - ``SLOAD`` 、 ``*CALL`` 、 ``BALANCE`` 、 ``EXT*`` 、 ``SELFDESTRUCT`` のガス代が増加しました。コンパイラーは、このような操作に対して冷たいガスコストを想定しています。これは、ガス推定とオプティマイザに関連します。
 
-.. - ``london`` (**default**)
+.. - ``london``
 
-- ``london``  ( **default** )
+- ``london``
 
 .. - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
 
 - ブロックの基本料金（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリのグローバル ``block.basefee`` または ``basefee()`` を介してアクセスできます。
+
+- ``paris`` (**default**)
+   - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -421,18 +424,28 @@ Input Description
               // Improve allocation of stack slots for variables, can free up stack slots early.
               // Activated by default if the Yul optimizer is activated.
               "stackAllocation": true,
-              // Select optimization steps to be applied.
-              // Optional, the optimizer will use the default sequence if omitted.
+              // Select optimization steps to be applied. It is also possible to modify both the
+              // optimization sequence and the clean-up sequence. Instructions for each sequence
+              // are separated with the ":" delimiter and the values are provided in the form of
+              // optimization-sequence:clean-up-sequence. For more information see
+              // "The Optimizer > Selecting Optimizations".
+              // This field is optional, and if not provided, the default sequences for both
+              // optimization and clean-up are used. If only one of the options is provivded
+              // the other will not be run.
+              // If only the delimiter ":" is provided then neither the optimization nor the clean-up
+              // sequence will be run.
+              // If set to an empty value, only the default clean-up sequence is used and
+              // no optimization steps are applied.
               "optimizerSteps": "dhfoDgvulfnTUtnIf..."
             }
           }
         },
         // Version of the EVM to compile for.
         // Affects type checking and code generation. Can be homestead,
-        // tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, istanbul or berlin
+        // tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, istanbul, berlin, london or paris
         "evmVersion": "byzantium",
         // Optional: Change compilation pipeline to go through the Yul intermediate representation.
-        // This is a highly EXPERIMENTAL feature, not to be used for production. This is false by default.
+        // This is false by default.
         "viaIR": true,
         // Optional: Debugging settings
         "debug": {
@@ -457,6 +470,9 @@ Input Description
         },
         // Metadata settings (optional)
         "metadata": {
+          // The CBOR metadata is appended at the end of the bytecode by default.
+          // Setting this to false omits the metadata from the runtime and deploy time code.
+          "appendCBOR": true,
           // Use only literal content and not URLs (false by default)
           "useLiteralContent": true,
           // Use the given hash method for the metadata hash that is appended to the bytecode.
@@ -544,18 +560,27 @@ Input Description
             "source1.sol": ["contract1"],
             "source2.sol": ["contract2", "contract3"]
           },
-          // Choose whether division and modulo operations should be replaced by
-          // multiplication with slack variables. Default is `true`.
-          // Using `false` here is recommended if you are using the CHC engine
+          // Choose how division and modulo operations should be encoded.
+          // When using `false` they are replaced by multiplication with slack
+          // variables. This is the default.
+          // Using `true` here is recommended if you are using the CHC engine
           // and not using Spacer as the Horn solver (using Eldarica, for example).
           // See the Formal Verification section for a more detailed explanation of this option.
-          "divModWithSlacks": true,
+          "divModNoSlacks": false,
           // Choose which model checker engine to use: all (default), bmc, chc, none.
           "engine": "chc",
+          // Choose whether external calls should be considered trusted in case the
+          // code of the called function is available at compile-time.
+          // For details see the SMTChecker section.
+          "extCalls": "trusted",
           // Choose which types of invariants should be reported to the user: contract, reentrancy.
           "invariants": ["contract", "reentrancy"],
+          // Choose whether to output all proved targets. The default is `false`.
+          "showProved": true,
           // Choose whether to output all unproved targets. The default is `false`.
           "showUnproved": true,
+          // Choose whether to output all unsupported language features. The default is `false`.
+          "showUnsupported": true,
           // Choose which solvers should be used, if available.
           // See the Formal Verification section for the solvers description.
           "solvers": ["cvc4", "smtlib2", "z3"],
@@ -783,269 +808,8 @@ Error Types
 .. 12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
 .. 1
 
-12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。1
-
-.. 13. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
-.. 1
-
-13. ``Warning`` : 警告であり、コンパイルを止めることはできなかったが、可能であれば対処すべきです。1
-
-.. 14. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
-
-14. ``Info`` : ユーザーが役に立つかもしれないが、危険ではなく、必ずしも対処する必要がないとコンパイラが考えている情報。
-
-.. _compiler-tools:
-
-Compiler Tools
-**************
-
-solidity-upgrade
-----------------
-
-.. ``solidity-upgrade`` can help you to semi-automatically upgrade your contracts
-.. to breaking language changes. While it does not and cannot implement all
-.. required changes for every breaking release, it still supports the ones, that
-.. would need plenty of repetitive manual adjustments otherwise.
-
-``solidity-upgrade`` は、最新の言語変更に合わせてコントラクトを半自動的にアップグレードするのに役立ちます。 ``solidity-upgrade`` は、すべての変更されたリリースに必要なすべての変更を実装するわけではありませんし、そうすることもできませんが、他の方法では多くの反復的な手動調整を必要とするようなものをサポートしています。
-
-.. .. note::
-
-..     ``solidity-upgrade`` carries out a large part of the work, but your
-..     contracts will most likely need further manual adjustments. We recommend
-..     using a version control system for your files. This helps reviewing and
-..     eventually rolling back the changes made.
-
-.. note::
-
-    ``solidity-upgrade`` は作業の大部分を行いますが、 コントラクトはさらに手動で調整する必要がある場合がほとんどです。ファイルにはバージョン管理システムを使用することをお勧めします。これにより、変更内容を確認し、最終的にはロールバックできます。
-
-.. .. warning::
-
-..     ``solidity-upgrade`` is not considered to be complete or free from bugs, so
-..     please use with care.
-
-.. warning::
-
-    ``solidity-upgrade`` は完全なものではなく、バグもないと考えられますので、注意してお使いください。
-
-How it Works
-~~~~~~~~~~~~
-
-.. You can pass (a) Solidity source file(s) to ``solidity-upgrade [files]``. If
-.. these make use of ``import`` statement which refer to files outside the
-.. current source file's directory, you need to specify directories that
-.. are allowed to read and import files from, by passing
-.. ``--allow-paths [directory]``. You can ignore missing files by passing
-.. ``--ignore-missing``.
-
-``solidity-upgrade [files]`` にはSolidityのソースファイルを渡すことができます。これらのファイルが、現在のソースファイルのディレクトリ外のファイルを参照する ``import`` ステートメントを使用する場合は、 ``--allow-paths [directory]`` を渡して、ファイルの読み込みとインポートが許可されているディレクトリを指定する必要があります。 ``--ignore-missing`` を渡すと、見つからないファイルを無視できます。
-
-.. ``solidity-upgrade`` is based on ``libsolidity`` and can parse, compile and
-.. analyse your source files, and might find applicable source upgrades in them.
-
-``solidity-upgrade`` は ``libsolidity`` をベースにしており、ソースファイルを解析、コンパイル、分析でき、その中から該当するソースアップグレードを見つけることができるかもしれません。
-
-.. Source upgrades are considered to be small textual changes to your source code.
-.. They are applied to an in-memory representation of the source files
-.. given. The corresponding source file is updated by default, but you can pass
-.. ``--dry-run`` to simulate to whole upgrade process without writing to any file.
-
-ソースアップグレードとは、ソースコードに小さな文字の変更を加えることと考えられます。ソースアップグレードは、与えられたソースファイルのメモリ内表現に適用されます。デフォルトでは、対応するソースファイルが更新されますが、 ``--dry-run``  を渡すことで、ファイルに書き込まずにアップグレード処理全体をシミュレートできます。
-
-.. The upgrade process itself has two phases. In the first phase source files are
-.. parsed, and since it is not possible to upgrade source code on that level,
-.. errors are collected and can be logged by passing ``--verbose``. No source
-.. upgrades available at this point.
-
-アップグレード処理自体は2つのフェーズで構成されています。最初のフェーズでは、ソースファイルが解析され、そのレベルではソースコードをアップグレードできないため、エラーが収集され、 ``--verbose`` を渡すことでログに残すことができます。この時点では、ソースのアップグレードはできません。
-
-.. In the second phase, all sources are compiled and all activated upgrade analysis
-.. modules are run alongside compilation. By default, all available modules are
-.. activated. Please read the documentation on
-.. :ref:`available modules <upgrade-modules>` for further details.
-
-第 2 段階では、すべてのソースがコンパイルされ、アクティベートされたすべてのアップグレード分析モジュールがコンパイルと同時に実行されます。デフォルトでは、利用可能なすべてのモジュールが起動されます。詳細については、 :ref:`available modules <upgrade-modules>` のドキュメントをお読みください。
-
-.. This can result in compilation errors that may
-.. be fixed by source upgrades. If no errors occur, no source upgrades are being
-.. reported and you're done.
-.. If errors occur and some upgrade module reported a source upgrade, the first
-.. reported one gets applied and compilation is triggered again for all given
-.. source files. The previous step is repeated as long as source upgrades are
-.. reported. If errors still occur, you can log them by passing ``--verbose``.
-.. If no errors occur, your contracts are up to date and can be compiled with
-.. the latest version of the compiler.
-
-その結果、ソースのアップグレードによって修正される可能性のあるコンパイルエラーが発生することがあります。
-エラーが発生しなければ、ソースアップグレードは報告されていないので、これで終了です。
-エラーが発生し、あるアップグレード・モジュールがソース・アップグレードを報告した場合は、最初に報告されたものが適用され、与えられたすべてのソースファイルに対して再びコンパイルが行われます。
-ソースアップグレードが報告されている限り、前のステップが繰り返されます。
-それでもエラーが発生した場合は、 ``--verbose``  を渡すことでエラーをログに記録できます。エラーが発生しなければ、コントラクトは最新の状態になっており、最新バージョンのコンパイラでコンパイルできます。
-
-.. _upgrade-modules:
-
-Available Upgrade Modules
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-+----------------------------+---------+--------------------------------------------------+
-| Module                     | Version | Description                                      |
-+============================+=========+==================================================+
-| ``constructor``            | 0.5.0   | Constructors must now be defined using the       |
-|                            |         | ``constructor`` keyword.                         |
-+----------------------------+---------+--------------------------------------------------+
-| ``visibility``             | 0.5.0   | Explicit function visibility is now mandatory,   |
-|                            |         | defaults to ``public``.                          |
-+----------------------------+---------+--------------------------------------------------+
-| ``abstract``               | 0.6.0   | The keyword ``abstract`` has to be used if a     |
-|                            |         | contract does not implement all its functions.   |
-+----------------------------+---------+--------------------------------------------------+
-| ``virtual``                | 0.6.0   | Functions without implementation outside an      |
-|                            |         | interface have to be marked ``virtual``.         |
-+----------------------------+---------+--------------------------------------------------+
-| ``override``               | 0.6.0   | When overriding a function or modifier, the new  |
-|                            |         | keyword ``override`` must be used.               |
-+----------------------------+---------+--------------------------------------------------+
-| ``dotsyntax``              | 0.7.0   | The following syntax is deprecated:              |
-|                            |         | ``f.gas(...)()``, ``f.value(...)()`` and         |
-|                            |         | ``(new C).value(...)()``. Replace these calls by |
-|                            |         | ``f{gas: ..., value: ...}()`` and                |
-|                            |         | ``(new C){value: ...}()``.                       |
-+----------------------------+---------+--------------------------------------------------+
-| ``now``                    | 0.7.0   | The ``now`` keyword is deprecated. Use           |
-|                            |         | ``block.timestamp`` instead.                     |
-+----------------------------+---------+--------------------------------------------------+
-| ``constructor-visibility`` | 0.7.0   | Removes visibility of constructors.              |
-|                            |         |                                                  |
-+----------------------------+---------+--------------------------------------------------+
-
-.. Please read :doc:`0.5.0 release notes <050-breaking-changes>`,
-.. :doc:`0.6.0 release notes <060-breaking-changes>`,
-.. :doc:`0.7.0 release notes <070-breaking-changes>` and :doc:`0.8.0 release notes <080-breaking-changes>` for further details.
-
-詳しくは :doc: `0.5.0 release notes <050-breaking-changes>` , :doc: `0.6.0 release notes <060-breaking-changes>` , :doc: `0.7.0 release notes <070-breaking-changes>` , :doc: `0.8.0 release notes <080-breaking-changes>`  をご覧ください。
-
-Synopsis
-~~~~~~~~
-
-.. code-block:: none
-
-    Usage: solidity-upgrade [options] contract.sol
-
-    Allowed options:
-        --help               Show help message and exit.
-        --version            Show version and exit.
-        --allow-paths path(s)
-                             Allow a given path for imports. A list of paths can be
-                             supplied by separating them with a comma.
-        --ignore-missing     Ignore missing files.
-        --modules module(s)  Only activate a specific upgrade module. A list of
-                             modules can be supplied by separating them with a comma.
-        --dry-run            Apply changes in-memory only and don't write to input
-                             file.
-        --verbose            Print logs, errors and changes. Shortens output of
-                             upgrade patches.
-        --unsafe             Accept *unsafe* changes.
-
-Bug Reports / Feature Requests
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. If you found a bug or if you have a feature request, please
-.. `file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ on Github.
-
-もし、バグを見つけたり、機能のリクエストがあれば、Githubで `file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ をお願いします。
-
-Example
-~~~~~~~
-
-.. Assume that you have the following contract in ``Source.sol``:
-
-``Source.sol`` で次のようなコントラクトをしているとします。
-
-.. code-block:: Solidity
-
-    pragma solidity >=0.6.0 <0.6.4;
-    // This will not compile after 0.7.0
-    // SPDX-License-Identifier: GPL-3.0
-    contract C {
-        // FIXME: remove constructor visibility and make the contract abstract
-        constructor() internal {}
-    }
-
-    contract D {
-        uint time;
-
-        function f() public payable {
-            // FIXME: change now to block.timestamp
-            time = now;
-        }
-    }
-
-    contract E {
-        D d;
-
-        // FIXME: remove constructor visibility
-        constructor() public {}
-
-        function g() public {
-            // FIXME: change .value(5) =>  {value: 5}
-            d.f.value(5)();
-        }
-    }
-
-Required Changes
-^^^^^^^^^^^^^^^^
-
-.. The above contract will not compile starting from 0.7.0. To bring the contract up to date with the
-.. current Solidity version, the following upgrade modules have to be executed:
-.. ``constructor-visibility``, ``now`` and ``dotsyntax``. Please read the documentation on
-.. :ref:`available modules <upgrade-modules>` for further details.
-
-上記のコントラクトは、0.7.0からコンパイルできなくなります。 コントラクトを現在のSolidityのバージョンに合わせるためには、以下のアップグレードモジュールを実行する必要があります。 ``constructor-visibility`` 、 ``now`` 、 ``dotsyntax`` です。詳しくは、 :ref:`available modules <upgrade-modules>` のドキュメントをご覧ください。
-
-Running the Upgrade
-^^^^^^^^^^^^^^^^^^^
-
-.. It is recommended to explicitly specify the upgrade modules by using ``--modules`` argument.
-
-``--modules`` 引数でアップグレードモジュールを明示的に指定することをお勧めします。
-
-.. code-block:: bash
-
-    solidity-upgrade --modules constructor-visibility,now,dotsyntax Source.sol
-
-.. The command above applies all changes as shown below. Please review them carefully (the pragmas will
-.. have to be updated manually.)
-
-上記のコマンドは、以下のようにすべての変更を適用します。慎重に確認してください(プラグマは手動で更新する必要があります)。
-
-.. code-block:: Solidity
-
-    // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.7.0 <0.9.0;
-    abstract contract C {
-        // FIXME: remove constructor visibility and make the contract abstract
-        constructor() {}
-    }
-
-    contract D {
-        uint time;
-
-        function f() public payable {
-            // FIXME: change now to block.timestamp
-            time = block.timestamp;
-        }
-    }
-
-    contract E {
-        D d;
-
-        // FIXME: remove constructor visibility
-        constructor() {}
-
-        function g() public {
-            // FIXME: change .value(5) =>  {value: 5}
-            d.f{value: 5}();
-        }
-    }
-
+12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。
+
+13. ``YulException``: Error during Yul Code generation - this should be reported as an issue.
+14. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
+15. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.

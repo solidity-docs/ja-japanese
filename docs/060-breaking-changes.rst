@@ -77,8 +77,9 @@ Explicitness Requirements
 ..   declare a state variable ``x``, if there is no visible state variable with
 ..   the same name in any of its bases.
 
-* 状態変数のシャドーイングが禁止されました。派生コントラクトは、そのベースのいずれかに同名の可視状態変数が存在しない場合にのみ、状態変数 ``x`` を宣言できます。
+* In inline assembly, opcodes that do not take arguments are now represented as "built-in functions" instead of standalone identifiers. So ``gas`` is now ``gas()``.
 
+* 状態変数のシャドーイングが禁止されました。派生コントラクトは、そのベースのいずれかに同名の可視状態変数が存在しない場合にのみ、状態変数 ``x`` を宣言できます。
 
 Semantic and Syntactic Changes
 ==============================
@@ -248,3 +249,6 @@ How to update your code
 .. 
 
 * オーバーライドしようとするすべての非インタフェース関数に ``virtual`` を追加します。インターフェースの外にある実装のないすべての関数に ``virtual`` を追加します。単一継承の場合は、オーバーライドするすべての関数に ``override`` を追加します。多重継承の場合は、 ``override(A, B, ..)`` を追加し、オーバーライドする関数を定義するすべてのコントラクトを括弧内に列挙します。複数のベースが同じ関数を定義している場合、継承するコントラクトは、競合するすべての関数をオーバーライドしなければなりません。
+
+* In inline assembly, add ``()`` to all opcodes that do not otherwise accept an argument.
+  For example, change ``pc`` to ``pc()``, and ``gas`` to ``gas()``.

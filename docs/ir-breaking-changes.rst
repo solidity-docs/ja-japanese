@@ -1,6 +1,8 @@
 
 .. index: ir breaking changes
 
+.. _ir-breaking-changes:
+
 *********************************
 Solidity IR-based Codegen Changes
 *********************************
@@ -17,17 +19,11 @@ Solidityは、2つの異なる方法でEVMバイトコードを生成できま�
 
 IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数をまたいだより強力な最適化パスを可能にすることを目的としています。
 
-.. Currently, the IR-based code generator is still marked experimental,
-.. but it supports all language features and has received a lot of testing,
-.. so we consider it almost ready for production use.
-
-現在、IRベースのコードジェネレータはまだ実験的とされていますが、すべての言語機能をサポートしており、多くのテストを受けているため、製品としての使用はほぼ可能だと考えています。
-
-.. You can enable it on the command line using ``--experimental-via-ir``
+.. You can enable it on the command line using ``--via-ir``
 .. or with the option ``{"viaIR": true}`` in standard-json and we
 .. encourage everyone to try it out!
 
-コマンドラインで ``--experimental-via-ir`` を使って有効にしたり、standard-jsonで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
+コマンドラインで ``--via-ir`` を使って有効にしたり、standard-jsonで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
 
 .. For several reasons, there are tiny semantic differences between the old
 .. and the IR-based code generator, mostly in areas where we would not
@@ -44,13 +40,57 @@ Semantic Only Changes
 
 このセクションでは、セマンティックのみの変更点をリストアップしています。そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
+- The order of state variable initialization has changed in case of inheritance.
+
+  The order used to be:
+
+  - All state variables are zero-initialized at the beginning.
+  - Evaluate base constructor arguments from most derived to most base contract.
+  - Initialize all state variables in the whole inheritance hierarchy from most base to most derived.
+  - Run the constructor, if present, for all contracts in the linearized hierarchy from most base to most derived.
+
+  New order:
+
+  - All state variables are zero-initialized at the beginning.
+  - Evaluate base constructor arguments from most derived to most base contract.
+  - For every contract in order from most base to most derived in the linearized hierarchy:
+
+      1. Initialize state variables.
+      2. Run the constructor (if present).
+
+  This causes differences in contracts where the initial value of a state
+  variable relies on the result of the constructor in another contract:
+
+  .. code-block:: solidity
+
+      // SPDX-License-Identifier: GPL-3.0
+      pragma solidity >=0.7.1;
+
+      contract A {
+          uint x;
+          constructor() {
+              x = 42;
+          }
+          function f() public view returns(uint256) {
+              return x;
+          }
+      }
+      contract B is A {
+          uint public y = f();
+      }
+
+  Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
+  With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
+
 .. - When storage structs are deleted, every storage slot that contains
-..   a member of the struct is set to zero entirely. Formerly, padding space
-..   was left untouched.
-..   Consequently, if the padding space within a struct is used to store data
-..   (e.g. in the context of a contract upgrade), you have to be aware that
-..   ``delete`` will now also clear the added member (while it wouldn't
-..   have been cleared in the past).
+   a member of the struct is set to zero entirely. Formerly, padding space
+   was left untouched.
+   Consequently, if the padding space within a struct is used to store data
+   (e.g. in the context of a contract upgrade), you have to be aware that
+   ``delete`` will now also clear the added member (while it wouldn't
+   have been cleared in the past).
+
+- ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。以前は、パディング・スペースはそのまま残されていました。   そのため、構造体内のパディング・スペースがデータの保存に使用されている場合（コントラクトのアップグレードなど）、 ``delete`` では追加されたメンバーもクリアされてしまうことに注意する必要があります（以前はクリアされませんでしたが）。
 
   .. code-block:: solidity
 
@@ -73,29 +113,29 @@ Semantic Only Changes
 
   We have the same behavior for implicit delete, for example when array of structs is shortened.
 
-.. - Function modifiers are implemented in a slightly different way regarding function parameters and return variables.
-..   This especially has an effect if the placeholder ``_;`` is evaluated multiple times in a modifier.
-..   In the old code generator, each function parameter and return variable has a fixed slot on the stack.
-..   If the function is run multiple times because ``_;`` is used multiple times or used in a loop, then a
-..   change to the function parameter's or return variable's value is visible in the next execution of the function.
-..   The new code generator implements modifiers using actual functions and passes function parameters on.
-..   This means that multiple evaluations of a function's body will get the same values for the parameters,
-..   and the effect on return variables is that they are reset to their default (zero) value for each
-..   execution.
+- Function modifiers are implemented in a slightly different way regarding function parameters and return variables.
+  This especially has an effect if the placeholder ``_;`` is evaluated multiple times in a modifier.
+  In the old code generator, each function parameter and return variable has a fixed slot on the stack.
+  If the function is run multiple times because ``_;`` is used multiple times or used in a loop, then a
+  change to the function parameter's or return variable's value is visible in the next execution of the function.
+  The new code generator implements modifiers using actual functions and passes function parameters on.
+  This means that multiple evaluations of a function's body will get the same values for the parameters,
+  and the effect on return variables is that they are reset to their default (zero) value for each
+  execution.
 
   .. code-block:: solidity
 
       // SPDX-License-Identifier: GPL-3.0
       pragma solidity >=0.7.0;
       contract C {
-          function f(uint _a) public pure mod() returns (uint _r) {
-              _r = _a++;
+          function f(uint a) public pure mod() returns (uint r) {
+              r = a++;
           }
           modifier mod() { _; _; }
       }
 
-  If you execute ``f(0)`` in the old code generator, it will return ``2``, while
-  it will return ``1`` when using the new code generator.
+  If you execute ``f(0)`` in the old code generator, it will return ``1``, while
+  it will return ``0`` when using the new code generator.
 
   .. code-block:: solidity
 
@@ -127,112 +167,6 @@ Semantic Only Changes
   - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before
     each ``_;`` evaluation.
 
-.. - The order of contract initialization has changed in case of inheritance.
-
-..   The order used to be:
-
-..   - All state variables are zero-initialized at the beginning.
-
-..   - Evaluate base constructor arguments from most derived to most base contract.
-
-..   - Initialize all state variables in the whole inheritance hierarchy from most base to most derived.
-
-..   - Run the constructor, if present, for all contracts in the linearized hierarchy from most base to most derived.
-
-..   New order:
-
-..   - All state variables are zero-initialized at the beginning.
-
-..   - Evaluate base constructor arguments from most derived to most base contract.
-
-..   - For every contract in order from most base to most derived in the linearized hierarchy execute:
-
-..       1. If present at declaration, initial values are assigned to state variables.
-
-..       2. Constructor, if present.
-
-- ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。以前は、パディング・スペースはそのまま残されていました。   そのため、構造体内のパディング・スペースがデータの保存に使用されている場合（コントラクトのアップグレードなど）、 ``delete`` では追加されたメンバーもクリアされてしまうことに注意する必要があります（以前はクリアされませんでしたが）。
-
-- 関数修飾子は、関数のパラメータと戻り値の変数に関して、若干異なる方法で実装されています。   これは特に、修飾子の中でプレースホルダー ``_;`` が複数回評価される場合に影響します。   古いコードジェネレータでは、各関数のパラメータとリターン変数は、スタック上に固定のスロットを持っています。    ``_;`` が複数回使用されたり、ループで使用されたりして、関数が複数回実行されると、関数のパラメータやリターン変数の値の変更が、関数の次の実行時に見えてしまいます。   新しいコードジェネレータでは、実際の関数を使って修飾子を実装し、関数パラメータを渡しています。   つまり、関数本体を複数回評価しても、パラメータには同じ値が得られ、リターン変数には、実行ごとにデフォルト（ゼロ）の値にリセットされるという効果があります。
-
-- 継承の場合、コントラクトの初期化の順番が変わりました。
-
-  以前は、このような順番でした。
-
-  - すべての状態変数は最初からゼロ初期化されています。
-
-  - ベースコンストラクタの引数を、最も派生したものから最もベースとなるものまで評価します。
-
-  - 最上位の基底部から最上位の派生部までの全継承階層において、すべての状態変数を初期化します。
-
-  - コンストラクタがある場合は、最も基本的なものから最も派生したものまで、線形化された階層のすべてのコントラクトに対して実行します。
-
-  新規注文です。
-
-  - すべての状態変数は最初からゼロ初期化されています。
-
-  - ベースコンストラクタの引数を、最も派生したものから最もベースとなるものまで評価します。
-
-  - 線形化された階層の中で、最も基本的なものから最も派生したものへと順に、すべてのコントラクトについて実行します。
-
-      1. 宣言時に存在する場合、初期値が状態変数に割り当てられます。
-
-      2. コンストラクタがある場合
-
-.. This causes differences in some contracts, for example:
-
-  .. code-block:: solidity
-
-      // SPDX-License-Identifier: GPL-3.0
-      pragma solidity >=0.7.1;
-
-      contract A {
-          uint x;
-          constructor() {
-              x = 42;
-          }
-          function f() public view returns(uint256) {
-              return x;
-          }
-      }
-      contract B is A {
-          uint public y = f();
-      }
-
-  Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
-  With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
-
-.. - Copying ``bytes`` arrays from memory to storage is implemented in a different way.
-..   The old code generator always copies full words, while the new one cuts the byte
-..   array after its end. The old behaviour can lead to dirty data being copied after
-..   the end of the array (but still in the same storage slot).
-..   This causes differences in some contracts, for example:
-
-  .. code-block:: solidity
-
-      // SPDX-License-Identifier: GPL-3.0
-      pragma solidity >=0.8.1;
-
-      contract C {
-          bytes x;
-          function f() public returns (uint _r) {
-              bytes memory m = "tmp";
-              assembly {
-                  mstore(m, 8)
-                  mstore(add(m, 32), "deadbeef15dead")
-              }
-              x = m;
-              assembly {
-                  _r := sload(x.slot)
-              }
-          }
-      }
-
-  Previously ``f()`` would return ``0x6465616462656566313564656164000000000000000000000000000000000010``
-  (it has correct length, and correct first 8 elements, but then it contains dirty data which was set via assembly).
-  Now it is returning ``0x6465616462656566000000000000000000000000000000000000000000000010`` (it has
-  correct length, and correct elements, but does not contain superfluous data).
-
   .. index:: ! evaluation order; expression
 
 .. - For the old code generator, the evaluation order of expressions is unspecified.
@@ -246,8 +180,8 @@ Semantic Only Changes
       // SPDX-License-Identifier: GPL-3.0
       pragma solidity >=0.8.1;
       contract C {
-          function preincr_u8(uint8 _a) public pure returns (uint8) {
-              return ++_a + _a;
+          function preincr_u8(uint8 a) public pure returns (uint8) {
+              return ++a + a;
           }
       }
 
@@ -268,11 +202,11 @@ Semantic Only Changes
       // SPDX-License-Identifier: GPL-3.0
       pragma solidity >=0.8.1;
       contract C {
-          function add(uint8 _a, uint8 _b) public pure returns (uint8) {
-              return _a + _b;
+          function add(uint8 a, uint8 b) public pure returns (uint8) {
+              return a + b;
           }
-          function g(uint8 _a, uint8 _b) public pure returns (uint8) {
-              return add(++_a + ++_b, _a + _b);
+          function g(uint8 a, uint8 b) public pure returns (uint8) {
+              return add(++a + ++b, a + b);
           }
       }
 
@@ -397,13 +331,13 @@ Cleanup
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.1;
     contract C {
-        function f(uint8 _a) public pure returns (uint _r1, uint _r2)
+        function f(uint8 a) public pure returns (uint r1, uint r2)
         {
-            _a = ~_a;
+            a = ~a;
             assembly {
-                _r1 := _a
+                r1 := a
             }
-            _r2 = _a;
+            r2 = a;
         }
     }
 
@@ -419,9 +353,9 @@ Cleanup
 
 - 新しいコードジェネレータです。( ``00000000000000000000000000000000000000000000000000000000000000fe`` ,  ``00000000000000000000000000000000000000000000000000000000000000fe`` )
 
-.. Note that, unlike the new code generator, the old code generator does not perform a cleanup after the bit-not assignment (``_a = ~_a``).
-.. This results in different values being assigned (within the inline assembly block) to return value ``_r1`` between the old and new code generators.
-.. However, both code generators perform a cleanup before the new value of ``_a`` is assigned to ``_r2``.
+.. Note that, unlike the new code generator, the old code generator does not perform a cleanup after the bit-not assignment (``a = ~a``).
+.. This results in different values being assigned (within the inline assembly block) to return value ``r1`` between the old and new code generators.
+.. However, both code generators perform a cleanup before the new value of ``a`` is assigned to ``r2``.
 .. 
 
-なお、新コード・ジェネレータとは異なり、旧コード・ジェネレータでは、ビット・ノットの割り当て（ ``_a = ~_a`` ）の後にクリーンアップを行わない。このため、新旧のコード・ジェネレータでは、インライン・アセンブリ・ブロック内で戻り値 ``_r1`` に割り当てられる値が異なります。しかし、どちらのコード・ジェネレータも、 ``_a`` の新しい値が ``_r2`` に割り当てられる前に、クリーンアップを実行します。
+なお、新コード・ジェネレータとは異なり、旧コード・ジェネレータでは、ビット・ノットの割り当て（ ``a = ~a`` ）の後にクリーンアップを行わない。このため、新旧のコード・ジェネレータでは、インライン・アセンブリ・ブロック内で戻り値 ``r1`` に割り当てられる値が異なります。しかし、どちらのコード・ジェネレータも、 ``a`` の新しい値が ``r2`` に割り当てられる前に、クリーンアップを実行します。

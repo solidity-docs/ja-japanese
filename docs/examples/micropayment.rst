@@ -23,7 +23,7 @@
 署名の作成
 ----------------------
 
-アリスはトランザクションに署名するためにEthereumネットワークと対話する必要はなく、プロセスは完全にオフラインです。このチュートリアルでは、他にも多くのセキュリティ上の利点があるため、 `EIP-762 <https://github.com/ethereum/EIPs/pull/712>`_ で説明した方法を用いて、 `web3.js <https://github.com/ethereum/web3.js>`_ と `MetaMask <https://metamask.io>`_ を使ってブラウザ上でメッセージを署名します。
+アリスはトランザクションに署名するためにEthereumネットワークと対話する必要はなく、プロセスは完全にオフラインです。このチュートリアルでは、他にも多くのセキュリティ上の利点があるため、 `EIP-712 <https://github.com/ethereum/EIPs/pull/712>`_ で説明した方法を用いて、 `web3.js <https://github.com/web3/web3.js>`_ と `MetaMask <https://metamask.io>`_ を使ってブラウザ上でメッセージを署名します。
 
 .. Fix typo: EIP-712
 
@@ -95,6 +95,7 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
     contract ReceiverPays {
         address owner = msg.sender;
 
@@ -192,7 +193,7 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     * スマートコントラクトのアドレス。クロスコントラクトのリプレイアタックを防ぐために使用されます。
 
-    * これまでに受信者が負担したEtherの合計額。
+    * これまでに受取人に支払われたEtherの合計額。
 
 ペイメントチャネルは、一連の送金が終わった時点で一度だけ閉じられます。このため、送信されたメッセージのうち1つだけが償還されます。これが、各メッセージが、個々のマイクロペイメントの金額ではなく、支払うべきEtherの累積合計金額を指定する理由です。受信者は当然、最新のメッセージを償還することを選択しますが、それは最も高い合計額を持つメッセージだからです。スマートコントラクトは1つのメッセージのみを尊重するため、メッセージごとのnonceはもう必要ありません。スマートコントラクトのアドレスは、あるペイメントチャネル用のメッセージが別のチャネルで使用されるのを防ぐために使用されます。
 
@@ -249,6 +250,7 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
     contract SimplePaymentChannel {
         address payable public sender;      // 支払いを送信するアカウント
         address payable public recipient;   // 支払いを受けるアカウント

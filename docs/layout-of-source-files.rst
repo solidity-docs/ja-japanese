@@ -2,7 +2,7 @@
 Solidityソースファイルのレイアウト
 **********************************
 
-ソースファイルには、任意の数の :ref:`コントラクト定義<contract_structure>` 、import_ ディレクティブ、 :ref:`pragmaディレクティブ<pragma>` と :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
+ソースファイルには、任意の数の :ref:`コントラクト定義<contract_structure>` 、import_ 、 :ref:`pragma<pragma>` 、:ref:`using for<using-for>` ディレクティブと :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
 
 .. index:: ! license, spdx
 
@@ -18,6 +18,9 @@ SPDX License Identifier
 コンパイラはライセンスが `SPDXで許可されたリスト <https://spdx.org/licenses/>`_ の一部であることを検証しませんが、供給された文字列は :ref:`bytecodeメタデータ <metadata>` に含まれます。
 
 ライセンスを指定したくない場合や、ソースコードがオープンソースでない場合は、特別な値 ``UNLICENSED`` を使用してください。
+Note that ``UNLICENSED`` (no usage allowed, not present in SPDX license list)
+is different from ``UNLICENSE`` (grants all rights to everyone).
+Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
 
 もちろん、このコメントを提供することで、各ソースファイルに特定のライセンスヘッダーを記載しなければならないとか、オリジナルの著作権者に言及しなければならないといった、ライセンスに関する他の義務から解放されるわけではありません。
 
@@ -37,7 +40,7 @@ Pragma
 
 ``pragma`` キーワードは、特定のコンパイラの機能やチェックを有効にするために使用されます。pragmaディレクティブは、常にソースファイルに局所的に適用されるため、プロジェクト全体で有効にしたい場合は、すべてのファイルにpragmaを追加する必要があります。他のファイルを :ref:`インポート<import>` した場合、そのファイルのPragmaは自動的にインポートしたファイルには適用されません。
 
-.. index:: ! pragma, version
+.. index:: ! pragma;version
 
 .. _version_pragma:
 
@@ -59,15 +62,17 @@ Pragma
   コンパイラに対して、そのバージョンがPragmaで要求されているものと一致するかどうかをチェックするように指示するだけです。
   一致しない場合、コンパイラはエラーを発行します。
 
+.. index:: ! ABI coder, ! pragma; abicoder, pragma; ABIEncoderV2
+.. _abi_coder:
+
 ABIコーダーPragma
 -----------------
 
 ``pragma abicoder v1`` または ``pragma abicoder v2`` を使用すると、ABIエンコーダおよびデコーダの2つの実装を選択できます。
 
 新しいABIコーダー（v2）は、任意にネストされた配列や構造体をエンコードおよびデコードできます。
-最適なコードを生成できない可能性があり、古いエンコーダほど多くのテストが行われていませんが、Solidity 0.6.0の時点では非実験的なものと考えられています。
-ただし、 ``pragma abicoder v2;`` を使って明示的に有効にする必要があります。
-Solidity 0.8.0からはデフォルトで有効になりますので、 ``pragma abicoder v1;`` を使って古いコーダーを選択するという選択肢もあります。
+Apart from supporting more types, it involves more extensive validation and safety checks, which may result in higher gas costs, but also heightened security.
+It is considered non-experimental as of Solidity 0.6.0 and it is enabled by default starting with Solidity 0.8.0. The old ABI coder can still be selected using ``pragma abicoder v1;``.
 
 新しいエンコーダーがサポートする型のセットは、古いエンコーダーがサポートする型の厳密なスーパーセットです。このエンコーダーを使用するコントラクトは、制限なしに使用しないコントラクトと相互作用できます。逆は、 ``abicoder v2`` ではないコントラクトが、新しいエンコーダでのみサポートされている型のデコードを必要とするような呼び出しを行わない限り可能です。コンパイラはこれを検知してエラーを出します。コントラクトで ``abicoder v2`` を有効にするだけで、このエラーは解消されます。
 
@@ -79,8 +84,7 @@ Solidity 0.8.0からはデフォルトで有効になりますので、 ``pragma
 
   Solidity 0.7.4までは、 ``pragma experimental ABIEncoderV2`` を使用してABIコーダーv2を選択できましたが、coder v1がデフォルトであるため、明示的に選択できませんでした。
 
-.. index:: ! pragma, experimental
-
+.. index:: ! pragma; experimental
 .. _experimental_pragma:
 
 実験的Pragma
@@ -88,11 +92,14 @@ Solidity 0.8.0からはデフォルトで有効になりますので、 ``pragma
 
 2つ目のPragmaは、実験的Pragmaです。これは、デフォルトではまだ有効になっていないコンパイラや言語の機能を有効にするために使用できます。現在、以下の実験的Pragmaがサポートされています。
 
+.. index:: ! pragma; ABIEncoderV2
+
 ABIEncoderV2
 ~~~~~~~~~~~~
 
 ABIコーダーv2は実験的なものではなくなったので、Solidity 0.7.4から ``pragma abicoder v2`` （上記参照）で選択できるようになりました。
 
+.. index:: ! pragma; SMTChecker
 .. _smt_checker:
 
 SMTChecker
@@ -115,7 +122,7 @@ SMTソルバーがローカルにインストールされていて、ブラウ�
 シンタックスとセマンティクス
 ----------------------------
 
-Solidityは、JavaScript（ES6以降）と同様に、コードをモジュール化するためのimport文をサポートしています。しかし、Solidityは `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_ の概念をサポートしていません。
+Solidityは、JavaScript（ES6以降）と同様に、コードをモジュール化するためのimport文をサポートしています。しかし、Solidityは `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#description>`_ の概念をサポートしていません。
 
 グローバルレベルでは、次のような形式のimport文を使用できます。
 

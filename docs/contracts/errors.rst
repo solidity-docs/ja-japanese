@@ -1,5 +1,4 @@
-.. index:: ! error, revert
-
+.. index:: ! error, revert, ! selector; of an error
 .. _errors:
 
 ******************
@@ -95,6 +94,9 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 
 同様に、 ``assert`` が失敗した場合や同様の条件の場合は、ビルトイン型の ``Panic(uint256)`` エラーで復帰します。
 
+Members of Errors
+=================
+
 .. .. note::
 
 ..     Error data should only be used to give an indication of failure, but
@@ -110,3 +112,5 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
     エラーデータは、失敗の兆候を示すためにのみ使用すべきで、コントロールフローの手段としては使用しないでください。
     その理由は、インナーコールのリバートデータは、デフォルトでは外部コールのチェーンを通じて伝搬されるからです。
     つまり、内側の呼び出しは、それを呼び出したコントラクトから来たように見えるリバートデータを「偽造」できるということです。
+
+- ``error.selector``: A ``bytes4`` value containing the error selector.

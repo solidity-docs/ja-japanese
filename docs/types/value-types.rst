@@ -4,7 +4,8 @@
 値型
 ====
 
-以下の型は、変数が常に値で渡される、つまり、関数の引数や代入で使われるときに常にコピーされることから、値型とも呼ばれます。
+The following are called value types because their variables will always be passed by value, i.e. they are always copied when they
+are used as function arguments or in assignments.
 
 .. index:: ! bool, ! true, ! false
 
@@ -200,7 +201,7 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 -  ``address payable``:  ``address`` と同じですが、メンバの ``transfer`` と ``send`` が追加されます。
 
-この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーン ``address`` はEtherを送ることができないということです。
+この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーンな ``address`` はEtherを送ることが想定されない、というものです。例えば、 ``address`` の変数に格納されたアドレスがEtherを受信できるように構築されていないスマートコントラクトである可能性があります。
 
 型変換:
 
@@ -216,6 +217,9 @@ Solidityでは、除算はゼロに向かって丸められます。
 
     ``address`` 型の変数が必要で、その変数にEtherを送ろうと思っているなら、その変数の型を ``address payable`` と宣言して、この要求を見えるようにします。
     また、この区別や変換はできるだけ早い段階で行うようにしてください。
+    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
+    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
+    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
 
 演算子:
 
@@ -224,15 +228,14 @@ Solidityでは、除算はゼロに向かって丸められます。
 .. warning::
 
     より大きなバイトサイズを使用する型、例えば ``bytes32`` などを ``address`` に変換した場合、 ``address`` は切り捨てられます。
-    変換の曖昧さを減らすために、バージョン0.4.24以降のコンパイラでは、変換時に切り捨てを明示するようになっています。
+    変換の曖昧さを減らすために、バージョン0.4.24以降のコンパイラでは、変換時に切り捨てを明示することを強制するようになっています。
     例えば、32バイトの値 ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC`` を考えてみましょう。
 
     ``address(uint160(bytes20(b)))`` を使うと ``0x111122223333444455556666777788889999aAaa`` になり、 ``address(uint160(uint256(b)))`` を使うと ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc`` になります。
 
 .. note::
 
-    ``address`` と ``address payable`` の区別は、バージョン0.5.0から導入されました。
-    また、このバージョンから、コントラクトはアドレス型から派生しませんが、receiveまたはpayableのフォールバック関数があれば、明示的に ``address`` または ``address payable`` に変換できます。
+    Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type. See :ref:`Address Literals<address_literals>`.
 
 .. _members-of-addresses:
 
@@ -334,6 +337,12 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 
     スマートコントラクトのコードでは、状態の読み書きにかかわらず、ハードコードされたガスの値に依存することは、多くの落とし穴があるので避けたほうがよいでしょう。
     また、ガスへのアクセスが将来的に変わる可能性もあります。
+
+* ``code`` and ``codehash``
+
+You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
+(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
 
 .. note::
 
@@ -438,7 +447,8 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 小数点以下の数字として解釈されます。例えば、 ``69`` は69を意味します。
 Solidityには8進数のリテラルは存在せず、先頭のゼロは無効です。
 
-小数点以下のリテラルは、片側に少なくとも1つの数字を持つ ``.`` で形成されます。  例えば、 ``1.`` 、 ``.1`` 、 ``1.3`` などです。
+Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
+Examples include ``.1`` and ``1.3`` (but not ``1.``).
 
 ``2e10`` のような科学的表記（指数表記）もサポートされています。
 仮数は小数でも構いませんが、指数は整数でなければなりません。
@@ -450,10 +460,21 @@ Solidityには8進数のリテラルは存在せず、先頭のゼロは無効�
 アンダースコアは2つの数字の間にのみ使用でき、連続したアンダースコアは1つしか使用できません。
 アンダースコアを含む数値リテラルには、追加の意味はなく、アンダースコアは無視されます。
 
-数リテラル式は、非リテラル型に変換されるまで（非リテラル式との併用や明示的な変換など）、任意の精度を保ちます。
+.. Number literal expressions retain arbitrary precision until they are converted to a non-literal type (i.e. by using them together with anything other than a number literal expression (like boolean literals) or by explicit conversion).
+
+数値リテラル式は、非リテラル型に変換されるまで（すなわち、数値リテラル式以外のもの（ブーリアンリテラルなど）と一緒に使用するか、明示的に変換することにより）、任意の精度を保持します。
 このため、数値リテラル式では、計算がオーバーフローしたり、除算が切り捨てられたりすることはありません。
 
 例えば、 ``(2**800 + 1) - 2**800`` の結果は定数 ``1`` （ ``uint8`` 型）になりますが、中間の結果はマシンのワードサイズに収まりません。さらに、 ``.5 * 8`` の結果は整数の ``4`` になります（ただし、その間には非整数が使われています）。
+
+.. warning::
+    While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
+
+    - Ternary operator (``... ? ... : ...``),
+    - Array subscript (``<array>[<index>]``).
+
+    You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256
+    directly, but in fact they are computed within the type ``uint8`` and can overflow.
 
 整数に適用できる演算子は、オペランドが整数であれば、数リテラル式にも適用できます。
 2つのうちいずれかが小数の場合、ビット演算は許可されず、指数が小数の場合、指数演算は許可されません（非有理数になってしまう可能性があるため）。
@@ -619,7 +640,7 @@ Unicodeリテラル
 
 ユーザー定義の値型は、 ``type C is V`` を使って定義されます。 ``C`` は新しく導入される型の名前で、 ``V`` は組み込みの値の型（「基礎となる型」）でなければなりません。関数 ``C.wrap`` は、基礎となる型からカスタム型への変換に使用されます。同様に、関数 ``C.unwrap`` はカスタム型から基礎型への変換に使用されます。
 
-``C`` 型には、演算子やバインドされたメンバ関数がありません。特に、演算子 ``==`` も定義されていません。他の型との間の明示的および暗黙的な変換は許されません。
+``C`` 型には、演算子や付属のメンバ関数がありません。特に、演算子 ``==`` も定義されていません。他の型との間の明示的および暗黙的な変換は許されません。
 
 このような型の値のデータ表現は、基礎となる型から継承され、基礎となる型はABIでも使用されます。
 
@@ -696,7 +717,18 @@ Unicodeリテラル
 
 それ以外の関数型間の変換はできません。
 
-``payable`` と ``non-payable`` のルールは少しわかりにくいかもしれませんが、要するにある関数が ``payable`` であれば、ゼロのEtherの支払いも受け入れるということなので、 ``non-payable`` でもあるということです。一方、 ``non-payable`` 関数は送られてきたEtherを拒否しますので、 ``non-payable`` 関数を ``payable`` 関数に変換できません。
+``payable`` と ``non-payable`` のルールは少しわかりにくいかもしれませんが、要するにある関数が ``payable`` であれば、ゼロのEtherの支払いも受け入れるということなので、 ``non-payable`` でもあるということです。
+一方、 ``non-payable`` 関数は送られてきたEtherを拒否しますので、 ``non-payable`` 関数を ``payable`` 関数に変換できません。
+To clarify, rejecting ether is more restrictive than not rejecting ether.
+This means you can override a payable function with a non-payable but not the
+other way around.
+
+Additionally, When you define a ``non-payable`` function pointer,
+the compiler does not enforce that the pointed function will actually reject ether.
+Instead, it enforces that the function pointer is never used to send ether.
+Which makes it possible to assign a ``payable`` function pointer to a ``non-payable``
+function pointer ensuring both types behave the same way, i.e, both cannot be used
+to send ether.
 
 関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
 
@@ -704,7 +736,20 @@ Unicodeリテラル
 
 現在のコントラクトのパブリック関数は、内部関数としても外部関数としても使用できることに注意してください。 ``f`` を内部関数として使用したい場合は ``f`` を、外部関数として使用したい場合は ``this.f`` を使用してください。
 
-内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
+内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。
+
+.. note::
+    External functions with ``calldata`` parameters are incompatible with external function types with ``calldata`` parameters.
+    They are compatible with the corresponding types with ``memory`` parameters instead.
+    For example, there is no function that can be pointed at by a value of type ``function (string calldata) external`` while
+    ``function (string memory) external`` can point at both ``function f(string memory) external {}`` and
+    ``function g(string calldata) external {}``.
+    This is because for both locations the arguments are passed to the function in the same way.
+    The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
+    Marking the parameters as ``calldata`` only affects the implementation of the external function and is
+    meaningless in a function pointer on the caller's side.
+
+ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
 
 メンバー:
 

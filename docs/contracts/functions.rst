@@ -22,17 +22,17 @@
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.1 <0.9.0;
 
-    function sum(uint[] memory _arr) pure returns (uint s) {
-        for (uint i = 0; i < _arr.length; i++)
-            s += _arr[i];
+    function sum(uint[] memory arr) pure returns (uint s) {
+        for (uint i = 0; i < arr.length; i++)
+            s += arr[i];
     }
 
     contract ArrayExample {
         bool found;
-        function f(uint[] memory _arr) public {
+        function f(uint[] memory arr) public {
             // This calls the free function internally.
             // The compiler will add its code to the contract.
-            uint s = sum(_arr);
+            uint s = sum(arr);
             require(s >= 10);
             found = true;
         }
@@ -40,18 +40,15 @@
 
 .. .. note::
 
-..     Functions defined outside a contract are still always executed
-..     in the context of a contract. They still have access to the variable ``this``,
-..     can call other contracts, send them Ether and destroy the contract that called them,
-..     among other things. The main difference to functions defined inside a contract
-..     is that free functions do not have direct access to storage variables and functions
-..     not in their scope.
+.. Functions defined outside a contract are still always executed in the context of a contract.
+.. They still can call other contracts, send them Ether and destroy the contract that called them, among other things.
+.. The main difference to functions defined inside a contract is that free functions do not have direct access to the variable ``this``, storage variables and functions not in their scope.
 
 .. note::
 
     コントラクトの外で定義された関数は、常にコントラクトのコンテキストで実行されます。
-    変数 ``this`` へのアクセス、他のコントラクトの呼び出し、Etherの送信、呼び出したコントラクトの破棄などが可能です。
-    コントラクトの内側で定義された関数との主な違いは、フリー関数は、そのスコープ内にないストレージ変数や関数に直接アクセスできないことです。
+    他のコントラクトを呼び出したり、Etherを送ったり、呼び出したコントラクトを破壊したりできます。
+    コントラクト内で定義された関数との主な違いは、フリー関数は変数 ``this`` やストレージ変数、自分のスコープにない関数に直接アクセスできないことです。
 
 .. _function-parameters-return-variables:
 
@@ -80,31 +77,14 @@
 
     contract Simple {
         uint sum;
-        function taker(uint _a, uint _b) public {
-            sum = _a + _b;
+        function taker(uint a, uint b) public {
+            sum = a + b;
         }
     }
 
 .. Function parameters can be used as any other local variable and they can also be assigned to.
 
 関数パラメータは、他のローカル変数と同様に使用でき、また、それらを割り当てることもできます。
-
-.. .. note::
-
-..   An :ref:`external function<external-function-calls>` cannot accept a
-..   multi-dimensional array as an input
-..   parameter. This functionality is possible if you enable the ABI coder v2
-..   by adding ``pragma abicoder v2;`` to your source file.
-
-..   An :ref:`internal function<external-function-calls>` can accept a
-..   multi-dimensional array without enabling the feature.
-
-.. note::
-
-    :ref:`外部関数<external-function-calls>` が入力パラメータとして多次元配列を受け付けることができません。
-    この機能は、ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にした場合に可能です。
-
-    :ref:`内部関数<external-function-calls>` は機能を有効にしなくても多次元配列を受け付けることができます。
 
 .. index:: return array, return string, array, string, array of strings, dynamic array, variably sized array, return struct, struct
 
@@ -127,13 +107,13 @@
     pragma solidity >=0.4.16 <0.9.0;
 
     contract Simple {
-        function arithmetic(uint _a, uint _b)
+        function arithmetic(uint a, uint b)
             public
             pure
-            returns (uint o_sum, uint o_product)
+            returns (uint sum, uint product)
         {
-            o_sum = _a + _b;
-            o_product = _a * _b;
+            sum = a + b;
+            product = a * b;
         }
     }
 
@@ -158,12 +138,12 @@
     pragma solidity >=0.4.16 <0.9.0;
 
     contract Simple {
-        function arithmetic(uint _a, uint _b)
+        function arithmetic(uint a, uint b)
             public
             pure
-            returns (uint o_sum, uint o_product)
+            returns (uint sum, uint product)
         {
-            return (_a + _b, _a * _b);
+            return (a + b, a * b);
         }
     }
 
@@ -172,19 +152,18 @@
 
 return変数を持つ関数を終了するためにearly  ``return`` を使用する場合は、return文と一緒にreturn値を指定する必要があります。
 
-.. .. note::
-
-..     You cannot return some types from non-internal functions, notably
-..     multi-dimensional dynamic arrays and structs. If you enable the
-..     ABI coder v2 by adding ``pragma abicoder v2;``
-..     to your source file then more types are available, but
-..     ``mapping`` types are still limited to inside a single contract and you
-..     cannot transfer them.
-
 .. note::
 
-    内部関数以外では、多次元の動的配列や構造体など、いくつかの型を返すことができません。
-    ソースファイルに ``pragma abicoder v2;`` を追加してABI coder v2を有効にすると、より多くの型が利用できるようになりますが、 ``mapping`` 型はまだ1つのコントラクト内に限られており、送信できません。
+    You cannot return some types from non-internal functions.
+    This includes the types listed below and any composite types that recursively contain them:
+
+    - mappings,
+    - internal function types,
+    - reference types with location set to ``storage``,
+    - multi-dimensional arrays (applies only to :ref:`ABI coder v1 <abi_coder>`),
+    - structs (applies only to :ref:`ABI coder v1 <abi_coder>`).
+
+    This restriction does not apply to library functions because of their different :ref:`internal ABI <library-selectors>`.
 
 .. _multi-return:
 
@@ -420,19 +399,14 @@ Receive Ether関数
 この関数は、引数を持つことができず、何も返すことができず、 ``external`` の可視性と ``payable`` の状態変更性を持たなければなりません。
 この関数は仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
-.. The receive function is executed on a
-.. call to the contract with empty calldata. This is the function that is executed
-.. on plain Ether transfers (e.g. via ``.send()`` or ``.transfer()``). If no such
-.. function exists, but a payable :ref:`fallback function <fallback-function>`
-.. exists, the fallback function will be called on a plain Ether transfer. If
-.. neither a receive Ether nor a payable fallback function is present, the
-.. contract cannot receive Ether through regular transactions and throws an
-.. exception.
+.. The receive function is executed on a call to the contract with empty calldata. This is the function that is executed on plain Ether transfers (e.g. via ``.send()`` or ``.transfer()``).
+.. If no such function exists, but a payable :ref:`fallback function <fallback-function> exists, the fallback function will be called on a plain Ether transfer.
+.. If neither a receive Ether nor a payable fallback function is present, the contract cannot receive Ether through a transaction that does not represent a payable function call and throws an exception.
 
 receive関数は、空のcalldataを持つコントラクトへの呼び出しで実行されます。
 これは、プレーンなEther送金（例:  ``.send()`` または ``.transfer()`` 経由）で実行される関数です。
 このような関数が存在せず、payableな :ref:`fallback関数 <fallback-function>` が存在する場合は、プレーンなEther送金時にフォールバック関数が呼び出されます。
-receive Ether関数もpayable fallback関数も存在しない場合、コントラクトは通常のトランザクションでEtherを受信できず、例外が発生します。
+receive Ether関数もpayable fallback関数も存在しない場合、コントラクトはpayableな関数呼び出しを表さないトランザクションを通じてEtherを受信できず、例外をスローします。
 
 .. In the worst case, the ``receive`` function can only rely on 2300 gas being
 .. available (for example when ``send`` or ``transfer`` is used), leaving little
@@ -454,19 +428,14 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
 
 - Etherの送信
 
-.. .. warning::
-
-..     Contracts that receive Ether directly (without a function call, i.e. using ``send`` or ``transfer``)
-..     but do not define a receive Ether function or a payable fallback function
-..     throw an exception, sending back the Ether (this was different
-..     before Solidity v0.4.0). So if you want your contract to receive Ether,
-..     you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
-..     not recommended, since it would not fail on interface confusions).
-
 .. warning::
-
-    Etherを直接受信するコントラクト（関数呼び出しなし、つまり ``send`` または ``transfer`` を使用）で、receive Ether関数またはpayable fallback関数を定義していないものは、例外をスローし、Etherを送り返します（Solidity v0.4.0以前は異なっていました）。
-    そのため、コントラクトでEtherを受信したい場合は、receive Ether関数を実装する必要があります（Etherの受信にpayable fallback関数を使用することは、インターフェースの混乱で失敗しないため、推奨されません）。
+    When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``)
+    but the receiving contract does not define a receive Ether function or a payable fallback function,
+    an exception will be thrown, sending back the Ether (this was different
+    before Solidity v0.4.0). If you want your contract to receive Ether,
+    you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
+    not recommended, since the fallback is invoked and would not fail for interface confusions
+    on the part of the sender).
 
 .. .. warning::
 
@@ -514,12 +483,12 @@ Fallback関数
 -----------------
 
 .. A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
-.. or ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)``
+.. or ``fallback (bytes calldata input) external [payable] returns (bytes memory output)``
 .. (both without the ``function`` keyword).
 .. This function must have ``external`` visibility. A fallback function can be virtual, can override
 .. and can have modifiers.
 
-コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata _input) external [payable] returns (bytes memory _output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。
+コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata input) external [payable] returns (bytes memory output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。
 この関数は ``external`` 可視性を持たなければなりません。
 フォールバック関数は、仮想的であり、オーバーライドでき、修飾子を持つことができます。
 
@@ -532,11 +501,11 @@ Fallback関数
 フォールバック関数は、他の関数が与えられた関数シグネチャに一致しない場合、またはデータが全く供給されず :ref:`receive Ether関数 <receive-ether-function>` がない場合、コントラクトへの呼び出しで実行されます。
 フォールバック関数は常にデータを受信しますが、Etherも受信するためには、 ``payable`` とマークされていなければなりません。
 
-.. If the version with parameters is used, ``_input`` will contain the full data sent to the contract
-.. (equal to ``msg.data``) and can return data in ``_output``. The returned data will not be
+.. If the version with parameters is used, ``input`` will contain the full data sent to the contract
+.. (equal to ``msg.data``) and can return data in ``output``. The returned data will not be
 .. ABI-encoded. Instead it will be returned without modifications (not even padding).
 
-パラメータ付きバージョンを使用した場合、 ``_input`` にはコントラクトに送信された完全なデータ（ ``msg.data`` に等しい）が含まれ、 ``_output`` でデータを返すことができます。返されたデータはABIエンコードされません。代わりに、修正なしで（パディングさえもしない）返されます。
+パラメータ付きバージョンを使用した場合、 ``input`` にはコントラクトに送信された完全なデータ（ ``msg.data`` に等しい）が含まれ、 ``output`` でデータを返すことができます。返されたデータはABIエンコードされません。代わりに、修正なしで（パディングさえもしない）返されます。
 
 .. In the worst case, if a payable fallback function is also used in
 .. place of a receive function, it can only rely on 2300 gas being
@@ -566,14 +535,14 @@ Fallback関数
 ..     for the function selector and then
 ..     you can use ``abi.decode`` together with the array slice syntax to
 ..     decode ABI-encoded data:
-..     ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``
+..     ``(c, d) = abi.decode(input[4:], (uint256, uint256));``
 ..     Note that this should only be used as a last resort and
 ..     proper functions should be used instead.
 
 .. note::
 
     入力データをデコードしたい場合は、最初の4バイトで関数セレクタをチェックし、 ``abi.decode`` と配列スライス構文を併用することで、ABIエンコードされたデータをデコードできます。
-    ``(c, d) = abi.decode(_input[4:], (uint256, uint256));``
+    ``(c, d) = abi.decode(input[4:], (uint256, uint256));``
     この方法は最後の手段としてのみ使用し、代わりに適切な関数を使用すべきであることに注意してください。
 
 .. code-block:: solidity
@@ -657,13 +626,13 @@ Fallback関数
     pragma solidity >=0.4.16 <0.9.0;
 
     contract A {
-        function f(uint _in) public pure returns (uint out) {
-            out = _in;
+        function f(uint value) public pure returns (uint out) {
+            out = value;
         }
 
-        function f(uint _in, bool _really) public pure returns (uint out) {
-            if (_really)
-                out = _in;
+        function f(uint value, bool really) public pure returns (uint out) {
+            if (really)
+                out = value;
         }
     }
 
@@ -680,12 +649,12 @@ Fallback関数
 
     // これはコンパイルできません
     contract A {
-        function f(B _in) public pure returns (B out) {
-            out = _in;
+        function f(B value) public pure returns (B out) {
+            out = value;
         }
 
-        function f(address _in) public pure returns (address out) {
-            out = _in;
+        function f(address value) public pure returns (address out) {
+            out = value;
         }
     }
 
@@ -723,12 +692,12 @@ Fallback関数
     pragma solidity >=0.4.16 <0.9.0;
 
     contract A {
-        function f(uint8 _in) public pure returns (uint8 out) {
-            out = _in;
+        function f(uint8 val) public pure returns (uint8 out) {
+            out = val;
         }
 
-        function f(uint256 _in) public pure returns (uint256 out) {
-            out = _in;
+        function f(uint256 val) public pure returns (uint256 out) {
+            out = val;
         }
     }
 

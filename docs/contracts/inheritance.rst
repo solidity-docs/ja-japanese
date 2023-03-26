@@ -54,6 +54,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
 
     contract Owned {
         constructor() { owner = payable(msg.sender); }
@@ -83,7 +84,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
     }
 
     // 多重継承が可能です。
-    // `owned` は `Destructible` のベースクラスでもあるが、 `owned` のインスタンスは一つしかないことに注意（C++ の仮想継承と同じ）。
+    // `Owned` は `Destructible` のベースクラスでもあるが、 `Owned` のインスタンスは一つしかないことに注意（C++ の仮想継承と同じ）。
     contract Named is Owned, Destructible {
         constructor(bytes32 name) {
             Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
@@ -130,6 +131,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -165,6 +167,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -463,8 +466,8 @@ superを使うときに呼び出される実際の関数は、型はわかって
     abstract contract A {
         uint public a;
 
-        constructor(uint _a) {
-            a = _a;
+        constructor(uint a_) {
+            a = a_;
         }
     }
 
@@ -487,7 +490,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. warning ::
     バージョン0.7.0より前のバージョンでは、コンストラクタの可視性を ``internal`` または ``public`` のいずれかに指定する必要がありました。
 
-.. index:: ! base;constructor
+.. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
 ベースコンストラクタの引数
 ===============================
@@ -507,7 +510,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 
     contract Base {
         uint x;
-        constructor(uint _x) { x = _x; }
+        constructor(uint x_) { x = x_; }
     }
 
     // 継承リストに直接指定するか...
@@ -515,14 +518,23 @@ superを使うときに呼び出される実際の関数は、型はわかって
         constructor() {}
     }
 
-    // または派生コンストラクタの"修飾子"を介して行われます。
+    // または派生コンストラクタの"修飾子"を介して行われるか、
     contract Derived2 is Base {
-        constructor(uint _y) Base(_y * _y) {}
+        constructor(uint y) Base(y * y) {}
+    }
+
+    // or declare abstract...
+    abstract contract Derived3 is Base {
+    }
+
+    // and have the next concrete derived contract initialize it.
+    contract DerivedFromDerived is Derived3 {
+        constructor() Base(10 + 10) {}
     }
 
 .. One way is directly in the inheritance list (``is Base(7)``).  The other is in
 .. the way a modifier is invoked as part of
-.. the derived constructor (``Base(_y * _y)``). The first way to
+.. the derived constructor (``Base(y * y)``). The first way to
 .. do it is more convenient if the constructor argument is a
 .. constant and defines the behaviour of the contract or
 .. describes it. The second way has to be used if the
@@ -532,15 +544,18 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. Specifying arguments in both places is an error.
 
 1つの方法は、継承リストに直接記載する方法です（ ``is Base(7)`` ）。
-もう1つは、派生したコンストラクタの一部として修飾子を呼び出す方法です（ ``Base(_y * _y)`` ）。
+もう1つは、派生したコンストラクタの一部として修飾子を呼び出す方法です（ ``Base(y * y)`` ）。
 コンストラクタの引数が定数で、コントラクトの動作を定義したり、記述したりする場合は、最初の方法が便利です。
 ベースのコンストラクタの引数が派生コントラクトの引数に依存する場合は、2 番目の方法を使用する必要があります。
 引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。両方の場所で引数を指定するとエラーになります。
 
-.. If a derived contract does not specify the arguments to all of its base
-.. contracts' constructors, it will be abstract.
-
-派生コントラクトがそのベースコントラクトのコンストラクタのすべてに引数を指定していない場合、それは抽象的なものとなります。
+If a derived contract does not specify the arguments to all of its base
+contracts' constructors, it must be declared abstract. In that case, when
+another contract derives from it, that other contract's inheritance list
+or constructor must provide the necessary parameters
+for all base classes that haven't had their parameters specified (otherwise,
+that other contract must be declared abstract as well). For example, in the above
+code snippet, see ``Derived3`` and ``DerivedFromDerived``.
 
 .. index:: ! inheritance;multiple, ! linearization, ! C3 linearization
 

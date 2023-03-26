@@ -25,15 +25,13 @@
 .. Of course, calls to internal functions
 .. use the internal calling convention, which means that all internal types
 .. can be passed and types :ref:`stored in memory <data-location>` will be passed by reference and not copied.
-.. To realize this in the EVM, code of internal library functions
-.. and all functions called from therein will at compile time be included in the calling
-.. contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
+.. To realize this in the EVM, the code of internal library functions that are called from a contract and all functions called from therein will at compile time be included in the calling contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
 
 ライブラリは、それを使用するコントラクトの暗黙のベースコントラクトと見なすことができます。
 継承階層では明示的には見えませんが、ライブラリ関数への呼び出しは、明示的なベースコントラクトの関数への呼び出しと同じように見えます（ ``L.f()`` のような修飾されたアクセスを使用）。
 もちろん、内部関数への呼び出しは内部呼び出し規約を使用します。
 つまり、すべての内部型を渡すことができ、 :ref:`メモリに保存された <data-location>` 型は参照によって渡され、コピーされません。
-EVMでこれを実現するために、内部ライブラリ関数のコードとそこから呼び出されるすべての関数は、コンパイル時に呼び出しコントラクトに含まれ、 ``DELEGATECALL`` の代わりに通常の ``JUMP`` 呼び出しが使用されます。
+EVMでこれを実現するために、コントラクトから呼び出される内部ライブラリ関数のコードとそこから呼び出されるすべての関数は、コンパイル時に呼び出し元のコントラクトに含まれ、 ``DELEGATECALL`` の代わりに通常の ``JUMP`` 呼び出しが使用されます。
 
 .. .. note::
 
@@ -150,16 +148,16 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
             r.limbs[0] = x;
         }
 
-        function add(bigint memory _a, bigint memory _b) internal pure returns (bigint memory r) {
-            r.limbs = new uint[](max(_a.limbs.length, _b.limbs.length));
+        function add(bigint memory a, bigint memory b) internal pure returns (bigint memory r) {
+            r.limbs = new uint[](max(a.limbs.length, b.limbs.length));
             uint carry = 0;
             for (uint i = 0; i < r.limbs.length; ++i) {
-                uint a = limb(_a, i);
-                uint b = limb(_b, i);
+                uint limbA = limb(a, i);
+                uint limbB = limb(b, i);
                 unchecked {
-                    r.limbs[i] = a + b + carry;
+                    r.limbs[i] = limbA + limbB + carry;
 
-                    if (a + b < a || (a + b == type(uint).max && carry > 0))
+                    if (limbA + limbB < limbA || (limbA + limbB == type(uint).max && carry > 0))
                         carry = 1;
                     else
                         carry = 0;
@@ -176,8 +174,8 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
             }
         }
 
-        function limb(bigint memory _a, uint _limb) internal pure returns (uint) {
-            return _limb < _a.limbs.length ? _a.limbs[_limb] : 0;
+        function limb(bigint memory a, uint index) internal pure returns (uint) {
+            return index < a.limbs.length ? a.limbs[index] : 0;
         }
 
         function max(uint a, uint b) private pure returns (uint) {
@@ -228,7 +226,7 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 （これらは後の段階で解除されるかもしれません）
 
 .. _library-selectors:
-.. index:: selector
+.. index:: ! selector; of a library function
 
 ライブラリの関数シグネチャと関数セレクタ
 ========================================

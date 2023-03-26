@@ -95,6 +95,9 @@
                 // 受信者は `send` が戻る前に、受信コールの一部としてこの関数を再び呼び出すことができるので、これをゼロに設定することが重要です。
                 pendingReturns[msg.sender] = 0;
 
+                // msg.sender is not of type `address payable` and must be
+                // explicitly converted using `payable(msg.sender)` in order
+                // use the member function `send()`.
                 if (!payable(msg.sender).send(amount)) {
                     // ここでコールを投げる必要はなく、ただリセットすれば良いです。
                     pendingReturns[msg.sender] = amount;

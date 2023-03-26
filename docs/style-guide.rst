@@ -8,11 +8,11 @@ Style Guide
 Introduction
 ************
 
-.. This guide is intended to provide coding conventions for writing solidity code.
+.. This guide is intended to provide coding conventions for writing Solidity code.
 .. This guide should be thought of as an evolving document that will change over
 .. time as useful conventions are found and old conventions are rendered obsolete.
 
-このガイドは、solidityのコードを書くためのコーディング規約を提供することを目的としています。このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化した文書と考えるべきです。
+このガイドは、Solidityのコードを書くためのコーディング規約を提供することを目的としています。このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化した文書と考えるべきです。
 
 .. Many projects will implement their own style guides.  In the event of
 .. conflicts, project specific style guides take precedence.
@@ -21,22 +21,22 @@ Introduction
 
 .. The structure and many of the recommendations within this style guide were
 .. taken from python's
-.. `pep8 style guide <https://www.python.org/dev/peps/pep-0008/>`_.
+.. `pep8 style guide <https://peps.python.org/pep-0008/>`_.
 
-このスタイルガイドの構造や推奨事項の多くは、pythonの `pep8 style guide <https://www.python.org/dev/peps/pep-0008/>`_ から引用されています。
+このスタイルガイドの構造や推奨事項の多くは、pythonの `pep8 style guide <https://peps.python.org/pep-0008/>`_ から引用されています。
 
 .. The goal of this guide is *not* to be the right way or the best way to write
-.. solidity code.  The goal of this guide is *consistency*.  A quote from python's
-.. `pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
+.. Solidity code.  The goal of this guide is *consistency*.  A quote from python's
+.. `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
 .. captures this concept well.
 
-このガイドの目的は、solidityのコードを書くための正しい方法や最良の方法であることではありません。  このガイドの目的は、 *一貫性* です。  pythonの `pep8 <https://www.python.org/dev/peps/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこの概念をよく表しています。
+このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法であることではありません。  このガイドの目的は、 *一貫性* です。Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこの概念をよく表しています。
 
 .. .. note::
 
 ..     A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is most important.
 
-..     But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgement. Look at other examples and decide what looks best. And don't hesitate to ask!
+..     But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don't hesitate to ask!
 
 .. note::
 
@@ -69,9 +69,9 @@ Tabs or Spaces
 Blank Lines
 ===========
 
-.. Surround top level declarations in solidity source with two blank lines.
+.. Surround top level declarations in Solidity source with two blank lines.
 
-solidity sourceのトップレベル宣言を2行の空行で囲む。
+Solidity sourceのトップレベル宣言を2行の空行で囲む。
 
 .. Yes:
 
@@ -174,10 +174,7 @@ NG:
 Maximum Line Length
 ===================
 
-.. Keeping lines under the `PEP 8 recommendation <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ to a maximum of 79 (or 99)
-.. characters helps readers easily parse the code.
-
-`PEP 8 recommendation <https://www.python.org/dev/peps/pep-0008/#maximum-line-length>`_ の下の行を最大79（または99）文字にすることで、読者がコードを容易に解析できるようになります。
+Maximum suggested line length is 120 characters.
 
 .. Wrapped lines should conform to the following guidelines.
 
@@ -255,7 +252,7 @@ OK:
 
 .. code-block:: solidity
 
-    thisIsALongNestedMapping[being][set][to_some_value] = someFunction(
+    thisIsALongNestedMapping[being][set][toSomeValue] = someFunction(
         argument1,
         argument2,
         argument3,
@@ -268,7 +265,7 @@ NG:
 
 .. code-block:: solidity
 
-    thisIsALongNestedMapping[being][set][to_some_value] = someFunction(argument1,
+    thisIsALongNestedMapping[being][set][toSomeValue] = someFunction(argument1,
                                                                        argument2,
                                                                        argument3,
                                                                        argument4);
@@ -345,6 +342,7 @@ OK:
     contract A {
         // ...
     }
+
 
     contract B is Owned {
         // ...
@@ -553,7 +551,7 @@ OK:
 
     x = 1;
     y = 2;
-    long_variable = 3;
+    longVariable = 3;
 
 .. No:
 
@@ -561,9 +559,9 @@ NG:
 
 .. code-block:: solidity
 
-    x             = 1;
-    y             = 2;
-    long_variable = 3;
+    x            = 1;
+    y            = 2;
+    longVariable = 3;
 
 .. Don't include a whitespace in the receive and fallback functions:
 
@@ -864,7 +862,7 @@ NG:
     }
 
 .. For long function declarations, it is recommended to drop each argument onto
-.. it's own line at the same indentation level as the function body.  The closing
+.. its own line at the same indentation level as the function body.  The closing
 .. parenthesis and opening bracket should be placed on their own line as well at
 .. the same indentation level as the function declaration.
 
@@ -1053,14 +1051,19 @@ OK:
         constructor(uint) {
         }
     }
+
+
     contract C {
         constructor(uint, uint) {
         }
     }
+
+
     contract D {
         constructor(uint) {
         }
     }
+
 
     contract A is B, C, D {
         uint x;
@@ -1135,7 +1138,7 @@ NG:
     function shortFunction() public { doSomething(); }
 
 .. These guidelines for function declarations are intended to improve readability.
-.. Authors should use their best judgement as this guide does not try to cover all
+.. Authors should use their best judgment as this guide does not try to cover all
 .. possible permutations for function declarations.
 
 この関数宣言のガイドラインは、読みやすさを向上させることを目的としています。このガイドラインは、関数宣言のすべての可能性を網羅するものではありませんので、執筆者は最善の判断を下す必要があります。
@@ -1250,7 +1253,7 @@ NG:
 
 .. * Operators with a higher priority than others can exclude surrounding
 ..   whitespace in order to denote precedence.  This is meant to allow for
-..   improved readability for complex statement. You should always use the same
+..   improved readability for complex statements. You should always use the same
 ..   amount of whitespace on either side of an operator:
 
 * 優先順位の高い演算子は、優先順位を示すために周囲の空白を除外できます。  これは、複雑な文の可読性を高めるためのものです。演算子の両側には、常に同じ量の空白を使用する必要があります。
@@ -1319,9 +1322,11 @@ Order of Layout
 
 3. イベント情報
 
-.. 4. Functions
+4. Errors
 
-4. 関数
+5. Modifiers
+
+6. Functions
 
 .. .. note::
 
@@ -1331,6 +1336,31 @@ Order of Layout
 .. note::
 
     イベントや状態変数での使用に近い形で型を宣言した方がわかりやすいかもしれません。
+
+Yes:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.8.4 <0.9.0;
+
+    abstract contract Math {
+        error DivideByZero();
+        function divide(int256 numerator, int256 denominator) public virtual returns (uint256);
+    }
+
+No:
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity >=0.8.4 <0.9.0;
+
+    abstract contract Math {
+        function divide(int256 numerator, int256 denominator) public virtual returns (uint256);
+        error DivideByZero();
+    }
+
 
 ******************
 Naming Conventions
@@ -1373,10 +1403,6 @@ Naming Styles
 
 * ``lowercase``
 
-.. * ``lower_case_with_underscores``
-
-* ``lower_case_with_underscores``
-
 .. * ``UPPERCASE``
 
 * ``UPPERCASE``
@@ -1392,10 +1418,6 @@ Naming Styles
 .. * ``mixedCase`` (differs from CapitalizedWords by initial lowercase character!)
 
 * ``mixedCase``  (CapitalizedWordsとの違いは、頭文字が小文字であること!)
-
-.. * ``Capitalized_Words_With_Underscores``
-
-* ``Capitalized_Words_With_Underscores``
 
 .. .. note::
 ..  When using initialisms in CapWords, capitalize all the letters of the initialisms. Thus HTTPServerError is better than HttpServerError. When using initialisms in mixedCase, capitalize all the letters of the initialisms, except keep the first one lower case if it is the beginning of the name. Thus xmlHTTPRequest is better than XMLHTTPRequest.
@@ -1454,13 +1476,13 @@ OK:
     contract Owned {
         address public owner;
 
-        constructor() {
-            owner = msg.sender;
-        }
-
         modifier onlyOwner {
             require(msg.sender == owner);
             _;
+        }
+
+        constructor() {
+            owner = msg.sender;
         }
 
         function transferOwnership(address newOwner) public onlyOwner {
@@ -1496,13 +1518,13 @@ NG:
     contract owned {
         address public owner;
 
-        constructor() {
-            owner = msg.sender;
-        }
-
         modifier onlyOwner {
             require(msg.sender == owner);
             _;
+        }
+
+        constructor() {
+            owner = msg.sender;
         }
 
         function transferOwnership(address newOwner) public onlyOwner {
@@ -1590,14 +1612,25 @@ Enumは、単純な型宣言のスタイルで、CapWordsスタイルを使用�
 Avoiding Naming Collisions
 ==========================
 
-.. * ``single_trailing_underscore_``
+* ``singleTrailingUnderscore_``
 
-* ``single_trailing_underscore_``
+This convention is suggested when the desired name collides with that of
+an existing state variable, function, built-in or otherwise reserved name.
 
-.. This convention is suggested when the desired name collides with that of a
-.. built-in or otherwise reserved name.
+Underscore Prefix for Non-external Functions and Variables
+==========================================================
 
-この規約は、希望の名前が組み込みの名前やその他の予約された名前と衝突する場合に提案されます。
+* ``_singleLeadingUnderscore``
+
+This convention is suggested for non-external functions and state variables (``private`` or ``internal``). State variables without a specified visibility are ``internal`` by default.
+
+When designing a smart contract, the public-facing API (functions that can be called by any account)
+is an important consideration.
+Leading underscores allow you to immediately recognize the intent of such functions,
+but more importantly, if you change a function from non-external to external (including ``public``)
+and rename it accordingly, this forces you to review every call site while renaming.
+This can be an important manual check against unintended external functions
+and a common source of security vulnerabilities (avoid find-replace-all tooling for this change).
 
 .. _style_guide_natspec:
 

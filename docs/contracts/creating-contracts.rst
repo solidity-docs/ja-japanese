@@ -8,7 +8,7 @@
 
 `Remix <https://remix.ethereum.org/>`_ に代表されるIDEは、UIによって作成プロセスをシームレスにします。
 
-Ethereumでプログラマティックにコントラクトを作成する方法の一つとして、JavaScript APIの `web3.js <https://github.com/ethereum/web3.js>`_ があります。
+Ethereumでプログラマティックにコントラクトを作成する方法の一つとして、JavaScript APIの `web3.js <https://github.com/web3/web3.js>`_ があります。
 これにはコントラクトの作成を容易にする `web3.eth.Contract <https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#new-contract>`_ という関数があります。
 
 コントラクトが作成されると、その :ref:`コンストラクタ <constructor>` （ ``constructor`` キーワードで宣言された関数）が一度だけ実行されます。
@@ -47,7 +47,7 @@ Ethereumでプログラマティックにコントラクトを作成する方法
         bytes32 name;
 
         // 作成者と割り当てられた名前を登録するコンストラクタです。
-        constructor(bytes32 _name) {
+        constructor(bytes32 name_) {
             // 状態変数には、その名前を通してアクセスします（`this.owner` などではない）。
             // 関数には、直接アクセスすることも、 `this.f` を介してアクセスすることもできますが、後者は関数への外部からのアクセスを提供します。
             // 特にコンストラクタでは、まだ関数が存在しないので、外部から関数にアクセスするべきではありません。
@@ -59,7 +59,7 @@ Ethereumでプログラマティックにコントラクトを作成する方法
             // 実際にそれを確認する方法はありません。
             // これは新しいコントラクトを作成するわけではありません。
             creator = TokenCreator(msg.sender);
-            name = _name;
+            name = name_;
         }
 
         function changeName(bytes32 newName) public {

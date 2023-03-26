@@ -71,7 +71,7 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
     contract Coin {
         // キーワード「public」は、他のコントラクトから変数にアクセスできます
         address public minter;
-        mapping (address => uint) public balances;
+        mapping(address => uint) public balances;
 
         // イベントは、宣言した特定のコントラクトの変更にクライアントが反応することを可能にします
         event Sent(address from, address to, uint amount);
@@ -121,7 +121,7 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 .. index:: mapping
 
-次の行の ``mapping (address => uint) public balances;`` もパブリックな状態変数を作成しますが、より複雑なデータ型です。:ref:`mapping <mapping-types>` 型は、アドレスを :ref:`unsigned integers <integers>` にマッピングします。
+次の行の ``mapping(address => uint) public balances;`` もパブリックな状態変数を作成しますが、より複雑なデータ型です。:ref:`mapping <mapping-types>` 型は、アドレスを :ref:`unsigned integers <integers>` にマッピングします。
 
 マッピングは、可能なすべてのキーが最初から存在し、バイト表現がすべてゼロである値にマッピングされるように仮想的に初期化された `ハッシュテーブル <https://en.wikipedia.org/wiki/Hash_table>`_ と見なすことができます。しかし、マッピングのすべてのキーのリストを得ることも、すべての値のリストを得ることもできません。マッピングに追加したものを記録するか、そのようなことが必要ない文脈で使用してください。あるいは、リストを保持するか、より適切なデータ型を使用することをお勧めします。
 
@@ -129,8 +129,8 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 .. code-block:: solidity
 
-    function balances(address _account) external view returns (uint) {
-        return balances[_account];
+    function balances(address account) external view returns (uint) {
+        return balances[account];
     }
 
 この関数を使って、1つのアカウントの残高を照会できます。
@@ -139,7 +139,9 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 ``event Sent(address from, address to, uint amount);`` という行は、 :ref:`"event" <events>` を宣言しており、このイベントは関数 ``send`` の最終行で発せられます。WebアプリケーションなどのEthereumクライアントは、ブロックチェーン上で発せられるこれらのイベントを、それほどコストをかけずにリッスンできます。イベントが発せられると同時に、リスナーは引数の ``from``, ``to``, ``amount`` を受け取るため、トランザクションの追跡が可能になります。
 
-このイベントをリッスンするには、次のJavaScriptコードを使用します。 `web3.js <https://github.com/ethereum/web3.js/>`_ を使って ``Coin`` のコントラクトオブジェクトを作成し、どのようなユーザーインターフェースであっても、上記で自動的に生成された ``balances`` 関数を呼び出します::
+このイベントをリッスンするには、次のJavaScriptコードを使用します。 `web3.js <https://github.com/web3/web3.js/>`_ を使って ``Coin`` のコントラクトオブジェクトを作成し、どのようなユーザーインターフェースであっても、上記で自動的に生成された ``balances`` 関数を呼び出します:
+
+.. code-block:: javascript
 
     Coin.Sent().watch({}, '', function(error, result) {
         if (!error) {
@@ -170,7 +172,7 @@ Solidityでいうコントラクトとは、Ethereumブロックチェーン上�
 
 :ref:`Errors <errors>` を使うと、条件や操作が失敗したときに呼び出し側に詳しい情報を提供できます。
 エラーは :ref:`revert statement <revert-statement>` と一緒に使用されます。
-revert 文は ``require`` 関数と同様にすべての変更を無条件に中止、復帰させますが、エラーの名前や、呼び出し側（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に提供される追加データを提供することもできるので、失敗をより簡単にデバッグしたり、対応したりできます。
+``revert`` 文は ``require`` 関数と同様にすべての変更を無条件に中止、復帰させますが、エラーの名前や、呼び出し側（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に提供される追加データを提供することもできるので、失敗をより簡単にデバッグしたり、対応したりできます。
 
 ``send`` 関数は、（すでにコインを持っている）誰でも、他の人にコインを送るために使えます。
 送金者が送金するのに十分なコインを持っていない場合は、 ``if`` の条件が true と評価されます。
@@ -212,7 +214,8 @@ revert 文は ``require`` 関数と同様にすべての変更を無条件に中
 これに対する抽象的な答えは、「気にする必要はない」というものです。世界的に認められたトランザクションの順序が選択され、対立を解決してくれます。トランザクションは「ブロック」と呼ばれるものにまとめられ、実行されて参加しているすべてのノードに分配されることになります。2つのトランザクションが互いに矛盾する場合、2番目になった方が拒否され、ブロックの一部にはなりません。
 
 これらのブロックは、時間的に直線的な配列を形成しており、これが「ブロックチェーン」という言葉の由来となっています。
-ブロックは一定の間隔でチェーンに追加され、イーサリアムの場合はおよそ17秒ごとに追加されます。
+ブロックは一定の間隔でチェーンに追加されますが、この間隔は将来変更される可能性があります。
+For the most up-to-date information, it is recommended to monitor the network, for example, on `Etherscan <https://etherscan.io/chart/blocktime>`_.
 
 「オーダー・セレクション・メカニズム」（これを「マイニング」と呼びます）の一環として、ブロックが時々戻されることがありますが、それはチェーンの「端」に限ったことです。特定のブロックの上にブロックが追加されればされるほど、そのブロックが元に戻される可能性は低くなります。つまり、あなたのトランザクションが元に戻され、さらにはブロックチェーンから削除されることもあるかもしれませんが、待てば待つほど、その可能性は低くなります。
 
@@ -271,19 +274,30 @@ Ethereumには、同じアドレス空間を共有する2種類のアカウン�
 ガス
 ========
 
-生成された各トランザクションには、一定量の **gas** が課されます。
-その目的は、トランザクションを実行するために必要な作業量を制限すると同時に、その実行に対する対価を支払うことです。EVMがトランザクションを実行している間、ガスは特定のルールに従って徐々に減っていきます。
+トランザクションの作成時に、各トランザクションには一定量の **gas** がチャージされ、トランザクションの作成者（ ``tx.origin`` ）が支払う必要があります。
+EVMがトランザクションを実行している間、ガスは特定のルールに従って徐々に減っていきます。
 
-**gas price** は、トランザクションの作成者が設定する値で、作成者は送信側の口座から ``gas_price * gas`` を前払いする必要があります。実行後にガスが残っていた場合は、同様の方法で作成者に返金されます。
+いずれかの時点でガスが使い切られると（つまりマイナスになると）、ガス切れの例外が発生し、実行が停止し、現在のコールフレームで状態に加えられたすべての変更がリバートされます。
 
-いずれかの時点でガスが使い切られると（つまりマイナスになると）、ガス切れの例外が発生し、現在のコールフレームで状態に加えられたすべての変更が元に戻ります。
+This mechanism incentivizes economical use of EVM execution time
+and also compensates EVM executors (i.e. miners / stakers) for their work.
+Since each block has a maximum amount of gas, it also limits the amount
+of work needed to validate a block.
+
+The **gas price** is a value set by the originator of the transaction, who
+has to pay ``gas_price * gas`` up front to the EVM executor.
+If some gas is left after execution, it is refunded to the transaction originator.
+In case of an exception that reverts changes, already used up gas is not refunded.
+
+Since EVM executors can choose to include a transaction or not,
+transaction senders cannot abuse the system by setting a low gas price.
 
 .. index:: ! storage, ! memory, ! stack
 
 ストレージ、メモリ、スタック
 =====================================================
 
-Ethereum Virtual Machineには、データを保存できる3つの領域「ストレージ」「メモリ」「スタック」があり、以下の段落で説明します。
+Ethereum Virtual Machineには、データを保存できる3つの領域「ストレージ」「メモリ」「スタック」があります。
 
 各アカウントには **storage** と呼ばれるデータ領域があり、関数呼び出しやトランザクション間で永続的に使用されます。
 storageは256ビットのワードを256ビットのワードにマッピングするkey-value storeです。
@@ -318,13 +332,18 @@ EVMの命令セットは、コンセンサスの問題を引き起こす可能�
 呼び出しの深さは1024までに **制限** されます。
 つまり、より複雑な操作を行う場合には、再帰的な呼び出しよりもループの方が望ましいということです。さらに、メッセージコールではガスの63/64だけを転送できるため、実際には1000よりも少し少ない深さの制限が発生します。
 
-.. index:: delegatecall, callcode, library
+.. index:: delegatecall, library
 
-Delegatecall / Callcodeとライブラリ
-=====================================
+Delegatecallとライブラリ
+========================
 
 メッセージコールには、 **delegatecall** という特別なバリエーションがあります。
-これは、ターゲットアドレスのコードが呼び出し元のコントラクトのコンテキストで実行され、 ``msg.sender`` と ``msg.value`` の値が変更されないという点を除けば、メッセージコールと同じです。
+これは、ターゲットアドレスのコードが呼び出し元のコントラクトのコンテキスト（すなわち、そのアドレス）で実行され、 ``msg.sender`` と ``msg.value`` の値が変更されないという点を除けば、メッセージコールと同じです。
+
+There exists a special variant of a message call, named **delegatecall**
+which is identical to a message call apart from the fact that
+the code at the target address is executed in the context (i.e. at the address) of the calling
+contract and ``msg.sender`` and ``msg.value`` do not change their values.
 
 これは、コントラクトが実行時に異なるアドレスからコードを動的にロードできることを意味します。ストレージ、現在のアドレス、バランスは依然として呼び出したコントラクトのものを参照しており、コードだけが呼び出されたアドレスから取得されます。
 
@@ -344,12 +363,17 @@ Create
 
 コントラクトは、特別なオペコードを使用して他のコントラクトを作成することもできます（つまり、トランザクションのように単純にゼロアドレスを呼び出すわけではありません）。これらの **createコール** と通常のメッセージコールとの唯一の違いは、ペイロードデータが実行され、その結果がコードとして保存され、呼び出し側/作成側がスタック上の新しいコントラクトのアドレスを受け取ることです。
 
-.. index:: selfdestruct, self-destruct, deactivate
+.. index:: ! selfdestruct, deactivate
 
 DeactivateとSelf-destruct
 ============================
 
 ブロックチェーンからコードを削除する唯一の方法は、そのアドレスのコントラクトが ``selfdestruct`` オペレーションを実行することです。そのアドレスに保存されている残りのEtherは、指定されたターゲットに送られ、その後、ストレージとコードがステートから削除されます。理論的にはコントラクトを削除することは良いアイデアのように聞こえますが、削除されたコントラクトに誰かがEtherを送ると、そのEtherは永遠に失われてしまうため、潜在的には危険です。
+
+.. warning::
+    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
+    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour
+    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
 .. warning::
     ``selfdestruct`` によってコントラクトが削除されたとしても、それはブロックチェーンの歴史の一部であり、おそらくほとんどのEthereumノードが保持しています。そのため、 ``selfdestruct`` を使うことは、ハードディスクからデータを削除することと同じではありません。

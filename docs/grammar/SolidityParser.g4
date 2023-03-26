@@ -11,10 +11,11 @@ options { tokenVocab=SolidityLexer; }
 sourceUnit: (
 	pragmaDirective
 	| importDirective
+	| usingDirective
 	| contractDefinition
 	| interfaceDefinition
 	| libraryDefinition
-	| functionDefinition
+	| freeFunctionDefinition
 	| constantVariableDeclaration
 	| structDefinition
 	| enumDefinition
@@ -82,7 +83,7 @@ inheritanceSpecifier: name=identifierPath arguments=callArgumentList?;
  */
 contractBodyElement:
 	constructorDefinition
-	| functionDefinition
+	| contractFunctionDefinition
 	| modifierDefinition
 	| fallbackFunctionDefinition
 	| receiveFunctionDefinition
@@ -152,12 +153,12 @@ overrideSpecifier: Override (LParen overrides+=identifierPath (Comma overrides+=
  * 関数が定義されているコンテキストによっては、さらなる制約が適用される場合があります。
  * 例えば、インターフェイスの関数は未実装、つまりボディブロックを含んではなりません。
  */
-functionDefinition
+contractFunctionDefinition
 locals[
 	boolean visibilitySet = false,
 	boolean mutabilitySet = false,
 	boolean virtualSet = false,
-	boolean overrideSpecifierSet = false
+	boolean overrideSpecifierSet = false,
 ]
 :
 	Function (identifier | Fallback | Receive)
@@ -171,6 +172,17 @@ locals[
 	 )*
 	(Returns LParen returnParameters=parameterList RParen)?
 	(Semicolon | body=block);
+
+/**
+ * フリー関数の定義。
+ */
+ freeFunctionDefinition:
+ 	Function (identifier | Fallback | Receive)
+ 	LParen (arguments=parameterList)? RParen
+ 	stateMutability?
+ 	(Returns LParen returnParameters=parameterList RParen)?
+ 	(Semicolon | body=block);
+
 /**
  * 修飾子の定義。
  * 修飾子の本体ブロック内では、アンダースコアは識別子として使用できませんが、修飾子が適用される関数本体のプレースホルダー文として使用できることに注意してください。
@@ -307,10 +319,30 @@ errorDefinition:
 	Semicolon;
 
 /**
- * ディレクティブを使用して、ライブラリ関数を型にバインドする。
- * コントラクトやライブラリの中で使えます。
+ * Operators that users are allowed to implement for some types with `using for`.
  */
-usingDirective: Using identifierPath For (Mul | typeName) Semicolon;
+userDefinableOperator:
+	BitAnd
+	| BitNot
+	| BitOr
+	| BitXor
+	| Add
+	| Div
+	| Mod
+	| Mul
+	| Sub
+	| Equal
+	| GreaterThan
+	| GreaterThanOrEqual
+	| LessThan
+	| LessThanOrEqual
+	| NotEqual;
+
+/**
+ * Using directive to attach library functions and free functions to types.
+ * Can occur within contracts and libraries and at the file level.
+ */
+usingDirective: Using (identifierPath | (LBrace identifierPath (As userDefinableOperator)? (Comma identifierPath (As userDefinableOperator)?)* RBrace)) For (Mul | typeName) Global? Semicolon;
 /**
  * 型名には、基本型、関数型、マッピング型、ユーザ定義型（コントラクトや構造体など）、配列型があります。
  */
@@ -365,6 +397,7 @@ expression:
  	| (
 		identifier
 		| literal
+		| literalWithSubDenomination
 		| elementaryTypeName[false]
 	  ) # PrimaryExpression
 ;
@@ -380,9 +413,12 @@ inlineArrayExpression: LBrack (expression ( Comma expression)* ) RBrack;
 /**
  * 通常の非キーワード識別子以外に、'from' や 'error' などのキーワードも識別子として使用することができます。
  */
-identifier: Identifier | From | Error | Revert;
+identifier: Identifier | From | Error | Revert | Global;
 
 literal: stringLiteral | numberLiteral | booleanLiteral | hexStringLiteral | unicodeStringLiteral;
+
+literalWithSubDenomination: numberLiteral SubDenomination;
+
 booleanLiteral: True | False;
 /**
  * 完全な文字列リテラルは、1つまたは複数の連続した引用符で囲まれた文字列で構成されています。
@@ -400,7 +436,8 @@ unicodeStringLiteral: UnicodeStringLiteral+;
 /**
  * 数値リテラルは10進数または16進数で、単位は任意です。
  */
-numberLiteral: (DecimalNumber | HexNumber) NumberUnit?;
+numberLiteral: DecimalNumber | HexNumber;
+
 /**
  * 波括弧で囲まれた文のブロック。独自のスコープを持ちます。
  */
@@ -468,7 +505,13 @@ revertStatement: Revert expression callArgumentList Semicolon;
  * インラインアセンブリブロックのコンテンツは、別の字句解析器（scanner/lexer）を使用します。
  * つまり、インラインアセンブリブロックの内部では、キーワードと許可された識別子のセットが異なります。
  */
-assemblyStatement: Assembly AssemblyDialect? AssemblyLBrace yulStatement* YulRBrace;
+assemblyStatement: Assembly AssemblyDialect? assemblyFlags? AssemblyLBrace yulStatement* YulRBrace;
+
+/**
+ * Assembly flags.
+ * Comma-separated list of double-quoted strings as flags.
+ */
+assemblyFlags: AssemblyBlockLParen AssemblyFlagString (AssemblyBlockComma AssemblyFlagString)* AssemblyBlockRParen;
 
 //@doc:inline
 variableDeclarationList: variableDeclarations+=variableDeclaration (Comma variableDeclarations+=variableDeclaration)*;
@@ -488,7 +531,7 @@ variableDeclarationTuple:
 variableDeclarationStatement: ((variableDeclaration (Assign expression)?) | (variableDeclarationTuple Assign expression)) Semicolon;
 expressionStatement: expression Semicolon;
 
-mappingType: Mapping LParen key=mappingKeyType DoubleArrow value=typeName RParen;
+mappingType: Mapping LParen key=mappingKeyType name=identifier? DoubleArrow value=typeName name=identifier? RParen;
 /**
  * マッピングのキーとして使用できるのは、基本型またはユーザー定義型のみです。
  */
@@ -552,7 +595,7 @@ yulFunctionDefinition:
 /**
  * インラインアセンブリ内ではドットのない識別子しか宣言できませんが、ドットを含むパスはインラインアセンブリブロックの外の宣言を参照できます。
  */
-yulPath: YulIdentifier (YulPeriod YulIdentifier)*;
+yulPath: YulIdentifier (YulPeriod (YulIdentifier | YulEVMBuiltin))*;
 /**
  * 戻り値のある関数の呼び出しは、代入や変数宣言の右辺としてのみ発生します。
  */

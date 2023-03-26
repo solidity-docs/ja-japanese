@@ -34,15 +34,15 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 ドキュメントの例
 ================
 
-.. Documentation is inserted above each ``contract``, ``interface``, ``function``, and ``event`` using the Doxygen notation format.
+.. Documentation is inserted above each ``contract``, ``interface``, ``library``, ``function``, and ``event`` using the Doxygen notation format.
 .. A ``public`` state variable is equivalent to a ``function`` for the purposes of NatSpec.
 
-ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``function`` 、 ``event`` の上に挿入されます。
+ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``library`` 、 ``function`` 、 ``event`` の上に挿入されます。
 ``public`` の状態変数は、NatSpecの目的上、 ``function`` と同等です。
 
 - Solidityでは、1行のコメントに ``///`` を、複数行のコメントに ``/**`` から始めて ``*/`` で終わるものを使えます。
 - Vyperでは、 ``"""`` を内側のコンテンツにインデントして、コメントをむき出しにして使います。
-  詳しくは `Vyperのドキュメント <https://vyper.readthedocs.io/en/latest/natspec.html>`_ を参照してください。
+  詳しくは `Vyperのドキュメント <https://docs.vyperlang.org/en/latest/natspec.html>`_ を参照してください。
 
 .. The following example shows a contract and a function using all available tags.
 
@@ -154,8 +154,6 @@ Solidityコンパイラは、SolidityソースコードからNatSpecドキュメ
 .. Specifying these dynamic expressions is outside the scope of the Solidity
 .. documentation and you may read more at `the radspec project <https://github.com/aragon/radspec>`__.
 
-これらの動的な表現を指定することは、Solidityのドキュメントの範囲外であるため、詳細は `radspecプロジェクト <https://github.com/aragon/radspec>`_ を参照してください。
-
 .. _header-inheritance:
 
 継承に関する注意事項
@@ -180,7 +178,7 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
 
 上記のコントラクトが ``ex1.sol`` として保存されていれば、以下の方法でドキュメントを作成できます。
 
-.. code::
+.. code-block:: shell
 
    solc --userdoc --devdoc ex1.sol
 
@@ -205,7 +203,7 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
 
 上記のドキュメントでは、以下のようなユーザードキュメントのJSONファイルが出力されます。
 
-.. code::
+.. code-block:: json
 
     {
       "version" : 1,
@@ -233,7 +231,7 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
 
 ユーザードキュメントファイルとは別に、開発者ドキュメントのJSONファイルも作成する必要があり、以下のような内容になります。
 
-.. code::
+.. code-block:: json
 
     {
       "version" : 1,
