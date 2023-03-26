@@ -15,7 +15,6 @@
 
 .. note::
 
-<<<<<<< HEAD
     バージョン0.4.20までは、Solidityの型システムを回避してライブラリを破壊できました。
     このバージョンから、ライブラリには状態を変更する関数を直接（つまり ``DELEGATECALL`` なしで）呼び出すことを禁止する :ref:`メカニズム<call-protection>` が含まれるようになりました。
 
@@ -26,15 +25,13 @@
 .. Of course, calls to internal functions
 .. use the internal calling convention, which means that all internal types
 .. can be passed and types :ref:`stored in memory <data-location>` will be passed by reference and not copied.
-.. To realize this in the EVM, code of internal library functions
-.. and all functions called from therein will at compile time be included in the calling
-.. contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
+.. To realize this in the EVM, the code of internal library functions that are called from a contract and all functions called from therein will at compile time be included in the calling contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
 
 ライブラリは、それを使用するコントラクトの暗黙のベースコントラクトと見なすことができます。
 継承階層では明示的には見えませんが、ライブラリ関数への呼び出しは、明示的なベースコントラクトの関数への呼び出しと同じように見えます（ ``L.f()`` のような修飾されたアクセスを使用）。
 もちろん、内部関数への呼び出しは内部呼び出し規約を使用します。
 つまり、すべての内部型を渡すことができ、 :ref:`メモリに保存された <data-location>` 型は参照によって渡され、コピーされません。
-EVMでこれを実現するために、内部ライブラリ関数のコードとそこから呼び出されるすべての関数は、コンパイル時に呼び出しコントラクトに含まれ、 ``DELEGATECALL`` の代わりに通常の ``JUMP`` 呼び出しが使用されます。
+EVMでこれを実現するために、コントラクトから呼び出される内部ライブラリ関数のコードとそこから呼び出されるすべての関数は、コンパイル時に呼び出し元のコントラクトに含まれ、 ``DELEGATECALL`` の代わりに通常の ``JUMP`` 呼び出しが使用されます。
 
 .. .. note::
 
@@ -42,19 +39,6 @@ EVMでこれを実現するために、内部ライブラリ関数のコード�
 ..     Calling a public library function with ``L.f()`` results in an external call (``DELEGATECALL``
 ..     to be precise).
 ..     In contrast, ``A.f()`` is an internal call when ``A`` is a base contract of the current contract.
-=======
-Libraries can be seen as implicit base contracts of the contracts that use them.
-They will not be explicitly visible in the inheritance hierarchy, but calls
-to library functions look just like calls to functions of explicit base
-contracts (using qualified access like ``L.f()``).
-Of course, calls to internal functions
-use the internal calling convention, which means that all internal types
-can be passed and types :ref:`stored in memory <data-location>` will be passed by reference and not copied.
-To realize this in the EVM, the code of internal library functions
-that are called from a contract
-and all functions called from therein will at compile time be included in the calling
-contract, and a regular ``JUMP`` call will be used instead of a ``DELEGATECALL``.
->>>>>>> english/develop
 
 .. note::
 
