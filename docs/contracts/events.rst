@@ -124,20 +124,10 @@ Example
             uint value
         );
 
-<<<<<<< HEAD
-        function deposit(bytes32 _id) public payable {
+        function deposit(bytes32 id) public payable {
             // イベントは `emit` を使って発行され、その後にイベント名と引数 (もしあれば) が括弧で囲まれます。
             // このような呼び出しは (深くネストされていても) JavaScript API から `Deposit` をフィルタリングすることで検出できます。
-            emit Deposit(msg.sender, _id, msg.value);
-=======
-        function deposit(bytes32 id) public payable {
-            // Events are emitted using `emit`, followed by
-            // the name of the event and the arguments
-            // (if any) in parentheses. Any such invocation
-            // (even deeply nested) can be detected from
-            // the JavaScript API by filtering for `Deposit`.
             emit Deposit(msg.sender, id, msg.value);
->>>>>>> english/develop
         }
     }
 
@@ -180,20 +170,11 @@ JavaScript APIでの使用方法は以下の通りです。
        }
     }
 
-<<<<<<< HEAD
 イベントを理解するための追加資料
 ================================
 
-- `Javascriptドキュメント <https://github.com/ethereum/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
+- `JavaScriptドキュメント <https://github.com/web3/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
 
 - `イベントの使用例 <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
 
 - `JSからイベントへのアクセス方法 <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
-=======
-Additional Resources for Understanding Events
-=============================================
-
-- `Javascript documentation <https://github.com/web3/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
-- `Example usage of events <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
-- `How to access them in js <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
->>>>>>> english/develop
