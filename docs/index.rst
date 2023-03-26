@@ -3,12 +3,8 @@ Solidity
 
 Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムです。
 
-<<<<<<< HEAD
-Solidityは、 `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。C++、Python、JavaScriptの影響を受けており、Ethereum Virtual Machine (EVM)をターゲットにして設計されています。Solidityがどの言語から影響を受けているかについては、 :doc:`言語の影響 <language-influences>` のセクションで詳しく説明しています。
-=======
-Solidity is a `curly-bracket language <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ designed to target the Ethereum Virtual Machine (EVM).
-It is influenced by C++, Python and JavaScript. You can find more details about which languages Solidity has been inspired by in the :doc:`language influences <language-influences>` section.
->>>>>>> english/develop
+Solidityは、 Ethereum Virtual Machine (EVM)をターゲットに設計されている `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。
+C++、Python、JavaScriptの影響を受けています。Solidityがどの言語から影響を受けているかについては、 :doc:`言語の影響 <language-influences>` のセクションで詳しく説明しています。
 
 Solidityは、静的型付け、継承、ライブラリ、複雑なユーザー定義型などの機能をサポートしています。
 
@@ -65,16 +61,10 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 翻訳
 ------------
 
-<<<<<<< HEAD
-このドキュメントは、コミュニティのボランティアによって、いくつかの言語に翻訳されています。これらの言語は、完全性と最新性の程度が異なります。英語版を参考にしてください。
-=======
-Community contributors help translate this documentation into several languages.
-Note that they have varying degrees of completeness and up-to-dateness. The English
-version stands as a reference.
->>>>>>> english/develop
+このドキュメントは、コミュニティのコントリビューターによって、いくつかの言語に翻訳されています。
+これらの言語は、完成度と最新度が異なります。英語版を参考にしてください。
 
-You can switch between languages by clicking on the flyout menu in the bottom-left corner
-and selecting the preferred language.
+左下のフライアウトメニューをクリックし、好みの言語を選択することで言語を切り替えることができます。
 
 * `Chinese <https://docs.soliditylang.org/zh/latest/>`_
 * `French <https://docs.soliditylang.org/fr/latest/>`_
@@ -88,22 +78,8 @@ and selecting the preferred language.
 
 .. note::
 
-<<<<<<< HEAD
-   最近、コミュニティの活動を効率化するために、GitHubの組織と翻訳のワークフローを新たに設定しました。今後のコミュニティ翻訳への貢献方法については、 `翻訳ガイド <https://github.com/solidity-docs/translation-guide>`_ をご参照ください。
-
-* `フランス語 <https://solidity-fr.readthedocs.io>`_ (翻訳中)
-* `イタリア語 <https://github.com/damianoazzolini/solidity>`_ (翻訳中)
-* `日本語 <https://solidity-jp.readthedocs.io>`_
-* `韓国語 <https://solidity-kr.readthedocs.io>`_ (翻訳中)
-* `ロシア語 <https://github.com/ethereum/wiki/wiki/%5BRussian%5D-%D0%A0%D1%83%D0%BA%D0%BE%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE-%D0%BF%D0%BE-Solidity>`_ (かなり古い)
-* `中国語（簡体字） <https://learnblockchain.cn/docs/solidity/>`_ (翻訳中)
-* `スペイン語 <https://solidity-es.readthedocs.io>`_
-* `トルコ語 <https://github.com/denizozzgur/Solidity_TR/blob/master/README.md>`_ (翻訳中)
-=======
-   We set up a GitHub organization and translation workflow to help streamline the
-   community efforts. Please refer to the translation guide in the `solidity-docs org <https://github.com/solidity-docs>`_
-   for information on how to start a new language or contribute to the community translations.
->>>>>>> english/develop
+   私たちは、コミュニティの取り組みを効率化するために、GitHubのオーガナイゼーションと翻訳ワークフローをセットアップしました。
+   新しい言語での翻訳を始めたり、コミュニティの翻訳に貢献する方法については、 `solidity-docs org <https://github.com/solidity-docs>`_ にある翻訳ガイドを参照してください。
 
 コンテンツ
 =============
