@@ -221,22 +221,15 @@ fragment EvenHexDigits: HexCharacter HexCharacter ('_'? HexCharacter HexCharacte
 fragment HexCharacter: [0-9A-Fa-f];
 
 /**
-<<<<<<< HEAD
- * 10進数リテラルは、アンダースコアで区切られた10進数の数字と、オプションで正または負の指数で構成されています。
- * 桁に小数点が含まれている場合、リテラルは固定小数点型となります。
-=======
  * Scanned but not used by any rule, i.e, disallowed.
- * solc parser considers number starting with '0', not immediately followed by '.' or 'x' as
- * octal, even if non octal digits '8' and '9' are present.
+ * solc parser considers number starting with '0', not immediately followed by '.' or 'x' as octal, even if non octal digits '8' and '9' are present.
  */
 OctalNumber: '0' DecimalDigits ('.' DecimalDigits)?;
 
 
 /**
- * A decimal number literal consists of decimal digits that may be delimited by underscores and
- * an optional positive or negative exponent.
- * If the digits contain a decimal point, the literal has fixed point type.
->>>>>>> english/develop
+ * 10進数リテラルは、アンダースコアで区切られた10進数の数字と、オプションで正または負の指数で構成されています。
+ * 桁に小数点が含まれている場合、リテラルは固定小数点型となります。
  */
 DecimalNumber: (DecimalDigits | (DecimalDigits? '.' DecimalDigits)) ([eE] '-'? DecimalDigits)?;
 //@doc:inline
@@ -244,18 +237,13 @@ fragment DecimalDigits: [0-9] ('_'? [0-9])* ;
 
 
 /**
-<<<<<<< HEAD
- * Solidityの識別子は、アルファベット、ドル記号、アンダースコアで始まる必要があり、最初の記号の後であれば数字を含むことができます。
-=======
  * This is needed to avoid successfully parsing a number followed by a string with no whitespace between.
  */
 DecimalNumberFollowedByIdentifier: DecimalNumber Identifier;
 
 
 /**
- * An identifier in solidity has to start with a letter, a dollar-sign or an underscore and
- * may additionally contain numbers after the first symbol.
->>>>>>> english/develop
+ * Solidityの識別子は、アルファベット、ドル記号、アンダースコアで始まる必要があり、最初の記号の後であれば数字を含むことができます。
  */
 Identifier: IdentifierStart IdentifierPart*;
 //@doc:inline
