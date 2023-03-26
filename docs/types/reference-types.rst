@@ -72,14 +72,10 @@
             delete x; // 配列がクリアされ、yも修正されます。
             // ストレージに新しい一時的な無名配列を作成する必要がありますが、ストレージは「静的」に割り当てられているため、次のようにするとうまくいきません。
             // y = memoryArray;
-<<<<<<< HEAD
-            // ポインターはリセットされますが、ポインターの指し示す場所がないため、この方法もうまくいきません。
-=======
             // Similarly, "delete y" is not valid, as assignments to local variables
             // referencing storage objects can only be made from existing storage objects.
             // It would "reset" the pointer, but there is no sensible location it could point to.
             // For more details see the documentation of the "delete" operator.
->>>>>>> english/develop
             // delete y;
             g(x); // gを呼び出し、xへの参照を渡します。
             h(x); // hを呼び出し、独立した一時的なコピーをメモリ上に作成します。
@@ -110,13 +106,8 @@
 
 状態変数の配列に ``public`` をマークして、Solidityに :ref:`getter <visibility-and-getters>` を作成させることが可能です。数値インデックスは、getterの必須パラメータとなります。
 
-<<<<<<< HEAD
-配列の終端を超えてアクセスすると、アサーションが失敗します。メソッド ``.push()`` と ``.push(value)`` は、配列の最後に新しい要素を追加するために使用でき、 ``.push()`` はゼロ初期化された要素を追加し、その要素への参照を返します。
-=======
-Accessing an array past its end causes a failing assertion. Methods ``.push()`` and ``.push(value)`` can be used
-to append a new element at the end of a dynamically-sized array, where ``.push()`` appends a zero-initialized element and returns
-a reference to it.
->>>>>>> english/develop
+配列の終端を超えてアクセスすると、アサーションが失敗します。
+Methods ``.push()`` and ``.push(value)`` can be used to append a new element at the end of a dynamically-sized array, where ``.push()`` appends a zero-initialized element and returns a reference to it.
 
 .. note::
     Dynamically-sized arrays can only be resized in storage.
@@ -135,26 +126,13 @@ a reference to it.
 ``bytes`` 型は ``bytes1[]`` と似ていますが、calldataとメモリにしっかりと詰め込まれています。
 ``string`` は ``bytes`` と同じですが、長さやインデックスのアクセスはできません。
 
-<<<<<<< HEAD
 Solidityには文字列操作関数はありませんが、サードパーティ製の文字列ライブラリがあります。
-また、 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` を使って2つの文字列をそのkeccak256-hashで比較したり、 ``bytes.concat(bytes(s1), bytes(s2))`` を使って2つの文字列を連結できます。
+また、 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` を使って2つの文字列をそのkeccak256-hashで比較したり、 ``string.concat(s1, s2)`` を使って2つの文字列を連結できます。
 
-``bytes1[]`` は要素間に31個のパディングバイトを追加するので、 ``bytes1[]`` よりも ``bytes`` を使用した方が安価です。
+``memory`` で ``bytes1[]`` を使うと要素間に31個のパディングバイトを追加するので、 ``bytes1[]`` よりも ``bytes`` を使用した方が安価です。
+なお、 ``storage`` では、タイトパッキングのためパディングは存在しません。 :ref:`bytesとstring <bytes-and-string>` を参照してください。
 原則として、任意の長さの生バイトデータには ``bytes`` を、任意の長さの文字列（UTF-8）データには ``string`` を使用してください。
 長さを一定のバイト数に制限できる場合は、値型 ``bytes1`` 〜 ``bytes32`` のいずれかを必ず使用してください。その方がはるかに安価です）。
-=======
-Solidity does not have string manipulation functions, but there are
-third-party string libraries. You can also compare two strings by their keccak256-hash using
-``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` and
-concatenate two strings using ``string.concat(s1, s2)``.
-
-You should use ``bytes`` over ``bytes1[]`` because it is cheaper,
-since using ``bytes1[]`` in ``memory`` adds 31 padding bytes between the elements. Note that in ``storage``, the
-padding is absent due to tight packing, see :ref:`bytes and string <bytes-and-string>`. As a general rule,
-use ``bytes`` for arbitrary-length raw byte data and ``string`` for arbitrary-length
-string (UTF-8) data. If you can limit the length to a certain number of bytes,
-always use one of the value types ``bytes1`` to ``bytes32`` because they are much cheaper.
->>>>>>> english/develop
 
 .. note::
 
@@ -166,14 +144,6 @@ always use one of the value types ``bytes1`` to ``bytes32`` because they are muc
 .. _bytes-concat:
 .. _string-concat:
 
-<<<<<<< HEAD
-``bytes.concat`` 関数
-^^^^^^^^^^^^^^^^^^^^^
-
-``bytes.concat`` を使って可変数の ``bytes`` や ``bytes1 ... bytes32`` を連結できます。
-この関数は、パディングされていない引数の内容を含む単一の ``bytes memory`` 配列を返します。
-文字列のパラメータや他の型を使いたい場合は、まず ``bytes`` や ``bytes1`` / ... / ``bytes32`` に変換する必要があります。
-=======
 The functions ``bytes.concat`` and ``string.concat``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -184,8 +154,6 @@ If you want to use parameters of other types that are not implicitly convertible
 Analogously, the ``bytes.concat`` function can concatenate an arbitrary number of ``bytes`` or ``bytes1 ... bytes32`` values.
 The function returns a single ``bytes memory`` array that contains the contents of the arguments without padding.
 If you want to use string parameters or other types that are not implicitly convertible to ``bytes``, you need to convert them to ``bytes`` or ``bytes1``/.../``bytes32`` first.
-
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -203,11 +171,7 @@ If you want to use string parameters or other types that are not implicitly conv
         }
     }
 
-<<<<<<< HEAD
-引数なしで ``bytes.concat`` を呼び出すと、空の ``bytes`` 配列が返されます。
-=======
-If you call ``string.concat`` or ``bytes.concat`` without arguments they return an empty array.
->>>>>>> english/develop
+引数なしで ``string.concat`` あるいは ``bytes.concat`` を呼び出すと、空の配列が返されます。
 
 .. index:: ! array;allocating, new
 
@@ -331,21 +295,12 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
     動的ストレージ配列と ``bytes`` （ ``string`` ではありません）には、 ``push()`` というメンバ関数があり、配列の最後にゼロ初期化された要素を追加するのに使用できます。
     この関数は、要素への参照を返すので、 ``x.push().t = 2`` や ``x.push() = b`` のように使用できます。
 **push(x)**:
-<<<<<<< HEAD
     動的ストレージ配列と ``bytes``（ ``string`` ではありません）には、 ``push(x)`` というメンバ関数があり、配列の最後に与えられた要素を追加するのに使用できます。
     この関数は何も返しません。 
-**pop**:
-    動的ストレージ配列と ``bytes`` （ ``string`` ではありません）には ``pop`` というメンバ関数があり、配列の最後から要素を削除するのに使用できます。
-    この関数は、削除された要素に対して :ref:`delete<delete>`  を暗黙的に呼び出します。
-=======
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member function
-     called ``push(x)`` that you can use to append a given element at the end of the array.
-     The function returns nothing.
 **pop()**:
-     Dynamic storage arrays and ``bytes`` (not ``string``) have a member
-     function called ``pop()`` that you can use to remove an element from the
-     end of the array. This also implicitly calls :ref:`delete<delete>` on the removed element. The function returns nothing.
->>>>>>> english/develop
+    動的ストレージ配列と ``bytes`` （ ``string`` ではありません）には ``pop()`` というメンバ関数があり、配列の最後から要素を削除するのに使用できます。
+    この関数は、削除された要素に対して :ref:`delete<delete>`  を暗黙的に呼び出します。
+    この関数は何も返しません。
 
 .. note::
 
@@ -368,34 +323,17 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
     pragma solidity >=0.6.0 <0.9.0;
 
     contract ArrayContract {
-<<<<<<< HEAD
-        uint[2**20] m_aLotOfIntegers;
-        // 以下は動的配列のペアではなく、ペアの動的配列（つまり長さ2の固定サイズ配列のペア）であることに注意してください。
-        // T[]はT自体が配列であっても、常にTの動的配列となります。
-        // すべての状態変数のデータロケーションはストレージです。
-        bool[2][] m_pairsOfFlags;
-=======
         uint[2**20] aLotOfIntegers;
-        // Note that the following is not a pair of dynamic arrays but a
-        // dynamic array of pairs (i.e. of fixed size arrays of length two).
-        // In Solidity, T[k] and T[] are always arrays with elements of type T,
-        // even if T itself is an array.
-        // Because of that, bool[2][] is a dynamic array of elements
-        // that are bool[2]. This is different from other languages, like C.
-        // Data location for all state variables is storage.
+        // 以下は動的配列のペアではなく、ペアの動的配列（つまり長さ2の固定サイズ配列のペア）であることに注意してください。
+        // In Solidity, T[k] and T[] are always arrays with elements of type T, even if T itself is an array.
+        // Because of that, bool[2][] is a dynamic array of elements that are bool[2]. This is different from other languages, like C.
+        // すべての状態変数のデータロケーションはストレージです。
         bool[2][] pairsOfFlags;
->>>>>>> english/develop
 
         // newPairsはメモリに格納されます - パブリックコントラクト関数の引数として唯一の選択肢です。
         function setAllFlagPairs(bool[2][] memory newPairs) public {
-<<<<<<< HEAD
-            // ストレージ配列への代入は、 ``newPairs`` のコピーを実行し、完全な配列 ``m_pairsOfFlags`` を置き換えます。
-            m_pairsOfFlags = newPairs;
-=======
-            // assignment to a storage array performs a copy of ``newPairs`` and
-            // replaces the complete array ``pairsOfFlags``.
+            // ストレージ配列への代入は、 ``newPairs`` のコピーを実行し、完全な配列 ``pairsOfFlags`` を置き換えます。
             pairsOfFlags = newPairs;
->>>>>>> english/develop
         }
 
         struct StructType {
@@ -415,66 +353,35 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
 
         function setFlagPair(uint index, bool flagA, bool flagB) public {
-<<<<<<< HEAD
             // 存在しないインデックスにアクセスすると、例外が発生します。
-            m_pairsOfFlags[index][0] = flagA;
-            m_pairsOfFlags[index][1] = flagB;
-        }
-
-        function changeFlagArraySize(uint newSize) public {
-            // 配列の長さを変更するには、push と pop を使用するのが唯一の方法です。
-            if (newSize < m_pairsOfFlags.length) {
-                while (m_pairsOfFlags.length > newSize)
-                    m_pairsOfFlags.pop();
-            } else if (newSize > m_pairsOfFlags.length) {
-                while (m_pairsOfFlags.length < newSize)
-                    m_pairsOfFlags.push();
-=======
-            // access to a non-existing index will throw an exception
             pairsOfFlags[index][0] = flagA;
             pairsOfFlags[index][1] = flagB;
         }
 
         function changeFlagArraySize(uint newSize) public {
-            // using push and pop is the only way to change the
-            // length of an array
+            // 配列の長さを変更するには、push と pop を使用するのが唯一の方法です。
             if (newSize < pairsOfFlags.length) {
                 while (pairsOfFlags.length > newSize)
                     pairsOfFlags.pop();
             } else if (newSize > pairsOfFlags.length) {
                 while (pairsOfFlags.length < newSize)
                     pairsOfFlags.push();
->>>>>>> english/develop
             }
         }
 
         function clear() public {
-<<<<<<< HEAD
             // これらは、配列を完全にクリアします。
-            delete m_pairsOfFlags;
-            delete m_aLotOfIntegers;
-            // これも同じ効果です。
-            m_pairsOfFlags = new bool[2][](0);
-=======
-            // these clear the arrays completely
             delete pairsOfFlags;
             delete aLotOfIntegers;
-            // identical effect here
+            // これも同じ効果です。
             pairsOfFlags = new bool[2][](0);
->>>>>>> english/develop
         }
 
         bytes byteData;
 
         function byteArrays(bytes memory data) public {
-<<<<<<< HEAD
             // バイト配列（"bytes"）はパディングなしで格納されるため異なりますが、"uint8[]"と同じように扱うことができます。
-            m_byteData = data;
-=======
-            // byte arrays ("bytes") are different as they are stored without padding,
-            // but can be treated identical to "uint8[]"
             byteData = data;
->>>>>>> english/develop
             for (uint i = 0; i < 7; i++)
                 byteData.push();
             byteData[3] = 0x08;
@@ -655,20 +562,11 @@ Be sure to avoid dangling references in your code!
             client = client_;
         }
 
-<<<<<<< HEAD
         /// 引数のアドレスの基本的な検証を行った後、クライアントが実装する"setOwner(address)"のフォワードコール
-        function forward(bytes calldata _payload) external {
-            bytes4 sig = bytes4(_payload[:4]);
-            // 切り捨て処理のため、bytes4(_payload)も同じ処理
-            // bytes4 sig = bytes4(_payload);
-=======
-        /// Forward call to "setOwner(address)" that is implemented by client
-        /// after doing basic validation on the address argument.
         function forward(bytes calldata payload) external {
             bytes4 sig = bytes4(payload[:4]);
-            // Due to truncating behaviour, bytes4(payload) performs identically.
+            // 切り捨て処理のため、bytes4(payload)も同じ処理
             // bytes4 sig = bytes4(payload);
->>>>>>> english/develop
             if (sig == bytes4(keccak256("setOwner(address)"))) {
                 address owner = abi.decode(payload[4:], (address));
                 require(owner != address(0), "Address of owner cannot be zero.");
