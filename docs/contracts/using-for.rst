@@ -6,32 +6,11 @@
 Using For
 *********
 
-<<<<<<< HEAD
-``using A for B;`` ディレクティブは、コントラクトの文脈において、（ライブラリ ``A`` の）ライブラリ関数を任意の型（ ``B`` ）にアタッチするために使用できます。
-これらの関数は、呼び出されたオブジェクトを最初のパラメータとして受け取ります（Pythonの ``self`` 変数のようなものです）。
+``using A for B`` ディレクティブは、コントラクトの文脈において、関数（ ``A`` ）を演算子としてユーザー定義の値型にに、あるいはメンバー関数として任意の型（ ``B`` ）にアタッチするために使用することができます。
+そのメンバー関数は、呼び出されたオブジェクトを最初のパラメータとして受け取ります（Pythonの ``self`` 変数のようなものです）。
+演算子関数は、オペランドをパラメータとして受け取ります。
 
-``using A for *;`` の効果は、ライブラリ ``A`` の関数が *あらゆる* 型に付けられることです。
-
-どちらの場合も、最初のパラメータの型がオブジェクトの型と一致しないものも含めて、ライブラリの *すべての* 関数がアタッチされます。
-関数が呼び出された時点で型がチェックされ、関数のオーバーロードの解決が行われます。
-
-``using A for B;`` ディレクティブは、現在のコントラクト（そのすべての関数を含む）の中でのみ有効であり、使用されているコントラクトの外では何の影響も受けません。
-また、コントラクトの内部でのみ使用でき、コントラクトのどの関数の中でも使用できません。
-
-.. Let us rewrite the set example from the
-.. :ref:`libraries` in this way:
-
-:ref:`libraries` のセット例をこのように書き換えてみましょう。
-=======
-The directive ``using A for B`` can be used to attach
-functions (``A``) as operators to user-defined value types
-or as member functions to any type (``B``).
-The member functions receive the object they are called on
-as their first parameter (like the ``self`` variable in Python).
-The operator functions receive operands as parameters.
-
-It is valid either at file level or inside a contract,
-at contract level.
+It is valid either at file level or inside a contract, at contract level.
 
 The first part, ``A``, can be one of:
 
@@ -120,17 +99,12 @@ scope of the using statement.
 Let us rewrite the set example from the
 :ref:`libraries` section in this way, using file-level functions
 instead of library functions.
->>>>>>> english/develop
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.13;
 
-<<<<<<< HEAD
-    // これは前と同じコードで、コメントがないだけです。
-=======
->>>>>>> english/develop
     struct Data { mapping(uint => bool) flags; }
     // Now we attach functions to the type.
     // The attached functions can be used throughout the rest of the module.
@@ -141,28 +115,6 @@ instead of library functions.
     //     for Flags.Data;
     using {insert, remove, contains} for Data;
 
-<<<<<<< HEAD
-    library Set {
-        function insert(Data storage self, uint value)
-            public
-            returns (bool)
-        {
-            if (self.flags[value])
-                return false; // すでに存在する
-            self.flags[value] = true;
-            return true;
-        }
-
-        function remove(Data storage self, uint value)
-            public
-            returns (bool)
-        {
-            if (!self.flags[value])
-                return false; // 存在しない
-            self.flags[value] = false;
-            return true;
-        }
-=======
     function insert(Data storage self, uint value)
         returns (bool)
     {
@@ -180,7 +132,6 @@ instead of library functions.
         self.flags[value] = false;
         return true;
     }
->>>>>>> english/develop
 
     function contains(Data storage self, uint value)
         view
@@ -190,10 +141,6 @@ instead of library functions.
     }
 
     contract C {
-<<<<<<< HEAD
-        using Set for Data; // ここが重要な変更点
-=======
->>>>>>> english/develop
         Data knownValues;
 
         function register(uint value) public {
@@ -203,12 +150,8 @@ instead of library functions.
         }
     }
 
-<<<<<<< HEAD
-また、そのようにして基本型（値型）を拡張することも可能です。
-=======
-It is also possible to extend built-in types in that way.
-In this example, we will use a library.
->>>>>>> english/develop
+また、そのようにしてビルトイン型（値型）を拡張することも可能です。
+この例では、ライブラリを使用します。
 
 .. code-block:: solidity
 
@@ -235,15 +178,9 @@ In this example, we will use a library.
             data.push(value);
         }
 
-<<<<<<< HEAD
-        function replace(uint _old, uint _new) public {
-            // これは、ライブラリ関数呼び出しを実行します
-            uint index = data.indexOf(_old);
-=======
         function replace(uint from, uint to) public {
-            // This performs the library function call
+            // これは、ライブラリ関数呼び出しを実行します
             uint index = data.indexOf(from);
->>>>>>> english/develop
             if (index == type(uint).max)
                 data.push(to);
             else
@@ -251,9 +188,8 @@ In this example, we will use a library.
         }
     }
 
-<<<<<<< HEAD
 .. Note that all external library calls are actual EVM function calls. This means that
-.. if you pass memory or value types, a copy will be performed, even of the
+.. if you pass memory or value types, a copy will be performed, even in case of the
 .. ``self`` variable. The only situation where no copy will be performed
 .. is when storage reference variables are used or when internal library
 .. functions are called.
@@ -262,12 +198,6 @@ In this example, we will use a library.
 すべての外部ライブラリ呼び出しは、実際のEVM関数呼び出しであることに注意してください。
 つまり、メモリや値の型を渡す場合は、 ``self`` 変数であってもコピーが実行されます。
 コピーが行われない唯一の状況は、ストレージ参照変数が使用されている場合や、内部ライブラリ関数が呼び出されている場合です。
-=======
-Note that all external library calls are actual EVM function calls. This means that
-if you pass memory or value types, a copy will be performed, even in case of the
-``self`` variable. The only situation where no copy will be performed
-is when storage reference variables are used or when internal library
-functions are called.
 
 Another example shows how to define a custom operator for a user-defined type:
 
@@ -302,4 +232,3 @@ Another example shows how to define a custom operator for a user-defined type:
             return (a + b) / UFixed16x2.wrap(200);
         }
     }
->>>>>>> english/develop
