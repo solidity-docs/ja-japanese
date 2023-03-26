@@ -259,7 +259,15 @@ Direct Imports
 
 .. note::
 
+<<<<<<< HEAD
     ソースユニット名は単なる識別子であり、その値がたまたまパスのように見えたとしても、シェルで一般的に期待される正規化ルールの対象にはなりません。      ``/./`` や ``/../`` のセグメンテーションや複数のスラッシュのシーケンスがあっても、その一部として残ります。     ソースが標準のJSONインターフェースで提供されている場合、ディスク上の同じファイルを参照するソースユニット名に、異なるコンテンツを関連付けることができます。
+=======
+    A source unit name is just an identifier and even if its value happens to look like a path, it
+    is not subject to the normalization rules you would typically expect in a shell.
+    Any ``/./`` or ``/../`` segments or sequences of multiple slashes remain a part of it.
+    When the source is provided via Standard JSON interface it is entirely possible to associate
+    different content with source unit names that would refer to the same file on disk.
+>>>>>>> english/develop
 
 .. When the source is not available in the virtual filesystem, the compiler passes the source unit name
 .. to the import callback.
@@ -323,6 +331,7 @@ Relative Imports
 .. A separator is a forward slash or the beginning/end of the string.
 .. For example in ``./abc/..//`` there are three path segments: ``.``, ``abc`` and ``..``.
 
+<<<<<<< HEAD
 ここでは、セパレータを含まず、2つのパスセパレータで囲まれた空でない部分を *パスセグメント* と定義します。セパレータとは、フォワードスラッシュや文字列の先頭/末尾のことです。例えば、 ``./abc/..//`` では3つのパスセグメントがあります。 ``.`` 、 ``abc`` 、 ``..``  です。
 
 .. The compiler computes a source unit name from the import path in the following way:
@@ -330,11 +339,22 @@ Relative Imports
 コンパイラは、インポートパスからソースユニット名を以下のように計算します。
 
 .. 1. First a prefix is computed
+=======
+The compiler resolves the import into a source unit name based on the import path, in the following way:
+
+#. We start with the source unit name of the importing source unit.
+#. The last path segment with preceding slashes is removed from the resolved name.
+#. Then, for every segment in the import path, starting from the leftmost one:
+    - If the segment is ``.``, it is skipped.
+    - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
+    - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
+>>>>>>> english/develop
 
 ..     - Prefix is initialized with the source unit name of the importing source unit.
 
 ..     - The last path segment with preceding slashes is removed from the prefix.
 
+<<<<<<< HEAD
 ..     - Then, the leading part of the normalized import path, consisting only of ``/`` and ``.``
 ..       characters is considered.
 ..       For every ``..`` segment found in this part the last path segment with preceding slashes is
@@ -343,6 +363,14 @@ Relative Imports
 1. まず、プレフィックスを計算します。
 
     - Prefixは、インポートするソースユニットのソースユニット名で初期化されます。
+=======
+Note that the process normalizes the part of the resolved source unit name that comes from the import path according
+to the usual rules for UNIX paths, i.e. all ``.`` and ``..`` are removed and multiple slashes are
+squashed into a single one.
+On the other hand, the part that comes from the source unit name of the importing module remains unnormalized.
+This ensures that the ``protocol://`` part does not turn into ``protocol:/`` if the importing file
+is identified with a URL.
+>>>>>>> english/develop
 
     - スラッシュが先行する最後のパスセグメントがプレフィックスから削除されます。
 

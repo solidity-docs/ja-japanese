@@ -12,8 +12,19 @@
 Solidityコンパイラは、コンパイルされたコントラクトに関する情報を含むJSONファイルであるコントラクトのメタデータを自動的に生成します。
 このファイルを使用して、コンパイラのバージョン、使用されたソース、ABI、NatSpecドキュメントを照会し、より安全にコントラクトを操作し、そのソースコードを検証できます。
 
+<<<<<<< HEAD
 .. so that you can retrieve the file in an authenticated way without having to resort to a
 .. centralized data provider. 
+=======
+You have to publish the metadata file to IPFS, Swarm, or another service so
+that others can access it. You create the file by using the ``solc --metadata``
+command together with the ``--output-dir`` parameter. Without the parameter,
+the metadata will be written to standard output.
+The metadata contains IPFS and Swarm references to the source code, so you have to
+upload all source files in addition to the metadata file. For IPFS, the hash contained
+in the CID returned by ``ipfs add`` (not the direct sha2-256 hash of the file)
+shall match with the one contained in the bytecode.
+>>>>>>> english/develop
 
 コンパイラはデフォルトで、メタデータファイルのIPFSハッシュを各コントラクトのバイトコードの最後に付加します（詳細は以下を参照）。
 これにより、中央のデータプロバイダに頼ることなく、認証された方法でファイルを取得できます。
@@ -38,6 +49,7 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
       "language": "Solidity",
       // 必須: コンパイラの詳細。内容は各言語に固有のもの。
       "compiler": {
+<<<<<<< HEAD
         // Solidityには必須: コンパイラのバージョン
         "version": "0.4.6+commit.2dabbdf0.Emscripten.clang",
         // オプション: この出力を生成したコンパイラのバイナリのハッシュ
@@ -52,6 +64,24 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
           // 必須（「content」が使用されていない場合、下記参照）。ソースファイルへのソートされたURL。プロトコルはほぼ任意であるが、SwarmのURLを推奨。
           "urls": [ "bzzr://56ab..." ],
           // オプション: ソースファイルに与えられるSPDXライセンス識別子
+=======
+        // Required for Solidity: Version of the compiler
+        "version": "0.8.2+commit.661d1103",
+        // Optional: Hash of the compiler binary which produced this output
+        "keccak256": "0x123..."
+      },
+      // Required: Compilation source files/source units, keys are file paths
+      "sources":
+      {
+        "myDirectory/myFile.sol": {
+          // Required: keccak256 hash of the source file
+          "keccak256": "0x123...",
+          // Required (unless "content" is used, see below): Sorted URL(s)
+          // to the source file, protocol is more or less arbitrary, but an
+          // IPFS URL is recommended
+          "urls": [ "bzz-raw://7d7a...", "dweb:/ipfs/QmN..." ],
+          // Optional: SPDX license identifier as given in the source file
+>>>>>>> english/develop
           "license": "MIT"
         },
         "destructible": {
@@ -64,7 +94,11 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
       // 必須: コンパイラの設定
       "settings":
       {
+<<<<<<< HEAD
         // Solidityには必須: remappingsのソートされたリスト
+=======
+        // Required for Solidity: Sorted list of import remappings
+>>>>>>> english/develop
         "remappings": [ ":g=/dir" ],
         // オプション: オプティマイザの設定。「enabled」および「runs」フィールドは非推奨であり、後方互換性のためにのみ与えられている。
         "optimizer": {
@@ -90,14 +124,25 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
           }
         },
         "metadata": {
+<<<<<<< HEAD
           // 入力のjsonで使用されている設定を反映、デフォルトは「false」
+=======
+          // Reflects the setting used in the input json, defaults to "true"
+          "appendCBOR": true,
+          // Reflects the setting used in the input json, defaults to "false"
+>>>>>>> english/develop
           "useLiteralContent": true,
           // 入力のjsonで使用されている設定を反映、デフォルトは「ipfs」
           "bytecodeHash": "ipfs"
         },
+<<<<<<< HEAD
         // Solidityには必須: このメタデータの作成対象となるコントラクトまたはライブラリのファイルおよび名前。
+=======
+        // Required for Solidity: File path and the name of the contract or library this
+        // metadata is created for.
+>>>>>>> english/develop
         "compilationTarget": {
-          "myFile.sol": "MyContract"
+          "myDirectory/myFile.sol": "MyContract"
         },
         // Solidityには必須: 使用するライブラリのアドレス
         "libraries": {
@@ -107,12 +152,75 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
       // 必須: コントラクトについて生成される情報
       "output":
       {
+<<<<<<< HEAD
         // 必須: コントラクトのABI定義
         "abi": [/* ... */],
         // 必須: コントラクトのNatSpecユーザードキュメント
         "userdoc": [/* ... */],
         // 必須: コントラクトのNatSpec開発者ドキュメント
         "devdoc": [/* ... */]
+=======
+        // Required: ABI definition of the contract. See "Contract ABI Specification"
+        "abi": [/* ... */],
+        // Required: NatSpec developer documentation of the contract.
+        "devdoc": {
+          "version": 1 // NatSpec version
+          "kind": "dev",
+          // Contents of the @author NatSpec field of the contract
+          "author": "John Doe",
+          // Contents of the @title NatSpec field of the contract
+          "title": "MyERC20: an example ERC20"
+          // Contents of the @dev NatSpec field of the contract
+          "details": "Interface of the ERC20 standard as defined in the EIP. See https://eips.ethereum.org/EIPS/eip-20 for details",
+          "methods": {
+            "transfer(address,uint256)": {
+              // Contents of the @dev NatSpec field of the method
+              "details": "Returns a boolean value indicating whether the operation succeeded. Must be called by the token holder address",
+              // Contents of the @param NatSpec fields of the method
+              "params": {
+                "_value": "The amount tokens to be transferred",
+                "_to": "The receiver address"
+              }
+              // Contents of the @return NatSpec field.
+              "returns": {
+                // Return var name (here "success") if exists. "_0" as key if return var is unnamed
+                "success": "a boolean value indicating whether the operation succeeded"
+              }
+            }
+          },
+          "stateVariables": {
+            "owner": {
+              // Contents of the @dev NatSpec field of the state variable
+              "details": "Must be set during contract creation. Can then only be changed by the owner"
+            }
+          }
+          "events": {
+             "Transfer(address,address,uint256)": {
+               "details": "Emitted when `value` tokens are moved from one account (`from`) toanother (`to`)."
+               "params": {
+                 "from": "The sender address"
+                 "to": "The receiver address"
+                 "value": "The token amount"
+               }
+             }
+          }
+        },
+        // Required: NatSpec user documentation of the contract
+        "userdoc": {
+          "version": 1 // NatSpec version
+          "kind": "user",
+          "methods": {
+            "transfer(address,uint256)": {
+              "notice": "Transfers `_value` tokens to address `_to`"
+            }
+          },
+          "events": {
+            "Transfer(address,address,uint256)": {
+              "notice": "`_value` tokens have been moved from `from` to `to`"
+            }
+          }
+        }
+>>>>>>> english/develop
       }
     }
 
@@ -147,13 +255,22 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
     0x64 's' 'o' 'l' 'c' 0x43 <3 byte version encoding>
     0x00 0x33
 
+<<<<<<< HEAD
 そのため、ファイルを取得するには、デプロイされたバイトコードの末尾がこのパターンに一致するかどうかをチェックし、そのIPFSのハッシュを使用します。
+=======
+So in order to retrieve the data, the end of the deployed bytecode can be checked
+to match that pattern and the IPFS hash can be used to retrieve the file (if pinned/published).
+>>>>>>> english/develop
 
 .. Whereas release builds of solc use a 3 byte encoding of the version as shown
 .. above (one byte each for major, minor and patch version number), prerelease builds
 .. will instead use a complete version string including commit hash and build date.
 
 solcのリリースビルドでは、上記のようにバージョンを3バイト（メジャー、マイナー、パッチのバージョン番号を各1バイト）でエンコードしていますが、プレリリースビルドでは、コミットハッシュとビルド日を含む完全なバージョン文字列を使用します。
+
+The commandline flag ``--no-cbor-metadata`` can be used to skip metadata
+from getting appended at the end of the deployed bytecode. Equivalently, the
+boolean field ``settings.metadata.appendCBOR`` in Standard JSON input can be set to false.
 
 .. note::
 
@@ -176,17 +293,31 @@ solcのリリースビルドでは、上記のようにバージョンを3バイ
 インターフェースの自動生成とNatSpecの使用方法
 =============================================
 
+<<<<<<< HEAD
 .. The metadata is used in the following way: A component that wants to interact
 .. with a contract (e.g. Mist or any wallet) retrieves the code of the contract,
 .. from that the IPFS/Swarm hash of a file which is then retrieved.  That file
 .. is JSON-decoded into a structure like above.
+=======
+The metadata is used in the following way: A component that wants to interact
+with a contract (e.g. a wallet) retrieves the code of the contract.
+It decodes the CBOR encoded section containing the IPFS/Swarm hash of the
+metadata file. With that hash, the metadata file is retrieved. That file
+is JSON-decoded into a structure like above.
+>>>>>>> english/develop
 
 このメタデータは次のように使用されます。
 コントラクトとやりとりしたいコンポーネント（Mistやウォレットなど）は、コントラクトのコードを取得し、そこからIPFS/Swarmのハッシュを取得し、ファイルを取得しています。
 そのファイルは、上記のような構造にJSONデコードされます。
 
+<<<<<<< HEAD
 .. The component can then use the ABI to automatically generate a rudimentary
 .. user interface for the contract.
+=======
+Furthermore, the wallet can use the NatSpec user documentation to display a human-readable confirmation message to the user
+whenever they interact with the contract, together with requesting
+authorization for the transaction signature.
+>>>>>>> english/develop
 
 このコンポーネントは、ABIを使ってコントラクトの初歩的なユーザーインターフェースを自動的に生成できます。
 

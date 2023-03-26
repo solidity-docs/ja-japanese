@@ -35,7 +35,7 @@
         address public richest;
         uint public mostSent;
 
-        mapping (address => uint) pendingWithdrawals;
+        mapping(address => uint) pendingWithdrawals;
 
         /// Etherの送信量が現在最も多い量より多くなかった
         error NotEnoughEther();
@@ -162,27 +162,43 @@
         /// 関数コールで送信されるEtherが不足しています
         error NotEnoughEther();
 
+<<<<<<< HEAD
         // 修飾子は、関数のボディを変更するために使用できます
         // この修飾子を使用すると、特定のアドレスから関数が呼び出された場合にのみ実行されるチェックが前置されます
         modifier onlyBy(address _account)
+=======
+        // Modifiers can be used to change
+        // the body of a function.
+        // If this modifier is used, it will
+        // prepend a check that only passes
+        // if the function is called from
+        // a certain address.
+        modifier onlyBy(address account)
+>>>>>>> english/develop
         {
-            if (msg.sender != _account)
+            if (msg.sender != account)
                 revert Unauthorized();
             // "_;" を忘れないでください！
             // 修飾子が使用されると、実際の関数ボディに置き換えられます
             _;
         }
 
+<<<<<<< HEAD
         /// `_newOwner` をこのコントラクトの新しいオーナーにします
         function changeOwner(address _newOwner)
+=======
+        /// Make `newOwner` the new owner of this
+        /// contract.
+        function changeOwner(address newOwner)
+>>>>>>> english/develop
             public
             onlyBy(owner)
         {
-            owner = _newOwner;
+            owner = newOwner;
         }
 
-        modifier onlyAfter(uint _time) {
-            if (block.timestamp < _time)
+        modifier onlyAfter(uint time) {
+            if (block.timestamp < time)
                 revert TooEarly();
             _;
         }
@@ -197,25 +213,41 @@
             delete owner;
         }
 
+<<<<<<< HEAD
         // この修飾子は、関数呼び出しに関連する一定の料金を要求します
         // 呼び出し側が過剰に送金した場合、払い戻されますが、関数ボディの後にのみ払い戻されます
         // これは Solidity バージョン 0.4.0 以前では危険で、`_;` の後の部分をスキップすることが可能でした
         modifier costs(uint _amount) {
             if (msg.value < _amount)
+=======
+        // This modifier requires a certain
+        // fee being associated with a function call.
+        // If the caller sent too much, he or she is
+        // refunded, but only after the function body.
+        // This was dangerous before Solidity version 0.4.0,
+        // where it was possible to skip the part after `_;`.
+        modifier costs(uint amount) {
+            if (msg.value < amount)
+>>>>>>> english/develop
                 revert NotEnoughEther();
 
             _;
-            if (msg.value > _amount)
-                payable(msg.sender).transfer(msg.value - _amount);
+            if (msg.value > amount)
+                payable(msg.sender).transfer(msg.value - amount);
         }
 
-        function forceOwnerChange(address _newOwner)
+        function forceOwnerChange(address newOwner)
             public
             payable
             costs(200 ether)
         {
+<<<<<<< HEAD
             owner = _newOwner;
             // これは条件の一例です
+=======
+            owner = newOwner;
+            // just some example condition
+>>>>>>> english/develop
             if (uint160(owner) & 0 == 1)
                 // バージョン0.4.0以前のSolidityでは、返金されませんでした
                 return;
@@ -321,8 +353,8 @@
 
         uint public creationTime = block.timestamp;
 
-        modifier atStage(Stages _stage) {
-            if (stage != _stage)
+        modifier atStage(Stages stage_) {
+            if (stage != stage_)
                 revert FunctionInvalidAtThisStage();
             _;
         }

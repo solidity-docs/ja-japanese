@@ -13,17 +13,23 @@
 データは、この仕様に記載されているように、その型に応じてエンコードされます。
 エンコーディングは自己記述的ではないため、デコードするためにはスキーマが必要です。
 
+<<<<<<< HEAD
 コントラクトのインタフェース関数が強く型付けされ、それがコンパイル時に知られており、かつ静的であるとしています。
 また、すべてのコントラクトは、それらが呼び出すコントラクトのインタフェース定義をコンパイル時に利用可能であるとしています。
+=======
+We assume that the interface functions of a contract are strongly typed, known at compilation time and static.
+We assume that all contracts will have the interface definitions of any contracts they call available at compile-time.
+>>>>>>> english/develop
 
 この仕様では、インターフェースが動的である、あるいは、実行時にしかわからないコントラクトは扱いません。
 
 .. _abi_function_selector:
-.. index:: selector
+.. index:: ! selector; of a function
 
 関数セレクタ
 ============
 
+<<<<<<< HEAD
 .. The signature is defined as the canonical expression of the basic prototype without data location specifier, i.e. the function name with the parenthesised list of parameter types. 
 
 関数呼び出しのコールデータの最初の4バイトは、呼び出される関数を指定します。
@@ -31,6 +37,14 @@
 シグネチャは、データロケーション指定子のない基本のプロトタイプの正規表現として定義されています。
 つまり、関数名と括弧で囲まれたパラメータ型のリストです。
 パラメータ型はコンマで分割され、スペースは使用されません。
+=======
+The first four bytes of the call data for a function call specifies the function to be called. It is the
+first (left, high-order in big-endian) four bytes of the Keccak-256 hash of the signature of
+the function. The signature is defined as the canonical expression of the basic prototype without data
+location specifier, i.e.
+the function name with the parenthesised list of parameter types. Parameter types are split by a single
+comma — no spaces are used.
+>>>>>>> english/develop
 
 .. note::
 
@@ -119,7 +133,12 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 .. The encoding is designed to have the following properties, which are especially useful if some arguments are nested arrays:
 
+<<<<<<< HEAD
 このエンコーディングは、以下のような特性を持つように設計されており、いくつかの引数が入れ子になった配列である場合には、特に便利です。
+=======
+2. The data of a variable or an array element is not interleaved with other data and it is
+   relocatable, i.e. it only uses relative "addresses".
+>>>>>>> english/develop
 
 .. 1. The number of reads necessary to access a value is at most the depth of the value
 ..    inside the argument array structure, i.e. four reads are needed to retrieve ``a_i[k][l][r]``. In a
@@ -227,9 +246,14 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 - ``X`` が ``k`` の要素を持つ ``T[]`` （ ``k`` は ``uint256`` 型とします）。
 
-  ``enc(X) = enc(k) enc([X[0], ..., X[k-1]])``
+  ``enc(X) = enc(k) enc((X[0], ..., X[k-1]))``
 
+<<<<<<< HEAD
   つまり、静的なサイズ ``k`` の配列のようにエンコードされ、その前に要素数が付けられます。
+=======
+  i.e. it is encoded as if it were a tuple with ``k`` elements of the same type (resp. an array of static size ``k``), prefixed with
+  the number of elements.
+>>>>>>> english/develop
 
 - 長さ ``k`` の ``bytes`` （これは型 ``uint256`` であると仮定されます）。
 
@@ -304,9 +328,14 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 ``Foo`` の例では、 ``69`` と ``true`` というパラメータで ``baz`` を呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです。
 
+<<<<<<< HEAD
 - ``0xcdcd77c0`` : メソッドID。シグネチャ ``baz(uint32,bool)`` のASCII形式のKeccakハッシュの最初の4バイトです。
 - ``0x0000000000000000000000000000000000000000000000000000000000000045`` : 第1パラメータ。32バイトにパディングされたuint32の値 ``69`` 。
 - ``0x0000000000000000000000000000000000000000000000000000000000000001`` : 第2パラメータ。32バイトにパディングされたboolの値 ``true`` 。
+=======
+Thus, for our ``Foo`` example if we wanted to call ``baz`` with the parameters ``69`` and
+``true``, we would pass 68 bytes total, which can be broken down into:
+>>>>>>> english/develop
 
 合わせると、
 
@@ -351,6 +380,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 動的型の使用法
 ==============
 
+<<<<<<< HEAD
 シグネチャが ``f(uint,uint32[],bytes10,bytes)`` で値が  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` である関数の呼び出しは、以下のようにエンコードされます。
 
 .. We take the first four bytes of ``sha3("f(uint256,uint32[],bytes10,bytes)")``, i.e. ``0x8be65246``.
@@ -358,6 +388,16 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 .. these are directly the values we want to pass, whereas for the dynamic types ``uint32[]`` and ``bytes``,
 .. we use the offset in bytes to the start of their data area, measured from the start of the value
 .. encoding (i.e. not counting the first four bytes containing the hash of the function signature). These are:
+=======
+A call to a function with the signature ``f(uint256,uint32[],bytes10,bytes)`` with values
+``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` is encoded in the following way:
+
+We take the first four bytes of ``keccak("f(uint256,uint32[],bytes10,bytes)")``, i.e. ``0x8be65246``.
+Then we encode the head parts of all four arguments. For the static types ``uint256`` and ``bytes10``,
+these are directly the values we want to pass, whereas for the dynamic types ``uint32[]`` and ``bytes``,
+we use the offset in bytes to the start of their data area, measured from the start of the value
+encoding (i.e. not counting the first four bytes containing the hash of the function signature). These are:
+>>>>>>> english/develop
 
 まず ``sha3("f(uint256,uint32[],bytes10,bytes)")`` の最初の4バイト、つまり ``0x8be65246`` を取ります。
 そして、4つの引数すべてのヘッド部分をエンコードします。
@@ -394,8 +434,13 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
       000000000000000000000000000000000000000000000000000000000000000d
       48656c6c6f2c20776f726c642100000000000000000000000000000000000000
 
+<<<<<<< HEAD
 .. Let us apply the same principle to encode the data for a function with a signature ``g(uint[][],string[])``
 .. with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
+=======
+Let us apply the same principle to encode the data for a function with a signature ``g(uint256[][],string[])``
+with values ``([[1, 2], [3]], ["one", "two", "three"])`` but start from the most atomic parts of the encoding:
+>>>>>>> english/develop
 
 同じ原理で、シグネチャ ``g(uint[][],string[])`` を持つ関数のデータを値 ``([[1, 2], [3]], ["one", "two", "three"])`` でエンコードしてみましょう。
 ただし、エンコードの最も基本的な部分から始めます。
@@ -479,8 +524,13 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 オフセット ``d`` は、5行目（160バイト）の文字列 ``"two"`` の内容の始まりを指しているので、 ``d = 0x00000000000000000000000000000000000000000000000000000000000000a0`` となります。
 
+<<<<<<< HEAD
 .. Offset ``e`` points to the start of the content of the string ``"three"`` which is line 7 (224 bytes);
 .. thus ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0``.
+=======
+Note that the encodings of the embedded elements of the root arrays are not dependent on each other
+and have the same encodings for a function with a signature ``g(string[],uint256[][])``.
+>>>>>>> english/develop
 
 オフセット ``e`` は、7行目（224バイト）である文字列 ``"three"`` のコンテンツの開始を指しているので、 ``e = 0x00000000000000000000000000000000000000000000000000000000000000e0`` 。
 
@@ -610,6 +660,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 開発者はこのトレードオフを克服し、効率的な検索と任意の可読性の両方を達成するために、同じ値を保持することを意図した2つの引数（1つはインデックス化され、1つはインデックス化されない）を持つイベントを定義できます。
 
 .. _abi_errors:
+.. index:: error, selector; of an error
 
 エラー
 ======
@@ -680,6 +731,7 @@ JSON
 - ``name`` : 関数の名前。
 - ``inputs`` : オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
 
+<<<<<<< HEAD
   * ``name`` : パラメータの名前。
   * ``type`` : パラメータの正規の型（詳細は後述）。
   * ``components`` : タプル型に使用（詳細は後述）。
@@ -691,6 +743,9 @@ JSON
   ``nonpayable`` （関数はEtherを受け取らない、デフォルト）と ``payable`` （関数はEtherを受け取る）があります。
 
 コンストラクタとフォールバック関数は ``name`` や ``outputs`` を持ちません。フォールバック関数には ``inputs`` もありません。
+=======
+Constructor, receive, and fallback never have ``name`` or ``outputs``. Receive and fallback don't have ``inputs`` either.
+>>>>>>> english/develop
 
 .. note::
 
@@ -702,7 +757,14 @@ JSON
 
 .. An event description is a JSON object with fairly similar fields:
 
+<<<<<<< HEAD
 イベントの記述は、同様のフィールドを持つJSONオブジェクトです。
+=======
+  * ``name``: the name of the parameter.
+  * ``type``: the canonical type of the parameter (more below).
+  * ``components``: used for tuple types (more below).
+  * ``indexed``: ``true`` if the field is part of the log's topics, ``false`` if it is one of the log's data segments.
+>>>>>>> english/develop
 
 - ``type`` : 常に ``"event"`` 。
 - ``name`` : イベントの名前。
@@ -734,6 +796,14 @@ JSON
 ..   defined.
 
 .. note::
+<<<<<<< HEAD
+=======
+  There can be multiple errors with the same name and even with identical signature
+  in the JSON array; for example, if the errors originate from different
+  files in the smart contract or are referenced from another smart contract.
+  For the ABI, only the name of the error itself is relevant and not where it is
+  defined.
+>>>>>>> english/develop
 
   スマートコントラクト内の異なるファイルからエラーが発生した場合や、別のスマートコントラクトから参照されている場合など、JSON配列内に同じ名前や同一の署名を持つ複数のエラーが存在する可能性があります。
   ABIでは、エラー自体の名前だけが重要で、どこで定義されているかは関係ありません。
@@ -780,12 +850,25 @@ JSON
 タプル型のハンドリング
 ----------------------
 
+<<<<<<< HEAD
 .. Despite that names are intentionally not part of the ABI encoding they do make a lot of sense to be included
 .. in the JSON to enable displaying it to the end user. 
 .. The structure is nested in the following way:
 
 名前は意図的にABIエンコーディングの一部ではありませんが、エンドユーザーに表示するためにJSONに含めることには大きな意味があります。
 構造は以下のように入れ子になっています。
+=======
+Despite the fact that names are intentionally not part of the ABI encoding, they do make a lot of sense to be included
+in the JSON to enable displaying it to the end user. The structure is nested in the following way:
+
+An object with members ``name``, ``type`` and potentially ``components`` describes a typed variable.
+The canonical type is determined until a tuple type is reached and the string description up
+to that point is stored in ``type`` prefix with the word ``tuple``, i.e. it will be ``tuple`` followed by
+a sequence of ``[]`` and ``[k]`` with
+integers ``k``. The components of the tuple are then stored in the member ``components``,
+which is of an array type and has the same structure as the top-level object except that
+``indexed`` is not allowed there.
+>>>>>>> english/develop
 
 .. An object with members ``name``, ``type`` and potentially ``components`` describes a typed variable.
 .. The canonical type is determined until a tuple type is reached and the string description up
@@ -898,10 +981,20 @@ SolidityのABIデコーダは、現在のところストリクトモードを強
 非標準のパックモード
 ====================
 
+<<<<<<< HEAD
 Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモードをサポートしています。
 
 .. - dynamic types are encoded in-place and without the length.
 .. - array elements are padded, but still encoded in-place
+=======
+Strict encoding mode is the mode that leads to exactly the same encoding as defined in the formal specification above.
+This means that offsets have to be as small as possible while still not creating overlaps in the data areas, and thus no gaps are
+allowed.
+
+Usually, ABI decoders are written in a straightforward way by just following offset pointers, but some decoders
+might enforce strict mode. The Solidity ABI decoder currently does not enforce strict mode, but the encoder
+always creates data in strict mode.
+>>>>>>> english/develop
 
 - 32バイトより短い型は、パディングや符号拡張なしに、直接連結されます。
 - 動的型は、インプレースで長さの情報無しにエンコードされます。
@@ -921,9 +1014,24 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 
 より具体的には、
 
+<<<<<<< HEAD
 .. - During the encoding, everything is encoded in-place. This means that there is
 ..   no distinction between head and tail, as in the ABI encoding, and the length
 ..   of an array is not encoded.
+=======
+- During the encoding, everything is encoded in-place. This means that there is
+  no distinction between head and tail, as in the ABI encoding, and the length
+  of an array is not encoded.
+- The direct arguments of ``abi.encodePacked`` are encoded without padding,
+  as long as they are not arrays (or ``string`` or ``bytes``).
+- The encoding of an array is the concatenation of the
+  encoding of its elements **with** padding.
+- Dynamically-sized types like ``string``, ``bytes`` or ``uint[]`` are encoded
+  without their length field.
+- The encoding of ``string`` or ``bytes`` does not apply padding at the end,
+  unless it is part of an array or struct (then it is padded to a multiple of
+  32 bytes).
+>>>>>>> english/develop
 
 - エンコードの際、すべてがインプレースでエンコードされます。つまり、ABIのエンコーディングのように、先頭と末尾の区別がなく、配列の長さもエンコードされません。
 
@@ -980,8 +1088,14 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 インデックスされたイベントパラメータのエンコーディング
 ======================================================
 
+<<<<<<< HEAD
 .. Indexed event parameters that are not value types, i.e. arrays and structs are not
 .. stored directly but instead a keccak256-hash of an encoding is stored. 
+=======
+Indexed event parameters that are not value types, i.e. arrays and structs are not
+stored directly but instead a Keccak-256 hash of an encoding is stored. This encoding
+is defined as follows:
+>>>>>>> english/develop
 
 値型ではないインデックスされたイベントパラメータ（配列や構造体）は、直接保存されず、エンコーディングのkeccak256ハッシュが保存されます。
 このエンコーディングは以下のように定義されています。

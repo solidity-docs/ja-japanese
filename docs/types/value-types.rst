@@ -4,7 +4,12 @@
 値型
 ====
 
+<<<<<<< HEAD
 以下の型は、変数が常に値で渡される、つまり、関数の引数や代入で使われるときに常にコピーされることから、値型とも呼ばれます。
+=======
+The following are called value types because their variables will always be passed by value, i.e. they are always copied when they
+are used as function arguments or in assignments.
+>>>>>>> english/develop
 
 .. index:: ! bool, ! true, ! false
 
@@ -52,11 +57,19 @@
 
 .. warning::
 
+<<<<<<< HEAD
   Solidityの整数は、ある範囲に制限されています。例えば、 ``uint32`` の場合、 ``0`` から ``2**32 - 1`` までとなります。
   これらの型に対して算術演算を行うには2つのモードがあります。"ラッピング"または"チェックなし"モードと"チェックあり"モードです。
   デフォルトでは、演算は常に"チェック"されます。
   つまり、演算結果が型の値の範囲外になると、呼び出しは :ref:`failing assertion<assert-and-require>` で戻されます。
   ``unchecked { ... }`` を使って"チェックなし"モードに切り替えることができます。詳細は :ref:`unchecked <unchecked>` の項を参照してください。
+=======
+  Integers in Solidity are restricted to a certain range. For example, with ``uint32``, this is ``0`` up to ``2**32 - 1``.
+  There are two modes in which arithmetic is performed on these types: The "wrapping" or "unchecked" mode and the "checked" mode.
+  By default, arithmetic is always "checked", meaning that if an operation's result falls outside the value range
+  of the type, the call is reverted through a :ref:`failing assertion<assert-and-require>`. You can switch to "unchecked" mode
+  using ``unchecked { ... }``. More details can be found in the section about :ref:`unchecked <unchecked>`.
+>>>>>>> english/develop
 
 比較
 ^^^^
@@ -194,11 +207,21 @@ Solidityでは、除算はゼロに向かって丸められます。
 アドレス
 --------
 
+<<<<<<< HEAD
 アドレス型には2つの種類がありますが、ほとんど同じです。
+=======
+The address type comes in two largely identical flavors:
+>>>>>>> english/develop
 
 -  ``address``: 20バイトの値（Ethereumのアドレスのサイズ）を保持します。
 
+<<<<<<< HEAD
 -  ``address payable``:  ``address`` と同じですが、メンバの ``transfer`` と ``send`` が追加されます。
+=======
+The idea behind this distinction is that ``address payable`` is an address you can send Ether to,
+while you are not supposed to send Ether to a plain ``address``, for example because it might be a smart contract
+that was not built to accept Ether.
+>>>>>>> english/develop
 
 この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーン ``address`` はEtherを送ることができないということです。
 
@@ -214,14 +237,29 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 .. note::
 
+<<<<<<< HEAD
     ``address`` 型の変数が必要で、その変数にEtherを送ろうと思っているなら、その変数の型を ``address payable`` と宣言して、この要求を見えるようにします。
     また、この区別や変換はできるだけ早い段階で行うようにしてください。
+=======
+    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
+    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
+    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+
+
+Operators:
+>>>>>>> english/develop
 
 演算子:
 
 * ``<=``, ``<``, ``==``,  ``!=``, ``>=``, ``>``
 
 .. warning::
+<<<<<<< HEAD
+=======
+    If you convert a type that uses a larger byte size to an ``address``, for example ``bytes32``, then the ``address`` is truncated.
+    To reduce conversion ambiguity, starting with version 0.4.24, the compiler will force you to make the truncation explicit in the conversion.
+    Take for example the 32-byte value ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC``.
+>>>>>>> english/develop
 
     より大きなバイトサイズを使用する型、例えば ``bytes32`` などを ``address`` に変換した場合、 ``address`` は切り捨てられます。
     変換の曖昧さを減らすために、バージョン0.4.24以降のコンパイラでは、変換時に切り捨てを明示するようになっています。
@@ -230,9 +268,13 @@ Solidityでは、除算はゼロに向かって丸められます。
     ``address(uint160(bytes20(b)))`` を使うと ``0x111122223333444455556666777788889999aAaa`` になり、 ``address(uint160(uint256(b)))`` を使うと ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc`` になります。
 
 .. note::
+<<<<<<< HEAD
 
     ``address`` と ``address payable`` の区別は、バージョン0.5.0から導入されました。
     また、このバージョンから、コントラクトはアドレス型から派生しませんが、receiveまたはpayableのフォールバック関数があれば、明示的に ``address`` または ``address payable`` に変換できます。
+=======
+    Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type. See :ref:`Address Literals<address_literals>`.
+>>>>>>> english/develop
 
 .. _members-of-addresses:
 
@@ -334,6 +376,12 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 
     スマートコントラクトのコードでは、状態の読み書きにかかわらず、ハードコードされたガスの値に依存することは、多くの落とし穴があるので避けたほうがよいでしょう。
     また、ガスへのアクセスが将来的に変わる可能性もあります。
+
+* ``code`` and ``codehash``
+
+You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
+(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
 
 .. note::
 
@@ -438,7 +486,12 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 小数点以下の数字として解釈されます。例えば、 ``69`` は69を意味します。
 Solidityには8進数のリテラルは存在せず、先頭のゼロは無効です。
 
+<<<<<<< HEAD
 小数点以下のリテラルは、片側に少なくとも1つの数字を持つ ``.`` で形成されます。  例えば、 ``1.`` 、 ``.1`` 、 ``1.3`` などです。
+=======
+Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
+Examples include ``.1`` and ``1.3`` (but not ``1.``).
+>>>>>>> english/develop
 
 ``2e10`` のような科学的表記（指数表記）もサポートされています。
 仮数は小数でも構いませんが、指数は整数でなければなりません。
@@ -450,13 +503,36 @@ Solidityには8進数のリテラルは存在せず、先頭のゼロは無効�
 アンダースコアは2つの数字の間にのみ使用でき、連続したアンダースコアは1つしか使用できません。
 アンダースコアを含む数値リテラルには、追加の意味はなく、アンダースコアは無視されます。
 
+<<<<<<< HEAD
 数リテラル式は、非リテラル型に変換されるまで（非リテラル式との併用や明示的な変換など）、任意の精度を保ちます。
 このため、数値リテラル式では、計算がオーバーフローしたり、除算が切り捨てられたりすることはありません。
+=======
+Number literal expressions retain arbitrary precision until they are converted to a non-literal type (i.e. by
+using them together with anything other than a number literal expression (like boolean literals) or by explicit conversion).
+This means that computations do not overflow and divisions do not truncate
+in number literal expressions.
+>>>>>>> english/develop
 
 例えば、 ``(2**800 + 1) - 2**800`` の結果は定数 ``1`` （ ``uint8`` 型）になりますが、中間の結果はマシンのワードサイズに収まりません。さらに、 ``.5 * 8`` の結果は整数の ``4`` になります（ただし、その間には非整数が使われています）。
 
+<<<<<<< HEAD
 整数に適用できる演算子は、オペランドが整数であれば、数リテラル式にも適用できます。
 2つのうちいずれかが小数の場合、ビット演算は許可されず、指数が小数の場合、指数演算は許可されません（非有理数になってしまう可能性があるため）。
+=======
+.. warning::
+    While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
+
+    - Ternary operator (``... ? ... : ...``),
+    - Array subscript (``<array>[<index>]``).
+
+    You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256
+    directly, but in fact they are computed within the type ``uint8`` and can overflow.
+
+Any operator that can be applied to integers can also be applied to number literal expressions as
+long as the operands are integers. If any of the two is fractional, bit operations are disallowed
+and exponentiation is disallowed if the exponent is fractional (because that might result in
+a non-rational number).
+>>>>>>> english/develop
 
 リテラル数を左（またはベース）オペランドとし、整数型を右（指数）オペランドとするシフトと指数計算は、右（指数）オペランドの型にかかわらず、常に ``uint256`` （非負のリテラルの場合）または ``int256`` （負のリテラルの場合）型で実行されます。
 
@@ -612,6 +688,7 @@ Unicodeリテラル
 
 .. _user-defined-value-types:
 
+<<<<<<< HEAD
 ユーザー定義の値型
 ------------------
 
@@ -620,6 +697,22 @@ Unicodeリテラル
 ユーザー定義の値型は、 ``type C is V`` を使って定義されます。 ``C`` は新しく導入される型の名前で、 ``V`` は組み込みの値の型（「基礎となる型」）でなければなりません。関数 ``C.wrap`` は、基礎となる型からカスタム型への変換に使用されます。同様に、関数 ``C.unwrap`` はカスタム型から基礎型への変換に使用されます。
 
 ``C`` 型には、演算子やバインドされたメンバ関数がありません。特に、演算子 ``==`` も定義されていません。他の型との間の明示的および暗黙的な変換は許されません。
+=======
+User-defined Value Types
+------------------------
+
+A user-defined value type allows creating a zero cost abstraction over an elementary value type.
+This is similar to an alias, but with stricter type requirements.
+
+A user-defined value type is defined using ``type C is V``, where ``C`` is the name of the newly
+introduced type and ``V`` has to be a built-in value type (the "underlying type"). The function
+``C.wrap`` is used to convert from the underlying type to the custom type. Similarly, the
+function ``C.unwrap`` is used to convert from the custom type to the underlying type.
+
+The type ``C`` does not have any operators or attached member functions. In particular, even the
+operator ``==`` is not defined. Explicit and implicit conversions to and from other types are
+disallowed.
+>>>>>>> english/develop
 
 このような型の値のデータ表現は、基礎となる型から継承され、基礎となる型はABIでも使用されます。
 
@@ -630,7 +723,11 @@ Unicodeリテラル
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.8;
 
+<<<<<<< HEAD
     // 18進数、256ビット幅の固定小数点型をユーザー定義の値型を使用して表現する。
+=======
+    // Represent a 18 decimal, 256 bit wide fixed point type using a user-defined value type.
+>>>>>>> english/develop
     type UFixed256x18 is uint256;
 
     /// UFixed256x18に対して固定小数点演算を行うための最小限のライブラリ
@@ -692,7 +789,25 @@ Unicodeリテラル
 
 -  ``view`` 関数から ``non-payable`` 関数への変換が可能
 
+<<<<<<< HEAD
 -  ``payable`` 関数から ``non-payable`` 関数への変換が可能
+=======
+The rule about ``payable`` and ``non-payable`` might be a little
+confusing, but in essence, if a function is ``payable``, this means that it
+also accepts a payment of zero Ether, so it also is ``non-payable``.
+On the other hand, a ``non-payable`` function will reject Ether sent to it,
+so ``non-payable`` functions cannot be converted to ``payable`` functions.
+To clarify, rejecting ether is more restrictive than not rejecting ether.
+This means you can override a payable function with a non-payable but not the
+other way around.
+
+Additionally, When you define a ``non-payable`` function pointer,
+the compiler does not enforce that the pointed function will actually reject ether.
+Instead, it enforces that the function pointer is never used to send ether.
+Which makes it possible to assign a ``payable`` function pointer to a ``non-payable``
+function pointer ensuring both types behave the same way, i.e, both cannot be used
+to send ether.
+>>>>>>> english/develop
 
 それ以外の関数型間の変換はできません。
 
@@ -700,7 +815,31 @@ Unicodeリテラル
 
 関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
 
+<<<<<<< HEAD
 外部関数型がSolidityのコンテキスト外で使用される場合は、 ``function`` 型として扱われ、アドレスに続いて関数識別子をまとめて1つの ``bytes24`` 型にエンコードします。
+=======
+A function of an internal type can be assigned to a variable of an internal function type regardless
+of where it is defined.
+This includes private, internal and public functions of both contracts and libraries as well as free
+functions.
+External function types, on the other hand, are only compatible with public and external contract
+functions.
+
+.. note::
+    External functions with ``calldata`` parameters are incompatible with external function types with ``calldata`` parameters.
+    They are compatible with the corresponding types with ``memory`` parameters instead.
+    For example, there is no function that can be pointed at by a value of type ``function (string calldata) external`` while
+    ``function (string memory) external`` can point at both ``function f(string memory) external {}`` and
+    ``function g(string calldata) external {}``.
+    This is because for both locations the arguments are passed to the function in the same way.
+    The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
+    Marking the parameters as ``calldata`` only affects the implementation of the external function and is
+    meaningless in a function pointer on the caller's side.
+
+Libraries are excluded because they require a ``delegatecall`` and use :ref:`a different ABI
+convention for their selectors <library-selectors>`.
+Functions declared in interfaces do not have definitions so pointing at them does not make sense either.
+>>>>>>> english/develop
 
 現在のコントラクトのパブリック関数は、内部関数としても外部関数としても使用できることに注意してください。 ``f`` を内部関数として使用したい場合は ``f`` を、外部関数として使用したい場合は ``this.f`` を使用してください。
 

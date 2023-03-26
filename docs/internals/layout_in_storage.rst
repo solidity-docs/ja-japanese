@@ -77,6 +77,15 @@
 ..      being executed.
 
 .. note::
+<<<<<<< HEAD
+=======
+     The layout of state variables in storage is considered to be part of the external interface
+     of Solidity due to the fact that storage pointers can be passed to libraries. This means that
+     any change to the rules outlined in this section is considered a breaking change
+     of the language and due to its critical nature should be considered very carefully before
+     being executed. In the event of such a breaking change, we would want to release a
+     compatibility mode in which the compiler would generate bytecode supporting the old layout.
+>>>>>>> english/develop
 
     ストレージの状態変数のレイアウトは、ストレージへのポインタをライブラリに渡すことができるため、Solidityの外部インターフェースの一部とみなされます。
     つまり、このセクションで説明されているルールを変更することは、言語の破壊的な変更とみなされ、その重大な性質のため、実行する前に非常に慎重に検討する必要があります。
@@ -107,6 +116,7 @@
 動的配列の場合、このスロットには、配列の要素数が格納されます（バイト配列と文字列は例外で、 :ref:`ここ<bytes-and-string>` を参照してください）。
 マッピングの場合、このスロットは空のままですが、2つのマッピングが隣り合っていても、その内容が異なる保存場所になることを保証するために必要です。
 
+<<<<<<< HEAD
 .. Array data is located starting at ``keccak256(p)`` and it is laid out in the same way as
 .. statically-sized array data would: One element after the other, potentially sharing
 .. storage slots if the elements are not longer than 16 bytes. Dynamic arrays of dynamic arrays apply this
@@ -114,6 +124,10 @@
 .. computed as follows (again, assuming ``x`` itself is stored at slot ``p``):
 .. The slot is ``keccak256(keccak256(p) + i) + floor(j / floor(256 / 24))`` and
 .. the element can be obtained from the slot data ``v`` using ``(v >> ((j % floor(256 / 24)) * 24)) & type(uint24).max``.
+=======
+- for value types, ``h`` pads the value to 32 bytes in the same way as when storing the value in memory.
+- for strings and byte arrays, ``h(k)`` is just the unpadded data.
+>>>>>>> english/develop
 
 配列データは ``keccak256(p)`` から始まり、静的なサイズの配列データと同じように配置されています。
 要素の長さが16バイト以下であれば、ストレージスロットを共有できる可能性があります。
@@ -203,6 +217,11 @@
 ..   slot results in a ``Panic(0x22)`` error.
 
 .. note::
+<<<<<<< HEAD
+=======
+  Handling invalidly encoded slots is currently not supported but may be added in the future.
+  If you are compiling via IR, reading an invalidly encoded slot results in a ``Panic(0x22)`` error.
+>>>>>>> english/develop
 
   無効にエンコードされたスロットの処理は現在サポートされていませんが、将来的に追加される可能性があります。
   実験的なIRベースのコンパイラパイプラインでコンパイルしている場合、無効にエンコードされたスロットを読み込むと ``Panic(0x22)`` エラーが発生します。
@@ -221,7 +240,7 @@ JSON出力
 出力されるのは、 ``storage`` と ``types`` の2つのキーを含むJSONオブジェクトです。
 ``storage`` オブジェクトは配列で、各要素は次のような形をしています。
 
-.. code::
+.. code-block:: json
 
     {
         "astId": 2,
@@ -262,7 +281,7 @@ JSON出力
 
 与えられた ``type`` 、この場合 ``t_uint256`` は、 ``types`` の中の要素を表しており、その形は
 
-.. code::
+.. code-block:: json
 
     {
         "encoding": "inplace",
@@ -335,13 +354,13 @@ JSON出力
         uint y;
         S s;
         address addr;
-        mapping (uint => mapping (address => bool)) map;
+        mapping(uint => mapping(address => bool)) map;
         uint[] array;
         string s1;
         bytes b1;
     }
 
-.. code:: json
+.. code-block:: json
 
     {
       "storage": [

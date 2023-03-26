@@ -1,4 +1,4 @@
-.. index:: ! event
+.. index:: ! event, ! event; anonymous, ! event; indexed, ! event; topic
 
 .. _events:
 
@@ -100,6 +100,18 @@ Solidityのイベントは、EVMのロギング機能の上に抽象化を与え
     トランザクションログにはイベントデータのみが保存され、型は保存されませんので、データを正しく解釈するためには、どのパラメータがインデックスされているか、イベントが匿名であるかなど、イベントの型を知る必要があります。
     特に、匿名イベントを使って別のイベントの署名を「偽装」することが可能です。
 
+.. index:: ! selector; of an event
+
+Members of Events
+=================
+
+- ``event.selector``: For non-anonymous events, this is a ``bytes32`` value
+  containing the ``keccak256`` hash of the event signature, as used in the default topic.
+
+
+Example
+=======
+
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
@@ -107,15 +119,25 @@ Solidityのイベントは、EVMのロギング機能の上に抽象化を与え
 
     contract ClientReceipt {
         event Deposit(
-            address indexed _from,
-            bytes32 indexed _id,
-            uint _value
+            address indexed from,
+            bytes32 indexed id,
+            uint value
         );
 
+<<<<<<< HEAD
         function deposit(bytes32 _id) public payable {
             // イベントは `emit` を使って発行され、その後にイベント名と引数 (もしあれば) が括弧で囲まれます。
             // このような呼び出しは (深くネストされていても) JavaScript API から `Deposit` をフィルタリングすることで検出できます。
             emit Deposit(msg.sender, _id, msg.value);
+=======
+        function deposit(bytes32 id) public payable {
+            // Events are emitted using `emit`, followed by
+            // the name of the event and the arguments
+            // (if any) in parentheses. Any such invocation
+            // (even deeply nested) can be detected from
+            // the JavaScript API by filtering for `Deposit`.
+            emit Deposit(msg.sender, id, msg.value);
+>>>>>>> english/develop
         }
     }
 
@@ -148,9 +170,9 @@ JavaScript APIでの使用方法は以下の通りです。
 
     {
        "returnValues": {
-           "_from": "0x1111…FFFFCCCC",
-           "_id": "0x50…sd5adb20",
-           "_value": "0x420042"
+           "from": "0x1111…FFFFCCCC",
+           "id": "0x50…sd5adb20",
+           "value": "0x420042"
        },
        "raw": {
            "data": "0x7f…91385",
@@ -158,6 +180,7 @@ JavaScript APIでの使用方法は以下の通りです。
        }
     }
 
+<<<<<<< HEAD
 イベントを理解するための追加資料
 ================================
 
@@ -166,3 +189,11 @@ JavaScript APIでの使用方法は以下の通りです。
 - `イベントの使用例 <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
 
 - `JSからイベントへのアクセス方法 <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
+=======
+Additional Resources for Understanding Events
+=============================================
+
+- `Javascript documentation <https://github.com/web3/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
+- `Example usage of events <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
+- `How to access them in js <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
+>>>>>>> english/develop

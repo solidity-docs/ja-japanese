@@ -2,22 +2,46 @@
 Solidityソースファイルのレイアウト
 **********************************
 
+<<<<<<< HEAD
 ソースファイルには、任意の数の :ref:`コントラクト定義<contract_structure>` 、import_ ディレクティブ、 :ref:`pragmaディレクティブ<pragma>` と :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
+=======
+Source files can contain an arbitrary number of
+:ref:`contract definitions<contract_structure>`, import_ ,
+:ref:`pragma<pragma>` and :ref:`using for<using-for>` directives and
+:ref:`struct<structs>`, :ref:`enum<enums>`, :ref:`function<functions>`, :ref:`error<errors>`
+and :ref:`constant variable<constants>` definitions.
+>>>>>>> english/develop
 
 .. index:: ! license, spdx
 
 SPDX License Identifier
 =======================
 
+<<<<<<< HEAD
 スマートコントラクトの信頼性は、そのソースコードが利用可能であれば、より確立されます。
 ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械が解釈可能な `SPDX license identifiers <https://spdx.org>`_ の使用を推奨しています。
 すべてのソースファイルは、そのライセンスを示すコメントで始まるべきです。
+=======
+Trust in smart contracts can be better established if their source code
+is available. Since making source code available always touches on legal problems
+with regards to copyright, the Solidity compiler encourages the use
+of machine-readable `SPDX license identifiers <https://spdx.org>`_.
+Every source file should start with a comment indicating its license:
+>>>>>>> english/develop
 
 ``// SPDX-License-Identifier: MIT``
 
 コンパイラはライセンスが `SPDXで許可されたリスト <https://spdx.org/licenses/>`_ の一部であることを検証しませんが、供給された文字列は :ref:`bytecodeメタデータ <metadata>` に含まれます。
 
+<<<<<<< HEAD
 ライセンスを指定したくない場合や、ソースコードがオープンソースでない場合は、特別な値 ``UNLICENSED`` を使用してください。
+=======
+If you do not want to specify a license or if the source code is
+not open-source, please use the special value ``UNLICENSED``.
+Note that ``UNLICENSED`` (no usage allowed, not present in SPDX license list)
+is different from ``UNLICENSE`` (grants all rights to everyone).
+Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/package-json#license>`_.
+>>>>>>> english/develop
 
 もちろん、このコメントを提供することで、各ソースファイルに特定のライセンスヘッダーを記載しなければならないとか、オリジナルの著作権者に言及しなければならないといった、ライセンスに関する他の義務から解放されるわけではありません。
 
@@ -37,16 +61,63 @@ Pragma
 
 ``pragma`` キーワードは、特定のコンパイラの機能やチェックを有効にするために使用されます。pragmaディレクティブは、常にソースファイルに局所的に適用されるため、プロジェクト全体で有効にしたい場合は、すべてのファイルにpragmaを追加する必要があります。他のファイルを :ref:`インポート<import>` した場合、そのファイルのPragmaは自動的にインポートしたファイルには適用されません。
 
-.. index:: ! pragma, version
+.. index:: ! pragma;version
 
 .. _version_pragma:
 
+<<<<<<< HEAD
 バージョンPragma
+=======
+Version Pragma
+--------------
+
+Source files can (and should) be annotated with a version pragma to reject
+compilation with future compiler versions that might introduce incompatible
+changes. We try to keep these to an absolute minimum and
+introduce them in a way that changes in semantics also require changes
+in the syntax, but this is not always possible. Because of this, it is always
+a good idea to read through the changelog at least for releases that contain
+breaking changes. These releases always have versions of the form
+``0.x.0`` or ``x.0.0``.
+
+The version pragma is used as follows: ``pragma solidity ^0.5.2;``
+
+A source file with the line above does not compile with a compiler earlier than version 0.5.2,
+and it also does not work on a compiler starting from version 0.6.0 (this
+second condition is added by using ``^``). Because
+there will be no breaking changes until version ``0.6.0``, you can
+be sure that your code compiles the way you intended. The exact version of the
+compiler is not fixed, so that bugfix releases are still possible.
+
+It is possible to specify more complex rules for the compiler version,
+these follow the same syntax used by `npm <https://docs.npmjs.com/cli/v6/using-npm/semver>`_.
+
+.. note::
+  Using the version pragma *does not* change the version of the compiler.
+  It also *does not* enable or disable features of the compiler. It just
+  instructs the compiler to check whether its version matches the one
+  required by the pragma. If it does not match, the compiler issues
+  an error.
+
+.. index:: ! ABI coder, ! pragma; abicoder, pragma; ABIEncoderV2
+.. _abi_coder:
+
+ABI Coder Pragma
+>>>>>>> english/develop
 ----------------
 
 ソースファイルには、互換性のない変更が加えられる可能性のある将来のバージョンのコンパイラでのコンパイルを拒否するために、バージョンPragmaで注釈を付けることができます（また、そうすべきです）。私たちはこれらの変更を最小限にとどめ、セマンティクスの変更がシンタックスの変更を必要とするような方法で導入するようにしていますが、これは必ずしも可能ではありません。このため、少なくとも変更点を含むリリースについては、変更履歴に目を通すことをお勧めします。これらのリリースには、常に ``0.x.0`` または ``x.0.0`` という形式のバージョンがあります。
 
+<<<<<<< HEAD
 バージョンPragmaは次のように使用されます: ``pragma solidity ^0.5.2;``。
+=======
+The new ABI coder (v2) is able to encode and decode arbitrarily nested
+arrays and structs. Apart from supporting more types, it involves more extensive
+validation and safety checks, which may result in higher gas costs, but also heightened
+security. It is considered
+non-experimental as of Solidity 0.6.0 and it is enabled by default starting
+with Solidity 0.8.0. The old ABI coder can still be selected using ``pragma abicoder v1;``.
+>>>>>>> english/develop
 
 上記の行を含むソースファイルは、バージョン0.5.2以前のコンパイラではコンパイルできず、バージョン0.6.0以降のコンパイラでも動作しません（この2番目の条件は ``^`` を使用することで追加されます）。また、バージョン0.6.0以降のコンパイラでは動作しません。コンパイラの正確なバージョンは固定されていないので、バグフィックスリリースも可能です。
 
@@ -79,20 +150,24 @@ Solidity 0.8.0からはデフォルトで有効になりますので、 ``pragma
 
   Solidity 0.7.4までは、 ``pragma experimental ABIEncoderV2`` を使用してABIコーダーv2を選択できましたが、coder v1がデフォルトであるため、明示的に選択できませんでした。
 
-.. index:: ! pragma, experimental
-
+.. index:: ! pragma; experimental
 .. _experimental_pragma:
 
 実験的Pragma
 ------------
 
+<<<<<<< HEAD
 2つ目のPragmaは、実験的Pragmaです。これは、デフォルトではまだ有効になっていないコンパイラや言語の機能を有効にするために使用できます。現在、以下の実験的Pragmaがサポートされています。
+=======
+.. index:: ! pragma; ABIEncoderV2
+>>>>>>> english/develop
 
 ABIEncoderV2
 ~~~~~~~~~~~~
 
 ABIコーダーv2は実験的なものではなくなったので、Solidity 0.7.4から ``pragma abicoder v2`` （上記参照）で選択できるようになりました。
 
+.. index:: ! pragma; SMTChecker
 .. _smt_checker:
 
 SMTChecker
@@ -115,7 +190,14 @@ SMTソルバーがローカルにインストールされていて、ブラウ�
 シンタックスとセマンティクス
 ----------------------------
 
+<<<<<<< HEAD
 Solidityは、JavaScript（ES6以降）と同様に、コードをモジュール化するためのimport文をサポートしています。しかし、Solidityは `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#Description>`_ の概念をサポートしていません。
+=======
+Solidity supports import statements to help modularise your code that
+are similar to those available in JavaScript
+(from ES6 on). However, Solidity does not support the concept of
+a `default export <https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#description>`_.
+>>>>>>> english/develop
 
 グローバルレベルでは、次のような形式のimport文を使用できます。
 

@@ -42,7 +42,12 @@ Solidityでは、スマートコントラクトを使ってトークンや、も
 
 スマートコントラクト上で利用できるものはすべて公開されており、ローカル変数や ``private`` と書かれた状態変数も公開されています。
 
+<<<<<<< HEAD
 スマートコントラクトで乱数を使用することは、マイナーが不正行為をする可能性があるため、困難です。
+=======
+Using random numbers in smart contracts is quite tricky if you do not want
+block builders to be able to cheat.
+>>>>>>> english/develop
 
 Re-Entrancy
 ===========
@@ -93,7 +98,12 @@ Etherの送金には常にコードの実行が含まれるため、受信者は
         }
     }
 
+<<<<<<< HEAD
 Re-entrancyを避けるために、以下のようなChecks-Effects-Interactionsパターンを使用できます。
+=======
+To avoid re-entrancy, you can use the Checks-Effects-Interactions pattern as
+demonstrated below:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -111,8 +121,22 @@ Re-entrancyを避けるために、以下のようなChecks-Effects-Interactions
         }
     }
 
+<<<<<<< HEAD
 .. Note that re-entrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
 .. A called contract could modify the state of another contract you depend on.
+=======
+The Checks-Effects-Interactions pattern ensures that all code paths through a contract complete all required checks
+of the supplied parameters before modifying the contract's state (Checks); only then it makes any changes to the state (Effects);
+it may make calls to functions in other contracts *after* all planned state changes have been written to
+storage (Interactions). This is a common foolproof way to prevent *re-entrancy attacks*, where an externally called
+malicious contract is able to double-spend an allowance, double-withdraw a balance, among other things, by using logic that calls back into the
+original contract before it has finalized its transaction.
+
+Note that re-entrancy is not only an effect of Ether transfer but of any
+function call on another contract. Furthermore, you also have to take
+multi-contract situations into account. A called contract could modify the
+state of another contract you depend on.
+>>>>>>> english/develop
 
 Re-entrancyは、Ether送金だけでなく、別のコントラクトでのあらゆる関数呼び出しの影響を受けることに注意してください。
 さらに、複数のコントラクトを考慮しなければならない状況もあります。
@@ -247,18 +271,18 @@ Authorized Proxies
     contract ProxyWithMoreFunctionality {
         PermissionlessProxy proxy;
 
-        function callOther(address _addr, bytes memory _payload) public
+        function callOther(address addr, bytes memory payload) public
                 returns (bool, bytes memory) {
-            return proxy.callOther(_addr, _payload);
+            return proxy.callOther(addr, payload);
         }
         // その他の関数や機能
     }
 
     // これは完全なコントラクトであり、他の機能はなく、動作するために特権を必要としません。
     contract PermissionlessProxy {
-        function callOther(address _addr, bytes memory _payload) public
+        function callOther(address addr, bytes memory payload) public
                 returns (bool, bytes memory) {
-            return _addr.call(_payload);
+            return addr.call(payload);
         }
     }
 
@@ -387,19 +411,19 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
     pragma solidity >=0.6.0 <0.9.0;
 
     contract Map {
-        mapping (uint => uint)[] array;
+        mapping(uint => uint)[] array;
 
-        function allocate(uint _newMaps) public {
-            for (uint i = 0; i < _newMaps; i++)
+        function allocate(uint newMaps) public {
+            for (uint i = 0; i < newMaps; i++)
                 array.push();
         }
 
-        function writeMap(uint _map, uint _key, uint _value) public {
-            array[_map][_key] = _value;
+        function writeMap(uint map, uint key, uint value) public {
+            array[map][key] = value;
         }
 
-        function readMap(uint _map, uint _key) public view returns (uint) {
-            return array[_map][_key];
+        function readMap(uint map, uint key) public view returns (uint) {
+            return array[map][key];
         }
 
         function eraseMaps() public {

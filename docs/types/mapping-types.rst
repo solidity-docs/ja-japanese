@@ -4,12 +4,22 @@
 マッピング型
 ============
 
+<<<<<<< HEAD
 .. Mapping types use the syntax ``mapping(_KeyType => _ValueType)`` and variables
 .. of mapping type are declared using the syntax ``mapping(_KeyType => _ValueType) _VariableName``.
 .. The ``_KeyType`` can be any
 .. built-in value type, ``bytes``, ``string``, or any contract or enum type. Other user-defined
 .. or complex types, such as mappings, structs or array types are not allowed.
 .. ``_ValueType`` can be any type, including mappings, arrays and structs.
+=======
+Mapping types use the syntax ``mapping(KeyType KeyName? => ValueType ValueName?)`` and variables of
+mapping type are declared using the syntax ``mapping(KeyType KeyName? => ValueType ValueName?)
+VariableName``. The ``KeyType`` can be any built-in value type, ``bytes``, ``string``, or any
+contract or enum type. Other user-defined or complex types, such as mappings, structs or array types
+are not allowed. ``ValueType`` can be any type, including mappings, arrays and structs. ``KeyName``
+and ``ValueName`` are optional (so ``mapping(KeyType => ValueType)`` works as well) and can be any
+valid identifier that is not a type.
+>>>>>>> english/develop
 
 マッピング型は ``mapping(_KeyType => _ValueType)`` の構文を使用し、マッピング型の変数は ``mapping(_KeyType => _ValueType) _VariableName`` の構文を使用して宣言されます。
 ``_KeyType`` には、任意の組み込み値型、 ``bytes`` 、 ``string`` 、または任意のコントラクト型や列挙型を使用できます。
@@ -25,9 +35,19 @@
 マッピングは `ハッシュテーブル <https://en.wikipedia.org/wiki/Hash_table>`_ と考えることができ、ありとあらゆるキーが存在するように仮想的に初期化され、バイト表現がすべてゼロである値（型の :ref:`デフォルト値<default-value>` ）にマッピングされています。
 キーデータはマッピングには保存されず、 ``keccak256`` ハッシュのみが値の検索に使用されるという点で似ています。
 
+<<<<<<< HEAD
 .. Because of this, mappings do not have a length or a concept of a key or
 .. value being set, and therefore cannot be erased without extra information
 .. regarding the assigned keys (see :ref:`clearing-mappings`).
+=======
+You can mark state variables of mapping type as ``public`` and Solidity creates a
+:ref:`getter <visibility-and-getters>` for you. The ``KeyType`` becomes a parameter
+with name ``KeyName`` (if specified) for the getter.
+If ``ValueType`` is a value type or a struct, the getter returns ``ValueType`` with
+name ``ValueName`` (if specified).
+If ``ValueType`` is an array or a mapping, the getter has one parameter for
+each ``KeyType``, recursively.
+>>>>>>> english/develop
 
 このため、マッピングには長さや、キーや値が設定されているという概念がなく、割り当てられたキーに関する余分な情報（ :ref:`clearing-mappings` 参照）がないと消すことができません。
 
@@ -82,6 +102,7 @@
         }
     }
 
+<<<<<<< HEAD
 .. The example below is a simplified version of an
 .. `ERC20 token <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_.
 .. ``_allowances`` is an example of a mapping type inside another mapping type.
@@ -90,6 +111,31 @@
 下の例は、 `ERC20トークン <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_ を簡略化したものです。
 ``_allowances`` は、別のマッピング型の中にマッピング型がある例です。
 以下の例では、 ``_allowances`` を使って、他の人があなたのアカウントから引き出すことができる金額を記録しています。
+=======
+The example below is a simplified version of an
+`ERC20 token <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>`_.
+``_allowances`` is an example of a mapping type inside another mapping type.
+
+In the example below, the optional ``KeyName`` and ``ValueName`` are provided for the mapping.
+It does not affect any contract functionality or bytecode, it only sets the ``name`` field
+for the inputs and outputs in the ABI for the mapping's getter.
+
+.. code-block:: solidity
+
+    // SPDX-License-Identifier: GPL-3.0
+    pragma solidity ^0.8.18;
+
+    contract MappingExampleWithNames {
+        mapping(address user => uint balance) public balances;
+
+        function update(uint newBalance) public {
+            balances[msg.sender] = newBalance;
+        }
+    }
+
+
+The example below uses ``_allowances`` to record the amount someone else is allowed to withdraw from your account.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -98,8 +144,8 @@
 
     contract MappingExample {
 
-        mapping (address => uint256) private _balances;
-        mapping (address => mapping (address => uint256)) private _allowances;
+        mapping(address => uint256) private _balances;
+        mapping(address => mapping(address => uint256)) private _allowances;
 
         event Transfer(address indexed from, address indexed to, uint256 value);
         event Approval(address indexed owner, address indexed spender, uint256 value);
@@ -109,23 +155,24 @@
         }
 
         function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
+            require(_allowances[sender][msg.sender] >= amount, "ERC20: Allowance not high enough.");
+            _allowances[sender][msg.sender] -= amount;
             _transfer(sender, recipient, amount);
-            approve(sender, msg.sender, amount);
             return true;
         }
 
-        function approve(address owner, address spender, uint256 amount) public returns (bool) {
-            require(owner != address(0), "ERC20: approve from the zero address");
+        function approve(address spender, uint256 amount) public returns (bool) {
             require(spender != address(0), "ERC20: approve to the zero address");
 
-            _allowances[owner][spender] = amount;
-            emit Approval(owner, spender, amount);
+            _allowances[msg.sender][spender] = amount;
+            emit Approval(msg.sender, spender, amount);
             return true;
         }
 
         function _transfer(address sender, address recipient, uint256 amount) internal {
             require(sender != address(0), "ERC20: transfer from the zero address");
             require(recipient != address(0), "ERC20: transfer to the zero address");
+            require(_balances[sender] >= amount, "ERC20: Not enough funds.");
 
             _balances[sender] -= amount;
             _balances[recipient] += amount;
@@ -139,6 +186,7 @@
 イテレート可能なマッピング
 --------------------------
 
+<<<<<<< HEAD
 .. You cannot iterate over mappings, i.e. you cannot enumerate their keys.
 .. It is possible, though, to implement a data structure on
 .. top of them and iterate over that. For example, the code below implements an
@@ -148,12 +196,19 @@
 マッピングはイテレートできません。つまり、キーを列挙することもできません。
 しかし、マッピングの上にデータ構造を実装し、その上で反復処理を行うことは可能です。
 例えば、以下のコードでは、 ``IterableMapping`` ライブラリを実装し、 ``User`` コントラクトがデータを追加し、 ``sum`` 関数がすべての値を合計するために反復処理を行います。
+=======
+You cannot iterate over mappings, i.e. you cannot enumerate their keys.
+It is possible, though, to implement a data structure on
+top of them and iterate over that. For example, the code below implements an
+``IterableMapping`` library that the ``User`` contract then adds data to, and
+the ``sum`` function iterates over to sum all the values.
+>>>>>>> english/develop
 
 .. code-block:: solidity
     :force:
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.6.8 <0.9.0;
+    pragma solidity ^0.8.8;
 
     struct IndexValue { uint keyIndex; uint value; }
     struct KeyFlag { uint key; bool deleted; }
@@ -163,6 +218,8 @@
         KeyFlag[] keys;
         uint size;
     }
+
+    type Iterator is uint;
 
     library IterableMapping {
         function insert(itmap storage self, uint key, uint value) internal returns (bool replaced) {
@@ -193,24 +250,28 @@
             return self.data[key].keyIndex > 0;
         }
 
-        function iterate_start(itmap storage self) internal view returns (uint keyIndex) {
-            return iterate_next(self, type(uint).max);
+        function iterateStart(itmap storage self) internal view returns (Iterator) {
+            return iteratorSkipDeleted(self, 0);
         }
 
-        function iterate_valid(itmap storage self, uint keyIndex) internal view returns (bool) {
-            return keyIndex < self.keys.length;
+        function iterateValid(itmap storage self, Iterator iterator) internal view returns (bool) {
+            return Iterator.unwrap(iterator) < self.keys.length;
         }
 
-        function iterate_next(itmap storage self, uint keyIndex) internal view returns (uint r_keyIndex) {
-            keyIndex++;
-            while (keyIndex < self.keys.length && self.keys[keyIndex].deleted)
-                keyIndex++;
-            return keyIndex;
+        function iterateNext(itmap storage self, Iterator iterator) internal view returns (Iterator) {
+            return iteratorSkipDeleted(self, Iterator.unwrap(iterator) + 1);
         }
 
-        function iterate_get(itmap storage self, uint keyIndex) internal view returns (uint key, uint value) {
+        function iterateGet(itmap storage self, Iterator iterator) internal view returns (uint key, uint value) {
+            uint keyIndex = Iterator.unwrap(iterator);
             key = self.keys[keyIndex].key;
             value = self.data[key].value;
+        }
+
+        function iteratorSkipDeleted(itmap storage self, uint keyIndex) private view returns (Iterator) {
+            while (keyIndex < self.keys.length && self.keys[keyIndex].deleted)
+                keyIndex++;
+            return Iterator.wrap(keyIndex);
         }
     }
 
@@ -232,11 +293,11 @@
         // 保存されているすべてのデータの合計を計算する。
         function sum() public view returns (uint s) {
             for (
-                uint i = data.iterate_start();
-                data.iterate_valid(i);
-                i = data.iterate_next(i)
+                Iterator i = data.iterateStart();
+                data.iterateValid(i);
+                i = data.iterateNext(i)
             ) {
-                (, uint value) = data.iterate_get(i);
+                (, uint value) = data.iterateGet(i);
                 s += value;
             }
         }

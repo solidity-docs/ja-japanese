@@ -9,11 +9,19 @@
 インターフェースは、抽象的なコントラクトと似ていますが、いかなる関数も実装できません。
 さらに以下の制限があります。
 
+<<<<<<< HEAD
 - 他のコントラクトを継承できませんが、他のインターフェースを継承できます。
 - 宣言された関数はすべてexternalでなければなりません。
 - コンストラクタを宣言できません。
 - 状態変数を宣言できません。
 - 修飾子を宣言できません。
+=======
+- They cannot inherit from other contracts, but they can inherit from other interfaces.
+- All declared functions must be external in the interface, even if they are public in the contract.
+- They cannot declare a constructor.
+- They cannot declare state variables.
+- They cannot declare modifiers.
+>>>>>>> english/develop
 
 これらの制限の一部は、将来的に解除される可能性があります。
 
