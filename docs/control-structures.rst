@@ -157,6 +157,9 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 .. note::
 
+    Solidity 0.6.2以前は、valueとgasを指定する方法として、 ``f.value(x).gas(g)()`` を使用することが推奨されていました。
+    これはSolidity 0.6.2で非推奨となり、Solidity 0.7.0からはできなくなりました。
+
 Function Calls with Named Parameters
 ------------------------------------
 
