@@ -200,25 +200,16 @@ Assert
 .. An assertion represents an invariant in your code: a property that must be true
 .. *for all transactions, including all input and storage values*, otherwise there is a bug.
 
-<<<<<<< HEAD
 アサーションとは、コードの不変性を表すもので、すべての入力値と保存値を含むすべてのトランザクションに対して*真でなければならないプロパティで、そうでなければバグがあることになります。
 
 .. The code below defines a function ``f`` that guarantees no overflow.
 .. Function ``inv`` defines the specification that ``f`` is monotonically increasing:
-.. for every possible pair ``(_a, _b)``, if ``_b > _a`` then ``f(_b) > f(_a)``.
+.. for every possible pair ``(a, b)``, if ``b > a`` then ``f(b) > f(a)``.
 .. Since ``f`` is indeed monotonically increasing, the SMTChecker proves that our
 .. property is correct. You are encouraged to play with the property and the function
 .. definition to see what results come out!
 
-以下のコードでは、オーバーフローしないことを保証する関数 ``f`` を定義しています。関数 ``inv`` は、 ``f`` が単調増加であるという仕様を定義しています: すべての可能なペア ``(_a, _b)`` に対して、もし ``_b > _a`` ならば ``f(_b) > f(_a)`` です。 ``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。この性質と関数の定義を使って、どんな結果が出るか試してみてください。
-=======
-The code below defines a function ``f`` that guarantees no overflow.
-Function ``inv`` defines the specification that ``f`` is monotonically increasing:
-for every possible pair ``(a, b)``, if ``b > a`` then ``f(b) > f(a)``.
-Since ``f`` is indeed monotonically increasing, the SMTChecker proves that our
-property is correct. You are encouraged to play with the property and the function
-definition to see what results come out!
->>>>>>> english/develop
+以下のコードでは、オーバーフローしないことを保証する関数 ``f`` を定義しています。関数 ``inv`` は、 ``f`` が単調増加であるという仕様を定義しています: すべての可能なペア ``(a, b)`` に対して、もし ``b > a`` ならば ``f(b) > f(a)`` です。 ``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。この性質と関数の定義を使って、どんな結果が出るか試してみてください。
 
 .. code-block:: Solidity
 
@@ -870,19 +861,12 @@ transactions to ``B``.
 Reported Inferred Inductive Invariants
 ======================================
 
-<<<<<<< HEAD
 .. For properties that were proved safe with the CHC engine,
 .. the SMTChecker can retrieve inductive invariants that were inferred by the Horn
 .. solver as part of the proof.
-.. Currently two types of invariants can be reported to the user:
-=======
-For properties that were proved safe with the CHC engine,
-the SMTChecker can retrieve inductive invariants that were inferred by the Horn
-solver as part of the proof.
-Currently only two types of invariants can be reported to the user:
->>>>>>> english/develop
+.. Currently only two types of invariants can be reported to the user:
 
-CHCエンジンで安全性が証明された性質については、SMTCheckerは証明の一部としてホーンソルバーによって推論された帰納的不変量を取得できます。現在、2種類の不変量をユーザに報告できます。
+CHCエンジンで安全性が証明された性質については、SMTCheckerは証明の一部としてホーンソルバーによって推論された帰納的不変量を取得できます。現在、2種類のみの不変量をユーザに報告できます。
 
 .. - Contract Invariants: these are properties over the contract's state variables
 ..   that are true before and after every possible transaction that the contract may ever run. For example, ``x >= y``, where ``x`` and ``y`` are a contract's state variables.
@@ -999,60 +983,32 @@ SMT and Horn solvers
 .. <https://spacer.bitbucket.io/>`_ available as a Horn solver, and `Eldarica
 .. <https://github.com/uuverifiers/eldarica>`_ which does both.
 
-<<<<<<< HEAD
 上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。  BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
 
 .. The user can choose which solvers should be used, if available, via the CLI
-.. option ``--model-checker-solvers {all,cvc4,smtlib2,z3}`` or the JSON option
+.. option ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}`` or the JSON option
 .. ``settings.modelChecker.solvers=[smtlib2,z3]``, where:
 
-ユーザーは、使用可能な場合、どのソルバーを使用するかを、CLIオプション ``--model-checker-solvers {all,cvc4,smtlib2,z3}`` またはJSONオプション ``settings.modelChecker.solvers=[smtlib2,z3]`` で選択できます。
+ユーザーは、使用可能な場合、どのソルバーを使用するかを、CLIオプション ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}`` またはJSONオプション ``settings.modelChecker.solvers=[smtlib2,z3]`` で選択できます。
 
 .. - ``cvc4`` is only available if the ``solc`` binary is compiled with it. Only BMC uses ``cvc4``.
-=======
-The user can choose which solvers should be used, if available, via the CLI
-option ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}`` or the JSON option
-``settings.modelChecker.solvers=[smtlib2,z3]``, where:
-
-- ``cvc4`` is only available if the ``solc`` binary is compiled with it. Only BMC uses ``cvc4``.
-- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
-- ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
-  These can be used together with the compiler's `callback mechanism <https://github.com/ethereum/solc-js>`_ so that
-  any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
-  This can be used by both BMC and CHC depending on which solvers are called.
-- ``z3`` is available
-
-  - if ``solc`` is compiled with it;
-  - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
-  - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the Javascript binary of the compiler.
-
-.. note::
-  z3 version 4.8.16 broke ABI compatibility with previous versions and cannot
-  be used with solc <=0.8.13. If you are using z3 >=4.8.16 please use solc
-  >=0.8.14, and conversely, only use older z3 with older solc releases.
-  We also recommend using the latest z3 release which is what SMTChecker also does.
-
-Since both BMC and CHC use ``z3``, and ``z3`` is available in a greater variety
-of environments, including in the browser, most users will almost never need to be
-concerned about this option. More advanced users might apply this option to try
-alternative solvers on more complex problems.
->>>>>>> english/develop
 
 - ``cvc4`` は、 ``solc`` のバイナリがコンパイルされている場合にのみ使用できます。 ``cvc4`` を使うのはBMCだけです。
+
+- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
 
 .. - ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
 ..   These can be used together with the compiler's `callback mechanism <https://github.com/ethereum/solc-js>`_ so that
 ..   any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
-..   This is currently the only way to use Eldarica, for example, since it does not have a C++ API.
 ..   This can be used by both BMC and CHC depending on which solvers are called.
 
-- ``smtlib2`` はSMT/Hornのクエリを `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ 形式で出力します。   これをコンパイラの `callback mechanism <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。   例えば、EldaricaはC++のAPIを持っていないので、これが現在のところ唯一の使用方法です。   これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
+- ``smtlib2`` はSMT/Hornのクエリを `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ 形式で出力します。   これをコンパイラの `callback mechanism <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
 
 .. - ``z3`` is available
 
 ..   - if ``solc`` is compiled with it;
 
-..   - if a dynamic ``z3`` library of version 4.8.x is installed in a Linux system (from Solidity 0.7.6);
+..   - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
 
 ..   - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the Javascript binary of the compiler.
 
@@ -1060,9 +1016,15 @@ alternative solvers on more complex problems.
 
   -  ``solc`` がコンパイルされていれば
 
-  - Linuxシステムにバージョン4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
+  - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
   -  ``soljson.js``  (Solidity 0.6.9 以降)では静的に、つまりコンパイラの Javascript バイナリを使用しています。
+
+.. note::
+  z3 version 4.8.16 broke ABI compatibility with previous versions and cannot
+  be used with solc <=0.8.13. If you are using z3 >=4.8.16 please use solc
+  >=0.8.14, and conversely, only use older z3 with older solc releases.
+  We also recommend using the latest z3 release which is what SMTChecker also does.
 
 .. Since both BMC and CHC use ``z3``, and ``z3`` is available in a greater variety
 .. of environments, including in the browser, most users will almost never need to be
@@ -1123,17 +1085,12 @@ SMTCheckerのエンコーディングは可能な限り正確を期しており�
 .. Types that are not yet supported are abstracted by a single 256-bit unsigned
 .. integer, where their unsupported operations are ignored.
 
-<<<<<<< HEAD
 まだサポートされていない型は、1つの256ビットの符号なし整数で抽象化され、サポートされていない操作は無視されます。
 
 .. For more details on how the SMT encoding works internally, see the paper
-.. `SMT-based Verification of Solidity Smart Contracts <https://github.com/leonardoalt/text/blob/master/solidity_isola_2018/main.pdf>`_.
+.. `SMT-based Verification of Solidity Smart Contracts <https://github.com/chriseth/solidity_isola/blob/master/main.pdf>`_.
 
-SMTエンコーディングの内部動作の詳細については、論文 `SMT-based Verification of Solidity Smart Contracts <https://github.com/leonardoalt/text/blob/master/solidity_isola_2018/main.pdf>`_ を参照してください。
-=======
-For more details on how the SMT encoding works internally, see the paper
-`SMT-based Verification of Solidity Smart Contracts <https://github.com/chriseth/solidity_isola/blob/master/main.pdf>`_.
->>>>>>> english/develop
+SMTエンコーディングの内部動作の詳細については、論文 `SMT-based Verification of Solidity Smart Contracts <https://github.com/chriseth/solidity_isola/blob/master/main.pdf>`_ を参照してください。
 
 Function Calls
 ==============
