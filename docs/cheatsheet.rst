@@ -8,69 +8,7 @@
 ================================
 .. include:: types/operator-precedence-table.rst
 
-<<<<<<< HEAD
-演算子の優先順位を評価順に並べると以下のようになります。
-
-+------------+-------------------------------------+--------------------------------------------+
-| 優先順位   | 説明                                | 演算子                                     |
-+============+=====================================+============================================+
-| *1*        | 後置インクリメントとデクリメント    | ``++``, ``--``                             |
-+            +-------------------------------------+--------------------------------------------+
-|            | New式                               | ``new <typename>``                         |
-+            +-------------------------------------+--------------------------------------------+
-|            | 配列添字アクセス                    | ``<array>[<index>]``                       |
-+            +-------------------------------------+--------------------------------------------+
-|            | メンバアクセス                      | ``<object>.<member>``                      |
-+            +-------------------------------------+--------------------------------------------+
-|            | 関数的呼び出し                      | ``<func>(<args...>)``                      |
-+            +-------------------------------------+--------------------------------------------+
-|            | 括弧                                | ``(<statement>)``                          |
-+------------+-------------------------------------+--------------------------------------------+
-| *2*        | 前置インクリメントとデクリメント    | ``++``, ``--``                             |
-+            +-------------------------------------+--------------------------------------------+
-|            | 単項マイナス                        | ``-``                                      |
-+            +-------------------------------------+--------------------------------------------+
-|            | 単項演算子                          | ``delete``                                 |
-+            +-------------------------------------+--------------------------------------------+
-|            | 論理否定                            | ``!``                                      |
-+            +-------------------------------------+--------------------------------------------+
-|            | ビット単位の否定                    | ``~``                                      |
-+------------+-------------------------------------+--------------------------------------------+
-| *3*        | 累乗                                | ``**``                                     |
-+------------+-------------------------------------+--------------------------------------------+
-| *4*        | 乗算、除算、剰余                    | ``*``, ``/``, ``%``                        |
-+------------+-------------------------------------+--------------------------------------------+
-| *5*        | 加算、減算                          | ``+``, ``-``                               |
-+------------+-------------------------------------+--------------------------------------------+
-| *6*        | ビット単位のシフト演算              | ``<<``, ``>>``                             |
-+------------+-------------------------------------+--------------------------------------------+
-| *7*        | ビット単位のAND                     | ``&``                                      |
-+------------+-------------------------------------+--------------------------------------------+
-| *8*        | ビット単位のXOR                     | ``^``                                      |
-+------------+-------------------------------------+--------------------------------------------+
-| *9*        | ビット単位のOR                      | ``|``                                      |
-+------------+-------------------------------------+--------------------------------------------+
-| *10*       | 不等号演算子                        | ``<``, ``>``, ``<=``, ``>=``               |
-+------------+-------------------------------------+--------------------------------------------+
-| *11*       | 等号演算子                          | ``==``, ``!=``                             |
-+------------+-------------------------------------+--------------------------------------------+
-| *12*       | 論理AND                             | ``&&``                                     |
-+------------+-------------------------------------+--------------------------------------------+
-| *13*       | 論理OR                              | ``||``                                     |
-+------------+-------------------------------------+--------------------------------------------+
-| *14*       | 三項演算子                          | ``<conditional> ? <if-true> : <if-false>`` |
-+            +-------------------------------------+--------------------------------------------+
-|            | 代入演算子                          | ``=``, ``|=``, ``^=``, ``&=``, ``<<=``,    |
-|            |                                     | ``>>=``, ``+=``, ``-=``, ``*=``, ``/=``,   |
-|            |                                     | ``%=``                                     |
-+------------+-------------------------------------+--------------------------------------------+
-| *15*       | カンマ演算子                        | ``,``                                      |
-+------------+-------------------------------------+--------------------------------------------+
-
-.. index:: assert, block, coinbase, difficulty, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin, revert, require, keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, this, super, selfdestruct, balance, codehash, send
-=======
 .. index:: assert, block, coinbase, difficulty, prevrandao, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin, revert, require, keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, this, super, selfdestruct, balance, codehash, send
->>>>>>> english/develop
 
 グローバル変数
 ================
@@ -91,13 +29,14 @@
 
 - ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the
   tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
-<<<<<<< HEAD
 
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:
-  ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature)), ...)`` と同等です。
+  ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` と同等です。
 
 - ``bytes.concat(...) returns (bytes memory)``: 
   :ref:`可変個の引数を1つのバイト配列に連結する。<bytes-concat>`
+
+- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of arguments to one string array<string-concat>`
 
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
 
@@ -105,13 +44,15 @@
 
 - ``block.coinbase`` (``address payable``): カレントブロックのマイナーのアドレス
 
-- ``block.difficulty`` (``uint``): カレントブロックの難易度
+- ``block.difficulty`` (``uint``): カレントブロックの難易度（ ``EVM < Paris`` ）。For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` that will be removed in the next breaking release
 
 - ``block.gaslimit`` (``uint``): カレントブロックのガスリミット
 
 - ``block.number`` (``uint``): カレントブロックの番号
 
-- ``block.timestamp`` ( ``uint`` ): カレントブロックのタイムスタンプ
+- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``) (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
+
+- ``block.timestamp`` ( ``uint`` ): Unixエポックからのカレントブロックのタイムスタンプ（秒）
 
 - ``gasleft() returns (uint256)``: 残りのガス
 
@@ -186,112 +127,6 @@
 - ``type(T).max`` (``T``): 
   整数型 ``T`` で表現可能な最大値、 :ref:`型情報<meta-type>` を参照。
 
-.. .. note::
-
-..     When contracts are evaluated off-chain rather than in context of a transaction included in a
-..     block, you should not assume that ``block.*`` and ``tx.*`` refer to values from any specific
-..     block or transaction. These values are provided by the EVM implementation that executes the
-..     contract and can be arbitrary.
-
-.. note::
-
-    コントラクトが、ブロックに含まれるトランザクションのコンテキストではなく、オフチェーンで評価される場合、 ``block.*`` と ``tx.*`` が特定のブロックやトランザクションの値を参照していると仮定してはなりません。これらの値は、コントラクトを実行するEVMの実装によって提供され、任意のものとなりえます。
-
-.. .. note::
-
-..     Do not rely on ``block.timestamp`` or ``blockhash`` as a source of randomness,
-..     unless you know what you are doing.
-
-..     Both the timestamp and the block hash can be influenced by miners to some degree.
-..     Bad actors in the mining community can for example run a casino payout function on a chosen hash
-..     and just retry a different hash if they did not receive any money.
-
-..     The current block timestamp must be strictly larger than the timestamp of the last block,
-..     but the only guarantee is that it will be somewhere between the timestamps of two
-..     consecutive blocks in the canonical chain.
-
-.. note::
-
-    自分が何をしているか分かっていない限り、ランダム性の源として ``block.timestamp`` や ``blockhash`` に頼ってはいけません。
-
-    タイムスタンプもブロックハッシュも、ある程度はマイナーの影響を受ける可能性があります。     マイニングコミュニティの悪質な行為者は、例えば、選択したハッシュでカジノのペイアウト関数を実行し、お金を受け取れなかった場合は別のハッシュで再試行できます。
-
-    現在のブロックのタイムスタンプは、最後のブロックのタイムスタンプよりも厳密に大きくなければなりませんが、唯一の保証は、正規のチェーンで連続する2つのブロックのタイムスタンプの間のどこかになるということです。
-
-.. .. note::
-
-..     The block hashes are not available for all blocks for scalability reasons.
-..     You can only access the hashes of the most recent 256 blocks, all other
-..     values will be zero.
-
-.. note::
-
-    ブロックハッシュは、スケーラビリティの観点から、すべてのブロックで利用できるわけではありません。     アクセスできるのは最新の256ブロックのハッシュのみで、その他の値はすべてゼロになります。
-
-.. note::
-
-    バージョン0.5.0では、以下のエイリアスが削除されました: ``suicide`` (``selfdestruct`` のエイリアス)、 ``msg.gas`` (``gasleft`` のエイリアス)、 ``block.blockhash`` ( ``blockhash`` のエイリアス)、 ``sha3`` (``keccak256`` のエイリアス)。
-    
-.. note::
-
-    バージョン0.7.0では、 エイリアス ``now`` （ ``block.timestamp`` に対するもの ）を削除しました。
-=======
-- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent
-  to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
-- ``bytes.concat(...) returns (bytes memory)``: :ref:`Concatenates variable number of
-  arguments to one byte array<bytes-concat>`
-- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of
-  arguments to one string array<string-concat>`
-- ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
-- ``block.chainid`` (``uint``): current chain id
-- ``block.coinbase`` (``address payable``): current block miner's address
-- ``block.difficulty`` (``uint``): current block difficulty (``EVM < Paris``). For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` that will be removed in the next breaking release
-- ``block.gaslimit`` (``uint``): current block gaslimit
-- ``block.number`` (``uint``): current block number
-- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``) (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
-- ``block.timestamp`` (``uint``): current block timestamp in seconds since Unix epoch
-- ``gasleft() returns (uint256)``: remaining gas
-- ``msg.data`` (``bytes``): complete calldata
-- ``msg.sender`` (``address``): sender of the message (current call)
-- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
-- ``msg.value`` (``uint``): number of wei sent with the message
-- ``tx.gasprice`` (``uint``): gas price of the transaction
-- ``tx.origin`` (``address``): sender of the transaction (full call chain)
-- ``assert(bool condition)``: abort execution and revert state changes if condition is ``false`` (use for internal error)
-- ``require(bool condition)``: abort execution and revert state changes if condition is ``false`` (use
-  for malformed input or error in external component)
-- ``require(bool condition, string memory message)``: abort execution and revert state changes if
-  condition is ``false`` (use for malformed input or error in external component). Also provide error message.
-- ``revert()``: abort execution and revert state changes
-- ``revert(string memory message)``: abort execution and revert state changes providing an explanatory string
-- ``blockhash(uint blockNumber) returns (bytes32)``: hash of the given block - only works for 256 most recent blocks
-- ``keccak256(bytes memory) returns (bytes32)``: compute the Keccak-256 hash of the input
-- ``sha256(bytes memory) returns (bytes32)``: compute the SHA-256 hash of the input
-- ``ripemd160(bytes memory) returns (bytes20)``: compute the RIPEMD-160 hash of the input
-- ``ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)``: recover address associated with
-  the public key from elliptic curve signature, return zero on error
-- ``addmod(uint x, uint y, uint k) returns (uint)``: compute ``(x + y) % k`` where the addition is performed with
-  arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
-- ``mulmod(uint x, uint y, uint k) returns (uint)``: compute ``(x * y) % k`` where the multiplication is performed
-  with arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
-- ``this`` (current contract's type): the current contract, explicitly convertible to ``address`` or ``address payable``
-- ``super``: the contract one level higher in the inheritance hierarchy
-- ``selfdestruct(address payable recipient)``: destroy the current contract, sending its funds to the given address
-- ``<address>.balance`` (``uint256``): balance of the :ref:`address` in Wei
-- ``<address>.code`` (``bytes memory``): code at the :ref:`address` (can be empty)
-- ``<address>.codehash`` (``bytes32``): the codehash of the :ref:`address`
-- ``<address payable>.send(uint256 amount) returns (bool)``: send given amount of Wei to :ref:`address`,
-  returns ``false`` on failure
-- ``<address payable>.transfer(uint256 amount)``: send given amount of Wei to :ref:`address`, throws on failure
-- ``type(C).name`` (``string``): the name of the contract
-- ``type(C).creationCode`` (``bytes memory``): creation bytecode of the given contract, see :ref:`Type Information<meta-type>`.
-- ``type(C).runtimeCode`` (``bytes memory``): runtime bytecode of the given contract, see :ref:`Type Information<meta-type>`.
-- ``type(I).interfaceId`` (``bytes4``): value containing the EIP-165 interface identifier of the given interface, see :ref:`Type Information<meta-type>`.
-- ``type(T).min`` (``T``): the minimum value representable by the integer type ``T``, see :ref:`Type Information<meta-type>`.
-- ``type(T).max`` (``T``): the maximum value representable by the integer type ``T``, see :ref:`Type Information<meta-type>`.
-
->>>>>>> english/develop
-
 .. index:: visibility, public, private, external, internal
 
 関数の可視性指定子
@@ -319,7 +154,6 @@
 
 - 関数の ``pure``: 状態の変更やアクセスを禁止する。
 
-<<<<<<< HEAD
 - 関数の ``view``: 状態の変更を不可とする。
 
 - 関数の ``payable``: コールと同時にイーサを受信できるようにする。
@@ -335,16 +169,3 @@
 - 関数や修飾子の ``virtual``: 関数や修飾子の動作を派生コントラクトで変更できるようにする。
 
 - ``override``: この関数、修飾子、パブリックの状態変数が、ベースコントラクト内の関数や修飾子の動作を変更することを示す。
-
-予約語
-=================
-
-これらのキーワードはSolidityで予約されています。将来的には構文の一部になるかもしれません。
-
-``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
-``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
-``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
-``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
-``var``.
-=======
->>>>>>> english/develop
