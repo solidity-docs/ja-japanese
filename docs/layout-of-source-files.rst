@@ -2,7 +2,7 @@
 Solidityソースファイルのレイアウト
 **********************************
 
-ソースファイルには、任意の数の :ref:`コントラクト定義<contract_structure>` 、import_ 、 :ref:`pragmaディレクティブ<pragma>` 、:ref:`using for<using-for>` ディレクティブと :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
+ソースファイルには、任意の数の :ref:`コントラクト定義<contract_structure>` 、import_ 、 :ref:`pragma<pragma>` 、:ref:`using for<using-for>` ディレクティブと :ref:`struct<structs>` 、 :ref:`enum<enums>` 、 :ref:`function<functions>` 、 :ref:`error<errors>` 、 :ref:`constant variable<constants>` の定義を含めることができます。
 
 .. index:: ! license, spdx
 
