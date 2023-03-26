@@ -253,21 +253,13 @@ Direct Imports
 
 ..     A source unit name is just an identifier and even if its value happens to look like a path, it
 ..     is not subject to the normalization rules you would typically expect in a shell.
-..     Any ``/./`` or ``/../`` seguments or sequences of multiple slashes remain a part of it.
+..     Any ``/./`` or ``/../`` segments or sequences of multiple slashes remain a part of it.
 ..     When the source is provided via Standard JSON interface it is entirely possible to associate
 ..     different content with source unit names that would refer to the same file on disk.
 
 .. note::
 
-<<<<<<< HEAD
-    ソースユニット名は単なる識別子であり、その値がたまたまパスのように見えたとしても、シェルで一般的に期待される正規化ルールの対象にはなりません。      ``/./`` や ``/../`` のセグメンテーションや複数のスラッシュのシーケンスがあっても、その一部として残ります。     ソースが標準のJSONインターフェースで提供されている場合、ディスク上の同じファイルを参照するソースユニット名に、異なるコンテンツを関連付けることができます。
-=======
-    A source unit name is just an identifier and even if its value happens to look like a path, it
-    is not subject to the normalization rules you would typically expect in a shell.
-    Any ``/./`` or ``/../`` segments or sequences of multiple slashes remain a part of it.
-    When the source is provided via Standard JSON interface it is entirely possible to associate
-    different content with source unit names that would refer to the same file on disk.
->>>>>>> english/develop
+    ソースユニット名は単なる識別子であり、その値がたまたまパスのように見えたとしても、シェルで一般的に期待される正規化ルールの対象にはなりません。      ``/./`` や ``/../`` のセグメントや複数のスラッシュのシーケンスがあっても、その一部として残ります。     ソースが標準のJSONインターフェースで提供されている場合、ディスク上の同じファイルを参照するソースユニット名に、異なるコンテンツを関連付けることができます。
 
 .. When the source is not available in the virtual filesystem, the compiler passes the source unit name
 .. to the import callback.
@@ -331,15 +323,8 @@ Relative Imports
 .. A separator is a forward slash or the beginning/end of the string.
 .. For example in ``./abc/..//`` there are three path segments: ``.``, ``abc`` and ``..``.
 
-<<<<<<< HEAD
 ここでは、セパレータを含まず、2つのパスセパレータで囲まれた空でない部分を *パスセグメント* と定義します。セパレータとは、フォワードスラッシュや文字列の先頭/末尾のことです。例えば、 ``./abc/..//`` では3つのパスセグメントがあります。 ``.`` 、 ``abc`` 、 ``..``  です。
 
-.. The compiler computes a source unit name from the import path in the following way:
-
-コンパイラは、インポートパスからソースユニット名を以下のように計算します。
-
-.. 1. First a prefix is computed
-=======
 The compiler resolves the import into a source unit name based on the import path, in the following way:
 
 #. We start with the source unit name of the importing source unit.
@@ -348,38 +333,6 @@ The compiler resolves the import into a source unit name based on the import pat
     - If the segment is ``.``, it is skipped.
     - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
     - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
->>>>>>> english/develop
-
-..     - Prefix is initialized with the source unit name of the importing source unit.
-
-..     - The last path segment with preceding slashes is removed from the prefix.
-
-<<<<<<< HEAD
-..     - Then, the leading part of the normalized import path, consisting only of ``/`` and ``.``
-..       characters is considered.
-..       For every ``..`` segment found in this part the last path segment with preceding slashes is
-..       removed from the prefix.
-
-1. まず、プレフィックスを計算します。
-
-    - Prefixは、インポートするソースユニットのソースユニット名で初期化されます。
-=======
-Note that the process normalizes the part of the resolved source unit name that comes from the import path according
-to the usual rules for UNIX paths, i.e. all ``.`` and ``..`` are removed and multiple slashes are
-squashed into a single one.
-On the other hand, the part that comes from the source unit name of the importing module remains unnormalized.
-This ensures that the ``protocol://`` part does not turn into ``protocol:/`` if the importing file
-is identified with a URL.
->>>>>>> english/develop
-
-    - スラッシュが先行する最後のパスセグメントがプレフィックスから削除されます。
-
-    - 次に、 ``/`` と ``.`` の文字のみで構成される正規化されたインポートパスの先頭部分を検討する。       この部分で ``..`` セグメントが見つかるたびに、先行するスラッシュを持つ最後のパスセグメントがプレフィックスから削除されます。
-
-.. 2. Then the prefix is prepended to the normalized import path.
-..    If the prefix is non-empty, a single slash is inserted between it and the import path.
-
-2. そして、正規化されたインポートパスの前にプレフィックスが付けられる。    プレフィックスが空でない場合は、プレフィックスとインポートパスの間にスラッシュが1つ挿入されます。
 
 .. The removal of the last path segment with preceding slashes is understood to
 .. work as follows:
@@ -387,35 +340,17 @@ is identified with a URL.
 スラッシュが先行する最後のパスセグメントの削除は、以下のように動作すると理解されています。
 
 .. 1. Everything past the last slash is removed (i.e. ``a/b//c.sol`` becomes ``a/b//``).
-
-1. 最後のスラッシュから先はすべて削除されます（例:  ``a/b//c.sol`` が ``a/b//`` になります）。
-
 .. 2. All trailing slashes are removed (i.e. ``a/b//`` becomes ``a/b``).
 
+1. 最後のスラッシュから先はすべて削除されます（例:  ``a/b//c.sol`` が ``a/b//`` になります）。
 2. 後続のスラッシュはすべて削除されます（例:  ``a/b//`` が ``a/b`` になります）。
 
-.. The normalization rules are the same as for UNIX paths, namely:
-
-正規化のルールは、UNIXのパスと同じです。
-
-.. - All the internal ``.`` segments are removed.
-
-- 内部の ``.`` セグメントはすべて削除されます。
-
-.. - Every internal ``..`` segment backtracks one level up in the hierarchy.
-
-- すべての内部 ``..`` セグメントは、1つ上の階層にバックトラックします。
-
-.. - Multiple slashes are squashed into a single one.
-
-- 複数のスラッシュが1つに潰される。
-
-.. Note that normalization is performed only on the import path.
-.. The source unit name of the importing module that is used for the prefix remains unnormalized.
-.. This ensures that the ``protocol://`` part does not turn into ``protocol:/`` if the importing file
-.. is identified with a URL.
-
-正規化はインポートパス上でのみ実行されることに注意してください。プレフィックスに使用されるインポートモジュールのソースユニット名は正規化されずに残ります。これにより、インポートファイルがURLで識別される場合に、 ``protocol://`` の部分が ``protocol:/`` にならないようにしています。
+Note that the process normalizes the part of the resolved source unit name that comes from the import path according
+to the usual rules for UNIX paths, i.e. all ``.`` and ``..`` are removed and multiple slashes are
+squashed into a single one.
+On the other hand, the part that comes from the source unit name of the importing module remains unnormalized.
+This ensures that the ``protocol://`` part does not turn into ``protocol:/`` if the importing file
+is identified with a URL.
 
 .. If your import paths are already normalized, you can expect the above algorithm to produce very
 .. intuitive results.
