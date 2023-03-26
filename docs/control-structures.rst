@@ -157,18 +157,8 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 .. note::
 
-<<<<<<< HEAD
-    Solidity 0.6.2以前は、valueとgasを指定する方法として、 ``f.value(x).gas(g)()`` を使用することが推奨されていました。
-    これはSolidity 0.6.2で非推奨となり、Solidity 0.7.0からはできなくなりました。
-
-.. Named Calls and Anonymous Function Parameters
-
-名前付き呼び出しと匿名関数パラメータ
----------------------------------------------
-=======
 Function Calls with Named Parameters
 ------------------------------------
->>>>>>> english/develop
 
 関数呼び出しの引数は、次の例のように ``{ }`` で囲まれていれば、任意の順序で名前を与えることができます。
 引数リストは、関数宣言のパラメータリストと名前が一致していなければなりませんが、任意の順序にできます。
@@ -191,13 +181,6 @@ Function Calls with Named Parameters
 
     }
 
-<<<<<<< HEAD
-省略された関数パラメータ名
---------------------------------
-
-未使用のパラメータ（特にリターンパラメータ）の名前は省略できます。
-それらのパラメータはスタック上に存在しますが、アクセスできません。
-=======
 Omitted Names in Function Definitions
 -------------------------------------
 
@@ -205,7 +188,6 @@ The names of parameters and return values in the function declaration can be omi
 Those items with omitted names will still be present on the stack, but they are
 inaccessible by name. An omitted return value name
 can still return a value to the caller by use of the ``return`` statement.
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -813,20 +795,15 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 .. safest action is to revert all changes and make the whole transaction
 .. (or at least call) without effect.
 
-<<<<<<< HEAD
 内部的には、Solidityは元に戻す操作（命令 ``0xfd`` ）を行います。
 これにより、EVMは状態に加えられたすべての変更を元に戻します。
 元に戻す理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。
 トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更を元に戻し、トランザクション全体（または少なくともコール）を効果なしにすることです。
 
 .. In both cases, the caller can react on such failures using ``try``/``catch``, but
-.. the changes in the caller will always be reverted.
+.. the changes in the callee will always be reverted.
 
-どちらの場合も、呼び出し側はそのような失敗に対して ``try`` / ``catch`` を使って反応できますが、呼び出し側の変更は必ず元に戻されます。
-=======
-In both cases, the caller can react on such failures using ``try``/``catch``, but
-the changes in the callee will always be reverted.
->>>>>>> english/develop
+どちらの場合も、呼び出し側はそのような失敗に対して ``try`` / ``catch`` を使って反応できますが、呼び出された側の変更は必ずリバートされます。
 
 .. note::
 
@@ -1058,26 +1035,12 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 ..     The error might have happened deeper down in the call chain and the
 ..     called contract just forwarded it. Also, it could be due to an
 ..     out-of-gas situation and not a deliberate error condition:
-..     The caller always retains 63/64th of the gas in a call and thus
-..     even if the called contract goes out of gas, the caller still
-..     has some gas left.
-.. 
+..     The caller always retains at least 1/64th of the gas in a call and thus even if the called contract goes out of gas, the caller still has some gas left.
 
 .. note::
-<<<<<<< HEAD
 
     失敗したコールの原因はさまざまです。
     エラーメッセージが呼び出されたコントラクトから直接来ていると思わないでください。
     エラーはコールチェーンのより深いところで発生し、呼び出されたコントラクトがそれをフォワードしただけかもしれません。
     また、意図的なエラー状態ではなく、ガス欠状態が原因である可能性もあります。
-    呼び出し側は常に呼び出し中のガスの63/64を保持しているため、呼び出されたコントラクトがガス切れになっても、呼び出し側にはガスが残っています。
-=======
-    The reason behind a failed call can be manifold. Do not assume that
-    the error message is coming directly from the called contract:
-    The error might have happened deeper down in the call chain and the
-    called contract just forwarded it. Also, it could be due to an
-    out-of-gas situation and not a deliberate error condition:
-    The caller always retains at least 1/64th of the gas in a call and thus
-    even if the called contract goes out of gas, the caller still
-    has some gas left.
->>>>>>> english/develop
+    コール側は常に1/64以上のガスを保持しているため、コールされたコントラクトがガス欠になっても、コール側にはガスが残っています。
