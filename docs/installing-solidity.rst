@@ -9,14 +9,8 @@ Solidityコンパイラのインストール
 バージョニング
 ===============
 
-<<<<<<< HEAD
-Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に続き、リリースに加えて **nightlyデベロップメントビルド** も提供されます。
-nightlyビルドは動作を保証するものではなく、最善の努力にもかかわらず、文書化されていない、または壊れた変更が含まれている可能性があります。
-最新のリリースを使用することをお勧めします。
-以下のパッケージインストーラーは最新のリリースを使用しています。
-=======
-Solidity versions follow `Semantic Versioning <https://semver.org>`_. In
-addition, patch level releases with major release 0 (i.e. 0.x.y) will not
+Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に従っています。
+In addition, patch level releases with major release 0 (i.e. 0.x.y) will not
 contain breaking changes. That means code that compiles with version 0.x.y
 can be expected to compile with 0.x.z where z > y.
 
@@ -31,7 +25,6 @@ actual release. They are not meant for production use.
 When deploying contracts, you should use the latest released version of Solidity. This
 is because breaking changes, as well as new features and bug fixes are introduced regularly.
 We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
->>>>>>> english/develop
 
 Remix
 =====
@@ -120,10 +113,6 @@ nightlyバージョンは、以下のコマンドでインストールできま�
     sudo apt-get update
     sudo apt-get install solc
 
-<<<<<<< HEAD
-また、すべての `supported Linux distros <https://snapcraft.io/docs/core/install>`_ でインストール可能な `snap package <https://snapcraft.io/>`_ もリリースしています。solcの最新ステーブル版をインストールするには
-また、 `対応するLinuxディストロ <https://snapcraft.io/docs/core/install>`_ すべてにインストール可能な `snapパッケージ <https://snapcraft.io/>`_ もリリースしています。最新のステーブル版solcをインストールするには、以下のコマンドを実行します。
-=======
 Furthermore, some Linux distributions provide their own packages. These packages are not directly
 maintained by us, but usually kept up-to-date by the respective package maintainers.
 
@@ -136,7 +125,6 @@ For example, Arch Linux has packages for the latest development version:
 There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
 It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
 install the latest stable version of solc:
->>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -151,21 +139,6 @@ install the latest stable version of solc:
 .. note::
 
     ``solc`` スナップはstrict confinementを使用します。これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。     詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ をご覧ください。
-
-<<<<<<< HEAD
-Arch Linuxにも、最新の開発バージョンに限定されますが、パッケージがあります。
-
-.. code-block:: bash
-
-    pacman -S solidity
-
-Gentoo Linuxには、Solidityパッケージを含む `Ethereumオーバーレイ <https://overlays.gentoo.org/#ethereum>`_ があります。オーバーレイの設定後、 ``solc`` はx86_64アーキテクチャでは以下の方法でインストールできます。
-
-.. code-block:: bash
-
-    emerge dev-lang/solidity
-=======
->>>>>>> english/develop
 
 macOSパッケージ
 ===============
@@ -319,9 +292,8 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 .. note::
 
-<<<<<<< HEAD
     デフォルトのビルド構成では、特定のZ3バージョン（コードが最後に更新された時点での最新のもの）が必要です。Z3のリリース間に導入された変更により、わずかに異なる(ただし有効な)結果が返されることがよくあります。私たちのSMTテストはこれらの違いを考慮しておらず、書かれたバージョンとは異なるバージョンで失敗する可能性があります。これは、異なるバージョンを使用したビルドが欠陥であることを意味するものではありません。CMakeに ``-DSTRICT_Z3_VERSION=OFF`` オプションを渡しておけば、上の表にある要件を満たす任意のバージョンでビルドできます。     ただし、この場合、SMT テストをスキップするために  ``scripts/tests.sh``  に  ``--no-smt``  オプションを渡すことを忘れないでください。
-=======
+
 .. note::
     By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
     compiler to treat all warnings as errors.
@@ -335,7 +307,6 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 Minimum Compiler Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
->>>>>>> english/develop
 
 最小コンパイラバージョン
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -505,42 +476,22 @@ Solidityバージョンの文字列は、4つの部分で構成されていま�
 
 - プレリリースのタグ。通常は ``develop.YYYY.MM.DD`` または ``nightly.YYYY.MM.DD`` に設定されています。
 
-<<<<<<< HEAD
 - コミット。フォーマットは ``commit.GITHASH`` です。
-=======
-These parts are combined as required by SemVer, where the Solidity pre-release tag equals to the SemVer pre-release
-and the Solidity commit and platform combined make up the SemVer build metadata.
->>>>>>> english/develop
 
 - プラットフォーム。任意の数の項目を持ち、プラットフォームとコンパイラに関する詳細を含むます。
 
 ローカルに変更があった場合、そのコミットは ``.mod`` でポストフィックスされます。
 
-これらのパーツはSemverの要求に応じて組み合わせられます。SolidityのプレリリースタグはSemverのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
+これらのパーツはSemVerの要求に応じて組み合わせられます。SolidityのプレリリースタグはSemVerのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
 
-<<<<<<< HEAD
 リリース例: ``0.4.8+commit.60cc1668.Emscripten.clang``。
-=======
-After a release is made, the patch version level is bumped, because we assume that only
-patch level changes follow. When changes are merged, the version should be bumped according
-to SemVer and the severity of the change. Finally, a release is always made with the version
-of the current nightly build, but without the ``prerelease`` specifier.
->>>>>>> english/develop
 
 プレリリースの例: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``。
 
-<<<<<<< HEAD
 バージョニングについての重要な情報
 ==================================
-=======
-1. The 0.4.0 release is made.
-2. The nightly build has a version of 0.4.1 from now on.
-3. Non-breaking changes are introduced --> no change in version.
-4. A breaking change is introduced --> version is bumped to 0.5.0.
-5. The 0.5.0 release is made.
->>>>>>> english/develop
 
-リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。変更がマージされたときには、semver と変更の重要度に応じてバージョンを上げる必要があります。最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
+リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。変更がマージされたときには、SemVerと変更の重要度に応じてバージョンを上げる必要があります。最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
 
 例:
 
