@@ -174,7 +174,7 @@ locals[
 	(Semicolon | body=block);
 
 /**
- * The definition of a free function.
+ * フリー関数の定義。
  */
  freeFunctionDefinition:
  	Function (identifier | Fallback | Receive)
@@ -319,12 +319,7 @@ errorDefinition:
 	Semicolon;
 
 /**
-<<<<<<< HEAD
- * ディレクティブを使用して、ライブラリ関数を型にバインドする。
- * コントラクトやライブラリの中で使えます。
-=======
  * Operators that users are allowed to implement for some types with `using for`.
->>>>>>> english/develop
  */
 userDefinableOperator:
 	BitAnd
