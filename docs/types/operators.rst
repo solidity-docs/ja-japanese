@@ -135,8 +135,6 @@ delete
         }
     }
 
-<<<<<<< HEAD
-=======
 .. index:: ! operator; precedence
 .. _order:
 
@@ -144,4 +142,3 @@ Order of Precedence of Operators
 --------------------------------
 
 .. include:: types/operator-precedence-table.rst
->>>>>>> english/develop
