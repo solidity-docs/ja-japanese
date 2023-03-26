@@ -77,18 +77,19 @@ Etherの単位
 
 - ``blockhash(uint blockNumber) returns (bytes32)``: ``blocknumber`` が直近256個のブロックの一つである場合は、与えられたブロックのハッシュ、そうでない場合はゼロを返す
 
-<<<<<<< HEAD
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
 
 - ``block.chainid`` (``uint``): カレントブロックのチェーンID
 
 - ``block.coinbase`` (``address payable``): カレントブロックのマイナーのアドレス
 
-- ``block.difficulty`` (``uint``): カレントブロックの難易度
+- ``block.difficulty`` (``uint``): カレントブロックの難易度（ ``EVM < Paris`` ）。For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` (`EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
 
 - ``block.gaslimit`` (``uint``): カレントブロックのガスリミット
 
 - ``block.number`` (``uint``): カレントブロックの番号
+
+- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``)
 
 - ``block.timestamp`` ( ``uint`` ): カレントブロックのタイムスタンプ（Unixエポックからの秒数）
 
@@ -105,24 +106,6 @@ Etherの単位
 - ``tx.gasprice`` (``uint``): トランザクションのガスプライス
 
 - ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）
-=======
-- ``blockhash(uint blockNumber) returns (bytes32)``: hash of the given block when ``blocknumber`` is one of the 256 most recent blocks; otherwise returns zero
-- ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
-- ``block.chainid`` (``uint``): current chain id
-- ``block.coinbase`` (``address payable``): current block miner's address
-- ``block.difficulty`` (``uint``): current block difficulty (``EVM < Paris``). For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` (`EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
-- ``block.gaslimit`` (``uint``): current block gaslimit
-- ``block.number`` (``uint``): current block number
-- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``)
-- ``block.timestamp`` (``uint``): current block timestamp as seconds since unix epoch
-- ``gasleft() returns (uint256)``: remaining gas
-- ``msg.data`` (``bytes calldata``): complete calldata
-- ``msg.sender`` (``address``): sender of the message (current call)
-- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
-- ``msg.value`` (``uint``): number of wei sent with the message
-- ``tx.gasprice`` (``uint``): gas price of the transaction
-- ``tx.origin`` (``address``): sender of the transaction (full call chain)
->>>>>>> english/develop
 
 .. note::
 
@@ -326,17 +309,12 @@ Members of string
     ``ecrecover`` を使用している場合、対応する秘密鍵を知らなくても、有効な署名を別の有効な署名に変えることができることに注意してください。
     Homesteadのハードフォークでは、この問題は _transaction_ signaturesで修正されましたが（ `EIP-2 <https://eips.ethereum.org/EIPS/eip-2#specification>`_ 参照）、ecrecover関数は変更されませんでした。
 
-<<<<<<< HEAD
     これは、署名を一意にする必要がある場合や、アイテムを識別するために使用する場合を除き、通常は問題になりません。
-    OpenZeppelinには、この問題なしに ``ecrecover`` のラッパーとして使用できる `ECDSAヘルパーライブラリ <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ があります。
+    OpenZeppelinには、この問題なしに ``ecrecover`` のラッパーとして使用できる `ECDSAヘルパーライブラリ <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ があります。
 
 .. .. note::
 
 ..     When running ``sha256``, ``ripemd160`` or ``ecrecover`` on a *private blockchain*, you might encounter Out-of-Gas. This is because these functions are implemented as "precompiled contracts" and only really exist after they receive the first message (although their contract code is hardcoded). Messages to non-existing contracts are more expensive and thus the execution might run into an Out-of-Gas error. A workaround for this problem is to first send Wei (1 for example) to each of the contracts before you use them in your actual contracts. This is not an issue on the main or test net.
-=======
-    This is usually not a problem unless you require signatures to be unique or use them to identify items.
-    OpenZeppelin have a `ECDSA helper library <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
->>>>>>> english/develop
 
 .. note::
 
@@ -456,13 +434,9 @@ Members of string
 
     - 受信側コントラクトのレシーブ関数が実行されない。
 
-<<<<<<< HEAD
     - コントラクトが実際に破壊されるのはトランザクション終了時であり、 ``revert`` はその破壊を「元に戻す」かもしれません。
 
 さらに、現在のコントラクトのすべての関数は、現在の関数を含めて直接呼び出すことができます。
-=======
-Furthermore, all functions of the current contract are callable directly including the current function.
->>>>>>> english/develop
 
 .. warning::
     From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
@@ -542,19 +516,15 @@ Furthermore, all functions of the current contract are callable directly includi
     型 ``T`` で表現可能な最小の値です。
 
 ``type(T).max``
-<<<<<<< HEAD
     型 ``T`` で表現可能な最大の値です。
-=======
-    The largest value representable by type ``T``.
 
-Reserved Keywords
-=================
+予約語
+======
 
-These keywords are reserved in Solidity. They might become part of the syntax in the future:
+これらのキーワードはSolidityで予約されています。将来的には構文の一部になるかもしれません。
 
 ``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
 ``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
 ``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
 ``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
 ``var``.
->>>>>>> english/develop
