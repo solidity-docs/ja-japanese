@@ -98,17 +98,12 @@
                 require(to != msg.sender, "Found loop in delegation.");
             }
 
-<<<<<<< HEAD
-            // `sender` は参照なので、`voters[msg.sender].voted` を修正します。
-=======
             Voter storage delegate_ = voters[to];
 
-            // Voters cannot delegate to accounts that cannot vote.
+            // 投票者は、投票できないアカウントに委任できません。
             require(delegate_.weight >= 1);
 
-            // Since `sender` is a reference, this
-            // modifies `voters[msg.sender]`.
->>>>>>> english/develop
+            // `sender` は参照なので、`voters[msg.sender]` を修正します。
             sender.voted = true;
             sender.delegate = to;
 
@@ -157,12 +152,8 @@
 改良の可能性
 =====================
 
-<<<<<<< HEAD
-現在、すべての参加者に投票権を割り当てるためには、多くのトランザクションが必要です。何か良い方法はありませんか？
-=======
 Currently, many transactions are needed to
 assign the rights to vote to all participants.
 Moreover, if two or more proposals have the same
 number of votes, ``winningProposal()`` is not able
 to register a tie. Can you think of a way to fix these issues?
->>>>>>> english/develop
