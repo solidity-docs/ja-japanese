@@ -9,14 +9,8 @@
 Ethereum Virtual Machineの言語に近い言語で、Solidityのステートメントにインラインアセンブリを挟むことができます。
 これにより、より細かな制御が可能となり、特にライブラリを書いて言語を強化する場合に有効です。
 
-<<<<<<< HEAD
 Solidityのインラインアセンブリに使用される言語は :ref:`Yul <yul>` と呼ばれ、詳細はそのセクションに書かれています。
 このセクションでは、インラインアセンブリのコードが周囲のSolidityコードとどのように連携するかについてのみ説明します。
-=======
-You can interleave Solidity statements with inline assembly in a language close
-to the one of the Ethereum Virtual Machine. This gives you more fine-grained control,
-which is especially useful when you are enhancing the language by writing libraries.
->>>>>>> english/develop
 
 .. .. warning::
 
@@ -65,31 +59,17 @@ which is especially useful when you are enhancing the language by writing librar
     library GetCode {
         function at(address addr) public view returns (bytes memory code) {
             assembly {
-<<<<<<< HEAD
                 // コードのサイズを取得します。これはアセンブリが必要です。
-                let size := extcodesize(_addr)
-                // 出力バイト配列を確保します。
-                // これは、o_code = new bytes(size) を用いて，アセンブリなしで行うこともできます。
-                o_code := mload(0x40)
-                // パディングを含む新しい"memory end"です。
-                mstore(0x40, add(o_code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
-                // メモリにコードサイズを格納します。
-                mstore(o_code, size)
-                // 実際のコードを取得します。これはアセンブリが必要です。
-                extcodecopy(_addr, add(o_code, 0x20), 0, size)
-=======
-                // retrieve the size of the code, this needs assembly
                 let size := extcodesize(addr)
-                // allocate output byte array - this could also be done without assembly
-                // by using code = new bytes(size)
+                // 出力バイト配列を確保します。
+                // これは、code = new bytes(size) を用いて、アセンブリなしで行うこともできます。
                 code := mload(0x40)
-                // new "memory end" including padding
+                // パディングを含む新しい"memory end"です。
                 mstore(0x40, add(code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
-                // store length in memory
+                // メモリにコードサイズを格納します。
                 mstore(code, size)
-                // actually retrieve the code, this needs assembly
+                // 実際のコードを取得します。これはアセンブリが必要です。
                 extcodecopy(addr, add(code, 0x20), 0, size)
->>>>>>> english/develop
             }
         }
     }
@@ -105,63 +85,34 @@ which is especially useful when you are enhancing the language by writing librar
     pragma solidity >=0.4.16 <0.9.0;
 
     library VectorSum {
-<<<<<<< HEAD
         // この関数は、現在、オプティマイザが配列アクセスにおける境界チェックを除去しないため、効率が悪くなっています。
-        function sumSolidity(uint[] memory _data) public pure returns (uint sum) {
-            for (uint i = 0; i < _data.length; ++i)
-                sum += _data[i];
-        }
-
-        // 列へのアクセスは境界内だけであることが分かっているので、チェックを回避できます。
-        // 最初のスロットに配列の長さが入っているので、0x20を配列に追加する必要があります。
-        function sumAsm(uint[] memory _data) public pure returns (uint sum) {
-            for (uint i = 0; i < _data.length; ++i) {
-=======
-        // This function is less efficient because the optimizer currently fails to
-        // remove the bounds checks in array access.
         function sumSolidity(uint[] memory data) public pure returns (uint sum) {
             for (uint i = 0; i < data.length; ++i)
                 sum += data[i];
         }
 
-        // We know that we only access the array in bounds, so we can avoid the check.
-        // 0x20 needs to be added to an array because the first slot contains the
-        // array length.
+        // 列へのアクセスは境界内だけであることが分かっているので、チェックを回避できます。
+        // 最初のスロットに配列の長さが入っているので、0x20を配列に追加する必要があります。
         function sumAsm(uint[] memory data) public pure returns (uint sum) {
             for (uint i = 0; i < data.length; ++i) {
->>>>>>> english/develop
                 assembly {
                     sum := add(sum, mload(add(add(data, 0x20), mul(i, 0x20))))
                 }
             }
         }
 
-<<<<<<< HEAD
         // 上記と同じですが、コード全体をインラインアセンブリで実現します。
-        function sumPureAsm(uint[] memory _data) public pure returns (uint sum) {
-            assembly {
-                // 長さ（最初の32バイト）を読み込む
-                let len := mload(_data)
-=======
-        // Same as above, but accomplish the entire code within inline assembly.
         function sumPureAsm(uint[] memory data) public pure returns (uint sum) {
             assembly {
-                // Load the length (first 32 bytes)
+                // 長さ（最初の32バイト）を読み込む
                 let len := mload(data)
->>>>>>> english/develop
 
                 // 長さのフィールドをスキップする。
                 //
                 // in-placeでインクリメントできるように一時的な変数を保持する。
                 //
-<<<<<<< HEAD
-                // 注: _data をインクリメントすると、このアセンブリブロックの後では _data 変数は使用できなくなります。
-                let data := add(_data, 0x20)
-=======
-                // NOTE: incrementing data would result in an unusable
-                //       data variable after this assembly block
+                // 注: data をインクリメントすると、このアセンブリブロックの後では data 変数は使用できなくなります。
                 let dataElementLocation := add(data, 0x20)
->>>>>>> english/develop
 
                 // 上限に達するまで反復する。
                 for
@@ -175,14 +126,12 @@ which is especially useful when you are enhancing the language by writing librar
         }
     }
 
-<<<<<<< HEAD
+.. index:: selector; of a function
+
 外部変数、外部関数、外部ライブラリへのアクセス
 ----------------------------------------------
 
 .. You can access Solidity variables and other identifiers by using their name.
-=======
-.. index:: selector; of a function
->>>>>>> english/develop
 
 Solidityの変数やその他の識別子は、その名前を使ってアクセスできます。
 
@@ -191,7 +140,6 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 
 値型のローカル変数は、インラインアセンブリで直接使用できます。読み込みと代入の両方が可能です。
 
-<<<<<<< HEAD
 .. Local variables that refer to memory evaluate to the address of the variable in memory not the value itself.
 .. Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data
 .. and that it is your responsibility to respect Solidity's memory management.
@@ -201,39 +149,21 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 このような変数は代入することもできますが、代入はポインタを変更するだけでデータを変更するわけではないので、Solidityのメモリ管理を尊重する責任があることに注意してください。
 :ref:`Solidityの慣習 <conventions-in-solidity>` を参照してください。
 
-.. Similarly, local variables that refer to statically-sized calldata arrays or calldata structs
-.. evaluate to the address of the variable in calldata, not the value itself.
-.. The variable can also be assigned a new offset, but note that no validation to ensure that
-.. the variable will not point beyond ``calldatasize()`` is performed.
+.. Similarly, local variables that refer to statically-sized calldata arrays or calldata structs evaluate to the address of the variable in calldata, not the value itself.
+.. The variable can also be assigned a new offset, but note that no validation is performed to ensure that the variable will not point beyond ``calldatasize()``.
 
 同様に、静的なサイズのcalldata配列やcalldata構造体を参照するローカル変数は、値そのものではなく、calldata内の変数のアドレスに評価されます。
-変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを確認する検証は行われないことに注意してください。
+変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを保証するための検証は行われないことに注意してください。
 
 .. For external function pointers the address and the function selector can be
 .. accessed using ``x.address`` and ``x.selector``.
 .. The selector consists of four right-aligned bytes.
-.. Both values are can be assigned to. 
+.. Both values can be assigned to. 
 
 外部関数ポインターの場合、アドレスと関数セレクタは ``x.address`` と ``x.selector`` を使ってアクセスできます。
 セレクタは右揃えの4バイトで構成されています。
-いずれの値も代入可能です。
+どちらの値も代入可能です。
 例えば、以下のようになります。
-=======
-Local variables that refer to memory evaluate to the address of the variable in memory, not the value itself.
-Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data
-and that it is your responsibility to respect Solidity's memory management.
-See :ref:`Conventions in Solidity <conventions-in-solidity>`.
-
-Similarly, local variables that refer to statically-sized calldata arrays or calldata structs
-evaluate to the address of the variable in calldata, not the value itself.
-The variable can also be assigned a new offset, but note that no validation is performed to ensure that
-the variable will not point beyond ``calldatasize()``.
-
-For external function pointers the address and the function selector can be
-accessed using ``x.address`` and ``x.selector``.
-The selector consists of four right-aligned bytes.
-Both values can be assigned to. For example:
->>>>>>> english/develop
 
 .. code-block:: solidity
     :force:
@@ -321,15 +251,9 @@ Both values can be assigned to. For example:
     ``uint32 x = f(); assembly { x := and(x, 0xffffffff) /* now use x */ }`` 符号付きの型をクリーンにするには、 ``signextend`` オペコードを使用できます。
     オペコード: ``assembly { signextend(<num_bytes_of_x_minus_one>, x) }``
 
-<<<<<<< HEAD
 .. Since Solidity 0.6.0 the name of a inline assembly variable may not
 .. shadow any declaration visible in the scope of the inline assembly block
 .. (including variable, contract and function declarations).
-=======
-Since Solidity 0.6.0, the name of a inline assembly variable may not
-shadow any declaration visible in the scope of the inline assembly block
-(including variable, contract and function declarations).
->>>>>>> english/develop
 
 Solidity 0.6.0以降、インラインアセンブリ変数の名前は、インラインアセンブリブロックのスコープ内で見える宣言（変数宣言、コントラクト宣言、関数宣言を含む）をシャドーイングできません。
 
@@ -357,7 +281,13 @@ Solidity 0.7.0以降、インラインアセンブリブロック内で宣言さ
 Solidityの慣習
 --------------
 
-<<<<<<< HEAD
+.. _assembly-typed-variables:
+
+.. Values of Typed Variables
+
+型のある変数の値
+================
+
 .. In contrast to EVM assembly, Solidity has types which are narrower than 256 bits,
 .. e.g. ``uint24``. For efficiency, most arithmetic operations ignore the fact that
 .. types can be shorter than 256
@@ -370,6 +300,11 @@ Solidityの慣習
 EVMアセンブリとは対照的に、Solidityには、 ``uint24`` などの256ビットよりも小さい型があります。
 効率化のため、ほとんどの算術演算では、型が256ビットよりも短い可能性があるという事実は無視され、高次のビットは必要に応じて、つまり、メモリに書き込まれる直前や比較が実行される前に、クリーニングされます。
 つまり、インラインアセンブリ内でこのような変数にアクセスする場合、最初に高次ビットを手動でクリーニングする必要があるかもしれません。
+
+.. _assembly-memory-management:
+
+メモリー管理
+============
 
 .. Solidity manages memory in the following way. There is a "free memory pointer"
 .. at position ``0x40`` in memory. If you want to allocate memory, use the memory
@@ -385,34 +320,6 @@ Solidityは次のような方法でメモリを管理しています。
 このメモリが以前に使用されていないという保証はないので、その内容が0バイトであると仮定できません。
 割り当てられたメモリを解放するメカニズムは組み込まれていません。
 以下は、上記のプロセスに沿ってメモリを割り当てるために使用できるアセンブリスニペットです。
-=======
-.. _assembly-typed-variables:
-
-Values of Typed Variables
-=========================
-
-In contrast to EVM assembly, Solidity has types which are narrower than 256 bits,
-e.g. ``uint24``. For efficiency, most arithmetic operations ignore the fact that
-types can be shorter than 256
-bits, and the higher-order bits are cleaned when necessary,
-i.e., shortly before they are written to memory or before comparisons are performed.
-This means that if you access such a variable
-from within inline assembly, you might have to manually clean the higher-order bits
-first.
-
-.. _assembly-memory-management:
-
-Memory Management
-=================
-
-Solidity manages memory in the following way. There is a "free memory pointer"
-at position ``0x40`` in memory. If you want to allocate memory, use the memory
-starting from where this pointer points at and update it.
-There is no guarantee that the memory has not been used before and thus
-you cannot assume that its contents are zero bytes.
-There is no built-in mechanism to release or free allocated memory.
-Here is an assembly snippet you can use for allocating memory that follows the process outlined above:
->>>>>>> english/develop
 
 .. code-block:: yul
 
@@ -444,18 +351,13 @@ Solidityのメモリ配列の要素は、常に32バイトの倍数を占めて�
 .. .. warning::
 
 ..     Statically-sized memory arrays do not have a length field, but it might be added later
-..     to allow better convertibility between statically- and dynamically-sized arrays, so
+..     to allow better convertibility between statically and dynamically-sized arrays; so,
 ..     do not rely on this.
 .. 
 
 .. warning::
-<<<<<<< HEAD
 
     静的サイズのメモリ配列にはlengthフィールドがありませんが、静的サイズの配列と動的サイズの配列の間でより良い変換を可能にするために、後に追加されるかもしれませんので、これに頼らないようにしてください。
-=======
-    Statically-sized memory arrays do not have a length field, but it might be added later
-    to allow better convertibility between statically and dynamically-sized arrays; so,
-    do not rely on this.
 
 Memory Safety
 =============
@@ -554,4 +456,3 @@ of Solidity, you can use a special comment to annotate an assembly block as memo
 
 Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
 backwards-compatibility with older compiler versions, prefer using the dialect string.
->>>>>>> english/develop
