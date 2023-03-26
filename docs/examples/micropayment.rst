@@ -2,15 +2,7 @@
 マイクロペイメントチャネル
 ****************************
 
-<<<<<<< HEAD
 このセクションでは、ペイメントチャネルの実装例を構築する方法を学びます。これは、暗号化された署名を使用して、同一の当事者間で繰り返されるEtherの送金を、安全かつ瞬時に、トランザクション手数料なしで行うものです。この例では、署名と検証の方法を理解し、ペイメントチャネルを設定する必要があります。
-=======
-In this section, we will learn how to build an example implementation
-of a payment channel. It uses cryptographic signatures to make
-repeated transfers of Ether between the same parties secure, instantaneous, and
-without transaction fees. For the example, we need to understand how to
-sign and verify signatures, and setup the payment channel.
->>>>>>> english/develop
 
 署名の作成と検証
 =================================
@@ -19,45 +11,21 @@ sign and verify signatures, and setup the payment channel.
 
 アリスは暗号化されたメッセージをオフチェーンで（例えばメールで）ボブに送るだけでよく、小切手を書くのと同じようなものです。
 
-<<<<<<< HEAD
 アリスとボブは署名を使ってトランザクションを承認しますが、これはEthereumのスマートコントラクトで可能です。AliceはEtherを送信できるシンプルなスマートコントラクトを構築しますが、支払いを開始するために自分で関数を呼び出すのではなく、Bobにそれをさせ、その結果、トランザクション手数料を支払うことになります。
-=======
-Alice and Bob use signatures to authorize transactions, which is possible with smart contracts on Ethereum.
-Alice will build a simple smart contract that lets her transmit Ether, but instead of calling a function herself
-to initiate a payment, she will let Bob do that, and therefore pay the transaction fee.
->>>>>>> english/develop
 
 コントラクト内容は以下のようになっています。
 
-<<<<<<< HEAD
     1. アリスは ``ReceiverPays`` コントラクトをデプロイし、行われるであろう支払いをカバーするのに十分なEtherを取り付けます。
     2. アリスは、自分の秘密鍵でメッセージを署名することで、支払いを承認します。
     3. アリスは、暗号署名されたメッセージをボブに送信する。メッセージは秘密にしておく必要はなく（後で説明します）、送信の仕組みも問題ありません。
     4. Bobはスマートコントラクトに署名済みのメッセージを提示して支払いを請求し、スマートコントラクトはメッセージの真正性を検証した後、資金を放出します。
-=======
-    1. Alice deploys the ``ReceiverPays`` contract, attaching enough Ether to cover the payments that will be made.
-    2. Alice authorizes a payment by signing a message with her private key.
-    3. Alice sends the cryptographically signed message to Bob. The message does not need to be kept secret
-       (explained later), and the mechanism for sending it does not matter.
-    4. Bob claims his payment by presenting the signed message to the smart contract, it verifies the
-       authenticity of the message and then releases the funds.
->>>>>>> english/develop
 
 署名の作成
 ----------------------
 
-<<<<<<< HEAD
-アリスはトランザクションに署名するためにEthereumネットワークと対話する必要はなく、プロセスは完全にオフラインです。このチュートリアルでは、他にも多くのセキュリティ上の利点があるため、 `EIP-762 <https://github.com/ethereum/EIPs/pull/712>`_ で説明した方法を用いて、 `web3.js <https://github.com/ethereum/web3.js>`_ と `MetaMask <https://metamask.io>`_ を使ってブラウザ上でメッセージを署名します。
+アリスはトランザクションに署名するためにEthereumネットワークと対話する必要はなく、プロセスは完全にオフラインです。このチュートリアルでは、他にも多くのセキュリティ上の利点があるため、 `EIP-712 <https://github.com/ethereum/EIPs/pull/712>`_ で説明した方法を用いて、 `web3.js <https://github.com/web3/web3.js>`_ と `MetaMask <https://metamask.io>`_ を使ってブラウザ上でメッセージを署名します。
 
 .. Fix typo: EIP-712
-=======
-Alice does not need to interact with the Ethereum network
-to sign the transaction, the process is completely offline.
-In this tutorial, we will sign messages in the browser
-using `web3.js <https://github.com/web3/web3.js>`_ and
-`MetaMask <https://metamask.io>`_, using the method described in `EIP-712 <https://github.com/ethereum/EIPs/pull/712>`_,
-as it provides a number of other security benefits.
->>>>>>> english/develop
 
 .. code-block:: javascript
 
@@ -127,7 +95,7 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-    // This will report a warning due to deprecated selfdestruct
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
     contract ReceiverPays {
         address owner = msg.sender;
 
@@ -221,16 +189,11 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
 アリスは、署名されたメッセージをボブに送ることで支払いを行います。このステップは、Ethereumネットワークの外で完全に実行されます。メッセージは送信者によって暗号化されて署名され、受信者に直接送信されます。
 
-<<<<<<< HEAD
 各メッセージには以下の情報が含まれています。
-=======
-    * The smart contract's address, used to prevent cross-contract replay attacks.
-    * The total amount of Ether that is owed to the recipient so far.
->>>>>>> english/develop
 
     * スマートコントラクトのアドレス。クロスコントラクトのリプレイアタックを防ぐために使用されます。
 
-    * これまでに受信者が負担したEtherの合計額。
+    * これまでに受取人に支払われたEtherの合計額。
 
 ペイメントチャネルは、一連の送金が終わった時点で一度だけ閉じられます。このため、送信されたメッセージのうち1つだけが償還されます。これが、各メッセージが、個々のマイクロペイメントの金額ではなく、支払うべきEtherの累積合計金額を指定する理由です。受信者は当然、最新のメッセージを償還することを選択しますが、それは最も高い合計額を持つメッセージだからです。スマートコントラクトは1つのメッセージのみを尊重するため、メッセージごとのnonceはもう必要ありません。スマートコントラクトのアドレスは、あるペイメントチャネル用のメッセージが別のチャネルで使用されるのを防ぐために使用されます。
 
@@ -287,7 +250,7 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-    // This will report a warning due to deprecated selfdestruct
+    // 非推奨のselfdestructを使用するためwarningが出力されます。
     contract SimplePaymentChannel {
         address payable public sender;      // 支払いを送信するアカウント
         address payable public recipient;   // 支払いを受けるアカウント
