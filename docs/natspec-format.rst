@@ -34,28 +34,15 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 ドキュメントの例
 ================
 
-<<<<<<< HEAD
-.. Documentation is inserted above each ``contract``, ``interface``, ``function``, and ``event`` using the Doxygen notation format.
+.. Documentation is inserted above each ``contract``, ``interface``, ``library``, ``function``, and ``event`` using the Doxygen notation format.
 .. A ``public`` state variable is equivalent to a ``function`` for the purposes of NatSpec.
-=======
-Documentation is inserted above each ``contract``, ``interface``, ``library``,
-``function``, and ``event`` using the Doxygen notation format.
-A ``public`` state variable is equivalent to a ``function``
-for the purposes of NatSpec.
->>>>>>> english/develop
 
-ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``function`` 、 ``event`` の上に挿入されます。
+ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``library`` 、 ``function`` 、 ``event`` の上に挿入されます。
 ``public`` の状態変数は、NatSpecの目的上、 ``function`` と同等です。
 
-<<<<<<< HEAD
 - Solidityでは、1行のコメントに ``///`` を、複数行のコメントに ``/**`` から始めて ``*/`` で終わるものを使えます。
 - Vyperでは、 ``"""`` を内側のコンテンツにインデントして、コメントをむき出しにして使います。
-  詳しくは `Vyperのドキュメント <https://vyper.readthedocs.io/en/latest/natspec.html>`_ を参照してください。
-=======
--  For Vyper, use ``"""`` indented to the inner contents with bare
-   comments. See the `Vyper
-   documentation <https://docs.vyperlang.org/en/latest/natspec.html>`__.
->>>>>>> english/develop
+  詳しくは `Vyperのドキュメント <https://docs.vyperlang.org/en/latest/natspec.html>`_ を参照してください。
 
 .. The following example shows a contract and a function using all available tags.
 
@@ -167,11 +154,6 @@ Solidityコンパイラは、SolidityソースコードからNatSpecドキュメ
 .. Specifying these dynamic expressions is outside the scope of the Solidity
 .. documentation and you may read more at `the radspec project <https://github.com/aragon/radspec>`__.
 
-<<<<<<< HEAD
-これらの動的な表現を指定することは、Solidityのドキュメントの範囲外であるため、詳細は `radspecプロジェクト <https://github.com/aragon/radspec>`_ を参照してください。
-
-=======
->>>>>>> english/develop
 .. _header-inheritance:
 
 継承に関する注意事項
