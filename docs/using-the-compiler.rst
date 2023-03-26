@@ -211,7 +211,6 @@ Target Options
 .. - ``homestead``
 
 - ``homestead``
-<<<<<<< HEAD
 
 .. - (oldest version)
 
@@ -293,41 +292,16 @@ Target Options
 
 - ``SLOAD`` 、 ``*CALL`` 、 ``BALANCE`` 、 ``EXT*`` 、 ``SELFDESTRUCT`` のガス代が増加しました。コンパイラーは、このような操作に対して冷たいガスコストを想定しています。これは、ガス推定とオプティマイザに関連します。
 
-.. - ``london`` (**default**)
+.. - ``london``
 
-- ``london``  ( **default** )
+- ``london``
 
 .. - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
 
 - ブロックの基本料金（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリのグローバル ``block.basefee`` または ``basefee()`` を介してアクセスできます。
-=======
-   - (oldest version)
-- ``tangerineWhistle``
-   - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
-   - All gas sent by default for external calls, previously a certain amount had to be retained.
-- ``spuriousDragon``
-   - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
-- ``byzantium``
-   - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
-   - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
-   - It is possible to access dynamic data returned from function calls.
-   - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
-- ``constantinople``
-   - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
-   - Shifting operators use shifting opcodes and thus need less gas.
-- ``petersburg``
-   - The compiler behaves the same way as with constantinople.
-- ``istanbul``
-   - Opcodes ``chainid`` and ``selfbalance`` are available in assembly.
-- ``berlin``
-   - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
-     compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
-     the optimizer.
-- ``london``
-   - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
+
 - ``paris`` (**default**)
    - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
->>>>>>> english/develop
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -784,7 +758,6 @@ Output Description
 Error Types
 ~~~~~~~~~~~
 
-<<<<<<< HEAD
 .. 1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
 
 1. ``JSONError`` : JSON入力が要求されたフォーマットに適合していない。例: 入力がJSONオブジェクトでない、言語がサポートされていない、など。
@@ -835,286 +808,8 @@ Error Types
 .. 12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
 .. 1
 
-12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。1
+12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。
 
-.. 13. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
-.. 1
-
-13. ``Warning`` : 警告であり、コンパイルを止めることはできなかったが、可能であれば対処すべきです。1
-
-.. 14. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
-
-14. ``Info`` : ユーザーが役に立つかもしれないが、危険ではなく、必ずしも対処する必要がないとコンパイラが考えている情報。
-
-.. _compiler-tools:
-
-Compiler Tools
-**************
-
-solidity-upgrade
-----------------
-
-.. ``solidity-upgrade`` can help you to semi-automatically upgrade your contracts
-.. to breaking language changes. While it does not and cannot implement all
-.. required changes for every breaking release, it still supports the ones, that
-.. would need plenty of repetitive manual adjustments otherwise.
-
-``solidity-upgrade`` は、最新の言語変更に合わせてコントラクトを半自動的にアップグレードするのに役立ちます。 ``solidity-upgrade`` は、すべての変更されたリリースに必要なすべての変更を実装するわけではありませんし、そうすることもできませんが、他の方法では多くの反復的な手動調整を必要とするようなものをサポートしています。
-
-.. .. note::
-
-..     ``solidity-upgrade`` carries out a large part of the work, but your
-..     contracts will most likely need further manual adjustments. We recommend
-..     using a version control system for your files. This helps reviewing and
-..     eventually rolling back the changes made.
-
-.. note::
-
-    ``solidity-upgrade`` は作業の大部分を行いますが、 コントラクトはさらに手動で調整する必要がある場合がほとんどです。ファイルにはバージョン管理システムを使用することをお勧めします。これにより、変更内容を確認し、最終的にはロールバックできます。
-
-.. .. warning::
-
-..     ``solidity-upgrade`` is not considered to be complete or free from bugs, so
-..     please use with care.
-
-.. warning::
-
-    ``solidity-upgrade`` は完全なものではなく、バグもないと考えられますので、注意してお使いください。
-
-How it Works
-~~~~~~~~~~~~
-
-.. You can pass (a) Solidity source file(s) to ``solidity-upgrade [files]``. If
-.. these make use of ``import`` statement which refer to files outside the
-.. current source file's directory, you need to specify directories that
-.. are allowed to read and import files from, by passing
-.. ``--allow-paths [directory]``. You can ignore missing files by passing
-.. ``--ignore-missing``.
-
-``solidity-upgrade [files]`` にはSolidityのソースファイルを渡すことができます。これらのファイルが、現在のソースファイルのディレクトリ外のファイルを参照する ``import`` ステートメントを使用する場合は、 ``--allow-paths [directory]`` を渡して、ファイルの読み込みとインポートが許可されているディレクトリを指定する必要があります。 ``--ignore-missing`` を渡すと、見つからないファイルを無視できます。
-
-.. ``solidity-upgrade`` is based on ``libsolidity`` and can parse, compile and
-.. analyse your source files, and might find applicable source upgrades in them.
-
-``solidity-upgrade`` は ``libsolidity`` をベースにしており、ソースファイルを解析、コンパイル、分析でき、その中から該当するソースアップグレードを見つけることができるかもしれません。
-
-.. Source upgrades are considered to be small textual changes to your source code.
-.. They are applied to an in-memory representation of the source files
-.. given. The corresponding source file is updated by default, but you can pass
-.. ``--dry-run`` to simulate to whole upgrade process without writing to any file.
-
-ソースアップグレードとは、ソースコードに小さな文字の変更を加えることと考えられます。ソースアップグレードは、与えられたソースファイルのメモリ内表現に適用されます。デフォルトでは、対応するソースファイルが更新されますが、 ``--dry-run``  を渡すことで、ファイルに書き込まずにアップグレード処理全体をシミュレートできます。
-
-.. The upgrade process itself has two phases. In the first phase source files are
-.. parsed, and since it is not possible to upgrade source code on that level,
-.. errors are collected and can be logged by passing ``--verbose``. No source
-.. upgrades available at this point.
-
-アップグレード処理自体は2つのフェーズで構成されています。最初のフェーズでは、ソースファイルが解析され、そのレベルではソースコードをアップグレードできないため、エラーが収集され、 ``--verbose`` を渡すことでログに残すことができます。この時点では、ソースのアップグレードはできません。
-
-.. In the second phase, all sources are compiled and all activated upgrade analysis
-.. modules are run alongside compilation. By default, all available modules are
-.. activated. Please read the documentation on
-.. :ref:`available modules <upgrade-modules>` for further details.
-
-第 2 段階では、すべてのソースがコンパイルされ、アクティベートされたすべてのアップグレード分析モジュールがコンパイルと同時に実行されます。デフォルトでは、利用可能なすべてのモジュールが起動されます。詳細については、 :ref:`available modules <upgrade-modules>` のドキュメントをお読みください。
-
-.. This can result in compilation errors that may
-.. be fixed by source upgrades. If no errors occur, no source upgrades are being
-.. reported and you're done.
-.. If errors occur and some upgrade module reported a source upgrade, the first
-.. reported one gets applied and compilation is triggered again for all given
-.. source files. The previous step is repeated as long as source upgrades are
-.. reported. If errors still occur, you can log them by passing ``--verbose``.
-.. If no errors occur, your contracts are up to date and can be compiled with
-.. the latest version of the compiler.
-
-その結果、ソースのアップグレードによって修正される可能性のあるコンパイルエラーが発生することがあります。
-エラーが発生しなければ、ソースアップグレードは報告されていないので、これで終了です。
-エラーが発生し、あるアップグレード・モジュールがソース・アップグレードを報告した場合は、最初に報告されたものが適用され、与えられたすべてのソースファイルに対して再びコンパイルが行われます。
-ソースアップグレードが報告されている限り、前のステップが繰り返されます。
-それでもエラーが発生した場合は、 ``--verbose``  を渡すことでエラーをログに記録できます。エラーが発生しなければ、コントラクトは最新の状態になっており、最新バージョンのコンパイラでコンパイルできます。
-
-.. _upgrade-modules:
-
-Available Upgrade Modules
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-+----------------------------+---------+--------------------------------------------------+
-| Module                     | Version | Description                                      |
-+============================+=========+==================================================+
-| ``constructor``            | 0.5.0   | Constructors must now be defined using the       |
-|                            |         | ``constructor`` keyword.                         |
-+----------------------------+---------+--------------------------------------------------+
-| ``visibility``             | 0.5.0   | Explicit function visibility is now mandatory,   |
-|                            |         | defaults to ``public``.                          |
-+----------------------------+---------+--------------------------------------------------+
-| ``abstract``               | 0.6.0   | The keyword ``abstract`` has to be used if a     |
-|                            |         | contract does not implement all its functions.   |
-+----------------------------+---------+--------------------------------------------------+
-| ``virtual``                | 0.6.0   | Functions without implementation outside an      |
-|                            |         | interface have to be marked ``virtual``.         |
-+----------------------------+---------+--------------------------------------------------+
-| ``override``               | 0.6.0   | When overriding a function or modifier, the new  |
-|                            |         | keyword ``override`` must be used.               |
-+----------------------------+---------+--------------------------------------------------+
-| ``dotsyntax``              | 0.7.0   | The following syntax is deprecated:              |
-|                            |         | ``f.gas(...)()``, ``f.value(...)()`` and         |
-|                            |         | ``(new C).value(...)()``. Replace these calls by |
-|                            |         | ``f{gas: ..., value: ...}()`` and                |
-|                            |         | ``(new C){value: ...}()``.                       |
-+----------------------------+---------+--------------------------------------------------+
-| ``now``                    | 0.7.0   | The ``now`` keyword is deprecated. Use           |
-|                            |         | ``block.timestamp`` instead.                     |
-+----------------------------+---------+--------------------------------------------------+
-| ``constructor-visibility`` | 0.7.0   | Removes visibility of constructors.              |
-|                            |         |                                                  |
-+----------------------------+---------+--------------------------------------------------+
-
-.. Please read :doc:`0.5.0 release notes <050-breaking-changes>`,
-.. :doc:`0.6.0 release notes <060-breaking-changes>`,
-.. :doc:`0.7.0 release notes <070-breaking-changes>` and :doc:`0.8.0 release notes <080-breaking-changes>` for further details.
-
-詳しくは :doc: `0.5.0 release notes <050-breaking-changes>` , :doc: `0.6.0 release notes <060-breaking-changes>` , :doc: `0.7.0 release notes <070-breaking-changes>` , :doc: `0.8.0 release notes <080-breaking-changes>`  をご覧ください。
-
-Synopsis
-~~~~~~~~
-
-.. code-block:: none
-
-    Usage: solidity-upgrade [options] contract.sol
-
-    Allowed options:
-        --help               Show help message and exit.
-        --version            Show version and exit.
-        --allow-paths path(s)
-                             Allow a given path for imports. A list of paths can be
-                             supplied by separating them with a comma.
-        --ignore-missing     Ignore missing files.
-        --modules module(s)  Only activate a specific upgrade module. A list of
-                             modules can be supplied by separating them with a comma.
-        --dry-run            Apply changes in-memory only and don't write to input
-                             file.
-        --verbose            Print logs, errors and changes. Shortens output of
-                             upgrade patches.
-        --unsafe             Accept *unsafe* changes.
-
-Bug Reports / Feature Requests
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. If you found a bug or if you have a feature request, please
-.. `file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ on Github.
-
-もし、バグを見つけたり、機能のリクエストがあれば、Githubで `file an issue <https://github.com/ethereum/solidity/issues/new/choose>`_ をお願いします。
-
-Example
-~~~~~~~
-
-.. Assume that you have the following contract in ``Source.sol``:
-
-``Source.sol`` で次のようなコントラクトをしているとします。
-
-.. code-block:: Solidity
-
-    pragma solidity >=0.6.0 <0.6.4;
-    // This will not compile after 0.7.0
-    // SPDX-License-Identifier: GPL-3.0
-    contract C {
-        // FIXME: remove constructor visibility and make the contract abstract
-        constructor() internal {}
-    }
-
-    contract D {
-        uint time;
-
-        function f() public payable {
-            // FIXME: change now to block.timestamp
-            time = now;
-        }
-    }
-
-    contract E {
-        D d;
-
-        // FIXME: remove constructor visibility
-        constructor() public {}
-
-        function g() public {
-            // FIXME: change .value(5) =>  {value: 5}
-            d.f.value(5)();
-        }
-    }
-
-Required Changes
-^^^^^^^^^^^^^^^^
-
-.. The above contract will not compile starting from 0.7.0. To bring the contract up to date with the
-.. current Solidity version, the following upgrade modules have to be executed:
-.. ``constructor-visibility``, ``now`` and ``dotsyntax``. Please read the documentation on
-.. :ref:`available modules <upgrade-modules>` for further details.
-
-上記のコントラクトは、0.7.0からコンパイルできなくなります。 コントラクトを現在のSolidityのバージョンに合わせるためには、以下のアップグレードモジュールを実行する必要があります。 ``constructor-visibility`` 、 ``now`` 、 ``dotsyntax`` です。詳しくは、 :ref:`available modules <upgrade-modules>` のドキュメントをご覧ください。
-
-Running the Upgrade
-^^^^^^^^^^^^^^^^^^^
-
-.. It is recommended to explicitly specify the upgrade modules by using ``--modules`` argument.
-
-``--modules`` 引数でアップグレードモジュールを明示的に指定することをお勧めします。
-
-.. code-block:: bash
-
-    solidity-upgrade --modules constructor-visibility,now,dotsyntax Source.sol
-
-.. The command above applies all changes as shown below. Please review them carefully (the pragmas will
-.. have to be updated manually.)
-
-上記のコマンドは、以下のようにすべての変更を適用します。慎重に確認してください(プラグマは手動で更新する必要があります)。
-
-.. code-block:: Solidity
-
-    // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.7.0 <0.9.0;
-    abstract contract C {
-        // FIXME: remove constructor visibility and make the contract abstract
-        constructor() {}
-    }
-
-    contract D {
-        uint time;
-
-        function f() public payable {
-            // FIXME: change now to block.timestamp
-            time = block.timestamp;
-        }
-    }
-
-    contract E {
-        D d;
-
-        // FIXME: remove constructor visibility
-        constructor() {}
-
-        function g() public {
-            // FIXME: change .value(5) =>  {value: 5}
-            d.f{value: 5}();
-        }
-    }
-
-=======
-1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
-2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
-3. ``ParserError``: Source code doesn't conform to the language rules.
-4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
-5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
-6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
-7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
-8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
-9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
-10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
-11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
-12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
 13. ``YulException``: Error during Yul Code generation - this should be reported as an issue.
 14. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
 15. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
->>>>>>> english/develop
