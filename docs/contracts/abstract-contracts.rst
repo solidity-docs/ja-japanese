@@ -6,23 +6,12 @@
 抽象コントラクト
 ****************
 
-<<<<<<< HEAD
-コントラクトは、その関数の少なくとも1つが実装されていない場合、抽象的であることを示す必要があります。
-すべての関数が実装されていても、コントラクトは抽象的であるとマークできます。
+コントラクトは、その関数の少なくとも1つが実装されていない場合、またはすべてのベースコントラクトコンストラクタに引数を提供しない場合、abstractとマークする必要があります。
+そうでない場合でも、コントラクトを直接作成するつもりがない場合などには、コントラクトをabstractとマークすることがあります。
+抽象コントラクトは :ref:`interfaces` と似ていますが、インターフェースは宣言できる内容がより限定されています。
 
-これは、次の例のように ``abstract`` キーワードを使うことで可能です。
-関数 ``utterance()`` は定義されているが、実装が提供されていない（実装体 ``{ }`` が与えられていない）ため、このコントラクトはabstractと定義する必要があることに注意してください。
-=======
-Contracts must be marked as abstract when at least one of their functions is not implemented or when
-they do not provide arguments for all of their base contract constructors.
-Even if this is not the case, a contract may still be marked abstract, such as when you do not intend
-for the contract to be created directly. Abstract contracts are similar to :ref:`interfaces` but an
-interface is more limited in what it can declare.
-
-An abstract contract is declared using the ``abstract`` keyword as shown in the following example.
-Note that this contract needs to be defined as abstract, because the function ``utterance()`` is declared,
-but no implementation was provided (no implementation body ``{ }`` was given).
->>>>>>> english/develop
+抽象コントラクトは、次の例に示すように ``abstract`` キーワードを使用して宣言します。
+関数 ``utterance()`` が宣言されているが、実装が提供されていない（実装本体 `{ }` が与えられていない）ため、このコントラクトは抽象として定義する必要があることに注意してください。
 
 .. code-block:: solidity
 
