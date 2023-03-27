@@ -47,8 +47,10 @@ ASMの出力に関しても、同じあるいは重複するコードブロッ�
 
 .. _optimizer-parameter-runs:
 
-Optimizer Parameter Runs
-========================
+.. Optimizer Parameter Runs
+
+実行回数パラメータ
+==================
 
 .. The number of runs (``--optimize-runs``) specifies roughly how often each opcode of the
 .. deployed code will be executed across the life-time of the contract. This means it is a
@@ -61,7 +63,7 @@ Optimizer Parameter Runs
 つまり、コードサイズ（デプロイコスト）とコード実行コスト（デプロイ後のコスト）のトレードオフパラメータとなります。
 runsパラメータが1の場合、短いがコストのかかるコードが生成されます。
 一方、runsパラメータを大きくすると、コードは長くなるがガス効率の良いコードが生成されます。
-パラメータの最大値は「 ``2**32-1`` 」です。
+パラメータの最大値は ``2**32-1`` です。
 
 .. note::
 

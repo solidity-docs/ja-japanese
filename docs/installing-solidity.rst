@@ -46,7 +46,7 @@ npm / Node.js
 `solcjs` プログラムは、Solidityのコンパイラである ``solcjs`` をインストールするための便利でポータブルな方法として使用します。
 `solcjs` プログラムは、このページの下の方で説明されているコンパイラへのアクセス方法よりも機能が少なくなっています。
 :ref:`commandline-compiler` のドキュメントでは、フル機能のコンパイラである ``solc`` を使用していることを前提としています。
-``solcjs`` の使い方は、独自の `repository <https://github.com/ethereum/solc-js>`_ の中で説明されています。
+``solcjs`` の使い方は、独自の `リポジトリ <https://github.com/ethereum/solc-js>`_ の中で説明されています。
 
 注: solc-jsプロジェクトは、Emscriptenを使用してC++  `solc` から派生しており、両者は同じコンパイラのソースコードを使用しています。
 `solc-js` はJavaScriptプロジェクト（Remixなど）で直接使用できます。使用方法はsolc-jsのリポジトリを参照してください。

@@ -38,7 +38,7 @@ Solidity やこのドキュメントを改善するためのアイデアはい�
 
 **2. Solidityを知る**
 
-基本的な操作に慣れてきたら、 :doc:`"Solidity by Example" <solidity-by-example>` や "言語仕様" のセクションを読んで、言語のコアコンセプトを理解することをお勧めします。
+基本的な操作に慣れてきたら、 「:doc:`Solidity by Example <solidity-by-example>`」や「言語仕様」にあるセクションを読んで、言語のコアコンセプトを理解することをお勧めします。
 
 **3. Solidityコンパイラをインストールする**
 
@@ -54,7 +54,7 @@ Solidity コンパイラをインストールするには様々な方法があ�
 
 Ethereumでの分散型アプリケーションの構築について詳しく知りたい場合は、 `Ethereum Developer Resources <https://ethereum.org/en/developers/>`_ で、Ethereumに関するさらに一般的なドキュメントや、幅広い種類のチュートリアル、ツール、開発フレームワークを紹介しています。
 
-疑問点があれば、検索したり、 `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_ や `Gitterチャンネル <https://gitter.im/ethereum/solidity/>`_ で聞いてみるといいでしょう。
+疑問点があれば、検索したり、 `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_ や `Gitterチャンネル <https://gitter.im/ethereum/solidity/>`_ で聞いてみると良いでしょう。
 
 .. _translations:
 

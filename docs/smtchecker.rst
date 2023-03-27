@@ -1215,7 +1215,11 @@ Reference Types and Aliasing
 .. If the type is nested, the knowledge removal also includes all the prefix base
 .. types.
 
-Solidityでは、同じ :ref:`data location<data-location>` を持つ参照型に対してエイリアスを実装しています。つまり、ある変数が同じデータ領域への参照を通じて変更される可能性があるということです。SMTCheckerは、どの参照が同じデータを参照しているかを追跡しません。これは、参照型のローカル参照または状態変数が割り当てられるたびに、同じ型およびデータ位置の変数に関するすべての知識が消去されることを意味する。型が入れ子になっている場合、知識の消去には、すべての前置基底型も含まれます。
+Solidityでは、同じ :ref:`データロケーション<data-location>` を持つ参照型に対してエイリアスを実装しています。
+つまり、ある変数が同じデータ領域への参照を通じて変更される可能性があるということです。
+SMTCheckerは、どの参照が同じデータを参照しているかを追跡しません。
+これは、参照型のローカル参照または状態変数が割り当てられるたびに、同じ型およびデータ位置の変数に関するすべての知識が消去されることを意味します。
+型が入れ子になっている場合、知識の消去には、すべての前置基底型も含まれます。
 
 .. code-block:: solidity
 
@@ -1267,7 +1271,9 @@ Solidityでは、同じ :ref:`data location<data-location>` を持つ参照型�
 .. in memory. This implies that some ``c[i]`` could refer to the same data as
 .. ``b`` or ``a``.
 
-``b[0]`` に割り当てられた後、 ``a`` については型（ ``uint[]`` ）とデータの場所（メモリ）が同じであるため、知識を消去する必要があります。  また、 ``c`` の基本型もメモリ上の ``uint[]`` であるため、 ``c`` に関する知識も消去する必要があります。これは、ある ``c[i]`` が ``b`` や ``a`` と同じデータを参照する可能性があることを意味します。
+``b[0]`` に割り当てられた後、 ``a`` については型（ ``uint[]`` ）とデータの場所（メモリ）が同じであるため、知識を消去する必要があります。
+また、 ``c`` の基本型もメモリ上の ``uint[]`` であるため、 ``c`` に関する知識も消去する必要があります。
+これは、ある ``c[i]`` が ``b`` や ``a`` と同じデータを参照する可能性があることを意味します。
 
 .. Notice that we do not clear knowledge about ``array`` and ``d`` because they
 .. are located in storage, even though they also have type ``uint[]``.  However,
