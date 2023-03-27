@@ -9,7 +9,7 @@ Solidity v0.5.0の破壊的変更点
 .. `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_.
 
 このセクションでは、Solidityバージョン0.5.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。
-完全なリストは `リリースのチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_ をご覧ください。
+完全なリストは `リリースのチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_ を参照してください。
 
 .. note::
    .. Contracts compiled with Solidity v0.5.0 can still interface with contracts

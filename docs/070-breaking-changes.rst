@@ -8,7 +8,7 @@ Solidity v0.7.0の破壊的変更点
 .. For the full list check
 .. `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_.
 
-このセクションでは、Solidityバージョン0.7.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_ をご覧ください。
+このセクションでは、Solidityバージョン0.7.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_ を参照してください。
 
 
 Silent Changes of the Semantics

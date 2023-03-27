@@ -1681,4 +1681,4 @@ Solidityのコントラクトは、すべてのパブリックインターフェ
 .. Please see the section about :ref:`NatSpec <natspec>` for a detailed explanation.
 .. 
 
-詳しい説明は「 :ref:`NatSpec <natspec>` 」の項をご覧ください。
+詳しい説明は「 :ref:`NatSpec <natspec>` 」の項を参照してください。
