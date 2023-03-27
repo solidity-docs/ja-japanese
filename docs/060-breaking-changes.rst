@@ -138,8 +138,8 @@ New Features
 * :ref:`try/catch statement <try-catch>` では、失敗した外部呼び出しに反応できます。
 * ``struct`` および ``enum`` 型は、ファイルレベルで宣言できます。
 * 例えば ``abi.decode(msg.data[4:], (uint, uint))`` は関数呼び出しのペイロードをデコードする低レベルな方法です。
-* Natspecは開発者向けドキュメントで複数のリターン・パラメータをサポートし、 ``@param`` と同じネーミング・チェックを実施します。
-* YulとInline Assemblyには、現在の関数を終了させる ``leave`` という新しいステートメントがあります。
+* Natspecは開発者向けドキュメントで複数のリターンパラメータをサポートし、 ``@param`` と同じネーミングチェックを実施します。
+* YulとInline Assemblyには、現在の関数を終了させる ``leave`` という新しい文があります。
 * ``address`` から ``address payable`` への変換は ``payable(x)`` を介して可能になりました。
 
 
@@ -150,7 +150,8 @@ Interface Changes
 .. the compiler. These may change the way how you use the compiler on the command line, how you use its programmable
 .. interface, or how you analyze the output produced by it.
 
-このセクションでは、言語そのものとは関係なく、コンパイラーのインターフェースに影響を与える変更点を紹介します。これらの変更により、コマンドラインでのコンパイラの使用方法、プログラマブル・インターフェースの使用方法、コンパイラが生成した出力の分析方法が変わる可能性があります。
+このセクションでは、言語そのものとは関係なく、コンパイラーのインターフェースに影響を与える変更点を紹介します。
+これらの変更により、コマンドラインでのコンパイラの使用方法、プログラマブルインターフェースの使用方法、コンパイラが生成した出力の分析方法が変わる可能性があります。
 
 New Error Reporter
 ~~~~~~~~~~~~~~~~~~

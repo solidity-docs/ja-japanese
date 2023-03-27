@@ -42,7 +42,8 @@ Silent Changes of the Semantics
 
   ``pragma abicoder v1;`` を使って古い動作を選択できます。   プラグマ ``pragma experimental ABIEncoderV2;`` はまだ有効ですが、非推奨であり、効果はありません。   明示的にしたい場合は、代わりに ``pragma abicoder v2;`` を使用してください。
 
-  ABI coder v2は、v1よりも多くの型をサポートし、入力に対してより多くのサニティ・チェックを行うことに注意してください。   ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1では復帰しなかったコントラクトコールが復帰することがあります。
+  ABI coder v2は、v1よりも多くの型をサポートし、入力に対してより多くのサニティチェックを行うことに注意してください。
+  ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1では復帰しなかったコントラクトコールが復帰することがあります。
 
 .. * Exponentiation is right associative, i.e., the expression ``a**b**c`` is parsed as ``a**(b**c)``.
 ..   Before 0.8.0, it was parsed as ``(a**b)**c``.
@@ -236,7 +237,7 @@ New Restrictions
 
 .. * The ``chainid`` builtin in inline assembly is now considered ``view`` instead of ``pure``.
 
-* インライン・アセンブリの ``chainid`` ビルトインは、 ``pure`` ではなく ``view`` とみなされるようになりました。
+* インラインアセンブリの ``chainid`` ビルトインは、 ``pure`` ではなく ``view`` とみなされるようになりました。
 
 .. * Unary negation cannot be used on unsigned integers anymore, only on signed integers.
 
@@ -253,7 +254,7 @@ Interface Changes
 .. * The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
 ..   Use the "compact AST" (``--ast-compact--json`` resp. ``AST``) as replacement.
 
-* 「レガシーAST」が削除されました（コマンドライン・インターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。代わりに「コンパクトAST」( ``--ast-compact--json`` 、標準JSONでは ``AST`` )を使用してください。
+* 「レガシーAST」が削除されました（コマンドラインインターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。代わりに「コンパクトAST」( ``--ast-compact--json`` 、標準JSONでは ``AST`` )を使用してください。
 
 .. * The old error reporter (``--old-reporter``) has been removed.
 

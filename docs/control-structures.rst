@@ -562,7 +562,7 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 .. The setting only affects the statements that are syntactically inside the block.
 .. Functions called from within an ``unchecked`` block do not inherit the property.
 
-この設定は、構文的にブロックの内部にあるステートメントにのみ影響します。 ``unchecked`` ブロック内から呼び出された関数は、このプロパティを継承しません。
+この設定は、構文的にブロックの内部にある文にのみ影響します。 ``unchecked`` ブロック内から呼び出された関数は、このプロパティを継承しません。
 
 .. note::
 
@@ -623,7 +623,7 @@ Solidityでは、エラー処理に状態を戻す例外を使用します。
 .. ``staticcall``: they return ``false`` as their first return value in case
 .. of an exception instead of "bubbling up".
 
-サブコールで例外が発生した場合、 ``try/catch`` ステートメントで捕捉されない限り、自動的に「バブルアップ」（例外が再スローされる）します。
+サブコールで例外が発生した場合、 ``try/catch`` 文で捕捉されない限り、自動的に「バブルアップ」（例外が再スローされる）します。
 このルールの例外は、 ``send`` と低レベル関数の ``call`` 、 ``delegatecall`` 、 ``staticcall`` です。
 これらの関数は、例外が発生した場合、「バブルアップ」するのではなく、 ``false`` を最初の戻り値として返します。
 

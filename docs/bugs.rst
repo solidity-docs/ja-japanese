@@ -84,7 +84,7 @@
 ..     If no conditions are given, assume that the bug is present.
 .. check
 ..     This field contains different checks that report whether the smart contract
-..     contains the bug or not. The first type of check are Javascript regular
+..     contains the bug or not. The first type of check are JavaScript regular
 ..     expressions that are to be matched against the source code ("source-regex")
 ..     if the bug is present.  If there is no match, then the bug is very likely
 ..     not present. If there is a match, the bug might be present.  For improved
@@ -124,7 +124,7 @@ conditions
    例えば、 ``">=constantinople"``  は EVM バージョンが  ``constantinople``  以降に設定されている場合にバグが発生することを意味します。
 check
    このフィールドには、スマートコントラクトにバグが含まれているかどうかを報告するさまざまなチェックが含まれます。
-   最初のタイプのチェックは、バグが存在する場合にソースコード（「source-regex」）に対してマッチされるJavascriptの正規表現です。
+   最初のタイプのチェックは、バグが存在する場合にソースコード（「source-regex」）に対してマッチされるJavaScriptの正規表現です。
    一致しない場合は、バグが存在しない可能性が高いです。一致するものがあれば、そのバグは存在する可能性があります。
    精度を上げるためには、コメントを削除した後のソースコードにチェックを適用する必要があります。
    2番目のタイプのチェックは、SolidityプログラムのコンパクトASTにチェックするパターンです("ast-compact-json-path")。指定された検索クエリは、 `JsonPath <https://github.com/json-path/JsonPath>`_ 式です。

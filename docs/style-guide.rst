@@ -326,7 +326,7 @@ Imports
 
 .. Import statements should always be placed at the top of the file.
 
-インポートステートメントは、常にファイルの先頭に配置する必要があります。
+インポート文は、常にファイルの先頭に配置する必要があります。
 
 .. Yes:
 
@@ -695,7 +695,7 @@ NG:
 .. For control structures whose body contains a single statement, omitting the
 .. braces is ok *if* the statement is contained on a single line.
 
-本体が1つのステートメントを含む制御構造の場合、ステートメントが1行に収まっていれば、中括弧を省略しても問題ありません。
+本体が1つの文を含む制御構造の場合、文が1行に収まっていれば、中括弧を省略しても問題ありません。
 
 .. Yes:
 
@@ -1127,7 +1127,7 @@ NG:
 
 .. When declaring short functions with a single statement, it is permissible to do it on a single line.
 
-短い関数を1つのステートメントで宣言する場合、1行で宣言しても構いません。
+短い関数を1つの文で宣言する場合、1行で宣言しても構いません。
 
 .. Permissible:
 
@@ -1642,7 +1642,7 @@ NatSpec
 .. triple slash (``///``) or a double asterisk block (``/** ... */``) and
 .. they should be used directly above function declarations or statements.
 
-Solidityのコントラクトには、NatSpecコメントを含めることができます。コメントはトリプルスラッシュ( ``///`` )またはダブルアスタリスクブロック( ``/** ... */`` )で記述し、関数宣言やステートメントの直上で使用する必要があります。
+Solidityのコントラクトには、NatSpecコメントを含めることができます。コメントはトリプルスラッシュ( ``///`` )またはダブルアスタリスクブロック( ``/** ... */`` )で記述し、関数宣言や文の直上で使用する必要があります。
 
 .. For example, the contract from :ref:`a simple smart contract <simple-smart-contract>` with the comments
 .. added looks like the one below:

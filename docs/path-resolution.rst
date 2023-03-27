@@ -204,7 +204,7 @@ VFSが初期化された後も、インポートコールバックによって�
 .. The import statement specifies an *import path*.
 .. Based on how the import path is specified, we can divide imports into two categories:
 
-インポートステートメントでは、 *インポートパス* を指定します。
+インポート文では、 *インポートパス* を指定します。
 インポートパスの指定方法に基づいて、インポートは2つのカテゴリーに分けられます。
 
 .. - :ref:`Direct imports <direct-imports>`, where you specify the full source unit name directly.

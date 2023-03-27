@@ -26,9 +26,9 @@ Yulの設計は、次の目標を達成しようと試みています。
 
 1つ目と2つ目の目標を達成するために、Yulは ``for`` ループ、 ``if`` 文、 ``switch`` 文、関数呼び出しといったハイレベルな要素を提供しています。
 アセンブリプログラムのコントロールフローを適切に表現するためには、これらで十分なはずです。
-したがって、 ``SWAP`` 、 ``DUP`` 、 ``JUMPDEST`` 、 ``JUMP`` 、 ``JUMPI`` の明示的なステートメントは用意されていません。
+したがって、 ``SWAP`` 、 ``DUP`` 、 ``JUMPDEST`` 、 ``JUMP`` 、 ``JUMPI`` の明示的な文は用意されていません。
 なぜなら、最初の2つはデータフローを難読化し、最後の2つはコントロールフローを難読化するからです。
-さらに、 ``mul(add(x, y), 7)`` 形式の関数ステートメントは ``7 y x add mul`` のような純粋なオペコード文よりも好まれます。
+さらに、 ``mul(add(x, y), 7)`` 形式の関数文は ``7 y x add mul`` のような純粋なオペコード文よりも好まれます。
 なぜなら、前の形式ではどのオペランドがどのオペコードに使用されているかがわかりやすいからです。
 
 スタックマシン用に設計されているにもかかわらず、Yulはスタック自体の複雑さが現れることがありません。
@@ -235,7 +235,7 @@ EVMでは、これは ``DUP`` 命令に相当します。
     } // v と zero が "deallocated" される。
 
 宣言した変数の型がデフォルトの型と異なる場合は、コロンの後にその型を記述します。
-また、複数の値を返す関数呼び出しから代入する場合、1つのステートメントで複数の変数を宣言できます。
+また、複数の値を返す関数呼び出しから代入する場合、1つの文で複数の変数を宣言できます。
 
 .. code-block:: yul
 
@@ -356,8 +356,8 @@ EVMでは、Yulの関数はスタックから引数（およびリターンさ�
 
 複数の値を返す関数を呼び出した場合は、 ``a, b := f(x)`` や ``let a, b := f(x)`` を使って複数の変数に代入する必要があります。
 
-``leave`` ステートメントは、現在の関数を終了するために使用できます。
-他の言語の ``return`` ステートメントと同じように動作しますが、戻り値を取らずに関数を終了し、関数は戻り値の変数に現在割り当てられている値を返します。
+``leave`` 文は、現在の関数を終了するために使用できます。
+他の言語の ``return`` 文と同じように動作しますが、戻り値を取らずに関数を終了し、関数は戻り値の変数に現在割り当てられている値を返します。
 
 EVM方言には ``return`` というビルトイン関数があり、現在のYulの関数だけでなく、完全な実行コンテキスト（内部メッセージコール）を終了させることができることに注意してください。
 
@@ -454,17 +454,17 @@ Yulオブジェクトについては別の章で説明します。
 
 .. Expressions that are also statements (i.e. at the block level) have to evaluate to zero values.
 
-ステートメントでもある式（ブロックレベル）は、0に評価されなければなりません。
+文でもある式（ブロックレベル）は、0に評価されなければなりません。
 
 それ以外のシチュエーションでは、式は正確に1つの値に評価されなければなりません。
 
 .. It is worth emphasizing that this restriction applies just to the innermost loop that contains the ``continue`` or ``break`` statement: this innermost loop, and therefore the ``continue`` or ``break`` statement, may appear anywhere in an outer loop, possibly in an outer loop's initialization block or update block.
 
-``continue`` または ``break`` ステートメントは、以下のようにforループのボディ内でのみ使用できます。
-ステートメントを含む最も内側のループを考えてみましょう。
-ループとステートメントは同じ関数内にあるか、または両方がトップレベルになければなりません。
-ステートメントはループのボディブロック内に配置しなければならず、ループの初期化ブロックや更新ブロック内に配置できません。
-この制限は、 ``continue`` または ``break`` ステートメントを含む最も内側のループにのみ適用されることを強調しておきます。この最も内側のループ、つまり ``continue`` または ``break`` ステートメントは、外側ループのどこでも、おそらく外側ループの初期化ブロックや更新ブロックでも出現できます。
+``continue`` 文または ``break`` 文は、以下のようにforループのボディ内でのみ使用できます。
+文を含む最も内側のループを考えてみましょう。
+ループと文は同じ関数内にあるか、または両方がトップレベルになければなりません。
+文はループのボディブロック内に配置しなければならず、ループの初期化ブロックや更新ブロック内に配置できません。
+この制限は、 ``continue`` 文または ``break`` 文を含む最も内側のループにのみ適用されることを強調しておきます。この最も内側のループ、つまり ``continue`` 文または ``break`` 文は、外側ループのどこでも、おそらく外側ループの初期化ブロックや更新ブロックでも出現できます。
 例えば、次の例は、 ``break`` が外側ループの更新ブロックにあるにもかかわらず、内側ループのボディブロックにあるため、合法です:
 
 .. code-block:: yul
@@ -475,7 +475,7 @@ Yulオブジェクトについては別の章で説明します。
 
 forループの条件部分は、正確に1つの値に評価されなければなりません。
 
-``leave`` ステートメントは、関数内でのみ使用できます。
+``leave`` 文は、関数内でのみ使用できます。
 
 関数はforループの初期化ブロック内のどこにも定義できません。
 
@@ -493,7 +493,7 @@ forループの条件部分は、正確に1つの値に評価されなければ�
 Yulでは、スコープはブロックに紐付けられており（例外として、後述する関数やforループがあります）、すべての宣言（ ``FunctionDefinition`` 、 ``VariableDeclaration`` ）は、これらのスコープに新しい識別子を導入します。
 
 識別子は、定義されているブロック（すべてのサブノードとサブブロックを含む）で使用できます。
-関数はブロック全体（定義前も含む）で使用できますが、変数は ``VariableDeclaration`` の後のステートメントからしか使用できません。
+関数はブロック全体（定義前も含む）で使用できますが、変数は ``VariableDeclaration`` の後の文からしか使用できません。
 
 .. Functions can be referenced already before their declaration (if they are visible).
 
@@ -530,7 +530,7 @@ ASTの様々なノード上でオーバーロードされた評価関数Eを提�
 .. If the AST node is a statement, E returns the two state objects and a "mode", which is used for the ``break``, ``continue`` and ``leave`` statements.
 .. If the AST node is an expression, E returns the two state objects and as many values as the expression evaluates to.
 
-ASTノードがステートメントの場合、Eは2つの状態オブジェクトと ``break`` 、 ``continue`` 、 ``leave`` ステートメントで使用される「モード」を返します。
+ASTノードが文の場合、Eは2つの状態オブジェクトと ``break`` 、 ``continue`` 、 ``leave`` 文で使用される「モード」を返します。
 ASTノードが式の場合、Eは2つの状態オブジェクトと式の評価値の数だけの値を返します。
 
 .. The exact nature of the global state is unspecified for this high level description.

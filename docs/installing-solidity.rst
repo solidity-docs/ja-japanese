@@ -364,7 +364,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
 .. _Visual Studio 2019 Build Tools: https://visualstudio.microsoft.com/vs/older-downloads/#visual-studio-2019-and-other-products
 
-必要な外部依存パッケージをすべてインストールするためのヘルパー・スクリプトを用意しています。
+必要な外部依存パッケージをすべてインストールするためのヘルパースクリプトを用意しています。
 
 .. code-block:: bat
 
@@ -390,18 +390,20 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 
 .. note::
 
-    この方法では、プレリリース・ビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。     リリースされたSolidityコンパイラを再構築したい場合は、githubのリリースページにあるソースtarballを使用してください。
+    この方法では、プレリリースビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。
+    リリースされたSolidityコンパイラを再構築したい場合は、githubのリリースページにあるソースtarballを使用してください。
 
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     (githubで提供されている「ソースコード」ではありません)。
 
-コマンドライン・ビルド
----------------------------
+コマンドラインビルド
+--------------------
 
 **ビルドする前に、必ず外部依存関係（上記参照）をインストールしてください。**
 
-Solidityプロジェクトでは、CMakeを使ってビルドの設定を行います。繰り返しのビルドを高速化するために、 `ccache`_ をインストールするとよいでしょう。CMakeはそれを自動的にピックアップします。Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似ています。
+Solidityプロジェクトでは、CMakeを使ってビルドの設定を行います。繰り返しのビルドを高速化するために、 `ccache`_ をインストールするとよいでしょう。
+CMakeはそれを自動的にピックアップします。Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似ています。
 
 .. _ccache: https://ccache.dev/
 
