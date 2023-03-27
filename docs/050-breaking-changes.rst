@@ -127,7 +127,10 @@ Explicitness Requirements
   ``calldata`` accordingly.  Note that ``external`` functions require
   parameters with a data location of ``calldata``.
 
-* 構造体（struct）、配列（array）、マッピング（mapping）型のすべての変数について、明示的なデータ配置が必須となりました。これは、関数のパラメータやリターン変数にも適用されます。例えば、 ``uint[] x = z`` を ``uint[] storage x = z`` に、 ``function f(uint[][] x)`` を ``function f(uint[][] memory x)`` に変更すると、 ``memory`` がデータ位置となり、 ``storage`` や ``calldata`` に適宜置き換えられます。なお、 ``external`` 関数ではデータ位置が ``calldata`` のパラメータが必要です。
+* 構造体（struct）、配列（array）、マッピング（mapping）型のすべての変数について、明示的なデータ配置が必須となりました。
+  これは、関数のパラメータやリターン変数にも適用されます。
+  例えば、 ``uint[] x = z`` を ``uint[] storage x = z`` に、 ``function f(uint[][] x)`` を ``function f(uint[][] memory x)`` に変更すると、 ``memory`` がデータロケーションとなり、 ``storage`` や ``calldata`` に適宜置き換えられます。
+  なお、 ``external`` 関数ではデータロケーションが ``calldata`` のパラメータが必要です。
 
 .. * Contract types do not include ``address`` members anymore in
   order to separate the namespaces.  Therefore, it is now necessary to

@@ -8,9 +8,11 @@ Yul
 
 Yul（以前はJULIAやIULIAとも呼ばれていました）は、さまざまなバックエンド用のバイトコードにコンパイルできる中間言語です。
 
-It can be used in stand-alone mode and for "inline assembly" inside Solidity.
-The compiler uses Yul as an intermediate language in the IR-based code generator ("new codegen" or "IR-based codegen").
-Yul is a good target for high-level optimisation stages that can benefit all target platforms equally.
+.. Yul is a good target for high-level optimisation stages that can benefit all target platforms equally.
+
+スタンドアローンでも、Solidityで「インラインアセンブリ」としても使えます。
+コンパイラは、IRベースのコードジェネレータ（「new codegen」または「IR-based codegen」）において、中間言語としてYulを使用します。
+Yulは、すべてのターゲットプラットフォームに等しく恩恵を与えることができるハイレベルな最適化段階のための良いターゲットです。
 
 モチベーションとハイレベルな記述
 ================================
@@ -85,7 +87,7 @@ Yulの設計は、次の目標を達成しようと試みています。
         }
     }
 
-:ref:`セクション <erc20yul>` の最後では、ERC-20規格の完全な実装が見られます。
+:ref:`セクションの最後 <erc20yul>` では、ERC-20規格の完全な実装が見られます。
 
 スタンドアローンでの使用
 ========================

@@ -44,7 +44,8 @@
 ..     bytecode sections stemming from compiler-generated inline assembly statements.
 
 .. note :: 
-    特定のソースファイルに関連付けられていない命令の場合、ソースマッピングでは ``-1`` という整数の識別子が割り当てられます。これは、コンパイラによって生成されたインラインアセンブリステートメントに由来するバイトコードセクションで発生する可能性があります。
+    特定のソースファイルに関連付けられていない命令の場合、ソースマッピングでは ``-1`` という整数の識別子が割り当てられます。
+    これは、コンパイラによって生成されたインラインアセンブリステートメントに由来するバイトコードセクションで発生する可能性があります。
 
 .. The source mappings inside the AST use the following
 .. notation:
