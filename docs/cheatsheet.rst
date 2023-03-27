@@ -1,17 +1,17 @@
-**************
+************
 チートシート
-**************
+************
 
 .. index:: operator; precedence
 
 演算子の優先順位
-================================
+================
 .. include:: types/operator-precedence-table.rst
 
 .. index:: assert, block, coinbase, difficulty, prevrandao, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin, revert, require, keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, this, super, selfdestruct, balance, codehash, send
 
 グローバル変数
-================
+==============
 
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: 
   与えたデータを :ref:`ABI <ABI>` デコードします。型は第2引数として括弧内に与えられます。
@@ -70,9 +70,9 @@
 
 - ``assert(bool condition)``: 条件が ``false`` の場合、実行を中止し、状態変化を戻す（内部エラーに使用）
 
-- ``require(bool condition)``: 条件が ``false`` の場合、実行を中止し、状態の変化を元に戻す（不正な入力や外部コンポーネントのエラーに使用する）
+- ``require(bool condition)``: 条件が ``false`` の場合、実行を中止し、状態の変化をリバートする（不正な入力や外部コンポーネントのエラーに使用する）
 
-- ``require(bool condition, string memory message)``: 条件が ``false`` の場合、実行を中止し、状態の変化を戻す（不正な入力や外部コンポーネントのエラーに使用）。また、エラーメッセージを表示します。
+- ``require(bool condition, string memory message)``: 条件が ``false`` の場合、実行を中止し、状態の変化を戻す（不正な入力や外部コンポーネントのエラーに使用）。また、エラーメッセージを表示する。
 
 - ``revert()``: 実行を中止し、状態の変化を戻す
 
@@ -130,7 +130,7 @@
 .. index:: visibility, public, private, external, internal
 
 関数の可視性指定子
-==============================
+==================
 
 .. code-block:: solidity
     :force:
@@ -150,7 +150,7 @@
 .. index:: modifiers, pure, view, payable, constant, anonymous, indexed
 
 修飾子
-=========
+======
 
 - 関数の ``pure``: 状態の変更やアクセスを禁止する。
 

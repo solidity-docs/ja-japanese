@@ -837,11 +837,10 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
     revert("description");
 
 .. The error data will be passed back to the caller and can be caught there.
-.. Using ``revert()`` causes a revert without any error data while ``revert("description")``
-.. will create an ``Error(string)`` error.
+.. Using ``revert()`` causes a revert without any error data while ``revert("description")`` will create an ``Error(string)`` error.
 
 エラーデータは呼び出し側に戻されるので、そこでキャッチできます。
-``revert()`` を使うとエラーデータなしで復帰しますが、 ``revert("description")`` を使うと ``Error(string)`` エラーが発生します。
+``revert()`` を使うとエラーデータなしでリバートしますが、 ``revert("description")`` を使うと ``Error(string)`` エラーが発生します。
 
 .. Using a custom error instance will usually be much cheaper than a string description,
 .. because you can use the name of the error to describe it, which is encoded in only

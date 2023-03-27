@@ -121,7 +121,10 @@ Solidity v0.6.0の破壊的変更点
 ..     not matching any other function which send value will revert. You should only need to
 ..     implement the new fallback function if you are following an upgrade or proxy pattern.
 
-* 新しいフォールバック関数は、他の関数がマッチしない場合に呼び出されます（receive Ether関数が存在しない場合は、コールデータが空のコールも含まれます）。この関数を ``payable`` にするかどうかは自由です。 ``payable`` でない場合は、値を送信する他の関数にマッチしないトランザクションが復帰します。新しいフォールバック関数を実装する必要があるのは、アップグレードやプロキシのパターンに従っている場合だけです。
+* 新しいフォールバック関数は、他の関数がマッチしない場合に呼び出されます（receive Ether関数が存在しない場合は、コールデータが空のコールも含まれます）。
+  この関数を ``payable`` にするかどうかは自由です。
+  ``payable`` でない場合は、値を送信する他の関数にマッチしないトランザクションがリバートします。
+  新しいフォールバック関数を実装する必要があるのは、アップグレードやプロキシのパターンに従っている場合だけです。
 
 
 新機能
