@@ -9,8 +9,10 @@ Solidity v0.8.0の破壊的変更点
 
 このセクションでは、Solidityのバージョン0.8.0で導入された主な変更点を紹介します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_ を参照してください。
 
-Silent Changes of the Semantics
-===============================
+.. Silent Changes of the Semantics
+
+セマンティクスのサイレントな変更点
+==================================
 
 .. This section lists changes where existing code changes its behaviour without
 .. the compiler notifying you about it.
@@ -82,8 +84,10 @@ Silent Changes of the Semantics
 
 * 型 ``byte`` は削除されました。これは ``bytes1`` の別名でした。
 
-New Restrictions
-================
+.. New Restrictions
+
+新しい制約
+==========
 
 .. This section lists changes that might cause existing contracts to not compile anymore.
 
@@ -264,8 +268,8 @@ New Restrictions
 
 * 旧エラーレポーター（ ``--old-reporter`` ）は削除されました。
 
-How to update your code
-=======================
+コードのアップデート方法
+========================
 
 .. - If you rely on wrapping arithmetic, surround each operation with ``unchecked { ... }``.
 

@@ -524,9 +524,9 @@ External Calls and Reentrancy
 
 .. _smtchecker_options:
 
-*****************************
-SMTChecker Options and Tuning
-*****************************
+************************************
+SMTCheckerのオプションとチューニング
+************************************
 
 Timeout
 =======
@@ -1038,9 +1038,11 @@ BMCもCHCも ``z3`` を採用しており、 ``z3`` はブラウザを含めて�
 
 なお、選択したエンジンとソルバーの組み合わせによっては、SMTCheckerが何もしない場合があります。例えば、CHCと ``cvc4`` を選択した場合などです。
 
-*******************************
-Abstraction and False Positives
-*******************************
+.. Abstraction and False Positives
+
+**************
+抽象化と偽陽性
+**************
 
 .. The SMTChecker implements abstractions in an incomplete and sound way: If a bug
 .. is reported, it might be a false positive introduced by abstractions (due to
@@ -1313,9 +1315,11 @@ Contract Balance
 
 これを適切にモデル化するために、SMTCheckerは、新しいトランザクションのたびに コントラクトの残高が少なくとも ``msg.value`` だけ増える可能性があると仮定しています。
 
-**********************
-Real World Assumptions
-**********************
+.. Real World Assumptions
+
+************
+実世界の仮定
+************
 
 .. Some scenarios can be expressed in Solidity and the EVM, but are expected to
 .. never occur in practice.

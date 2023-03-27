@@ -22,8 +22,8 @@
         function utterance() public virtual returns (bytes32);
     }
 
-.. Such abstract contracts can not be instantiated directly. This is also true, if an abstract contract itself does implement
-.. all defined functions. The usage of an abstract contract as a base class is shown in the following example:
+.. Such abstract contracts can not be instantiated directly.
+.. This is also true, if an abstract contract itself does implement all defined functions. The usage of an abstract contract as a base class is shown in the following example:
 
 このような抽象コントラクトは、直接インスタンス化できません。
 これは、抽象コントラクト自体がすべての定義された関数を実装している場合にも当てはまります。

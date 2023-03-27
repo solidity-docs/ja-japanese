@@ -7,7 +7,7 @@ Solidityブランドガイド
 
 このブランドガイドでは、Solidityのブランドポリシーやロゴ使用のガイドラインなどを紹介しています。
 
-The Solidity Brand
+Solidityのブランド
 ==================
 
 .. The Solidity programming language is an open-source, community project
@@ -26,17 +26,17 @@ The Solidity Brand
 
 ブランド名やロゴを使用する前に、この文書をよくお読みになることをお勧めします。皆様のご協力をお願いいたします。
 
-Solidity Brand Name
-===================
+Solidityのブランド名
+====================
 
 .. "Solidity" should be used to refer to the Solidity programming language
 .. solely.
 
-"Solidity "は、Solidityプログラミング言語のみを指す言葉です。
+「Solidity」は、Solidityプログラミング言語のみを指す言葉です。
 
 .. Please do not use "Solidity":
 
-Solidity "は使用しないでください。
+以下の場合に「Solidity」は使用しないでください。
 
 .. - To refer to any other programming language.
 
@@ -53,8 +53,8 @@ Solidity "は使用しないでください。
 
 - プログラミング言語Solidityがオープンソースであり、無料で使用できるかどうかについて、コミュニティを混乱させるような方法で。
 
-Solidity Logo License
-=====================
+Solidityロゴのライセンス
+========================
 
 .. .. image:: https://i.creativecommons.org/l/by/4.0/88x31.png
 ..   :width: 88
@@ -100,8 +100,8 @@ Solidityのロゴは、 `Creative Commons Attribution 4.0 International License 
 
 Solidityロゴを使用する際は、Solidityロゴのガイドラインを尊重してください。
 
-Solidity Logo Guidelines
-========================
+Solidityロゴのガイドライン
+==========================
 
 .. .. image:: logo.svg
 ..   :width: 256
@@ -124,8 +124,8 @@ Solidity Logo Guidelines
 
 - どうしても必要な場合を除き、ロゴの色を変更する。
 
-Credits
-=======
+クレジット
+==========
 
 .. This document was, in parts, derived from the `Python Software
 .. Foundation Trademark Usage Policy <https://www.python.org/psf/trademarks/>`_

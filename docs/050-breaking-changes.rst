@@ -22,8 +22,10 @@ Solidity v0.5.0の破壊的変更点
    データの場所や可視性・可変型の指定子を含むようにインターフェースを変更すれば十分です。
    以下の :ref:`Interoperability With Older Contracts <interoperability>` セクションを参照してください。
 
-Semantic Only Changes
-=====================
+.. Semantic Only Changes
+
+セマンティックのみの変更点
+==========================
 
 .. This section lists the changes that are semantic-only, thus potentially
 .. hiding new and different behavior in existing code.
@@ -72,8 +74,10 @@ Semantic Only Changes
 
 * Tangerine Whistleから始まる外部関数呼び出しで、利用可能なすべてのガスを転送します。
 
-Semantic and Syntactic Changes
-==============================
+.. Semantic and Syntactic Changes
+
+セマンティックかつシンタックスの変更点
+======================================
 
 .. This section highlights changes that affect syntax and semantics.
 
@@ -108,13 +112,16 @@ Semantic and Syntactic Changes
 
 * Solidityは、関数のローカル変数にC99スタイルのスコープルールを実装しました。つまり、変数は宣言された後にのみ使用でき、同じスコープまたはネストされたスコープ内でのみ使用できます。 ``for`` ループの初期化ブロックで宣言された変数は、ループ内のどの時点でも有効です。
 
-Explicitness Requirements
-=========================
+.. Explicitness Requirements
+
+明示的な要件
+============
 
 .. This section lists changes where the code now needs to be more explicit.
 .. For most of the topics the compiler will provide suggestions.
 
-このセクションでは、コードをより明確にする必要がある変更点を示します。ほとんどの項目では、コンパイラが提案をしてくれます。
+このセクションでは、コードをより明確にする必要がある変更点を示します。
+ほとんどの項目では、コンパイラが提案をしてくれます。
 
 .. * Explicit function visibility is now mandatory.  Add ``public`` to every
   function and constructor, and ``external`` to every fallback or interface
@@ -200,8 +207,10 @@ Explicitness Requirements
 
 * わかりやすくするために、コマンドラインインターフェースでは、標準入力をソースとして使用する場合、 ``-`` を要求するようになりました。
 
-Deprecated Elements
-===================
+.. Deprecated Elements
+
+非推奨の要素
+============
 
 .. This section lists changes that deprecate prior features or syntax.  Note that
 .. many of these changes were already enabled in the experimental mode
@@ -430,8 +439,10 @@ Syntax
 
 .. _interoperability:
 
-Interoperability With Older Contracts
-=====================================
+.. Interoperability With Older Contracts
+
+従来のコントラクトとの相互運用性
+================================
 
 .. It is still possible to interface with contracts written for Solidity versions prior to
 .. v0.5.0 (or the other way around) by defining interfaces for them.
@@ -520,8 +531,10 @@ Interoperability With Older Contracts
     }
 
 
-Example
-=======
+.. Example
+
+例
+==
 
 .. The following example shows a contract and its updated version for Solidity
 .. v0.5.0 with some of the changes listed in this section.

@@ -11,8 +11,10 @@ Solidity v0.6.0の破壊的変更点
 このセクションでは、Solidityバージョン0.6.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.6.0>`_ を参照してください。
 
 
-Changes the Compiler Might not Warn About
-=========================================
+.. Changes the Compiler Might not Warn About
+
+コンパイラが警告しない可能性のある変更点
+========================================
 
 .. This section lists changes where the behaviour of your code might
 .. change without the compiler telling you about it.
@@ -26,8 +28,10 @@ Changes the Compiler Might not Warn About
 * 指数計算の結果として得られる型は、基数の型です。以前は、対称演算のように、基数の型と指数の型の両方を保持できる最小の型でした。さらに、指数の底には符号付きの型が許されています。
 
 
-Explicitness Requirements
-=========================
+.. Explicitness Requirements
+
+明示的な要件
+============
 
 .. This section lists changes where the code now needs to be more explicit,
 .. but the semantics do not change.
@@ -81,8 +85,10 @@ Explicitness Requirements
 
 * 状態変数のシャドーイングが禁止されました。派生コントラクトは、そのベースのいずれかに同名の可視状態変数が存在しない場合にのみ、状態変数 ``x`` を宣言できます。
 
-Semantic and Syntactic Changes
-==============================
+.. Semantic and Syntactic Changes
+
+セマンティックかつシンタックスの変更点
+======================================
 
 .. This section lists changes where you have to modify your code
 .. and it does something else afterwards.
@@ -118,8 +124,8 @@ Semantic and Syntactic Changes
 * 新しいフォールバック関数は、他の関数がマッチしない場合に呼び出されます（receive Ether関数が存在しない場合は、コールデータが空のコールも含まれます）。この関数を ``payable`` にするかどうかは自由です。 ``payable`` でない場合は、値を送信する他の関数にマッチしないトランザクションが復帰します。新しいフォールバック関数を実装する必要があるのは、アップグレードやプロキシのパターンに従っている場合だけです。
 
 
-New Features
-============
+新機能
+======
 
 .. This section lists things that were not possible prior to Solidity 0.6.0
 .. or were more difficult to achieve.
@@ -143,8 +149,9 @@ New Features
 * ``address`` から ``address payable`` への変換は ``payable(x)`` を介して可能になりました。
 
 
-Interface Changes
-=================
+
+インターフェースの変更点
+========================
 
 .. This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of
 .. the compiler. These may change the way how you use the compiler on the command line, how you use its programmable
@@ -202,8 +209,8 @@ C API Changes
 ``libsolc`` のC APIを使用するクライアントコードは、コンパイラが使用するメモリを制御するようになりました。この変更に一貫性を持たせるために、 ``solidity_free`` は ``solidity_reset`` に改名され、関数 ``solidity_alloc`` と ``solidity_free`` が追加され、 ``solidity_compile`` は ``solidity_free()`` を介して明示的に解放しなければならない文字列を返すようになりました。
 
 
-How to update your code
-=======================
+コードのアップデート方法
+========================
 
 .. This section gives detailed instructions on how to update prior code for every breaking change.
 
