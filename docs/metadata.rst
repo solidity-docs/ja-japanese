@@ -257,7 +257,7 @@ That file is JSON-decoded into a structure like above.
 
 さらに、ウォレットはNatSpecユーザードキュメントを使用して、ユーザーがコントラクトと対話する際には必ずヒューマンリーダブルな確認メッセージを表示し、併せてトランザクション署名の承認を要求できます。
 
-詳しくは、 :doc:`Ethereum Natural Language Specification (NatSpec) フォーマット <natspec-format>` をご覧ください。
+詳しくは、 :doc:`Ethereum Natural Language Specification (NatSpec) フォーマット <natspec-format>` を参照してください。
 
 ソースコード検証の方法
 ======================

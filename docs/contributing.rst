@@ -1,6 +1,6 @@
-############
-Contributing
-############
+######################
+コントリビューティング
+######################
 
 Help is always welcome and there are plenty of options to contribute to Solidity.
 
@@ -47,8 +47,8 @@ Help is always welcome and there are plenty of options to contribute to Solidity
 
 このプロジェクトは `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 付きで公開されていることにご注意ください。課題、プルリクエスト、Gitterチャンネルなど、このプロジェクトに参加することで、その条件を守ることに同意したことになります。
 
-Team Calls
-==========
+チームコール
+============
 
 .. If you have issues or pull requests to discuss, or are interested in hearing what
 .. the team and contributors are working on, you can join our public team calls:
@@ -69,14 +69,15 @@ Team Calls
 
 どちらのコールも `Jitsi <https://meet.soliditylang.org/>`_ で行われます。
 
-How to Report Issues
-====================
+イシューの報告方法
+==================
 
 .. To report an issue, please use the
 .. `GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_. When
 .. reporting issues, please mention the following details:
 
-問題を報告するには、 `GitHub issues tracker <https://github.com/ethereum/solidity/issues>`_ をご利用ください。ご報告の際には、以下の内容をお知らせください。
+問題を報告するには、 `GitHubイシュートラッカー <https://github.com/ethereum/solidity/issues>`_ をご利用ください。
+ご報告の際には、以下の内容をお知らせください。
 
 .. * Solidity version.
 
@@ -88,15 +89,15 @@ How to Report Issues
 
 .. * Operating system.
 
-* オペレーティングシステムです。
+* オペレーティングシステム。
 
 .. * Steps to reproduce the issue.
 
-* 問題を再現するための手順
+* 問題を再現するための手順。
 
 .. * Actual vs. expected behaviour.
 
-* 実際の行動と期待される行動との比較
+* 実際の行動と期待される行動との比較。
 
 .. Reducing the source code that caused the issue to a bare minimum is always
 .. very helpful and sometimes even clarifies a misunderstanding.
@@ -106,14 +107,15 @@ How to Report Issues
 For technical discussions about language design, a post in the
 `Solidity forum <https://forum.soliditylang.org/>`_ is the correct place (see :ref:`solidity_language_design`).
 
-Workflow for Pull Requests
-==========================
+プルリクエストのワークフロー
+============================
 
 .. In order to contribute, please fork off of the ``develop`` branch and make your
 .. changes there. Your commit messages should detail *why* you made your change
 .. in addition to *what* you did (unless it is a tiny change).
 
-貢献するためには、 ``develop`` ブランチをフォークして、そこで変更を加えてください。コミットメッセージには、変更した内容に加えて、変更した理由を詳しく書いてください（小さな変更の場合を除く）。
+貢献するためには、 ``develop`` ブランチをフォークして、そこで変更を加えてください。
+コミットメッセージには、変更した内容に加えて、変更した理由を詳しく書いてください（小さな変更の場合を除く）。
 
 .. If you need to pull in any changes from ``develop`` after making your fork (for
 .. example, to resolve potential merge conflicts), please avoid using ``git merge``
@@ -131,7 +133,7 @@ Workflow for Pull Requests
 .. <https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above — this one is
 .. focused on compiler and language development instead of language usage) first.
 
-ただし、より大きな変更を行う場合は、まず `Solidity Development Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ （前述の `Solidity Development Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ とは異なり、こちらは言語の使い方ではなく、コンパイラや言語の開発に重点を置いています）に相談してください。
+ただし、より大きな変更を行う場合は、まず `Solidity Development Gitter チャンネル <https://gitter.im/ethereum/solidity-dev>`_ （前述のものとは異なり、こちらは言語の使い方ではなく、コンパイラや言語の開発に重点を置いています）に相談してください。
 
 .. New features and bugfixes should be added to the ``Changelog.md`` file: please
 .. follow the style of previous entries, when applicable.
@@ -152,8 +154,8 @@ We thoroughly review every PR and will help you get it right, but there are many
 
 ご協力ありがとうございました。
 
-Running the Compiler Tests
-==========================
+コンパイラーテストの実行
+========================
 
 Prerequisites
 -------------
@@ -436,8 +438,8 @@ out the separator and the comments that follow it.
 
     コントラクトファイルの名前には、 ``double_variable_declaration.sol``  など、テストする内容を説明するものを選んでください。     継承やクロスコントラクトコールをテストする場合を除き、1つのファイルに複数のコントラクトを入れないでください。     各ファイルは、新機能の1つの側面をテストする必要があります。
 
-Running the Fuzzer via AFL
-==========================
+AFLによるファザーの実行
+=======================
 
 .. Fuzzing is a technique that runs programs on more or less random inputs to find exceptional execution
 .. states (segmentation faults, exceptions, etc). Modern fuzzers are clever and run a directed search
@@ -581,8 +583,8 @@ Whiskers
 
 .. _documentation-style:
 
-Documentation Style Guide
-=========================
+ドキュメンテーションのスタイルガイド
+====================================
 
 .. In the following section you find style recommendations specifically focusing on documentation
 .. contributions to Solidity.
@@ -732,8 +734,8 @@ Running Documentation Tests
 
 .. _solidity_language_design:
 
-Solidity Language Design
-========================
+Solidityの言語設計
+==================
 
 .. To actively get involved in the language design process and to share your ideas concerning the future of Solidity,
 .. please join the `Solidity forum <https://forum.soliditylang.org/>`_.

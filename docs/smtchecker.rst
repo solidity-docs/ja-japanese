@@ -1,8 +1,8 @@
 .. _formal_verification:
 
-##################################
-SMTChecker and Formal Verification
-##################################
+####################
+SMTCheckerと形式検証
+####################
 
 .. Using formal verification it is possible to perform an automated mathematical
 .. proof that your source code fulfills a certain formal specification.
@@ -110,12 +110,12 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 
     検証対象に対して警告が出ないということは、SMTCheckerや基盤となるソルバーにバグがないことを前提とした、議論の余地のない正しさの数学的証明を意味します。これらの問題は、一般的なケースで自動的に解決することは*非常に難しく*、時には*不可能*であることに留意してください。  したがって、いくつかの特性は解決できないかもしれませんし、大規模なコントラクトでは誤検出につながるかもしれません。すべての証明されたプロパティは重要な成果であると考えるべきです。上級者向けには、 :ref:`SMTChecker Tuning <smtchecker_options>` を参照して、より複雑なプロパティを証明するのに役立ついくつかのオプションを学んでください。
 
-********
-Tutorial
-********
+**************
+チュートリアル
+**************
 
-Overflow
-========
+オーバーフロー
+==============
 
 .. code-block:: Solidity
 
@@ -168,7 +168,7 @@ Overflow
 .. If we add ``require`` statements that filter out overflow cases,
 .. the SMTChecker proves that no overflow is reachable (by not reporting warnings):
 
-オーバーフローのケースをフィルタリングする ``require`` ステートメントを追加すると、SMTCheckerはオーバーフローに到達しないことを（警告を報告しないことで）証明します。
+オーバーフローのケースをフィルタリングする ``require`` 文を追加すると、SMTCheckerはオーバーフローに到達しないことを（警告を報告しないことで）証明します。
 
 .. code-block:: Solidity
 
@@ -497,7 +497,7 @@ External Calls and Reentrancy
 .. is already "locked", so it would not be possible to change the value of ``x``,
 .. regardless of what the unknown called code does.
 
-上の例では、ミューテックス・フラグを使用して再入を禁止したコントラクトを示しています。ソルバーは、 ``unknown.run()`` が呼び出されたとき、コントラクトはすでに「ロック」されているので、未知の呼び出されたコードが何をしようと、 ``x`` の値を変更できないだろうと推測できます。
+上の例では、ミューテックスフラグを使用して再入を禁止したコントラクトを示しています。ソルバーは、 ``unknown.run()`` が呼び出されたとき、コントラクトはすでに「ロック」されているので、未知の呼び出されたコードが何をしようと、 ``x`` の値を変更できないだろうと推測できます。
 
 .. If we "forget" to use the ``mutex`` modifier on function ``set``, the
 .. SMTChecker is able to synthesize the behaviour of the externally called code so
@@ -524,9 +524,9 @@ External Calls and Reentrancy
 
 .. _smtchecker_options:
 
-*****************************
-SMTChecker Options and Tuning
-*****************************
+************************************
+SMTCheckerのオプションとチューニング
+************************************
 
 Timeout
 =======
@@ -1010,7 +1010,7 @@ SMT and Horn solvers
 
 ..   - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
 
-..   - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the Javascript binary of the compiler.
+..   - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
 
 - ``z3`` が使える
 
@@ -1018,7 +1018,7 @@ SMT and Horn solvers
 
   - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
-  -  ``soljson.js``  (Solidity 0.6.9 以降)では静的に、つまりコンパイラの Javascript バイナリを使用しています。
+  -  ``soljson.js``  (Solidity 0.6.9 以降)では静的に、つまりコンパイラの JavaScript バイナリを使用しています。
 
 .. note::
   z3 version 4.8.16 broke ABI compatibility with previous versions and cannot
@@ -1038,9 +1038,11 @@ BMCもCHCも ``z3`` を採用しており、 ``z3`` はブラウザを含めて�
 
 なお、選択したエンジンとソルバーの組み合わせによっては、SMTCheckerが何もしない場合があります。例えば、CHCと ``cvc4`` を選択した場合などです。
 
-*******************************
-Abstraction and False Positives
-*******************************
+.. Abstraction and False Positives
+
+**************
+抽象化と偽陽性
+**************
 
 .. The SMTChecker implements abstractions in an incomplete and sound way: If a bug
 .. is reported, it might be a false positive introduced by abstractions (due to
@@ -1055,7 +1057,7 @@ SMTCheckerは、抽象化を不完全かつ健全な方法で実装していま�
 .. If you are sure of a false positive, adding ``require`` statements in the code
 .. with more information may also give some more power to the solver.
 
-ターゲットが証明できない場合は、前のセクションのチューニング・オプションを使ってソルバーを助けることができます。誤検出が確実な場合は、より多くの情報を含む ``require`` ステートメントをコードに追加することで、ソルバーにさらなる力を与えることもできます。
+ターゲットが証明できない場合は、前のセクションのチューニングオプションを使ってソルバーを助けることができます。誤検出が確実な場合は、より多くの情報を含む ``require`` 文をコードに追加することで、ソルバーにさらなる力を与えることもできます。
 
 SMT Encoding and Types
 ======================
@@ -1215,7 +1217,11 @@ Reference Types and Aliasing
 .. If the type is nested, the knowledge removal also includes all the prefix base
 .. types.
 
-Solidityでは、同じ :ref:`data location<data-location>` を持つ参照型に対してエイリアスを実装しています。つまり、ある変数が同じデータ領域への参照を通じて変更される可能性があるということです。SMTCheckerは、どの参照が同じデータを参照しているかを追跡しません。これは、参照型のローカル参照または状態変数が割り当てられるたびに、同じ型およびデータ位置の変数に関するすべての知識が消去されることを意味する。型が入れ子になっている場合、知識の消去には、すべての前置基底型も含まれます。
+Solidityでは、同じ :ref:`データロケーション<data-location>` を持つ参照型に対してエイリアスを実装しています。
+つまり、ある変数が同じデータ領域への参照を通じて変更される可能性があるということです。
+SMTCheckerは、どの参照が同じデータを参照しているかを追跡しません。
+これは、参照型のローカル参照または状態変数が割り当てられるたびに、同じ型およびデータロケーションの変数に関するすべての知識が消去されることを意味します。
+型が入れ子になっている場合、知識の消去には、すべての前置基底型も含まれます。
 
 .. code-block:: solidity
 
@@ -1267,7 +1273,9 @@ Solidityでは、同じ :ref:`data location<data-location>` を持つ参照型�
 .. in memory. This implies that some ``c[i]`` could refer to the same data as
 .. ``b`` or ``a``.
 
-``b[0]`` に割り当てられた後、 ``a`` については型（ ``uint[]`` ）とデータの場所（メモリ）が同じであるため、知識を消去する必要があります。  また、 ``c`` の基本型もメモリ上の ``uint[]`` であるため、 ``c`` に関する知識も消去する必要があります。これは、ある ``c[i]`` が ``b`` や ``a`` と同じデータを参照する可能性があることを意味します。
+``b[0]`` に割り当てられた後、 ``a`` については型（ ``uint[]`` ）とデータの場所（メモリ）が同じであるため、知識を消去する必要があります。
+また、 ``c`` の基本型もメモリ上の ``uint[]`` であるため、 ``c`` に関する知識も消去する必要があります。
+これは、ある ``c[i]`` が ``b`` や ``a`` と同じデータを参照する可能性があることを意味します。
 
 .. Notice that we do not clear knowledge about ``array`` and ``d`` because they
 .. are located in storage, even though they also have type ``uint[]``.  However,
@@ -1288,7 +1296,10 @@ Contract Balance
 .. The contract's balance may also increase without triggering any calls to the
 .. contract, if
 
-コントラクトは、デプロイメント・トランザクションにおいて  ``msg.value``  > 0 であれば、資金を送ってデプロイされるかもしれない。しかし、コントラクトのアドレスは、デプロイ前にすでに資金を持っている可能性があり、それはコントラクトによって保持される。そのため、SMTCheckerはEVMルールとの整合性を取るために、コンストラクタで ``address(this).balance >= msg.value`` を想定している。また、コントラクトの残高は、以下の場合、コントラクトへの呼び出しをトリガすることなく増加することがあります。
+コントラクトは、デプロイトランザクションにおいて  ``msg.value``  > 0 であれば、資金を送ってデプロイされるかもしれません。
+しかし、コントラクトのアドレスは、デプロイ前にすでに資金を持っている可能性があり、それはコントラクトによって保持されます。
+そのため、SMTCheckerはEVMルールとの整合性を取るために、コンストラクタで ``address(this).balance >= msg.value`` を想定しています。
+また、コントラクトの残高は、以下の場合、コントラクトへの呼び出しをトリガすることなく増加することがあります。
 
 .. - ``selfdestruct`` is executed by another contract with the analyzed contract
 ..   as the target of the remaining funds,
@@ -1304,9 +1315,11 @@ Contract Balance
 
 これを適切にモデル化するために、SMTCheckerは、新しいトランザクションのたびに コントラクトの残高が少なくとも ``msg.value`` だけ増える可能性があると仮定しています。
 
-**********************
-Real World Assumptions
-**********************
+.. Real World Assumptions
+
+************
+実世界の仮定
+************
 
 .. Some scenarios can be expressed in Solidity and the EVM, but are expected to
 .. never occur in practice.

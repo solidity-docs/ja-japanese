@@ -74,7 +74,7 @@
             if (block.timestamp > auctionEndTime)
                 revert AuctionAlreadyEnded();
 
-            // 入札額が高くなければ、お金を送り返す（リバートステートメントは、それがお金を受け取ったことを含め、この関数の実行のすべての変更を元に戻します）。
+            // 入札額が高くなければ、お金を送り返す（リバート文は、それがお金を受け取ったことを含め、この関数の実行のすべての変更をリバートします）。
             if (msg.value <= highestBid)
                 revert BidNotHighEnough(highestBid);
 

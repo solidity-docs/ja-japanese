@@ -46,7 +46,7 @@ npm / Node.js
 `solcjs` プログラムは、Solidityのコンパイラである ``solcjs`` をインストールするための便利でポータブルな方法として使用します。
 `solcjs` プログラムは、このページの下の方で説明されているコンパイラへのアクセス方法よりも機能が少なくなっています。
 :ref:`commandline-compiler` のドキュメントでは、フル機能のコンパイラである ``solc`` を使用していることを前提としています。
-``solcjs`` の使い方は、独自の `repository <https://github.com/ethereum/solc-js>`_ の中で説明されています。
+``solcjs`` の使い方は、独自の `リポジトリ <https://github.com/ethereum/solc-js>`_ の中で説明されています。
 
 注: solc-jsプロジェクトは、Emscriptenを使用してC++  `solc` から派生しており、両者は同じコンパイラのソースコードを使用しています。
 `solc-js` はJavaScriptプロジェクト（Remixなど）で直接使用できます。使用方法はsolc-jsのリポジトリを参照してください。
@@ -138,7 +138,7 @@ install the latest stable version of solc:
 
 .. note::
 
-    ``solc`` スナップはstrict confinementを使用します。これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。     詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ をご覧ください。
+    ``solc`` スナップはstrict confinementを使用します。これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。     詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ を参照してください。
 
 macOSパッケージ
 ===============
@@ -322,7 +322,8 @@ Minimum Compiler Versions
 前提知識 - macOS
 ----------------
 
-macOSでビルドする場合は、最新版の `Xcode installed <https://developer.apple.com/xcode/download/>`_ を用意してください。Xcodeを初めてインストールする場合や、新しいバージョンをインストールしたばかりの場合は、コマンドラインでのビルドを行う前にライセンスに同意する必要があります。
+macOSでビルドする場合は、最新版の `Xcode installed <https://developer.apple.com/xcode/download/>`_ を用意してください。
+Xcodeを初めてインストールする場合や、新しいバージョンをインストールしたばかりの場合は、コマンドラインでのビルドを行う前にライセンスに同意する必要があります。
 
 .. code-block:: bash
 
@@ -364,7 +365,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
 .. _Visual Studio 2019 Build Tools: https://visualstudio.microsoft.com/vs/older-downloads/#visual-studio-2019-and-other-products
 
-必要な外部依存パッケージをすべてインストールするためのヘルパー・スクリプトを用意しています。
+必要な外部依存パッケージをすべてインストールするためのヘルパースクリプトを用意しています。
 
 .. code-block:: bat
 
@@ -390,18 +391,20 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 
 .. note::
 
-    この方法では、プレリリース・ビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。     リリースされたSolidityコンパイラを再構築したい場合は、githubのリリースページにあるソースtarballを使用してください。
+    この方法では、プレリリースビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。
+    リリースされたSolidityコンパイラを再構築したい場合は、githubのリリースページにあるソースtarballを使用してください。
 
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     (githubで提供されている「ソースコード」ではありません)。
 
-コマンドライン・ビルド
----------------------------
+コマンドラインビルド
+--------------------
 
 **ビルドする前に、必ず外部依存関係（上記参照）をインストールしてください。**
 
-Solidityプロジェクトでは、CMakeを使ってビルドの設定を行います。繰り返しのビルドを高速化するために、 `ccache`_ をインストールするとよいでしょう。CMakeはそれを自動的にピックアップします。Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似ています。
+Solidityプロジェクトでは、CMakeを使ってビルドの設定を行います。繰り返しのビルドを高速化するために、 `ccache`_ をインストールするとよいでしょう。
+CMakeはそれを自動的にピックアップします。Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似ています。
 
 .. _ccache: https://ccache.dev/
 

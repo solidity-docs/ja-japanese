@@ -1,12 +1,12 @@
 .. index:: style, coding style
 
-#############
-Style Guide
-#############
+##############
+スタイルガイド
+##############
 
-************
-Introduction
-************
+******************
+イントロダクション
+******************
 
 .. This guide is intended to provide coding conventions for writing Solidity code.
 .. This guide should be thought of as an evolving document that will change over
@@ -44,9 +44,9 @@ Introduction
 
     しかし、最も重要なことです。 **know when to be inconsistent**  -- 時には、スタイルガイドが適用できないこともあります。迷ったときは、自分のベストな判断で行動しましょう。他の例を見て、何がベストなのかを判断してください。そして、迷わず質問してください。
 
-***********
-Code Layout
-***********
+****************
+コードレイアウト
+****************
 
 Indentation
 ===========
@@ -326,7 +326,7 @@ Imports
 
 .. Import statements should always be placed at the top of the file.
 
-インポートステートメントは、常にファイルの先頭に配置する必要があります。
+インポート文は、常にファイルの先頭に配置する必要があります。
 
 .. Yes:
 
@@ -695,7 +695,7 @@ NG:
 .. For control structures whose body contains a single statement, omitting the
 .. braces is ok *if* the statement is contained on a single line.
 
-本体が1つのステートメントを含む制御構造の場合、ステートメントが1行に収まっていれば、中括弧を省略しても問題ありません。
+本体が1つの文を含む制御構造の場合、文が1行に収まっていれば、中括弧を省略しても問題ありません。
 
 .. Yes:
 
@@ -1127,7 +1127,7 @@ NG:
 
 .. When declaring short functions with a single statement, it is permissible to do it on a single line.
 
-短い関数を1つのステートメントで宣言する場合、1行で宣言しても構いません。
+短い関数を1つの文で宣言する場合、1行で宣言しても構いません。
 
 .. Permissible:
 
@@ -1278,55 +1278,32 @@ NG:
     x = y+z;
     x +=1;
 
-***************
-Order of Layout
-***************
+.. Order of Layout
+
+****************
+レイアウトの順序
+****************
 
 .. Layout contract elements in the following order:
 
-コントラクトエレメントを以下の順序でレイアウトします。
-
-.. 1. Pragma statements
+コントラクトの要素を以下の順序でレイアウトします。
 
 1. プラグマ文
-
-.. 2. Import statements
-
 2. インポート文
-
-.. 3. Interfaces
-
 3. インターフェース
-
-.. 4. Libraries
-
 4. ライブラリ
-
-.. 5. Contracts
-
 5. コントラクト
 
 .. Inside each contract, library or interface, use the following order:
 
-各コントラクト、ライブラリ、インターフェースの内部では、以下の順序で使用します。
-
-.. 1. Type declarations
+各コントラクト、ライブラリ、インターフェースの内部では、以下の順序を使用します。
 
 1. 型の宣言
-
-.. 2. State variables
-
 2. 状態変数
-
-.. 3. Events
-
-3. イベント情報
-
-4. Errors
-
-5. Modifiers
-
-6. Functions
+3. イベント
+4. エラー
+5. 修飾子
+6. 関数
 
 .. .. note::
 
@@ -1361,16 +1338,18 @@ No:
         error DivideByZero();
     }
 
+.. Naming Conventions
 
-******************
-Naming Conventions
-******************
+********
+命名規則
+********
 
 .. Naming conventions are powerful when adopted and used broadly.  The use of
 .. different conventions can convey significant *meta* information that would
 .. otherwise not be immediately available.
 
-命名規則は、広く採用され使用されることで力を発揮します。  異なる規約を使用することで、他の方法ではすぐには得られない重要なメタ情報を伝えることができます。
+命名規則は、広く採用され使用されることで力を発揮します。
+異なる規約を使用することで、他の方法ではすぐには得られない重要なメタ情報を伝えることができます。
 
 .. The naming recommendations given here are intended to improve the readability,
 .. and thus they are not rules, but rather guidelines to try and help convey the
@@ -1548,32 +1527,36 @@ NG:
     }
 
 Struct Names
-==========================
+============
 
 .. Structs should be named using the CapWords style. Examples: ``MyCoin``, ``Position``, ``PositionXY``.
 
-構造体の名前は、CapWordsスタイルを使用する必要があります。例を挙げます。 ``MyCoin`` 、 ``Position`` 、 ``PositionXY`` 。
+構造体の名前は、CapWordsスタイルを使用する必要があります。
+例: ``MyCoin`` 、 ``Position`` 、 ``PositionXY`` 。
 
 Event Names
 ===========
 
 .. Events should be named using the CapWords style. Examples: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer``.
 
-イベントの名称は、CapWordsスタイルを使用してください。例aa, ab, ac, ad, ae.
+イベントの名称は、CapWordsスタイルを使用してください。
+例: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer`` 。
 
 Function Names
 ==============
 
 .. Functions should use mixedCase. Examples: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner``.
 
-関数はミックスケースを使用してください。例を挙げます。aa, ab, ac, ad, ae.
+関数はミックスケースを使用してください。
+例: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner`` 。
 
 Function Argument Names
 =======================
 
 .. Function arguments should use mixedCase. Examples: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner``.
 
-関数の引数には、ミックスケースを使用する必要があります。例を挙げます。aa, ab, ac, ad, ae.
+関数の引数には、ミックスケースを使用する必要があります。
+例: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner`` 。
 
 .. When writing library functions that operate on a custom struct, the struct
 .. should be the first argument and should always be named ``self``.
@@ -1585,7 +1568,8 @@ Local and State Variable Names
 
 .. Use mixedCase. Examples: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate``.
 
-MixedCaseを使用します。例を示します。aa, ab, ac, ad, ae, af.
+MixedCaseを使用します。
+例: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate`` 。
 
 Constants
 =========
@@ -1593,21 +1577,24 @@ Constants
 .. Constants should be named with all capital letters with underscores separating
 .. words. Examples: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION``.
 
-定数の名前は、すべて大文字で、アンダースコアで単語を区切ってください。例aa, ab, ad, ae.
+定数の名前は、すべて大文字で、アンダースコアで単語を区切ってください。
+例: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION`` 。
 
 Modifier Names
 ==============
 
 .. Use mixedCase. Examples: ``onlyBy``, ``onlyAfter``, ``onlyDuringThePreSale``.
 
-MixedCaseを使用します。例を示します。 ``onlyBy`` 、 ``onlyAfter`` 、 ``onlyDuringThePreSale`` 。
+MixedCaseを使用します。
+例: ``onlyBy`` 、 ``onlyAfter`` 、 ``onlyDuringThePreSale`` 。
 
 Enums
 =====
 
 .. Enums, in the style of simple type declarations, should be named using the CapWords style. Examples: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation``.
 
-Enumは、単純な型宣言のスタイルで、CapWordsスタイルを使用して名前を付ける必要があります。例を挙げるとaa, ab, ac, ad.
+Enumは、単純な型宣言のスタイルで、CapWordsスタイルを使用して名前を付ける必要があります。
+例: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation`` 。
 
 Avoiding Naming Collisions
 ==========================
@@ -1642,7 +1629,7 @@ NatSpec
 .. triple slash (``///``) or a double asterisk block (``/** ... */``) and
 .. they should be used directly above function declarations or statements.
 
-Solidityのコントラクトには、NatSpecコメントを含めることができます。コメントはトリプルスラッシュ( ``///`` )またはダブルアスタリスクブロック( ``/** ... */`` )で記述し、関数宣言やステートメントの直上で使用する必要があります。
+Solidityのコントラクトには、NatSpecコメントを含めることができます。コメントはトリプルスラッシュ( ``///`` )またはダブルアスタリスクブロック( ``/** ... */`` )で記述し、関数宣言や文の直上で使用する必要があります。
 
 .. For example, the contract from :ref:`a simple smart contract <simple-smart-contract>` with the comments
 .. added looks like the one below:
@@ -1679,6 +1666,5 @@ Solidityのコントラクトには、NatSpecコメントを含めることが�
 Solidityのコントラクトは、すべてのパブリックインターフェース（ABIのすべて）に対して :ref:`NatSpec <natspec>` を使って完全にアノテーションすることを推奨します。
 
 .. Please see the section about :ref:`NatSpec <natspec>` for a detailed explanation.
-.. 
 
-詳しい説明は「 :ref:`NatSpec <natspec>` 」の項をご覧ください。
+詳しい説明は「 :ref:`NatSpec <natspec>` 」の項を参照してください。

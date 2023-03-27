@@ -203,14 +203,14 @@ ABIエンコーディングおよびデコーディングの関数
 .. index:: bytes members
 
 bytesのメンバー
-----------------
+---------------
 
 - ``bytes.concat(...) returns (bytes memory)`` :  :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>`。
 
 .. index:: string members
 
-Members of string
------------------
+stringのメンバー
+----------------
 
 - ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
 
@@ -218,7 +218,7 @@ Members of string
 .. index:: assert, revert, require
 
 エラーハンドリング
-----------------------
+------------------
 
 エラー処理の詳細や、いつどの関数を使うかについては、 :ref:`assertとrequire<assert-and-require>` の専用セクションを参照してください。
 
@@ -242,7 +242,7 @@ Members of string
 .. _mathematical-and-cryptographic-functions:
 
 数理的関数と暗号学的関数
-----------------------------------------
+------------------------
 
 ``addmod(uint x, uint y, uint k) returns (uint)``
     任意の精度で加算が実行され、 ``2**256`` で切り捨てられない ``(x + y) % k`` を計算します。バージョン0.5.0から ``k != 0`` であることをアサートします。
@@ -292,7 +292,7 @@ Members of string
     ``ecrecover`` は ``address`` を返し、 ``address payable`` を返しません。
     復旧したアドレスに送金する必要がある場合は、 :ref:`address payable<address>` を参照して変換してください。
 
-    詳しくは `使用例 <https://ethereum.stackexchange.com/questions/1777/workflow-on-signing-a-string-with-private-key-followed-by-signature-verificatio>`_ をご覧ください。
+    詳しくは `使用例 <https://ethereum.stackexchange.com/questions/1777/workflow-on-signing-a-string-with-private-key-followed-by-signature-verificatio>`_ を参照してください。
 
 .. .. warning::
 
@@ -329,7 +329,7 @@ Members of string
 .. _address_related:
 
 アドレス型のメンバー
-------------------------
+--------------------
 
 ``<address>.balance`` (``uint256``)
     :ref:`address` のWei残高
@@ -355,7 +355,7 @@ Members of string
 ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
     与えたペイロードで低レベルの ``STATICCALL`` を発行し、成功条件とリターンデータを返す。利用可能なすべてのガスを送金できる（調整可能）。
 
-詳しくは、 :ref:`address` の項をご覧ください。
+詳しくは、 :ref:`address` の項を参照してください。
 
 .. warning::
 

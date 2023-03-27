@@ -141,7 +141,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
         }
     }
 
-詳しくは、コントラクト編の :ref:`errors` をご覧ください。
+詳しくは、コントラクト編の :ref:`errors` を参照してください。
 
 .. _structure-struct-types:
 

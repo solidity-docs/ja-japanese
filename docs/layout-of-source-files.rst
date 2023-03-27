@@ -6,11 +6,11 @@ Solidityソースファイルのレイアウト
 
 .. index:: ! license, spdx
 
-SPDX License Identifier
-=======================
+SPDXライセンス識別子
+====================
 
 スマートコントラクトの信頼性は、そのソースコードが利用可能であれば、より確立されます。
-ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械が解釈可能な `SPDX license identifiers <https://spdx.org>`_ の使用を推奨しています。
+ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械が解釈可能な `SPDXライセンス識別子（SPDX license identifier） <https://spdx.org>`_ の使用を推奨しています。
 すべてのソースファイルは、そのライセンスを示すコメントで始まるべきです。
 
 ``// SPDX-License-Identifier: MIT``
@@ -26,10 +26,7 @@ Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configur
 
 コメントは、ファイルレベルではファイルのどこにあってもコンパイラに認識されますが、ファイルの先頭に置くことをお勧めします。
 
-.. More information about how to use SPDX license identifiers
-.. can be found at the `SPDX website <https://spdx.org/ids-how>`_.
-
-SPDXライセンス識別子の使用方法の詳細については、 `SPDXのWebサイト <https://spdx.org/ids-how>`_ に記載されています。
+SPDXライセンス識別子の使用方法の詳細は、 `SPDXのWebサイト <https://spdx.org/ids-how>`_ に記載されています。
 
 .. index:: ! pragma
 
@@ -130,7 +127,7 @@ Solidityは、JavaScript（ES6以降）と同様に、コードをモジュー�
 
     import "filename";
 
-``filename`` の部分は、 *importパス* と呼ばれる。このステートメントは、"filename"からのすべてのグローバルシンボル（およびそこでインポートされたシンボル）を、現在のグローバルスコープにインポートします（ES6とは異なりますが、Solidityでは後方互換性があります）。この形式は、予測できないほど名前空間を汚染するので、使用を推奨しません。"filename"の中に新しいトップレベルのアイテムを追加すると、"filename"からこのようにインポートされたすべてのファイルに自動的に表示されます。特定のシンボルを明示的にインポートする方が良いでしょう。
+``filename`` の部分は、 *importパス* と呼ばれる。この文は、"filename"からのすべてのグローバルシンボル（およびそこでインポートされたシンボル）を、現在のグローバルスコープにインポートします（ES6とは異なりますが、Solidityでは後方互換性があります）。この形式は、予測できないほど名前空間を汚染するので、使用を推奨しません。"filename"の中に新しいトップレベルのアイテムを追加すると、"filename"からこのようにインポートされたすべてのファイルに自動的に表示されます。特定のシンボルを明示的にインポートする方が良いでしょう。
 
 次の例では、 ``"filename"`` のすべてのグローバルシンボルをメンバーとする新しいグローバルシンボル ``symbolName`` を作成しています。
 
@@ -185,4 +182,4 @@ Solidityは、JavaScript（ES6以降）と同様に、コードをモジュー�
 
   一行コメントは、UTF-8エンコーディングの任意のunicode行終端記号（LF、VF、FF、CR、NEL、LS、PS）で終了します。ターミネーターはコメントの後もソースコードの一部であるため、ASCIIシンボル（NEL、LS、PS）でない場合はパーサーエラーになります。
 
-さらに、NatSpecコメントと呼ばれる別の種類のコメントがあり、その詳細は :ref:`style guide<style_guide_natspec>` に記載されています。このコメントは、トリプルスラッシュ（ ``///`` ）またはダブルアスタリスクブロック（ ``/** ... */`` ）で記述され、関数宣言やステートメントの上で使用されます。
+さらに、NatSpecコメントと呼ばれる別の種類のコメントがあり、その詳細は :ref:`style guide<style_guide_natspec>` に記載されています。このコメントは、トリプルスラッシュ（ ``///`` ）またはダブルアスタリスクブロック（ ``/** ... */`` ）で記述され、関数宣言や文の上で使用されます。

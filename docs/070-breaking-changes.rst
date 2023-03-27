@@ -1,6 +1,6 @@
-********************************
-Solidity v0.7.0 Breaking Changes
-********************************
+*****************************
+Solidity v0.7.0の破壊的変更点
+*****************************
 
 .. This section highlights the main breaking changes introduced in Solidity
 .. version 0.7.0, along with the reasoning behind the changes and how to update
@@ -8,11 +8,13 @@ Solidity v0.7.0 Breaking Changes
 .. For the full list check
 .. `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_.
 
-このセクションでは、Solidityバージョン0.7.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_ をご覧ください。
+このセクションでは、Solidityバージョン0.7.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.7.0>`_ を参照してください。
 
 
-Silent Changes of the Semantics
-===============================
+.. Silent Changes of the Semantics
+
+セマンティクスのサイレントな変更点
+==================================
 
 .. * Exponentiation and shifts of literals by non-literals (e.g. ``1 << x`` or ``2 ** x``)
 ..   will always use either the type ``uint256`` (for non-negative literals) or
@@ -20,11 +22,14 @@ Silent Changes of the Semantics
 ..   Previously, the operation was performed in the type of the shift amount / the
 ..   exponent which can be misleading.
 
-* リテラルの非リテラル（ ``1 << x`` や ``2 ** x`` など）による指数化やシフトは、常に ``uint256`` 型（非負のリテラル用）または ``int256`` 型（負のリテラル用）を使用して演算を行います。これまでは、シフト量／指数の型で演算を行っていたため、誤解を招く恐れがありました。
+* リテラルの非リテラル（ ``1 << x`` や ``2 ** x`` など）による指数化やシフトは、常に ``uint256`` 型（非負のリテラル用）または ``int256`` 型（負のリテラル用）を使用して演算を行います。
+  これまでは、シフト量／指数の型で演算を行っていたため、誤解を招く恐れがありました。
 
 
-Changes to the Syntax
-=====================
+.. Changes to the Syntax
+
+シンタックスの変更点
+====================
 
 .. * In external function and contract creation calls, Ether and gas is now specified using a new syntax:
 ..   ``x.f{gas: 10000, value: 2 ether}(arg1, arg2)``.
@@ -81,8 +86,8 @@ Inline Assembly
 
 * ストレージポインタ変数 ``x`` のスロットとオフセットは、 ``x_slot`` と ``x_offset`` ではなく ``x.slot`` と ``x.offset`` でアクセスされます。
 
-Removal of Unused or Unsafe Features
-====================================
+未使用または安全でない機能の削除
+================================
 
 Mappings outside Storage
 ------------------------
@@ -148,8 +153,8 @@ Declarations
 
 * キーワード「 ``var`` 」が使用できなくなりました。以前は、このキーワードは解析されますが、型エラーが発生し、どの型を使用すべきかの提案がありました。現在は、パーサーエラーとなります。
 
-Interface Changes
-=================
+インターフェースの変更点
+========================
 
 .. * JSON AST: Mark hex string literals with ``kind: "hexString"``.
 .. * JSON AST: Members with value ``null`` are removed from JSON output.
@@ -159,9 +164,8 @@ Interface Changes
 * JSON AST: 値が ``null`` のメンバーをJSON出力から削除しました。
 * NatSpec: コンストラクタと関数に一貫したユーザードキュメントを出力するようにしました。
 
-
-How to update your code
-=======================
+コードのアップデート方法
+========================
 
 .. This section gives detailed instructions on how to update prior code for every breaking change.
 

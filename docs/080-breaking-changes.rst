@@ -1,16 +1,18 @@
-********************************
-Solidity v0.8.0 Breaking Changes
-********************************
+*****************************
+Solidity v0.8.0の破壊的変更点
+*****************************
 
 .. This section highlights the main breaking changes introduced in Solidity
 .. version 0.8.0.
 .. For the full list check
 .. `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_.
 
-このセクションでは、Solidityのバージョン0.8.0で導入された主な変更点を紹介します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_ をご覧ください。
+このセクションでは、Solidityのバージョン0.8.0で導入された主な変更点を紹介します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_ を参照してください。
 
-Silent Changes of the Semantics
-===============================
+.. Silent Changes of the Semantics
+
+セマンティクスのサイレントな変更点
+==================================
 
 .. This section lists changes where existing code changes its behaviour without
 .. the compiler notifying you about it.
@@ -23,7 +25,8 @@ Silent Changes of the Semantics
 ..   Checks for overflow are very common, so we made them the default to increase readability of code,
 ..   even if it comes at a slight increase of gas costs.
 
-* 算術演算は、アンダーフローとオーバーフローで元に戻ります。 ``unchecked { ... }`` を使えば、以前の折り返し動作を使うことができます。
+* 算術演算は、アンダーフローとオーバーフローでリバートします。
+  ``unchecked { ... }`` を使えば、以前の折り返し動作を使うことができます。
 
   オーバーフローのチェックは非常に一般的なものなので、多少ガス代が高くなってもコードの可読性を高めるためにデフォルトにしました。
 
@@ -42,7 +45,8 @@ Silent Changes of the Semantics
 
   ``pragma abicoder v1;`` を使って古い動作を選択できます。   プラグマ ``pragma experimental ABIEncoderV2;`` はまだ有効ですが、非推奨であり、効果はありません。   明示的にしたい場合は、代わりに ``pragma abicoder v2;`` を使用してください。
 
-  ABI coder v2は、v1よりも多くの型をサポートし、入力に対してより多くのサニティ・チェックを行うことに注意してください。   ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1では復帰しなかったコントラクトコールが復帰することがあります。
+  ABI coder v2は、v1よりも多くの型をサポートし、入力に対してより多くのサニティチェックを行うことに注意してください。
+  ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1では復帰しなかったコントラクトコールがリバートすることがあります。
 
 .. * Exponentiation is right associative, i.e., the expression ``a**b**c`` is parsed as ``a**(b**c)``.
 ..   Before 0.8.0, it was parsed as ``(a**b)**c``.
@@ -80,8 +84,10 @@ Silent Changes of the Semantics
 
 * 型 ``byte`` は削除されました。これは ``bytes1`` の別名でした。
 
-New Restrictions
-================
+.. New Restrictions
+
+新しい制約
+==========
 
 .. This section lists changes that might cause existing contracts to not compile anymore.
 
@@ -236,31 +242,34 @@ New Restrictions
 
 .. * The ``chainid`` builtin in inline assembly is now considered ``view`` instead of ``pure``.
 
-* インライン・アセンブリの ``chainid`` ビルトインは、 ``pure`` ではなく ``view`` とみなされるようになりました。
+* インラインアセンブリの ``chainid`` ビルトインは、 ``pure`` ではなく ``view`` とみなされるようになりました。
 
 .. * Unary negation cannot be used on unsigned integers anymore, only on signed integers.
 
 * 単項否定は符号なし整数では使用できなくなり、符号付き整数でのみ使用できるようになりました。
 
-Interface Changes
-=================
+インターフェースの変更
+======================
 
 .. * The output of ``--combined-json`` has changed: JSON fields ``abi``, ``devdoc``, ``userdoc`` and
 ..   ``storage-layout`` are sub-objects now. Before 0.8.0 they used to be serialised as strings.
 
-* ``--combined-json`` の出力が変わりました。JSONのフィールド ``abi`` 、 ``devdoc`` 、 ``userdoc`` 、 ``storage-layout`` がサブオブジェクトになりました。0.8.0以前では、これらは文字列としてシリアライズされていました。
+* ``--combined-json`` の出力が変わりました。
+  JSONのフィールド ``abi`` 、 ``devdoc`` 、 ``userdoc`` 、 ``storage-layout`` がサブオブジェクトになりました。
+  0.8.0以前では、これらは文字列としてシリアライズされていました。
 
 .. * The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
 ..   Use the "compact AST" (``--ast-compact--json`` resp. ``AST``) as replacement.
 
-* 「レガシーAST」が削除されました（コマンドライン・インターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。代わりに「コンパクトAST」( ``--ast-compact--json`` 、標準JSONでは ``AST`` )を使用してください。
+* 「レガシーAST」が削除されました（コマンドラインインターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。
+  代わりに「コンパクトAST」( ``--ast-compact--json`` 、標準JSONでは ``AST`` )を使用してください。
 
 .. * The old error reporter (``--old-reporter``) has been removed.
 
 * 旧エラーレポーター（ ``--old-reporter`` ）は削除されました。
 
-How to update your code
-=======================
+コードのアップデート方法
+========================
 
 .. - If you rely on wrapping arithmetic, surround each operation with ``unchecked { ... }``.
 

@@ -6,7 +6,7 @@
 
 .. index:: ! assembly, ! asm, ! evmasm
 
-Ethereum Virtual Machineの言語に近い言語で、Solidityのステートメントにインラインアセンブリを挟むことができます。
+Ethereum Virtual Machineの言語に近い言語で、Solidityの文にインラインアセンブリを挟むことができます。
 これにより、より細かな制御が可能となり、特にライブラリを書いて言語を強化する場合に有効です。
 
 Solidityのインラインアセンブリに使用される言語は :ref:`Yul <yul>` と呼ばれ、詳細はそのセクションに書かれています。

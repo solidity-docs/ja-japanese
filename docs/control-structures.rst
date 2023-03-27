@@ -562,7 +562,7 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 .. The setting only affects the statements that are syntactically inside the block.
 .. Functions called from within an ``unchecked`` block do not inherit the property.
 
-この設定は、構文的にブロックの内部にあるステートメントにのみ影響します。 ``unchecked`` ブロック内から呼び出された関数は、このプロパティを継承しません。
+この設定は、構文的にブロックの内部にある文にのみ影響します。 ``unchecked`` ブロック内から呼び出された関数は、このプロパティを継承しません。
 
 .. note::
 
@@ -614,7 +614,7 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 .. flags an error to the caller.
 
 Solidityでは、エラー処理に状態を戻す例外を使用します。
-このような例外は、現在の呼び出し（およびそのすべてのサブコール）で行われた状態への変更をすべて元に戻し、呼び出し側にエラーを通知します。
+このような例外は、現在の呼び出し（およびそのすべてのサブコール）で行われた状態への変更をすべてリバートし、呼び出し側にエラーを通知します。
 
 .. When exceptions happen in a sub-call, they "bubble up" (i.e.,
 .. exceptions are rethrown) automatically unless they are caught in
@@ -623,7 +623,7 @@ Solidityでは、エラー処理に状態を戻す例外を使用します。
 .. ``staticcall``: they return ``false`` as their first return value in case
 .. of an exception instead of "bubbling up".
 
-サブコールで例外が発生した場合、 ``try/catch`` ステートメントで捕捉されない限り、自動的に「バブルアップ」（例外が再スローされる）します。
+サブコールで例外が発生した場合、 ``try/catch`` 文で捕捉されない限り、自動的に「バブルアップ」（例外が再スローされる）します。
 このルールの例外は、 ``send`` と低レベル関数の ``call`` 、 ``delegatecall`` 、 ``staticcall`` です。
 これらの関数は、例外が発生した場合、「バブルアップ」するのではなく、 ``false`` を最初の戻り値として返します。
 
@@ -799,9 +799,9 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 .. (or at least call) without effect.
 
 内部的には、Solidityは元に戻す操作（命令 ``0xfd`` ）を行います。
-これにより、EVMは状態に加えられたすべての変更を元に戻します。
+これにより、EVMは状態に加えられたすべての変更をリバートします。
 元に戻す理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。
-トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更を元に戻し、トランザクション全体（または少なくともコール）を効果なしにすることです。
+トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更をリバートし、トランザクション全体（または少なくともコール）を効果なしにすることです。
 
 .. In both cases, the caller can react on such failures using ``try``/``catch``, but
 .. the changes in the callee will always be reverted.
@@ -837,11 +837,10 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
     revert("description");
 
 .. The error data will be passed back to the caller and can be caught there.
-.. Using ``revert()`` causes a revert without any error data while ``revert("description")``
-.. will create an ``Error(string)`` error.
+.. Using ``revert()`` causes a revert without any error data while ``revert("description")`` will create an ``Error(string)`` error.
 
 エラーデータは呼び出し側に戻されるので、そこでキャッチできます。
-``revert()`` を使うとエラーデータなしで復帰しますが、 ``revert("description")`` を使うと ``Error(string)`` エラーが発生します。
+``revert()`` を使うとエラーデータなしでリバートしますが、 ``revert("description")`` を使うと ``Error(string)`` エラーが発生します。
 
 .. Using a custom error instance will usually be much cheaper than a string description,
 .. because you can use the name of the error to describe it, which is encoded in only
@@ -1029,7 +1028,7 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 
     実行がキャッチブロックに到達した場合、外部呼び出しの状態変化の影響は元に戻されています。
     実行が成功ブロックに到達した場合、その効果は元に戻されていません。
-    効果が元に戻った場合、実行はcatchブロック内で継続されるか、try/catch文の実行自体が元に戻ります（例えば、上述のようなデコードの失敗や、低レベルのcatch句を提供していないことが原因です）。
+    効果がリバートした場合、実行はcatchブロック内で継続されるか、try/catch文の実行自体がリバートします（例えば、上述のようなデコードの失敗や、低レベルのcatch句を提供していないことが原因です）。
 
 .. .. note::
 

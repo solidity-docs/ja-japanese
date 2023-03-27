@@ -1,6 +1,6 @@
-********************************
-Solidity v0.5.0 Breaking Changes
-********************************
+*****************************
+Solidity v0.5.0の破壊的変更点
+*****************************
 
 .. This section highlights the main breaking changes introduced in Solidity
 .. version 0.5.0, along with the reasoning behind the changes and how to update
@@ -8,7 +8,8 @@ Solidity v0.5.0 Breaking Changes
 .. For the full list check
 .. `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_.
 
-このセクションでは、Solidityバージョン0.5.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。完全なリストは `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_ をご覧ください。
+このセクションでは、Solidityバージョン0.5.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。
+完全なリストは `リリースのチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_ を参照してください。
 
 .. note::
    .. Contracts compiled with Solidity v0.5.0 can still interface with contracts
@@ -17,10 +18,14 @@ Solidity v0.5.0 Breaking Changes
    .. visibility and mutability specifiers suffices. See the
    .. :ref:`Interoperability With Older Contracts <interoperability>` section below.
 
-   Solidity v0.5.0でコンパイルされたコントラクトは、古いバージョンでコンパイルされたコントラクトやライブラリを再コンパイルや再配置することなく、それらとインターフェースをとることができます。  データの場所や可視性・可変型の指定子を含むようにインターフェースを変更すれば十分です。以下の :ref:`Interoperability With Older Contracts <interoperability>` セクションを参照してください。
+   Solidity v0.5.0でコンパイルされたコントラクトは、古いバージョンでコンパイルされたコントラクトやライブラリを再コンパイルや再配置することなく、それらとインターフェースをとることができます。
+   データの場所や可視性・可変型の指定子を含むようにインターフェースを変更すれば十分です。
+   以下の :ref:`Interoperability With Older Contracts <interoperability>` セクションを参照してください。
 
-Semantic Only Changes
-=====================
+.. Semantic Only Changes
+
+セマンティックのみの変更点
+==========================
 
 .. This section lists the changes that are semantic-only, thus potentially
 .. hiding new and different behavior in existing code.
@@ -62,15 +67,17 @@ Semantic Only Changes
   ``abi.decode()`` if passed calldata is too short or points out of bounds.
   Note that dirty higher order bits are still simply ignored.
 
-* ABIデコーダは、関数の先頭や ``abi.decode()`` で、渡されたcalldataが短すぎたり、境界外を指したりした場合には、元に戻します。なお、ダーティな高次ビットはまだ単純に無視されます。
+* ABIデコーダは、関数の先頭や ``abi.decode()`` で、渡されたcalldataが短すぎたり、境界外を指したりした場合には、リバートします。なお、ダーティな高次ビットはまだ単純に無視されます。
 
 .. * Forward all available gas with external function calls starting from
   Tangerine Whistle.
 
 * Tangerine Whistleから始まる外部関数呼び出しで、利用可能なすべてのガスを転送します。
 
-Semantic and Syntactic Changes
-==============================
+.. Semantic and Syntactic Changes
+
+セマンティックかつシンタックスの変更点
+======================================
 
 .. This section highlights changes that affect syntax and semantics.
 
@@ -105,13 +112,16 @@ Semantic and Syntactic Changes
 
 * Solidityは、関数のローカル変数にC99スタイルのスコープルールを実装しました。つまり、変数は宣言された後にのみ使用でき、同じスコープまたはネストされたスコープ内でのみ使用できます。 ``for`` ループの初期化ブロックで宣言された変数は、ループ内のどの時点でも有効です。
 
-Explicitness Requirements
-=========================
+.. Explicitness Requirements
+
+明示的な要件
+============
 
 .. This section lists changes where the code now needs to be more explicit.
 .. For most of the topics the compiler will provide suggestions.
 
-このセクションでは、コードをより明確にする必要がある変更点を示します。ほとんどの項目では、コンパイラが提案をしてくれます。
+このセクションでは、コードをより明確にする必要がある変更点を示します。
+ほとんどの項目では、コンパイラが提案をしてくれます。
 
 .. * Explicit function visibility is now mandatory.  Add ``public`` to every
   function and constructor, and ``external`` to every fallback or interface
@@ -127,7 +137,10 @@ Explicitness Requirements
   ``calldata`` accordingly.  Note that ``external`` functions require
   parameters with a data location of ``calldata``.
 
-* 構造体（struct）、配列（array）、マッピング（mapping）型のすべての変数について、明示的なデータ配置が必須となりました。これは、関数のパラメータやリターン変数にも適用されます。例えば、 ``uint[] x = z`` を ``uint[] storage x = z`` に、 ``function f(uint[][] x)`` を ``function f(uint[][] memory x)`` に変更すると、 ``memory`` がデータ位置となり、 ``storage`` や ``calldata`` に適宜置き換えられます。なお、 ``external`` 関数ではデータ位置が ``calldata`` のパラメータが必要です。
+* 構造体（struct）、配列（array）、マッピング（mapping）型のすべての変数について、明示的なデータ配置が必須となりました。
+  これは、関数のパラメータやリターン変数にも適用されます。
+  例えば、 ``uint[] x = z`` を ``uint[] storage x = z`` に、 ``function f(uint[][] x)`` を ``function f(uint[][] memory x)`` に変更すると、 ``memory`` がデータロケーションとなり、 ``storage`` や ``calldata`` に適宜置き換えられます。
+  なお、 ``external`` 関数ではデータロケーションが ``calldata`` のパラメータが必要です。
 
 .. * Contract types do not include ``address`` members anymore in
   order to separate the namespaces.  Therefore, it is now necessary to
@@ -146,7 +159,11 @@ Explicitness Requirements
   ``b`` is a contract of type ``B``, you can still convert ``b`` to type ``A`` using ``A(address(b))``.
   Note that you still need to watch out for matching payable fallback functions, as explained below.
 
-* 関連性のないコントラクト型間の明示的な変換ができなくなりました。あるコントラクト型から、そのベースまたは祖先の型の1つへの変換のみが可能です。あるコントラクトが、変換したいコントラクト型を継承していないものの、互換性があると確信している場合、最初に ``address`` に変換することでこれを回避できます。例:  ``A`` と ``B`` がコントラクト型で、 ``B`` は ``A`` から継承されず、 ``b`` は ``B`` 型のコントラクトである場合、 ``A(address(b))`` を使って ``b`` を ``A`` 型に変換できます。なお、以下に説明するように、マッチング・ペイバック・フォールバック関数にも注意する必要があります。
+* 関連性のないコントラクト型間の明示的な変換ができなくなりました。
+  あるコントラクト型から、そのベースまたは祖先の型の1つへの変換のみが可能です。
+  あるコントラクトが、変換したいコントラクト型を継承していないものの、互換性があると確信している場合、最初に ``address`` に変換することでこれを回避できます。
+  例:  ``A`` と ``B`` がコントラクト型で、 ``B`` は ``A`` から継承されず、 ``b`` は ``B`` 型のコントラクトである場合、 ``A(address(b))`` を使って ``b`` を ``A`` 型に変換できます。
+  なお、以下に説明するように、マッチング・ペイバック・フォールバック関数にも注意する必要があります。
 
 .. * The ``address`` type  was split into ``address`` and ``address payable``,
   where only ``address payable`` provides the ``transfer`` function.  An
@@ -159,7 +176,11 @@ Explicitness Requirements
   is only used on ``msg.sender`` instead of stored addresses and ``msg.sender``
   is an ``address payable``.
 
-*  ``address`` 型は ``address`` と ``address payable`` に分割され、 ``address payable`` のみが ``transfer`` 関数を提供しています。 ``address payable`` を直接 ``address`` に変換できますが、その逆はできません。 ``address`` から ``address payable`` への変換は、 ``uint160`` による変換で可能です。 ``c`` がコントラクトの場合、 ``address(c)`` は、 ``c`` に支払い可能なフォールバック関数がある場合に限り、 ``address payable`` になる。 :ref:`withdraw pattern<withdrawal_pattern>` を使用している場合、 ``transfer`` はストアド・アドレスではなく ``msg.sender`` でのみ使用され、 ``msg.sender`` は ``address payable`` になるので、コードを変更する必要はほとんどありません。
+* ``address`` 型は ``address`` と ``address payable`` に分割され、 ``address payable`` のみが ``transfer`` 関数を提供しています。
+  ``address payable`` を直接 ``address`` に変換できますが、その逆はできません。
+  ``address`` から ``address payable`` への変換は、 ``uint160`` による変換で可能です。
+  ``c`` がコントラクトの場合、 ``address(c)`` は、 ``c`` に支払い可能なフォールバック関数がある場合に限り、 ``address payable`` になります。
+  :ref:`withdraw pattern<withdrawal_pattern>` を使用している場合、 ``transfer`` はストアドアドレスではなく ``msg.sender`` でのみ使用され、 ``msg.sender`` は ``address payable`` になるので、コードを変更する必要はほとんどありません。
 
 .. * Conversions between ``bytesX`` and ``uintY`` of different size are now
   disallowed due to ``bytesX`` padding on the right and ``uintY`` padding on
@@ -186,8 +207,10 @@ Explicitness Requirements
 
 * わかりやすくするために、コマンドラインインターフェースでは、標準入力をソースとして使用する場合、 ``-`` を要求するようになりました。
 
-Deprecated Elements
-===================
+.. Deprecated Elements
+
+非推奨の要素
+============
 
 .. This section lists changes that deprecate prior features or syntax.  Note that
 .. many of these changes were already enabled in the experimental mode
@@ -401,7 +424,7 @@ Syntax
 .. * Single statement variable declarations inside if/while/for bodies that are
 ..   not blocks are now disallowed.
 
-* ブロックではないif/while/forボディ内のシングルステートメント変数宣言が禁止されました。
+* ブロックではないif/while/forボディ内の単一の文の変数宣言が禁止されました。
 
 .. * New keywords: ``calldata`` and ``constructor``.
 
@@ -416,8 +439,10 @@ Syntax
 
 .. _interoperability:
 
-Interoperability With Older Contracts
-=====================================
+.. Interoperability With Older Contracts
+
+従来のコントラクトとの相互運用性
+================================
 
 .. It is still possible to interface with contracts written for Solidity versions prior to
 .. v0.5.0 (or the other way around) by defining interfaces for them.
@@ -506,8 +531,10 @@ Interoperability With Older Contracts
     }
 
 
-Example
-=======
+.. Example
+
+例
+==
 
 .. The following example shows a contract and its updated version for Solidity
 .. v0.5.0 with some of the changes listed in this section.

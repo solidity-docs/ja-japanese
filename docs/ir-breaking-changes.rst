@@ -3,42 +3,39 @@
 
 .. _ir-breaking-changes:
 
-*********************************
-Solidity IR-based Codegen Changes
-*********************************
+.. Solidity IR-based Codegen Changes
 
-.. Solidity can generate EVM bytecode in two different ways:
-.. Either directly from Solidity to EVM opcodes ("old codegen") or through
-.. an intermediate representation ("IR") in Yul ("new codegen" or "IR-based codegen").
+**********************************
+Solidity IRベースのCodegenの変更点
+**********************************
 
-Solidityは、2つの異なる方法でEVMバイトコードを生成できます。Solidityから直接EVMのオペコードを生成する方法（"old codegen"）と、Yulの中間表現（"IR"）を介して生成する方法（"new codegen "または "IR-based codegen"）です。
+.. Either directly from Solidity to EVM opcodes ("old codegen") or through an intermediate representation ("IR") in Yul ("new codegen" or "IR-based codegen").
 
-.. The IR-based code generator was introduced with an aim to not only allow
-.. code generation to be more transparent and auditable but also
-.. to enable more powerful optimization passes that span across functions.
+Solidityは、2つの異なる方法でEVMバイトコードを生成できます。
+Solidityから直接EVMのオペコードを生成する方法「old codegen」と、Yulの中間表現「IR」を介して生成する方法（「new codegen」または「IR-based codegen」）です。
 
-IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数をまたいだより強力な最適化パスを可能にすることを目的としています。
+.. The IR-based code generator was introduced with an aim to not only allow code generation to be more transparent and auditable but also to enable more powerful optimization passes that span across functions.
 
-.. You can enable it on the command line using ``--via-ir``
-.. or with the option ``{"viaIR": true}`` in standard-json and we
-.. encourage everyone to try it out!
+IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数を跨いだより強力な最適化パスを可能にすることを目的としています。
+
+.. You can enable it on the command line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
 
 コマンドラインで ``--via-ir`` を使って有効にしたり、standard-jsonで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
 
-.. For several reasons, there are tiny semantic differences between the old
-.. and the IR-based code generator, mostly in areas where we would not
-.. expect people to rely on this behaviour anyway.
-.. This section highlights the main differences between the old and the IR-based codegen.
+.. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behaviour anyway.
 
-いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかな意味上の違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
+いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかな意味上の違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。
+このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
 
-Semantic Only Changes
-=====================
+.. Semantic Only Changes
 
-.. This section lists the changes that are semantic-only, thus potentially
-.. hiding new and different behavior in existing code.
+セマンティックのみの変更
+========================
 
-このセクションでは、セマンティックのみの変更点をリストアップしています。そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
+.. This section lists the changes that are semantic-only, thus potentially hiding new and different behavior in existing code.
+
+このセクションでは、セマンティックのみの変更点をリストアップしています。
+そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
 - The order of state variable initialization has changed in case of inheritance.
 
@@ -82,15 +79,13 @@ Semantic Only Changes
   Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
   With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
 
-.. - When storage structs are deleted, every storage slot that contains
-   a member of the struct is set to zero entirely. Formerly, padding space
-   was left untouched.
-   Consequently, if the padding space within a struct is used to store data
-   (e.g. in the context of a contract upgrade), you have to be aware that
-   ``delete`` will now also clear the added member (while it wouldn't
-   have been cleared in the past).
+.. - When storage structs are deleted, every storage slot that contains a member of the struct is set to zero entirely.
+     Formerly, padding space was left untouched.
+     Consequently, if the padding space within a struct is used to store data (e.g. in the context of a contract upgrade), you have to be aware that ``delete`` will now also clear the added member (while it wouldn't have been cleared in the past).
 
-- ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。以前は、パディング・スペースはそのまま残されていました。   そのため、構造体内のパディング・スペースがデータの保存に使用されている場合（コントラクトのアップグレードなど）、 ``delete`` では追加されたメンバーもクリアされてしまうことに注意する必要があります（以前はクリアされませんでしたが）。
+- ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。
+  以前は、パディングスペースはそのまま残されていました。
+  そのため、構造体内のパディングスペースがデータの保存に使用されている場合（コントラクトのアップグレードなど）、 ``delete`` では追加されたメンバーもクリアされてしまうことに注意する必要があります（以前はクリアされませんでしたが）。
 
   .. code-block:: solidity
 
@@ -269,11 +264,15 @@ Semantic Only Changes
 
   - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
 
-Internals
-=========
+.. Internals
 
-Internal function pointers
---------------------------
+内部構造
+========
+
+.. Internal function pointers
+
+内部の関数ポインタ
+------------------
 
 .. index:: function pointers
 
@@ -285,11 +284,14 @@ Internal function pointers
 
 - メモリからストレージへの ``bytes`` 配列のコピーは、異なる方法で実装されています。   従来のコードジェネレータは常にワード全体をコピーしていましたが、新しいコードジェネレータではバイト配列の最後をカットしています。以前の動作では、ダーティなデータが配列の終わりの後（ただし、同じストレージスロット内）にコピーされることがありました。   これにより、例えばいくつかのコントラクトに違いが生じます。
 
-- 旧コード・ジェネレータでは、式の評価順序は不定です。   新しいコード・ジェネレータでは、ソース・オーダー（左から右）で評価するようにしていますが、それを保証するものではありません。   このため、意味的な違いが生じることがあります。
+- 旧コードジェネレータでは、式の評価順序は不定です。   新しいコードジェネレータでは、ソースオーダー（左から右）で評価するようにしていますが、それを保証するものではありません。
+  このため、意味的な違いが生じることがあります。
 
   例えば、以下のように。
 
-- 新しいコードジェネレータでは、フリーメモリポインタに ``type(uint64).max`` （ ``0xffffffffffffffff`` ）というハードリミットが設定されています。この制限を超えて値を増やすような割り当ては元に戻ります。古いコード・ジェネレータにはこの制限はありません。
+- 新しいコードジェネレータでは、フリーメモリポインタに ``type(uint64).max`` （ ``0xffffffffffffffff`` ）というハードリミットが設定されています。
+  この制限を超えて値を増やすような割り当てはリバートします。
+  古いコードジェネレータにはこの制限はありません。
 
   例えば、以下のように。
 
@@ -310,8 +312,8 @@ ID  ``0`` は、初期化されていない関数ポインタ用に予約され�
 
 古いコードジェネレータでは、内部関数ポインタは、常にパニックを起こす特別な関数で初期化されます。このため、ストレージ内の内部関数ポインタの構築時にストレージへの書き込みが発生します。
 
-Cleanup
--------
+クリーンアップ
+--------------
 
 .. index:: cleanup, dirty bits
 
@@ -321,9 +323,7 @@ Cleanup
 
 古いコードジェネレータは、ダーティビットの値によって結果が影響を受ける可能性のある操作の前にのみ、クリーンアップを行います。新しいコードジェネレータでは、ダーティビットが発生する可能性のある操作の後にクリーンアップを行います。オプティマイザが強力になり、冗長なクリーンアップ処理がなくなることを期待しています。
 
-.. For example:
-
-例えば、以下のように。
+例えば、以下のようになります。
 
 .. code-block:: solidity
     :force:
@@ -358,4 +358,6 @@ Cleanup
 .. However, both code generators perform a cleanup before the new value of ``a`` is assigned to ``r2``.
 .. 
 
-なお、新コード・ジェネレータとは異なり、旧コード・ジェネレータでは、ビット・ノットの割り当て（ ``a = ~a`` ）の後にクリーンアップを行わない。このため、新旧のコード・ジェネレータでは、インライン・アセンブリ・ブロック内で戻り値 ``r1`` に割り当てられる値が異なります。しかし、どちらのコード・ジェネレータも、 ``a`` の新しい値が ``r2`` に割り当てられる前に、クリーンアップを実行します。
+なお、新コードジェネレータとは異なり、旧コードジェネレータでは、ビットの否定（not）の割り当て（ ``a = ~a`` ）の後にクリーンアップを行いません。
+このため、新旧のコードジェネレータでは、インラインアセンブリブロック内で戻り値 ``r1`` に割り当てられる値が異なります。
+しかし、どちらのコードジェネレータも、 ``a`` の新しい値が ``r2`` に割り当てられる前に、クリーンアップを実行します。
