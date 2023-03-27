@@ -172,7 +172,7 @@ Explicitness Requirements
 * ``address`` 型は ``address`` と ``address payable`` に分割され、 ``address payable`` のみが ``transfer`` 関数を提供しています。
   ``address payable`` を直接 ``address`` に変換できますが、その逆はできません。
   ``address`` から ``address payable`` への変換は、 ``uint160`` による変換で可能です。
-  ``c`` がコントラクトの場合、 ``address(c)`` は、 ``c`` に支払い可能なフォールバック関数がある場合に限り、 ``address payable`` になる。
+  ``c`` がコントラクトの場合、 ``address(c)`` は、 ``c`` に支払い可能なフォールバック関数がある場合に限り、 ``address payable`` になります。
   :ref:`withdraw pattern<withdrawal_pattern>` を使用している場合、 ``transfer`` はストアドアドレスではなく ``msg.sender`` でのみ使用され、 ``msg.sender`` は ``address payable`` になるので、コードを変更する必要はほとんどありません。
 
 .. * Conversions between ``bytesX`` and ``uintY`` of different size are now

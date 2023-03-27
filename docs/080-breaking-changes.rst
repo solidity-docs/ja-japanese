@@ -23,7 +23,8 @@ Silent Changes of the Semantics
 ..   Checks for overflow are very common, so we made them the default to increase readability of code,
 ..   even if it comes at a slight increase of gas costs.
 
-* 算術演算は、アンダーフローとオーバーフローで元に戻ります。 ``unchecked { ... }`` を使えば、以前の折り返し動作を使うことができます。
+* 算術演算は、アンダーフローとオーバーフローでリバートします。
+  ``unchecked { ... }`` を使えば、以前の折り返し動作を使うことができます。
 
   オーバーフローのチェックは非常に一般的なものなので、多少ガス代が高くなってもコードの可読性を高めるためにデフォルトにしました。
 
@@ -243,18 +244,21 @@ New Restrictions
 
 * 単項否定は符号なし整数では使用できなくなり、符号付き整数でのみ使用できるようになりました。
 
-Interface Changes
-=================
+インターフェースの変更
+======================
 
 .. * The output of ``--combined-json`` has changed: JSON fields ``abi``, ``devdoc``, ``userdoc`` and
 ..   ``storage-layout`` are sub-objects now. Before 0.8.0 they used to be serialised as strings.
 
-* ``--combined-json`` の出力が変わりました。JSONのフィールド ``abi`` 、 ``devdoc`` 、 ``userdoc`` 、 ``storage-layout`` がサブオブジェクトになりました。0.8.0以前では、これらは文字列としてシリアライズされていました。
+* ``--combined-json`` の出力が変わりました。
+  JSONのフィールド ``abi`` 、 ``devdoc`` 、 ``userdoc`` 、 ``storage-layout`` がサブオブジェクトになりました。
+  0.8.0以前では、これらは文字列としてシリアライズされていました。
 
 .. * The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
 ..   Use the "compact AST" (``--ast-compact--json`` resp. ``AST``) as replacement.
 
-* 「レガシーAST」が削除されました（コマンドラインインターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。代わりに「コンパクトAST」( ``--ast-compact--json`` 、標準JSONでは ``AST`` )を使用してください。
+* 「レガシーAST」が削除されました（コマンドラインインターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。
+  代わりに「コンパクトAST」( ``--ast-compact--json`` 、標準JSONでは ``AST`` )を使用してください。
 
 .. * The old error reporter (``--old-reporter``) has been removed.
 
