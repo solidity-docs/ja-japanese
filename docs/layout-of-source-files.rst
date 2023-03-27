@@ -6,11 +6,11 @@ Solidityソースファイルのレイアウト
 
 .. index:: ! license, spdx
 
-SPDX License Identifier
-=======================
+SPDXライセンス識別子
+====================
 
 スマートコントラクトの信頼性は、そのソースコードが利用可能であれば、より確立されます。
-ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械が解釈可能な `SPDX license identifiers <https://spdx.org>`_ の使用を推奨しています。
+ソースコードを公開することは、著作権に関する法的な問題に常に触れることになるため、Solidityコンパイラでは、機械が解釈可能な `SPDXライセンス識別子（SPDX license identifier） <https://spdx.org>`_ の使用を推奨しています。
 すべてのソースファイルは、そのライセンスを示すコメントで始まるべきです。
 
 ``// SPDX-License-Identifier: MIT``
@@ -26,10 +26,7 @@ Solidity follows `the npm recommendation <https://docs.npmjs.com/cli/v7/configur
 
 コメントは、ファイルレベルではファイルのどこにあってもコンパイラに認識されますが、ファイルの先頭に置くことをお勧めします。
 
-.. More information about how to use SPDX license identifiers
-.. can be found at the `SPDX website <https://spdx.org/ids-how>`_.
-
-SPDXライセンス識別子の使用方法の詳細については、 `SPDXのWebサイト <https://spdx.org/ids-how>`_ に記載されています。
+SPDXライセンス識別子の使用方法の詳細は、 `SPDXのWebサイト <https://spdx.org/ids-how>`_ に記載されています。
 
 .. index:: ! pragma
 

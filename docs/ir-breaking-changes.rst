@@ -9,40 +9,33 @@
 Solidity IRベースのCodegenの変更点
 **********************************
 
-.. Solidity can generate EVM bytecode in two different ways:
-.. Either directly from Solidity to EVM opcodes ("old codegen") or through
-.. an intermediate representation ("IR") in Yul ("new codegen" or "IR-based codegen").
+.. Either directly from Solidity to EVM opcodes ("old codegen") or through an intermediate representation ("IR") in Yul ("new codegen" or "IR-based codegen").
 
-Solidityは、2つの異なる方法でEVMバイトコードを生成できます。Solidityから直接EVMのオペコードを生成する方法（"old codegen"）と、Yulの中間表現（"IR"）を介して生成する方法（"new codegen "または "IR-based codegen"）です。
+Solidityは、2つの異なる方法でEVMバイトコードを生成できます。
+Solidityから直接EVMのオペコードを生成する方法「old codegen」と、Yulの中間表現「IR」を介して生成する方法（「new codegen」または「IR-based codegen」）です。
 
-.. The IR-based code generator was introduced with an aim to not only allow
-.. code generation to be more transparent and auditable but also
-.. to enable more powerful optimization passes that span across functions.
+.. The IR-based code generator was introduced with an aim to not only allow code generation to be more transparent and auditable but also to enable more powerful optimization passes that span across functions.
 
-IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数をまたいだより強力な最適化パスを可能にすることを目的としています。
+IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数を跨いだより強力な最適化パスを可能にすることを目的としています。
 
-.. You can enable it on the command line using ``--via-ir``
-.. or with the option ``{"viaIR": true}`` in standard-json and we
-.. encourage everyone to try it out!
+.. You can enable it on the command line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
 
 コマンドラインで ``--via-ir`` を使って有効にしたり、standard-jsonで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
 
-.. For several reasons, there are tiny semantic differences between the old
-.. and the IR-based code generator, mostly in areas where we would not
-.. expect people to rely on this behaviour anyway.
-.. This section highlights the main differences between the old and the IR-based codegen.
+.. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behaviour anyway.
 
-いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかな意味上の違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
+いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかな意味上の違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。
+このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
 
 .. Semantic Only Changes
 
 セマンティックのみの変更
 ========================
 
-.. This section lists the changes that are semantic-only, thus potentially
-.. hiding new and different behavior in existing code.
+.. This section lists the changes that are semantic-only, thus potentially hiding new and different behavior in existing code.
 
-このセクションでは、セマンティックのみの変更点をリストアップしています。そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
+このセクションでは、セマンティックのみの変更点をリストアップしています。
+そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
 - The order of state variable initialization has changed in case of inheritance.
 
@@ -86,15 +79,12 @@ IRベースのコードジェネレーターを導入したのは、コード生
   Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
   With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
 
-.. - When storage structs are deleted, every storage slot that contains
-   a member of the struct is set to zero entirely. Formerly, padding space
-   was left untouched.
-   Consequently, if the padding space within a struct is used to store data
-   (e.g. in the context of a contract upgrade), you have to be aware that
-   ``delete`` will now also clear the added member (while it wouldn't
-   have been cleared in the past).
+.. - When storage structs are deleted, every storage slot that contains a member of the struct is set to zero entirely.
+     Formerly, padding space was left untouched.
+     Consequently, if the padding space within a struct is used to store data (e.g. in the context of a contract upgrade), you have to be aware that ``delete`` will now also clear the added member (while it wouldn't have been cleared in the past).
 
-- ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。以前は、パディングスペースはそのまま残されていました。
+- ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。
+  以前は、パディングスペースはそのまま残されていました。
   そのため、構造体内のパディングスペースがデータの保存に使用されている場合（コントラクトのアップグレードなど）、 ``delete`` では追加されたメンバーもクリアされてしまうことに注意する必要があります（以前はクリアされませんでしたが）。
 
   .. code-block:: solidity

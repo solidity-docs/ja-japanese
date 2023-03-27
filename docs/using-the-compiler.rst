@@ -22,19 +22,21 @@
 
 .. One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
 .. Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
-.. If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
+.. If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary.
+.. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
 
-Solidityリポジトリのビルドターゲットの1つは、solidityのコマンドラインコンパイラである ``solc`` です。 ``solc --help`` を使用すると、すべてのオプションの説明を受けることができます。コンパイラは、抽象的な構文木（パースツリー）上の単純なバイナリやアセンブリから、ガス使用量の推定値まで、さまざまな出力を行うことができます。単一のファイルをコンパイルしたいだけなら、 ``solc --bin sourceFile.sol`` として実行すれば、バイナリを出力します。 ``solc`` のより高度な出力を得たい場合は、 ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` を使ってすべてを別々のファイルに出力するように指示したほうがよいでしょう。
+Solidityリポジトリのビルドターゲットの1つは、solidityのコマンドラインコンパイラである ``solc`` です。
+``solc --help`` を使用すると、すべてのオプションの説明を受けることができます。
+コンパイラは、抽象的な構文木（パースツリー）上の単純なバイナリやアセンブリから、ガス使用量の推定値まで、さまざまな出力を行うことができます。
+単一のファイルをコンパイルしたいだけなら、 ``solc --bin sourceFile.sol`` として実行すれば、バイナリを出力します。 ``solc`` のより高度な出力を得たい場合は、 ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` を使ってすべてを別々のファイルに出力するように指示したほうがよいでしょう。
 
 オプティマイザオプション
 ------------------------
 
 .. Before you deploy your contract, activate the optimizer when compiling using ``solc --optimize --bin sourceFile.sol``.
-.. By default, the optimizer will optimize the contract assuming it is called 200 times across its lifetime
-.. (more specifically, it assumes each opcode is executed around 200 times).
-.. If you want the initial contract deployment to be cheaper and the later function executions to be more expensive,
-.. set it to ``--optimize-runs=1``. If you expect many transactions and do not care for higher deployment cost and
-.. output size, set ``--optimize-runs`` to a high number.
+.. By default, the optimizer will optimize the contract assuming it is called 200 times across its lifetime (more specifically, it assumes each opcode is executed around 200 times).
+.. If you want the initial contract deployment to be cheaper and the later function executions to be more expensive, set it to ``--optimize-runs=1``.
+.. If you expect many transactions and do not care for higher deployment cost and output size, set ``--optimize-runs`` to a high number.
 .. This parameter has effects on the following (this might change in the future):
 
 コントラクトをデプロイする前に、 ``solc --optimize --bin sourceFile.sol`` を使ってコンパイルする際にオプティマイザを有効にします。デフォルトでは、オプティマイザは、コントラクトがそのライフタイム全体で200回呼び出されると仮定して最適化します（より具体的には、各オペコードが約200回実行されると仮定します）。最初のコントラクトデプロイを安価にし、後の関数実行を高価にしたい場合は、 ``--optimize-runs=1`` に設定してください。多くのトランザクションが予想され、デプロイコストや出力サイズが高くなっても気にしない場合は、 ``--optimize-runs`` を高い数値に設定してください。このパラメータは以下に影響を与えます（将来的に変更される可能性があります）。

@@ -322,7 +322,8 @@ Minimum Compiler Versions
 前提知識 - macOS
 ----------------
 
-macOSでビルドする場合は、最新版の `Xcode installed <https://developer.apple.com/xcode/download/>`_ を用意してください。Xcodeを初めてインストールする場合や、新しいバージョンをインストールしたばかりの場合は、コマンドラインでのビルドを行う前にライセンスに同意する必要があります。
+macOSでビルドする場合は、最新版の `Xcode installed <https://developer.apple.com/xcode/download/>`_ を用意してください。
+Xcodeを初めてインストールする場合や、新しいバージョンをインストールしたばかりの場合は、コマンドラインでのビルドを行う前にライセンスに同意する必要があります。
 
 .. code-block:: bash
 

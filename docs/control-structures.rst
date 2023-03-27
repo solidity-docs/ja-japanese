@@ -614,7 +614,7 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 .. flags an error to the caller.
 
 Solidityでは、エラー処理に状態を戻す例外を使用します。
-このような例外は、現在の呼び出し（およびそのすべてのサブコール）で行われた状態への変更をすべて元に戻し、呼び出し側にエラーを通知します。
+このような例外は、現在の呼び出し（およびそのすべてのサブコール）で行われた状態への変更をすべてリバートし、呼び出し側にエラーを通知します。
 
 .. When exceptions happen in a sub-call, they "bubble up" (i.e.,
 .. exceptions are rethrown) automatically unless they are caught in
@@ -799,9 +799,9 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 .. (or at least call) without effect.
 
 内部的には、Solidityは元に戻す操作（命令 ``0xfd`` ）を行います。
-これにより、EVMは状態に加えられたすべての変更を元に戻します。
+これにより、EVMは状態に加えられたすべての変更をリバートします。
 元に戻す理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。
-トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更を元に戻し、トランザクション全体（または少なくともコール）を効果なしにすることです。
+トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更をリバートし、トランザクション全体（または少なくともコール）を効果なしにすることです。
 
 .. In both cases, the caller can react on such failures using ``try``/``catch``, but
 .. the changes in the callee will always be reverted.

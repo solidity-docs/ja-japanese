@@ -222,7 +222,7 @@ View関数
 .. #. Using inline assembly that contains certain opcodes.
 
 #. 状態変数への書き込み。
-#. :ref:`イベントの発火<events>` 。
+#. :ref:`イベントの発生<events>` 。
 #. :ref:`他のコントラクトの作成<creating-contracts>` 。
 #. ``selfdestruct`` の使用。
 #. コールでのEtherの送金。

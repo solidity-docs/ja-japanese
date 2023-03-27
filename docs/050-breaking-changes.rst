@@ -65,7 +65,7 @@ Semantic Only Changes
   ``abi.decode()`` if passed calldata is too short or points out of bounds.
   Note that dirty higher order bits are still simply ignored.
 
-* ABIデコーダは、関数の先頭や ``abi.decode()`` で、渡されたcalldataが短すぎたり、境界外を指したりした場合には、元に戻します。なお、ダーティな高次ビットはまだ単純に無視されます。
+* ABIデコーダは、関数の先頭や ``abi.decode()`` で、渡されたcalldataが短すぎたり、境界外を指したりした場合には、リバートします。なお、ダーティな高次ビットはまだ単純に無視されます。
 
 .. * Forward all available gas with external function calls starting from
   Tangerine Whistle.
