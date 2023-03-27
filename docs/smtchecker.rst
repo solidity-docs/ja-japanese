@@ -1,8 +1,8 @@
 .. _formal_verification:
 
-##################################
-SMTChecker and Formal Verification
-##################################
+####################
+SMTCheckerと形式検証
+####################
 
 .. Using formal verification it is possible to perform an automated mathematical
 .. proof that your source code fulfills a certain formal specification.
@@ -110,12 +110,12 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 
     検証対象に対して警告が出ないということは、SMTCheckerや基盤となるソルバーにバグがないことを前提とした、議論の余地のない正しさの数学的証明を意味します。これらの問題は、一般的なケースで自動的に解決することは*非常に難しく*、時には*不可能*であることに留意してください。  したがって、いくつかの特性は解決できないかもしれませんし、大規模なコントラクトでは誤検出につながるかもしれません。すべての証明されたプロパティは重要な成果であると考えるべきです。上級者向けには、 :ref:`SMTChecker Tuning <smtchecker_options>` を参照して、より複雑なプロパティを証明するのに役立ついくつかのオプションを学んでください。
 
-********
-Tutorial
-********
+**************
+チュートリアル
+**************
 
-Overflow
-========
+オーバーフロー
+==============
 
 .. code-block:: Solidity
 

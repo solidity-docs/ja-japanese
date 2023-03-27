@@ -1,12 +1,12 @@
 .. index:: style, coding style
 
-#############
-Style Guide
-#############
+##############
+スタイルガイド
+##############
 
-************
-Introduction
-************
+******************
+イントロダクション
+******************
 
 .. This guide is intended to provide coding conventions for writing Solidity code.
 .. This guide should be thought of as an evolving document that will change over
@@ -44,9 +44,9 @@ Introduction
 
     しかし、最も重要なことです。 **know when to be inconsistent**  -- 時には、スタイルガイドが適用できないこともあります。迷ったときは、自分のベストな判断で行動しましょう。他の例を見て、何がベストなのかを判断してください。そして、迷わず質問してください。
 
-***********
-Code Layout
-***********
+****************
+コードレイアウト
+****************
 
 Indentation
 ===========

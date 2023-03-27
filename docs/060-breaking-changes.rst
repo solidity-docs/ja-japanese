@@ -1,6 +1,6 @@
-********************************
-Solidity v0.6.0 Breaking Changes
-********************************
+*****************************
+Solidity v0.6.0の破壊的変更点
+*****************************
 
 .. This section highlights the main breaking changes introduced in Solidity
 .. version 0.6.0, along with the reasoning behind the changes and how to update

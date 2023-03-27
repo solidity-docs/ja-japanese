@@ -1,8 +1,8 @@
 .. _path-resolution:
 
-**********************
-Import Path Resolution
-**********************
+********************
+インポートパスの解決
+********************
 
 .. In order to be able to support reproducible builds on all platforms, the Solidity compiler has to
 .. abstract away the details of the filesystem where source files are stored.
@@ -31,8 +31,8 @@ Virtual Filesystem
 .. index:: ! import callback, ! Host Filesystem Loader
 .. _import-callback:
 
-Import Callback
----------------
+インポートコールバック
+----------------------
 
 .. The VFS is initially populated only with files the compiler has received as input.
 .. Additional files can be loaded during compilation using an *import callback*, which is different
@@ -81,8 +81,8 @@ VFSには、コンパイラーが入力として受け取ったファイルの�
 
     移植性を考慮して、特定のインポートコールバックでのみ正しく動作するインポートパスや、特定のプラットフォームでのみ動作するインポートパスは使用しないことをお勧めします。     たとえば、バックスラッシュをサポートするプラットフォームでもパスの区切りとして機能するフォワードスラッシュを常に使用するべきです。
 
-Initial Content of the Virtual Filesystem
------------------------------------------
+Virtual Filesystemの初期コンテンツ
+----------------------------------
 
 .. The initial content of the VFS depends on how you invoke the compiler:
 
@@ -198,13 +198,14 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. index:: ! import; path
 
-Imports
-=======
+インポート
+==========
 
 .. The import statement specifies an *import path*.
 .. Based on how the import path is specified, we can divide imports into two categories:
 
-インポートステートメントでは、 *import path* を指定します。インポートパスの指定方法に基づいて、インポートは2つのカテゴリーに分けられます。
+インポートステートメントでは、 *インポートパス* を指定します。
+インポートパスの指定方法に基づいて、インポートは2つのカテゴリーに分けられます。
 
 .. - :ref:`Direct imports <direct-imports>`, where you specify the full source unit name directly.
 
@@ -230,8 +231,10 @@ Imports
 .. index:: ! direct import, import; direct
 .. _direct-imports:
 
-Direct Imports
---------------
+.. Direct Imports
+
+ダイレクトインポート
+--------------------
 
 .. An import that does not start with ``./`` or ``../`` is a *direct import*.
 
@@ -287,8 +290,10 @@ Direct Imports
 .. index:: ! relative import, ! import; relative
 .. _relative-imports:
 
-Relative Imports
-----------------
+.. Relative Imports
+
+相対インポート
+--------------
 
 .. An import starting with ``./`` or ``../`` is a *relative import*.
 .. Such imports specify a path relative to the source unit name of the importing source unit:
@@ -380,8 +385,10 @@ is identified with a URL.
 .. index:: ! base path, ! --base-path, ! include paths, ! --include-path
 .. _base-and-include-paths:
 
-Base Path and Include Paths
-===========================
+.. Base Path and Include Paths
+
+ベースパスとインクルードパス
+============================
 
 .. The base path and include paths represent directories that the Host Filesystem Loader will load files from.
 .. When a source unit name is passed to the loader, it prepends the base path to it and performs a
@@ -568,8 +575,10 @@ CLI Path Normalization and Stripping
 .. index:: ! allowed paths, ! --allow-paths, remapping; target
 .. _allowed-paths:
 
-Allowed Paths
-=============
+.. Allowed Paths
+
+許可されるパス
+==============
 
 .. As a security measure, the Host Filesystem Loader will refuse to load files from outside of a few
 .. locations that are considered safe by default:
@@ -686,8 +695,8 @@ Allowed Paths
 .. index:: ! remapping; import, ! import; remapping, ! remapping; context, ! remapping; prefix, ! remapping; target
 .. _import-remapping:
 
-Import Remapping
-================
+インポートリマッピング
+======================
 
 .. Import remapping allows you to redirect imports to a different location in the virtual filesystem.
 .. The mechanism works by changing the translation between import paths and source unit names.
@@ -930,8 +939,8 @@ Import Remapping
 
 .. index:: Remix IDE, file://
 
-Using URLs in imports
-=====================
+インポートでのURLの使用
+=======================
 
 .. Most URL prefixes such as ``https://`` or ``data://`` have no special meaning in import paths.
 .. The only exception is ``file://`` which is stripped from source unit names by the Host Filesystem

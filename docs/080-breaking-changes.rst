@@ -1,6 +1,6 @@
-********************************
-Solidity v0.8.0 Breaking Changes
-********************************
+*****************************
+Solidity v0.8.0の破壊的変更点
+*****************************
 
 .. This section highlights the main breaking changes introduced in Solidity
 .. version 0.8.0.

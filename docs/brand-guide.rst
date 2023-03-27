@@ -1,6 +1,6 @@
-####################
-Solidity Brand Guide
-####################
+######################
+Solidityブランドガイド
+######################
 
 .. This brand guide features information on Solidity's brand policy and
 .. logo usage guidelines.

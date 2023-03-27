@@ -3,9 +3,11 @@
 
 .. _ir-breaking-changes:
 
-*********************************
-Solidity IR-based Codegen Changes
-*********************************
+.. Solidity IR-based Codegen Changes
+
+**********************************
+Solidity IRベースのCodegenの変更点
+**********************************
 
 .. Solidity can generate EVM bytecode in two different ways:
 .. Either directly from Solidity to EVM opcodes ("old codegen") or through
@@ -32,8 +34,10 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかな意味上の違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
 
-Semantic Only Changes
-=====================
+.. Semantic Only Changes
+
+セマンティックのみの変更
+========================
 
 .. This section lists the changes that are semantic-only, thus potentially
 .. hiding new and different behavior in existing code.
@@ -269,11 +273,15 @@ Semantic Only Changes
 
   - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
 
-Internals
-=========
+.. Internals
 
-Internal function pointers
---------------------------
+内部構造
+========
+
+.. Internal function pointers
+
+内部の関数ポインタ
+------------------
 
 .. index:: function pointers
 
@@ -310,8 +318,8 @@ ID  ``0`` は、初期化されていない関数ポインタ用に予約され�
 
 古いコードジェネレータでは、内部関数ポインタは、常にパニックを起こす特別な関数で初期化されます。このため、ストレージ内の内部関数ポインタの構築時にストレージへの書き込みが発生します。
 
-Cleanup
--------
+クリーンアップ
+--------------
 
 .. index:: cleanup, dirty bits
 
@@ -321,9 +329,7 @@ Cleanup
 
 古いコードジェネレータは、ダーティビットの値によって結果が影響を受ける可能性のある操作の前にのみ、クリーンアップを行います。新しいコードジェネレータでは、ダーティビットが発生する可能性のある操作の後にクリーンアップを行います。オプティマイザが強力になり、冗長なクリーンアップ処理がなくなることを期待しています。
 
-.. For example:
-
-例えば、以下のように。
+例えば、以下のようになります。
 
 .. code-block:: solidity
     :force:

@@ -1,6 +1,6 @@
-############
-Contributing
-############
+######################
+コントリビューティング
+######################
 
 Help is always welcome and there are plenty of options to contribute to Solidity.
 

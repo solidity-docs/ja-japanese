@@ -1,13 +1,13 @@
 ******************
-Using the Compiler
+コンパイラの使い方
 ******************
 
 .. index:: ! commandline compiler, compiler;commandline, ! solc
 
 .. _commandline-compiler:
 
-Using the Commandline Compiler
-******************************
+コマンドラインコンパイラの使い方
+********************************
 
 .. .. note::
 
@@ -17,8 +17,8 @@ Using the Commandline Compiler
 
     このセクションは :ref:`solcjs <solcjs>` には適用されず、コマンドラインモードで使用されても適用されません。
 
-Basic Usage
------------
+基本的な使い方
+--------------
 
 .. One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
 .. Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
@@ -26,8 +26,8 @@ Basic Usage
 
 Solidityリポジトリのビルドターゲットの1つは、solidityのコマンドラインコンパイラである ``solc`` です。 ``solc --help`` を使用すると、すべてのオプションの説明を受けることができます。コンパイラは、抽象的な構文木（パースツリー）上の単純なバイナリやアセンブリから、ガス使用量の推定値まで、さまざまな出力を行うことができます。単一のファイルをコンパイルしたいだけなら、 ``solc --bin sourceFile.sol`` として実行すれば、バイナリを出力します。 ``solc`` のより高度な出力を得たい場合は、 ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` を使ってすべてを別々のファイルに出力するように指示したほうがよいでしょう。
 
-Optimizer Options
------------------
+オプティマイザオプション
+------------------------
 
 .. Before you deploy your contract, activate the optimizer when compiling using ``solc --optimize --bin sourceFile.sol``.
 .. By default, the optimizer will optimize the contract assuming it is called 200 times across its lifetime
@@ -49,8 +49,8 @@ Optimizer Options
 
 .. index:: allowed paths, --allow-paths, base path, --base-path, include paths, --include-path
 
-Base Path and Import Remapping
-------------------------------
+ベースパスとインポートのリマッピング
+------------------------------------
 
 .. The commandline compiler will automatically read imported files from the filesystem, but
 .. it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
@@ -92,8 +92,8 @@ Base Path and Import Remapping
 .. index:: ! linker, ! --link, ! --libraries
 .. _library-linking:
 
-Library Linking
----------------
+ライブラリのリンク
+------------------
 
 .. If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``. These are placeholders for the actual library addresses.
 .. The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
@@ -102,7 +102,7 @@ Library Linking
 .. is the path of its source file and the library name separated by ``:``.
 .. You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
 
-コントラクトで :ref:`libraries <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` という形式の部分文字列が含まれていることに気づくでしょう。これは、実際のライブラリアドレスのプレースホルダーです。プレースホルダーは、完全修飾ライブラリ名の keccak256 ハッシュの 16 進数エンコーディングの 34 文字のプレフィックスです。また、バイトコードファイルには、プレースホルダーがどのライブラリを表しているかを識別するために、最後に ``// <placeholder> -> <fq library name>`` という形式の行が含まれます。完全修飾ライブラリ名は、そのソースファイルのパスとライブラリ名を ``:`` で区切ったものであることに注意してください。 ``solc`` をリンカーとして使用すると、これらの箇所にライブラリのアドレスを挿入してくれます。
+コントラクトで :ref:`ライブラリ <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` という形式の部分文字列が含まれていることに気づくでしょう。これは、実際のライブラリアドレスのプレースホルダーです。プレースホルダーは、完全修飾ライブラリ名の keccak256 ハッシュの 16 進数エンコーディングの 34 文字のプレフィックスです。また、バイトコードファイルには、プレースホルダーがどのライブラリを表しているかを識別するために、最後に ``// <placeholder> -> <fq library name>`` という形式の行が含まれます。完全修飾ライブラリ名は、そのソースファイルのパスとライブラリ名を ``:`` で区切ったものであることに注意してください。 ``solc`` をリンカーとして使用すると、これらの箇所にライブラリのアドレスを挿入してくれます。
 
 .. Either add ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` to your command to provide an address for each library (use commas or spaces as separators) or store the string in a file (one library per line) and run ``solc`` using ``--libraries fileName``.
 
@@ -159,7 +159,9 @@ Library Linking
 .. _evm-version:
 .. index:: ! EVM version, compile target
 
-Setting the EVM Version to Target
+.. Setting the EVM Version to Target
+
+EVMのバージョンをターゲットに設定
 *********************************
 
 .. When you compile your contract code you can specify the Ethereum virtual machine
@@ -200,114 +202,97 @@ Setting the EVM Version to Target
       }
     }
 
-Target Options
---------------
+ターゲットオプション
+--------------------
 
 .. Below is a list of target EVM versions and the compiler-relevant changes introduced
 .. at each version. Backward compatibility is not guaranteed between each version.
 
 以下は、対象となるEVMのバージョンと、各バージョンで導入されたコンパイラ関連の変更点の一覧です。各バージョン間の下位互換性は保証されていません。
 
-.. - ``homestead``
-
 - ``homestead``
 
-.. - (oldest version)
-
-- (古いバージョン)
-
-.. - ``tangerineWhistle``
+  - （最も古いバージョン）
 
 - ``tangerineWhistle``
 
-.. - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
+  .. - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
 
-- 他のアカウントへのアクセスのためのガスコストが増加し、ガス推定とオプティマイザに関連する。
+  - 他のアカウントへのアクセスのためのガスコストが増加し、ガス推定とオプティマイザに関連する。
 
-.. - All gas sent by default for external calls, previously a certain amount had to be retained.
+  .. - All gas sent by default for external calls, previously a certain amount had to be retained.
 
-- 外部からの電話に対しては、デフォルトですべてのガスが送信されますが、従来は一定量を保持する必要がありました。
-
-.. - ``spuriousDragon``
+  - 外部からの電話に対しては、デフォルトですべてのガスが送信されますが、従来は一定量を保持する必要がありました。
 
 - ``spuriousDragon``
 
-.. - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
+  .. - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
 
-- ``exp`` オペコードのガスコストが増加し、ガス推定とオプティマイザに関連する。
-
-.. - ``byzantium``
+  - ``exp`` オペコードのガスコストが増加し、ガス推定とオプティマイザに関連する。
 
 - ``byzantium``
 
-.. - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
+  .. - Opcodes ``returndatacopy``, ``returndatasize`` and ``staticcall`` are available in assembly.
 
-- オペコード ``returndatacopy`` 、 ``returndatasize`` 、 ``staticcall`` はアセンブリで利用可能です。
+  - オペコード ``returndatacopy`` 、 ``returndatasize`` 、 ``staticcall`` はアセンブリで利用可能です。
 
-.. - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
+  .. - The ``staticcall`` opcode is used when calling non-library view or pure functions, which prevents the functions from modifying state at the EVM level, i.e., even applies when you use invalid type conversions.
 
-- ``staticcall``  opcodeは、ライブラリではないビューや純粋な関数を呼び出す際に使用され、関数がEVMレベルで状態を変更することを防ぎます。つまり、無効な型変換を使用している場合でも適用されます。
+  - ``staticcall``  opcodeは、ライブラリではないビューや純粋な関数を呼び出す際に使用され、関数がEVMレベルで状態を変更することを防ぎます。つまり、無効な型変換を使用している場合でも適用されます。
 
-.. - It is possible to access dynamic data returned from function calls.
+  .. - It is possible to access dynamic data returned from function calls.
 
-- 関数コールから返された動的データにアクセスすることが可能です。
+  - 関数コールから返された動的データにアクセスすることが可能です。
 
-.. - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
+  .. - ``revert`` opcode introduced, which means that ``revert()`` will not waste gas.
 
-- ``revert`` のオペコードが導入されたことで、 ``revert()`` がガスを無駄にしないようになりました。
-
-.. - ``constantinople``
+  - ``revert`` のオペコードが導入されたことで、 ``revert()`` がガスを無駄にしないようになりました。
 
 - ``constantinople``
 
-.. - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
+  .. - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
 
-- Opcode ` `create2` ,  ``extcodehash`` ,  ``shl`` ,  ``shr`` ,  ``sar`` はアセンブリで使用可能です。
+  - Opcode ` `create2` ,  ``extcodehash`` ,  ``shl`` ,  ``shr`` ,  ``sar`` はアセンブリで使用可能です。
 
-.. - Shifting operators use shifting opcodes and thus need less gas.
+  .. - Shifting operators use shifting opcodes and thus need less gas.
 
-- シフト演算子は、シフトオペコードを使用するため、より少ないガスで済みます。
+  - シフト演算子は、シフトオペコードを使用するため、より少ないガスで済みます。
 
 - ``petersburg``
 
-.. - The compiler behaves the same way as with constantinople.
+  .. - The compiler behaves the same way as with constantinople.
 
-- コンパイラは constantinople の場合と同じように動作します。
-
-.. - ``istanbul``
+  - コンパイラは constantinople の場合と同じように動作します。
 
 - ``istanbul``
 
-.. - Opcodes ``chainid`` and ``selfbalance`` are available in assembly.
+  .. - Opcodes ``chainid`` and ``selfbalance`` are available in assembly.
 
-- Opcodes  ``chainid`` と ``selfbalance`` はアセンブリで利用可能です。
-
-.. - ``berlin``
+  - Opcodes  ``chainid`` と ``selfbalance`` はアセンブリで利用可能です。
 
 - ``berlin``
 
-.. - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
-..      compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
-..      the optimizer.
+  .. - Gas costs for ``SLOAD``, ``*CALL``, ``BALANCE``, ``EXT*`` and ``SELFDESTRUCT`` increased. The
+  ..      compiler assumes cold gas costs for such operations. This is relevant for gas estimation and
+  ..      the optimizer.
 
-- ``SLOAD`` 、 ``*CALL`` 、 ``BALANCE`` 、 ``EXT*`` 、 ``SELFDESTRUCT`` のガス代が増加しました。コンパイラーは、このような操作に対して冷たいガスコストを想定しています。これは、ガス推定とオプティマイザに関連します。
-
-.. - ``london``
+  - ``SLOAD`` 、 ``*CALL`` 、 ``BALANCE`` 、 ``EXT*`` 、 ``SELFDESTRUCT`` のガス代が増加しました。コンパイラーは、このような操作に対して冷たいガスコストを想定しています。これは、ガス推定とオプティマイザに関連します。
 
 - ``london``
 
-.. - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
+  .. - The block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_) can be accessed via the global ``block.basefee`` or ``basefee()`` in inline assembly.
 
-- ブロックの基本料金（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリのグローバル ``block.basefee`` または ``basefee()`` を介してアクセスできます。
+  - ブロックの基本料金（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリのグローバル ``block.basefee`` または ``basefee()`` を介してアクセスできます。
 
-- ``paris`` (**default**)
-   - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
+- ``paris`` （ **デフォルト** ）
+
+  - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
 
-Compiler Input and Output JSON Description
-******************************************
+コンパイラの入出力JSONの説明
+****************************
 
 .. The recommended way to interface with the Solidity compiler especially for
 .. more complex and automated setups is the so-called JSON-input-output interface.
@@ -331,8 +316,8 @@ Solidity コンパイラとのインターフェースとして、特に複雑�
 
 以下のサブセクションでは、例を挙げてフォーマットを説明します。もちろん、コメントは許可されておらず、ここでは説明のためにのみ使用されています。
 
-Input Description
------------------
+入力の説明
+----------
 
 .. code-block:: javascript
 
@@ -599,8 +584,8 @@ Input Description
       }
     }
 
-Output Description
-------------------
+出力の説明
+----------
 
 .. code-block:: javascript
 
@@ -755,8 +740,8 @@ Output Description
       }
     }
 
-Error Types
-~~~~~~~~~~~
+エラータイプ
+~~~~~~~~~~~~
 
 .. 1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
 
