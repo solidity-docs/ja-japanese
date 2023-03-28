@@ -4,32 +4,29 @@
 SMTCheckerと形式検証
 ####################
 
-.. Using formal verification it is possible to perform an automated mathematical
-.. proof that your source code fulfills a certain formal specification.
-.. The specification is still formal (just as the source code), but usually much
-.. simpler.
+.. Using formal verification it is possible to perform an automated mathematical proof that your source code fulfills a certain formal specification.
+.. The specification is still formal (just as the source code), but usually much simpler.
 
-形式検証とは、ソースコードがある形式的な仕様を満たしていることを、自動的に数学的に証明することです。仕様書はソースコードと同様に形式的なものですが、通常はよりシンプルなものになります。
+形式検証とは、ソースコードがある形式的な仕様を満たしていることを、自動的に数学的に証明することです。
+仕様はソースコードと同様に形式的なものですが、通常はよりシンプルなものになります。
 
-.. Note that formal verification itself can only help you understand the
-.. difference between what you did (the specification) and how you did it
-.. (the actual implementation). You still need to check whether the specification
-.. is what you wanted and that you did not miss any unintended effects of it.
+.. Note that formal verification itself can only help you understand the difference between what you did (the specification) and how you did it (the actual implementation).
+.. You still need to check whether the specification is what you wanted and that you did not miss any unintended effects of it.
 
-形式検証は、「何をしたか（仕様）」と「どのようにしたか（実際の実装）」の違いを理解するためのものでしかないことに注意してください。仕様が望んだものになっているかどうか、意図しない効果を見逃していないかどうかを確認する必要があります。
+形式検証は、「何をしたか（仕様）」と「どのようにしたか（実際の実装）」の違いを理解するためのものでしかないことに注意してください。
+仕様が望んだものになっているかどうか、意図しない効果を見逃していないかどうかを確認する必要があります。
 
-.. Solidity implements a formal verification approach based on
-.. `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ and
-.. `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ solving.
-.. The SMTChecker module automatically tries to prove that the code satisfies the
-.. specification given by ``require`` and ``assert`` statements. That is, it considers
-.. ``require`` statements as assumptions and tries to prove that the conditions
-.. inside ``assert`` statements are always true.  If an assertion failure is
-.. found, a counterexample may be given to the user showing how the assertion can
-.. be violated. If no warning is given by the SMTChecker for a property,
-.. it means that the property is safe.
+.. Solidity implements a formal verification approach based on `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ and `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ solving.
+.. The SMTChecker module automatically tries to prove that the code satisfies the specification given by ``require`` and ``assert`` statements.
+.. That is, it considers ``require`` statements as assumptions and tries to prove that the conditions inside ``assert`` statements are always true.
+.. If an assertion failure is found, a counterexample may be given to the user showing how the assertion can be violated.
+.. If no warning is given by the SMTChecker for a property, it means that the property is safe.
 
-Solidityでは、 `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ と `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ の解法に基づいた形式的な検証アプローチを実装しています。SMTCheckerモジュールは、 ``require`` 文と ``assert`` 文で与えられた仕様をコードが満たしていることを自動的に証明しようとします。つまり、 ``require`` 文を仮定とみなし、 ``assert`` 文の中の条件が常に真であることを証明しようとします。  アサーションの失敗が発見された場合、アサーションがどのように破られるかを示す反例がユーザーに与えられます。SMTCheckerがあるプロパティに対して警告を出さない場合、そのプロパティは安全であることを意味します。
+Solidityでは、 `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ と `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ の解法に基づいた形式的な検証アプローチを実装しています。
+SMTCheckerモジュールは、 ``require`` 文と ``assert`` 文で与えられた仕様をコードが満たしていることを自動的に証明しようとします。
+つまり、 ``require`` 文を仮定とみなし、 ``assert`` 文の中の条件が常に真であることを証明しようとします。
+アサーションの失敗が発見された場合、アサーションがどのように破られるかを示す反例がユーザーに与えられます。
+SMTCheckerがあるプロパティに対して警告を出さない場合、そのプロパティは安全であることを意味します。
 
 .. The other verification targets that the SMTChecker checks at compile time are:
 
@@ -41,23 +38,23 @@ SMTCheckerがコンパイル時にチェックするその他の検証対象は�
 
 .. - Division by zero.
 
-- ゼロによる分割。
+- ゼロによる除算。
 
 .. - Trivial conditions and unreachable code.
 
-- 些細な条件や手の届かないコード。
+- トリビアルな条件と到達不可能なコード。
 
 .. - Popping an empty array.
 
-- 空の配列をポップする。
+- 空の配列のポップ。
 
 .. - Out of bounds index access.
 
-- アウトオブバウンズのインデックスアクセス。
+- 範囲外のインデックスアクセス。
 
 .. - Insufficient funds for a transfer.
 
-- 送金に必要な資金が不足しています。
+- 送金に必要な資金の不足。
 
 .. All the targets above are automatically checked by default if all engines are
 .. enabled, except underflow and overflow for Solidity >=0.8.7.
@@ -70,16 +67,23 @@ SMTCheckerが報告する潜在的な警告は次のとおりです。
 
 .. - ``<failing  property> happens here.``. This means that the SMTChecker proved that a certain property fails. A counterexample may be given, however in complex situations it may also not show a counterexample. This result may also be a false positive in certain cases, when the SMT encoding adds abstractions for Solidity code that is either hard or impossible to express.
 
-- ``<failing  property> happens here.`` です。これは、SMTCheckerがあるプロパティが失敗することを証明したことを意味します。反例が示されることもありますが、複雑な状況では反例が示されないこともあります。この結果は、SMTエンコーディングが、表現が困難または不可能なSolidityコードの抽象化を追加する場合、特定のケースでは誤検出となることもあります。
+- ``<failing  property> happens here.`` です。
+  これは、SMTCheckerがあるプロパティが失敗することを証明したことを意味します。
+  反例が示されることもありますが、複雑な状況では反例が示されないこともあります。
+  この結果は、SMTエンコーディングが、表現が困難または不可能なSolidityコードの抽象化を追加する場合、特定のケースでは誤検出となることもあります。
 
 .. - ``<failing property> might happen here``. This means that the solver could not prove either case within the given timeout. Since the result is unknown, the SMTChecker reports the potential failure for soundness. This may be solved by increasing the query timeout, but the problem might also simply be too hard for the engine to solve.
 
-- ``<failing property> might happen here`` です。これは、ソルバーが与えられたタイムアウト内にどちらのケースも証明できなかったことを意味します。結果は不明なので、SMTCheckerは健全性のために潜在的な失敗を報告します。これは、クエリのタイムアウトを増やすことで解決できるかもしれませんが、問題が単にエンジンにとって難しすぎるだけかもしれません。
+- ``<failing property> might happen here`` です。
+  これは、ソルバーが与えられたタイムアウト内にどちらのケースも証明できなかったことを意味します。
+  結果は不明なので、SMTCheckerは健全性のために潜在的な失敗を報告します。
+  これは、クエリのタイムアウトを増やすことで解決できるかもしれませんが、問題が単にエンジンにとって難しすぎるだけかもしれません。
 
 .. To enable the SMTChecker, you must select :ref:`which engine should run<smtchecker_engines>`,
 .. where the default is no engine. Selecting the engine enables the SMTChecker on all files.
 
-SMTCheckerを有効にするには、デフォルトではエンジンなしとなっている :ref:`which engine should run<smtchecker_engines>` を選択する必要があります。エンジンを選択すると、すべてのファイルでSMTCheckerが有効になります。
+SMTCheckerを有効にするには、デフォルトではエンジンなしとなっている :ref:`which engine should run<smtchecker_engines>` を選択する必要があります。
+エンジンを選択すると、すべてのファイルでSMTCheckerが有効になります。
 
 .. .. note::
 
@@ -92,7 +96,9 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 
 .. note::
 
-    Solidity 0.8.4以前では、SMTCheckerを有効にするデフォルトの方法は ``pragma experimental SMTChecker;`` を介したもので、プラグマを含むコントラクトのみが分析されました。このプラグマは非推奨となっており、後方互換性のためにSMTCheckerを有効にしていますが、Solidity 0.9.0では削除されます。また、1つのファイルでもプラグマを使用すると、すべてのファイルでSMTCheckerが有効になることに注意してください。
+    Solidity 0.8.4以前では、SMTCheckerを有効にするデフォルトの方法は ``pragma experimental SMTChecker;`` を介したもので、プラグマを含むコントラクトのみが分析されました。
+    このプラグマは非推奨となっており、後方互換性のためにSMTCheckerを有効にしていますが、Solidity 0.9.0では削除されます。
+    また、1つのファイルでもプラグマを使用すると、すべてのファイルでSMTCheckerが有効になることに注意してください。
 
 .. .. note::
 
@@ -108,7 +114,11 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 
 .. note::
 
-    検証対象に対して警告が出ないということは、SMTCheckerや基盤となるソルバーにバグがないことを前提とした、議論の余地のない正しさの数学的証明を意味します。これらの問題は、一般的なケースで自動的に解決することは*非常に難しく*、時には*不可能*であることに留意してください。  したがって、いくつかの特性は解決できないかもしれませんし、大規模なコントラクトでは誤検出につながるかもしれません。すべての証明されたプロパティは重要な成果であると考えるべきです。上級者向けには、 :ref:`SMTChecker Tuning <smtchecker_options>` を参照して、より複雑なプロパティを証明するのに役立ついくつかのオプションを学んでください。
+    検証対象に対して警告が出ないということは、SMTCheckerや基盤となるソルバーにバグがないことを前提とした、議論の余地のない正しさの数学的証明を意味します。
+    これらの問題は、一般的なケースで自動的に解決することは *非常に難しく* 、時には *不可能* であることに留意してください。
+    したがって、いくつかの特性は解決できないかもしれませんし、大規模なコントラクトでは誤検出につながるかもしれません。
+    すべての証明されたプロパティは重要な成果であると考えるべきです。
+    上級者向けには、 :ref:`SMTChecker Tuning <smtchecker_options>` を参照して、より複雑なプロパティを証明するのに役立ついくつかのオプションを学んでください。
 
 **************
 チュートリアル
@@ -146,7 +156,10 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 .. See :ref:`this section for targets configuration<smtchecker_targets>`.
 .. Here, it reports the following:
 
-上のコントラクトではオーバーフローチェックの例を示しています。SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオーバーフローをチェックしないので、コマンドラインオプション ``--model-checker-targets "underflow,overflow"`` またはJSONオプション ``settings.modelChecker.targets = ["underflow", "overflow"]`` を使用する必要があります。 :ref:`this section for targets configuration<smtchecker_targets>` を参照してください。ここでは、以下のように報告しています。
+上のコントラクトではオーバーフローチェックの例を示しています。
+SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオーバーフローをチェックしないので、コマンドラインオプション ``--model-checker-targets "underflow,overflow"`` またはJSONオプション ``settings.modelChecker.targets = ["underflow", "overflow"]`` を使用する必要があります。
+:ref:`this section for targets configuration<smtchecker_targets>` を参照してください。
+ここでは、以下のように報告しています。
 
 .. code-block:: text
 
@@ -209,7 +222,10 @@ Assert
 .. property is correct. You are encouraged to play with the property and the function
 .. definition to see what results come out!
 
-以下のコードでは、オーバーフローしないことを保証する関数 ``f`` を定義しています。関数 ``inv`` は、 ``f`` が単調増加であるという仕様を定義しています: すべての可能なペア ``(a, b)`` に対して、もし ``b > a`` ならば ``f(b) > f(a)`` です。 ``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。この性質と関数の定義を使って、どんな結果が出るか試してみてください。
+以下のコードでは、オーバーフローしないことを保証する関数 ``f`` を定義しています。
+関数 ``inv`` は、 ``f`` が単調増加であるという仕様を定義しています: すべての可能なペア ``(a, b)`` に対して、もし ``b > a`` ならば ``f(b) > f(a)`` です。
+``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。
+この性質と関数の定義を使って、どんな結果が出るか試してみてください。
 
 .. code-block:: Solidity
 
@@ -233,7 +249,8 @@ Assert
 .. numbers, and asserts the property that the found element must be greater or
 .. equal every element in the array.
 
-また、ループの中にアサーションを追加して、より複雑なプロパティを検証することもできます。次のコードでは、制限のない数値の配列の最大要素を検索し、検索された要素は配列のすべての要素と同じかそれ以上でなければならないというプロパティをアサートしています。
+また、ループの中にアサーションを追加して、より複雑なプロパティを検証することもできます。
+次のコードでは、制限のない数値の配列の最大要素を検索し、検索された要素は配列のすべての要素と同じかそれ以上でなければならないというプロパティをアサートしています。
 
 .. code-block:: Solidity
 
@@ -283,7 +300,9 @@ Assert
 .. properties and/or add restrictions on the array to see different results.
 .. For example, changing the code to
 
-すべてのプロパティの安全性が正しく証明されています。プロパティを変更したり、配列に制限を加えることで、異なる結果を得ることができます。例えば、コードを次のように変更すると
+すべてのプロパティの安全性が正しく証明されています。
+プロパティを変更したり、配列に制限を加えることで、異なる結果を得ることができます。
+例えば、コードを次のように変更すると
 
 .. code-block:: Solidity
 
@@ -333,14 +352,19 @@ State Properties
 .. state of the contract. Multiple transactions might be needed to make an assertion
 .. fail for such a property.
 
-これまでの例では、特定の操作やアルゴリズムに関するプロパティを証明する、純粋なコードに対するSMTCheckerの使用方法を示しただけでした。スマートコントラクトにおける一般的なプロパティの種類は、コントラクトの状態に関わるプロパティです。このようなプロパティについてアサーションを失敗させるには、複数のトランザクションが必要になる場合があります。
+これまでの例では、特定の操作やアルゴリズムに関するプロパティを証明する、純粋なコードに対するSMTCheckerの使用方法を示しただけでした。
+スマートコントラクトにおける一般的なプロパティの種類は、コントラクトの状態に関わるプロパティです。
+このようなプロパティについてアサーションを失敗させるには、複数のトランザクションが必要になる場合があります。
 
 .. As an example, consider a 2D grid where both axis have coordinates in the range (-2^128, 2^128 - 1).
 .. Let us place a robot at position (0, 0). The robot can only move diagonally, one step at a time,
 .. and cannot move outside the grid. The robot's state machine can be represented by the smart contract
 .. below.
 
-例として、両軸の座標が(-2^128, 2^128 - 1)の範囲にある2Dグリッドを考えてみましょう。ここで、ロボットを(0, 0)の位置に置きます。ロボットは対角線上に1歩ずつしか移動できず、グリッドの外には出られません。このロボットのステートマシンは、以下のスマートコントラクトで表すことができます。
+例として、両軸の座標が(-2^128, 2^128 - 1)の範囲にある2Dグリッドを考えてみましょう。
+ここで、ロボットを(0, 0)の位置に置きます。
+ロボットは対角線上に1歩ずつしか移動できず、グリッドの外には出られません。
+このロボットのステートマシンは、以下のスマートコントラクトで表すことができます。
 
 .. code-block:: Solidity
 
@@ -389,13 +413,17 @@ State Properties
 .. reader may want to prove that fact manually as well.  Hint: this invariant is
 .. inductive.
 
-関数 ``inv`` は、 ``x + y`` が偶数でなければならないというステートマシンの不変量を表しています。SMTCheckerは、ロボットにどんなに多くの命令を与えても、たとえ無限に与えても、不変量は*絶対に*失敗しないことを証明できます。興味のある方は、手動でこの事実を証明することもできます。  ヒント: この不変量は帰納的なものです。
+関数 ``inv`` は、 ``x + y`` が偶数でなければならないというステートマシンの不変量を表しています。
+SMTCheckerは、ロボットにどんなに多くの命令を与えても、たとえ無限に与えても、不変量は*絶対に*失敗しないことを証明できます。
+興味のある方は、手動でこの事実を証明することもできます。
+ヒント: この不変量は帰納的なものです。
 
 .. We can also trick the SMTChecker into giving us a path to a certain position we
 .. think might be reachable.  We can add the property that (2, 4) is *not*
 .. reachable, by adding the following function.
 
-また、SMTCheckerを騙して、到達可能と思われるある位置までのパスを教えてもらうこともできます。  次のような関数を追加することで、(2, 4)は*not* reachableであるという性質を追加できます。
+また、SMTCheckerを騙して、到達可能と思われるある位置までのパスを教えてもらうこともできます。
+次のような関数を追加することで、(2, 4)は*not* reachableであるという性質を追加できます。
 
 .. code-block:: Solidity
 
@@ -435,7 +463,8 @@ State Properties
 .. other paths that could reach (2, 4). The choice of which path is shown
 .. might change depending on the used solver, its version, or just randomly.
 
-なお、上の経路は必ずしも決定論的ではなく、(2, 4)に到達する経路は他にもあるので注意が必要です。どの経路を表示するかは、使用するソルバーやそのバージョンによって変わるかもしれませんし、ランダムに表示されるかもしれません。
+なお、上の経路は必ずしも決定論的ではなく、(2, 4)に到達する経路は他にもあるので注意が必要です。
+どの経路を表示するかは、使用するソルバーやそのバージョンによって変わるかもしれませんし、ランダムに表示されるかもしれません。
 
 External Calls and Reentrancy
 =============================
@@ -446,7 +475,8 @@ External Calls and Reentrancy
 .. will indeed be the same as the contract where the interface came from at
 .. compile time.
 
-すべての外部呼び出しは、SMTCheckerによって未知のコードへの呼び出しとして扱われます。その理由は、たとえ呼び出されたコントラクトのコードがコンパイル時に利用可能であったとしても、デプロイされたコントラクトが実際にコンパイル時にインターフェースの元となったコントラクトと同じであるという保証はないからです。
+すべての外部呼び出しは、SMTCheckerによって未知のコードへの呼び出しとして扱われます。
+その理由は、たとえ呼び出されたコントラクトのコードがコンパイル時に利用可能であったとしても、デプロイされたコントラクトが実際にコンパイル時にインターフェースの元となったコントラクトと同じであるという保証はないからです。
 
 .. In some cases, it is possible to automatically infer properties over state
 .. variables that are still true even if the externally called code can do
@@ -497,7 +527,8 @@ External Calls and Reentrancy
 .. is already "locked", so it would not be possible to change the value of ``x``,
 .. regardless of what the unknown called code does.
 
-上の例では、ミューテックスフラグを使用して再入を禁止したコントラクトを示しています。ソルバーは、 ``unknown.run()`` が呼び出されたとき、コントラクトはすでに「ロック」されているので、未知の呼び出されたコードが何をしようと、 ``x`` の値を変更できないだろうと推測できます。
+上の例では、ミューテックスフラグを使用して再入を禁止したコントラクトを示しています。
+ソルバーは、 ``unknown.run()`` が呼び出されたとき、コントラクトはすでに「ロック」されているので、未知の呼び出されたコードが何をしようと、 ``x`` の値を変更できないだろうと推測できます。
 
 .. If we "forget" to use the ``mutex`` modifier on function ``set``, the
 .. SMTChecker is able to synthesize the behaviour of the externally called code so
@@ -535,7 +566,8 @@ Timeout
 .. which is not precisely related to time. We chose the ``rlimit`` option as the default
 .. because it gives more determinism guarantees than time inside the solver.
 
-SMTCheckerでは、ソルバーごとに選択されたハードコードされたリソース制限（ ``rlimit`` ）を使用していますが、これは時間とは正確には関係ありません。 ``rlimit`` オプションをデフォルトとして選択したのは、ソルバー内部の時間よりも決定性の保証が得られるからです。
+SMTCheckerでは、ソルバーごとに選択されたハードコードされたリソース制限（ ``rlimit`` ）を使用していますが、これは時間とは正確には関係ありません。
+``rlimit`` オプションをデフォルトとして選択したのは、ソルバー内部の時間よりも決定性の保証が得られるからです。
 
 .. This options translates roughly to "a few seconds timeout" per query. Of course many properties
 .. are very complex and need a lot of time to be solved, where determinism does not matter.
@@ -543,7 +575,9 @@ SMTCheckerでは、ソルバーごとに選択されたハードコードされ�
 .. a timeout can be given in milliseconds via the CLI option ``--model-checker-timeout <time>`` or
 .. the JSON option ``settings.modelChecker.timeout=<time>``, where 0 means no timeout.
 
-このオプションを大まかに説明すると、1回のクエリにつき「数秒のタイムアウト」となります。もちろん、多くのプロパティは非常に複雑で、決定論が問題にならないような解決に多くの時間を必要とする。SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティを解決できない場合、CLIオプション ``--model-checker-timeout <time>`` またはJSONオプション ``settings.modelChecker.timeout=<time>`` を介して、ミリ秒単位でタイムアウトを与えることができる。
+このオプションを大まかに説明すると、1回のクエリにつき「数秒のタイムアウト」となります。
+もちろん、多くのプロパティは非常に複雑で、決定論が問題にならないような解決に多くの時間を必要とする。
+SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティを解決できない場合、CLIオプション ``--model-checker-timeout <time>`` またはJSONオプション ``settings.modelChecker.timeout=<time>`` を介して、ミリ秒単位でタイムアウトを与えることができる。
 
 .. _smtchecker_targets:
 
@@ -558,48 +592,50 @@ Verification Targets
 .. the JSON input.
 .. The keywords that represent the targets are:
 
-SMTCheckerによって作成される検証ターゲットの種類は、CLIオプション ``--model-checker-target <targets>`` またはJSONオプション ``settings.modelChecker.targets=<targets>`` によってカスタマイズすることもできます。CLIの場合、 ``<targets>`` は1つまたは複数の検証ターゲットのスペースなしコンマ区切りのリストで、JSON入力では1つまたは複数のターゲットを文字列として配列します。ターゲットを表すキーワードは
+SMTCheckerによって作成される検証ターゲットの種類は、CLIオプション ``--model-checker-target <targets>`` またはJSONオプション ``settings.modelChecker.targets=<targets>`` によってカスタマイズすることもできます。
+CLIの場合、 ``<targets>`` は1つまたは複数の検証ターゲットのスペースなしコンマ区切りのリストで、JSON入力では1つまたは複数のターゲットを文字列として配列します。
+ターゲットを表すキーワードは
 
 .. - Assertions: ``assert``.
 
-- アサーション ``assert`` です。
+- アサーション: ``assert`` 。
 
 .. - Arithmetic underflow: ``underflow``.
 
-- 算術アンダーフロー。 ``underflow`` です。
+- 算術アンダーフロー: ``underflow`` 。
 
 .. - Arithmetic overflow: ``overflow``.
 
-- 算術オーバーフロー。 ``overflow`` です。
+- 算術オーバーフロー: ``overflow`` 。
 
 .. - Division by zero: ``divByZero``.
 
-- ゼロによる分割 ``divByZero`` です。
+- ゼロによる除算: ``divByZero`` 。
 
 .. - Trivial conditions and unreachable code: ``constantCondition``.
 
-- 些細な条件で、手の届かないコードを ``constantCondition`` を使用しています。
+- トリビアルな条件と到達不可能なコード: ``constantCondition`` 。
 
 .. - Popping an empty array: ``popEmptyArray``.
 
-- 空の配列をポップする ``popEmptyArray`` .
+- 空の配列のポップ: ``popEmptyArray`` 。
 
 .. - Out of bounds array/fixed bytes index access: ``outOfBounds``.
 
-- 境界を越えた配列/固定バイトのインデックスアクセス。 ``outOfBounds`` を使用しています。
+- 境界を越えた配列/固定バイトのインデックスアクセス: ``outOfBounds`` 。
 
 .. - Insufficient funds for a transfer: ``balance``.
 
-- 送金に必要な資金が不足しています。 ``balance`` .
+- 送金に必要な資金が不足しています: ``balance`` 。
 
 .. - All of the above: ``default`` (CLI only).
 
-- 上記の全てです。 ``default`` （CLIのみ）。
+- 上記の全てです: ``default`` （CLIのみ）。
 
 .. A common subset of targets might be, for example:
 .. ``--model-checker-targets assert,overflow``.
 
-ターゲットの一般的なサブセットは、例えば次のようなものです。 ``--model-checker-targets assert,overflow`` です。
+ターゲットの一般的なサブセットは、例えば次のようなものです: ``--model-checker-targets assert,overflow`` 。
 
 .. All targets are checked by default, except underflow and overflow for Solidity >=0.8.7.
 
@@ -613,37 +649,35 @@ SMTCheckerによって作成される検証ターゲットの種類は、CLIオ�
 Proved Targets
 ==============
 
-If there are any proved targets, the SMTChecker issues one warning per engine stating
-how many targets were proved. If the user wishes to see all the specific
-proved targets, the CLI option ``--model-checker-show-proved`` and
-the JSON option ``settings.modelChecker.showProved = true`` can be used.
+.. If there are any proved targets, the SMTChecker issues one warning per engine stating how many targets were proved.
+.. If the user wishes to see all the specific proved targets, the CLI option ``--model-checker-show-proved`` and the JSON option ``settings.modelChecker.showProved = true`` can be used.
+
+証明されたターゲットがある場合、SMTCheckerはエンジンごとに、証明されたターゲットの数を示す警告を1回発行します。
+もしユーザーが証明されたターゲットをすべて見たい場合は、CLIオプション ``--model-checker-show-proved`` とJSONオプション ``settings.modelChecker.showProved = true`` を使用できます。
 
 Unproved Targets
 ================
 
-.. If there are any unproved targets, the SMTChecker issues one warning stating
-.. how many unproved targets there are. If the user wishes to see all the specific
-.. unproved targets, the CLI option ``--model-checker-show-unproved`` and
-.. the JSON option ``settings.modelChecker.showUnproved = true`` can be used.
+.. If there are any unproved targets, the SMTChecker issues one warning stating how many unproved targets there are.
+.. If the user wishes to see all the specific unproved targets, the CLI option ``--model-checker-show-unproved`` and the JSON option ``settings.modelChecker.showUnproved = true`` can be used.
 
-検証されていないターゲットがある場合、SMTCheckerは検証されていないターゲットの数を示す1つの警告を発行します。ユーザーが特定の未処理のターゲットをすべて表示したい場合は、CLIオプション ``--model-checker-show-unproved`` およびJSONオプション ``settings.modelChecker.showUnproved = true`` を使用できます。
+検証されていないターゲットがある場合、SMTCheckerは検証されていないターゲットの数を示す1つの警告を発行します。
+ユーザーが特定の未処理のターゲットをすべて表示したい場合は、CLIオプション ``--model-checker-show-unproved`` およびJSONオプション ``settings.modelChecker.showUnproved = true`` を使用できます。
 
 Unsupported Language Features
 =============================
 
-Certain Solidity language features are not completely supported by the SMT
-encoding that the SMTChecker applies, for example assembly blocks.
-The unsupported construct is abstracted via overapproximation to preserve
-soundness, meaning any properties reported safe are safe even though this
-feature is unsupported.
-However such abstraction may cause false positives when the target properties
-depend on the precise behavior of the unsupported feature.
-If the encoder encounters such cases it will by default report a generic warning
-stating how many unsupported features it has seen.
-If the user wishes to see all the specific unsupported features, the CLI option
-``--model-checker-show-unsupported`` and the JSON option
-``settings.modelChecker.showUnsupported = true`` can be used, where their default
-value is ``false``.
+.. Certain Solidity language features are not completely supported by the SMT encoding that the SMTChecker applies, for example assembly blocks.
+.. The unsupported construct is abstracted via overapproximation to preserve soundness, meaning any properties reported safe are safe even though this feature is unsupported.
+.. However such abstraction may cause false positives when the target properties depend on the precise behavior of the unsupported feature.
+.. If the encoder encounters such cases it will by default report a generic warning stating how many unsupported features it has seen.
+.. If the user wishes to see all the specific unsupported features, the CLI option ``--model-checker-show-unsupported`` and the JSON option ``settings.modelChecker.showUnsupported = true`` can be used, where their default value is ``false``.
+
+SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の一部の機能が完全にサポートされていません（例えば、アセンブリブロック）。
+サポートされていない構成は、健全性を保つために過近接によって抽象化されます。つまり、この機能がサポートされていなくても、安全と報告されたプロパティは安全です。
+しかし、このような抽象化は、対象となるプロパティがサポートされていない機能の正確な動作に依存している場合、誤検出を引き起こす可能性があります。
+エンコーダがこのようなケースに遭遇した場合、デフォルトでは、サポートされていない機能をいくつ見たかを示す一般的な警告を報告することになります。
+もしユーザーがサポートされていない機能をすべて見たい場合は、CLIオプション ``--model-checker-show-unsupported`` とJSONオプション ``settings.modelChecker.showUnsupported = true`` を使用できます（デフォルト値は ``false`` です）。
 
 Verified Contracts
 ==================
@@ -659,7 +693,12 @@ Verified Contracts
 .. encoding and generated queries. Note that abstract contracts are by default
 .. not analyzed as the most derived by the SMTChecker.
 
-デフォルトでは、指定されたソース内のすべてのデプロイ可能なコントラクトが、デプロイされるものとして個別に分析されます。これは、コントラクトが多くの直接および間接的な継承親を持つ場合、最も派生したものだけがブロックチェーン上で直接アクセスされるにもかかわらず、それらすべてが単独で分析されることを意味します。これは、SMTCheckerとソルバーに不必要な負担をかけることになります。  このようなケースを支援するために、ユーザーはどのコントラクトをデプロイされたものとして分析すべきかを指定できます。親コントラクトはもちろんまだ分析されますが、最も派生したコントラクトのコンテキストでのみ分析され、エンコーディングと生成されたクエリの複雑さが軽減されます。抽象的なコントラクトはデフォルトではSMTCheckerによって最も派生したものとして分析されないことに注意してください。
+デフォルトでは、指定されたソース内のすべてのデプロイ可能なコントラクトが、デプロイされるものとして個別に分析されます。
+これは、コントラクトが多くの直接および間接的な継承親を持つ場合、最も派生したものだけがブロックチェーン上で直接アクセスされるにもかかわらず、それらすべてが単独で分析されることを意味します。
+これは、SMTCheckerとソルバーに不必要な負担をかけることになります。
+このようなケースを支援するために、ユーザーはどのコントラクトをデプロイされたものとして分析すべきかを指定できます。
+親コントラクトはもちろんまだ分析されますが、最も派生したコントラクトのコンテキストでのみ分析され、エンコーディングと生成されたクエリの複雑さが軽減されます。
+抽象的なコントラクトはデフォルトではSMTCheckerによって最も派生したものとして分析されないことに注意してください。
 
 .. The chosen contracts can be given via a comma-separated list (whitespace is not
 .. allowed) of <source>:<contract> pairs in the CLI:
@@ -679,9 +718,11 @@ Verified Contracts
 Trusted External Calls
 ======================
 
-By default, the SMTChecker does not assume that compile-time available code
-is the same as the runtime code for external calls. Take the following contracts
-as an example:
+.. By default, the SMTChecker does not assume that compile-time available code is the same as the runtime code for external calls.
+.. Take the following contracts as an example:
+
+デフォルトでは、SMTCheckerは、コンパイル時に利用可能なコードと外部呼び出しの実行時コードが同じであることを想定していません。
+次のコントラクトを例にとります:
 
 .. code-block:: solidity
 
@@ -699,28 +740,35 @@ as an example:
         }
     }
 
-When ``MyContract.callExt`` is called, an address is given as the argument.
-At deployment time, we cannot know for sure that address ``_e`` actually
-contains a deployment of contract ``Ext``.
-Therefore, the SMTChecker will warn that the assertion above can be violated,
-which is true, if ``_e`` contains another contract than ``Ext``.
+.. When ``MyContract.callExt`` is called, an address is given as the argument.
+.. At deployment time, we cannot know for sure that address ``_e`` actually
+.. contains a deployment of contract ``Ext``.
+.. Therefore, the SMTChecker will warn that the assertion above can be violated,
+.. which is true, if ``_e`` contains another contract than ``Ext``.
 
-However, it can be useful to treat these external calls as trusted, for example,
-to test that different implementations of an interface conform to the same property.
-This means assuming that address ``_e`` indeed was deployed as contract ``Ext``.
-This mode can be enabled via the CLI option ``--model-checker-ext-calls=trusted``
-or the JSON field ``settings.modelChecker.extCalls: "trusted"``.
+``MyContract.callExt`` が呼び出されると、引数としてアドレスが与えられます。
+デプロイ時には、アドレス ``_e`` が実際にコントラクト ``Ext`` のデプロイメントを含んでいるかどうかを確実に知ることはできません。
+したがって、SMTChecker は、 ``_e`` に ``Ext`` 以外のコントラクトが含まれている場合、上記のアサーションに違反する可能性があることを警告します（これは真です）。
 
-Please be aware that enabling this mode can make the SMTChecker analysis much more
-computationally costly.
+.. However, it can be useful to treat these external calls as trusted, for example, to test that different implementations of an interface conform to the same property.
+.. This means assuming that address ``_e`` indeed was deployed as contract ``Ext``.
+.. This mode can be enabled via the CLI option ``--model-checker-ext-calls=trusted`` or the JSON field ``settings.modelChecker.extCalls: "trusted"``.
 
-An important part of this mode is that it is applied to contract types and high
-level external calls to contracts, and not low level calls such as ``call`` and
-``delegatecall``. The storage of an address is stored per contract type, and
-the SMTChecker assumes that an externally called contract has the type of the
-caller expression.  Therefore, casting an ``address`` or a contract to
-different contract types will yield different storage values and can give
-unsound results if the assumptions are inconsistent, such as the example below:
+しかし、例えば、あるインターフェースの異なる実装が同じプロパティに適合しているかどうかをテストするために、これらの外部呼び出しを信頼できるものとして扱うことが有用な場合があります。
+これは、アドレス ``_e`` が本当にコントラクト ``Ext`` としてデプロイされたと仮定することを意味します。
+このモードはCLIオプション ``--model-checker-ext-calls=trusted`` またはJSONフィールド ``settings.modelChecker.extCalls: "trusted"`` で有効にできます。
+
+.. Please be aware that enabling this mode can make the SMTChecker analysis much more computationally costly.
+
+このモードを有効にすると、SMTCheckerの解析に計算コストがかかることに注意してください。
+
+.. An important part of this mode is that it is applied to contract types and high level external calls to contracts, and not low level calls such as ``call`` and ``delegatecall``.
+.. The storage of an address is stored per contract type, and the SMTChecker assumes that an externally called contract has the type of the caller expression.
+.. Therefore, casting an ``address`` or a contract to different contract types will yield different storage values and can give unsound results if the assumptions are inconsistent, such as the example below:
+
+このモードの重要な点は、コントラクトタイプとコントラクトへの高レベルの外部呼び出しに適用され、 ``call`` や ``delegatecall`` などの低レベルの呼び出しには適用されないという点です。
+アドレスの保存はコントラクトタイプごとに行われ、SMTCheckerは外部から呼び出されたコントラクトは呼び出し元の式のタイプを持つと仮定しています。
+したがって、 ``address`` やコントラクトを異なるコントラクト型にキャストすると、異なるストレージ値が得られ、以下の例のように仮定が矛盾している場合、健全でない結果を与えることがあります:
 
 .. code-block:: solidity
 
@@ -762,12 +810,13 @@ unsound results if the assumptions are inconsistent, such as the example below:
         }
     }
 
-Due to the above, make sure that the trusted external calls to a certain
-variable of ``address`` or ``contract`` type always have the same caller
-expression type.
+.. Due to the above, make sure that the trusted external calls to a certain variable of ``address`` or ``contract`` type always have the same caller expression type.
 
-It is also helpful to cast the called contract's variable as the type of the
-most derived type in case of inheritance.
+以上のことから、 ``address`` 型や ``contract`` 型の特定の変数に対する信頼できる外部呼び出しは、常に同じ呼び出し元の式の型を持つようにします。
+
+.. It is also helpful to cast the called contract's variable as the type of the most derived type in case of inheritance.
+
+また、継承の場合には、呼び出されたコントラクトの変数を最も派生した型の型としてキャストすることが有効です。
 
    .. code-block:: solidity
 
@@ -813,22 +862,25 @@ most derived type in case of inheritance.
         }
     }
 
-Note that in function ``property_transfer``, the external calls are
-performed on variable ``t``
+.. Note that in function ``property_transfer``, the external calls are performed on variable ``t``.
 
-Another caveat of this mode are calls to state variables of contract type
-outside the analyzed contract. In the code below, even though ``B`` deploys
-``A``, it is also possible for the address stored in ``B.a`` to be called by
-anyone outside of ``B`` in between transactions to ``B`` itself. To reflect the
-possible changes to ``B.a``, the encoding allows an unbounded number of calls
-to be made to ``B.a`` externally. The encoding will keep track of ``B.a``'s
-storage, therefore assertion (2) should hold. However, currently the encoding
-allows such calls to be made from ``B`` conceptually, therefore assertion (3)
-fails.  Making the encoding stronger logically is an extension of the trusted
-mode and is under development. Note that the encoding does not keep track of
-storage for ``address`` variables, therefore if ``B.a`` had type ``address``
-the encoding would assume that its storage does not change in between
-transactions to ``B``.
+関数 ``property_transfer`` では、外部呼び出しは変数 ``t`` に対して行われることに注意してください。
+
+.. Another caveat of this mode are calls to state variables of contract type outside the analyzed contract.
+.. In the code below, even though ``B`` deploys ``A``, it is also possible for the address stored in ``B.a`` to be called by anyone outside of ``B`` in between transactions to ``B`` itself.
+.. To reflect the possible changes to ``B.a``, the encoding allows an unbounded number of calls to be made to ``B.a`` externally.
+.. The encoding will keep track of ``B.a``'s storage, therefore assertion (2) should hold.
+.. However, currently the encoding allows such calls to be made from ``B`` conceptually, therefore assertion (3) fails.
+.. Making the encoding stronger logically is an extension of the trusted mode and is under development.
+.. Note that the encoding does not keep track of storage for ``address`` variables, therefore if ``B.a`` had type ``address`` the encoding would assume that its storage does not change in between transactions to ``B``.
+
+このモードのもう一つの注意点は、解析されたコントラクト以外のコントラクトタイプの状態変数への呼び出しです。
+以下のコードでは、 ``B`` が ``A`` をデプロイしているにもかかわらず、 ``B.a`` に格納されているアドレスが、 ``B`` 自身へのトランザクションの合間に、 ``B`` 以外の誰かによって呼び出される可能性もあります。
+``B.a`` に起こりうる変更を反映するために、エンコーディングは外部から ``B.a`` を無制限に呼び出すことができるようにします。
+エンコーディングは ``B.a`` のストレージを追跡するので、アサーション(2)が成立するはずです。
+しかし、現在のエンコーディングでは、このような呼び出しは概念的に ``B`` から行うことができるので、アサーション(3)は失敗します。
+エンコーディングを論理的に強くすることは、トラステッドモードの拡張であり、現在開発中です。
+もし ``B.a`` が ``address`` 型を持つ場合、エンコーディングは ``B`` へのトランザクションの間にそのストレージが変更されないと仮定します。
 
    .. code-block:: solidity
 
@@ -858,31 +910,38 @@ transactions to ``B``.
         }
     }
 
-Reported Inferred Inductive Invariants
-======================================
+.. Reported Inferred Inductive Invariants
 
-.. For properties that were proved safe with the CHC engine,
-.. the SMTChecker can retrieve inductive invariants that were inferred by the Horn
-.. solver as part of the proof.
+報告された推論された帰納的な不変量
+==================================
+
+.. For properties that were proved safe with the CHC engine, the SMTChecker can retrieve inductive invariants that were inferred by the Horn solver as part of the proof.
 .. Currently only two types of invariants can be reported to the user:
 
-CHCエンジンで安全性が証明された性質については、SMTCheckerは証明の一部としてホーンソルバーによって推論された帰納的不変量を取得できます。現在、2種類のみの不変量をユーザに報告できます。
+CHCエンジンで安全性が証明された性質については、SMTCheckerは証明の一部としてHornソルバーによって推論された帰納的不変量を取得できます。
+現在、2種類のみの不変量をユーザに報告できます。
 
 .. - Contract Invariants: these are properties over the contract's state variables
 ..   that are true before and after every possible transaction that the contract may ever run. For example, ``x >= y``, where ``x`` and ``y`` are a contract's state variables.
 
-- コントラクト不変量: コントラクトの状態変数に関するプロパティで、コントラクトが実行する可能性のあるすべてのトランザクションの前後で真となるものです。例えば、 ``x`` と ``y`` がコントラクトの状態変数である場合、 ``x >= y`` となります。
+- コントラクト不変量: コントラクトの状態変数に関するプロパティで、コントラクトが実行する可能性のあるすべてのトランザクションの前後で真となるものです。
+  例えば、 ``x`` と ``y`` がコントラクトの状態変数である場合、 ``x >= y`` となります。
 
 .. - Reentrancy Properties: they represent the behavior of the contract
 ..   in the presence of external calls to unknown code. These properties can express a relation
 ..   between the value of the state variables before and after the external call, where the external call is free to do anything, including making reentrant calls to the analyzed contract. Primed variables represent the state variables' values after said external call. Example: ``lock -> x = x'``.
 
-- 再帰性プロパティ: 未知のコードへの外部呼び出しがある場合のコントラクトの動作を表します。これらのプロパティは、外部呼び出しの前と後の状態変数の値の間の関係を表現できます。外部呼び出しは、分析されたコントラクトへのリエントラントな呼び出しを行うことを含め、何でも自由に行うことができます。プライム化された変数は、前記外部呼び出し後の状態変数の値を表します。例 ``lock -> x = x'`` です。
+- 再帰性プロパティ: 未知のコードへの外部呼び出しがある場合のコントラクトの動作を表します。
+  これらのプロパティは、外部呼び出しの前と後の状態変数の値の間の関係を表現できます。
+  外部呼び出しは、分析されたコントラクトへのリエントラントな呼び出しを行うことを含め、何でも自由に行うことができます。
+  プライム化された変数は、前記外部呼び出し後の状態変数の値を表します。
+  例: ``lock -> x = x'`` 。
 
 .. The user can choose the type of invariants to be reported using the CLI option ``--model-checker-invariants "contract,reentrancy"`` or as an array in the field ``settings.modelChecker.invariants`` in the :ref:`JSON input<compiler-api>`.
 .. By default the SMTChecker does not report invariants.
 
-ユーザーは、CLIオプション ``--model-checker-invariants "contract,reentrancy"`` を使用して、または :ref:`JSON input<compiler-api>` のフィールド ``settings.modelChecker.invariants`` で配列として報告される不変量の型を選択できます。デフォルトでは、SMTCheckerはインバリアントを報告しません。
+ユーザーは、CLIオプション ``--model-checker-invariants "contract,reentrancy"`` を使用して、または :ref:`JSON input<compiler-api>` のフィールド ``settings.modelChecker.invariants`` で配列として報告される不変量の型を選択できます。
+デフォルトでは、SMTCheckerはインバリアントを報告しません。
 
 Division and Modulo With Slack Variables
 ========================================
@@ -896,7 +955,10 @@ Division and Modulo With Slack Variables
 .. ``settings.modelChecker.divModNoSlacks`` can be used to toggle the encoding
 .. depending on the used solver preferences.
 
-SMTCheckerで使用されているデフォルトのホーンソルバーであるSpacerは、ホーンルール内の除算やモジュロ演算を嫌うことがあります。そのため、デフォルトではSolidityの除算とモジュロ演算は ``a = b * d + m``  where  ``d = a / b``  and  ``m = a % b`` という制約を用いてエンコードされています。しかし、Eldaricaのような他のソルバーは、構文的に正確な演算を好みます。コマンドラインフラグ ``--model-checker-div-mod-no-slacks`` とJSONオプション ``settings.modelChecker.divModNoSlacks`` を使って、使用するソルバーの好みに応じてエンコーディングを切り替えることができます。
+SMTCheckerで使用されているデフォルトのHornソルバーであるSpacerは、Hornルール内の除算やモジュロ演算を嫌うことがあります。
+そのため、デフォルトではSolidityの除算とモジュロ演算は ``a = b * d + m``  where  ``d = a / b``  and  ``m = a % b`` という制約を用いてエンコードされています。
+しかし、Eldaricaのような他のソルバーは、構文的に正確な演算を好みます。
+コマンドラインフラグ ``--model-checker-div-mod-no-slacks`` とJSONオプション ``settings.modelChecker.divModNoSlacks`` を使って、使用するソルバーの好みに応じてエンコーディングを切り替えることができます。
 
 Natspec Function Abstraction
 ============================
@@ -907,36 +969,45 @@ Natspec Function Abstraction
 .. SMTChecker that these functions should be abstracted. This means that the
 .. body of the function is not used, and when called, the function will:
 
-``pow`` や ``sqrt`` などの一般的な数学手法を含む特定の関数は、完全に自動化された方法で分析するには複雑すぎる場合があります。このような関数には、Natspecタグで注釈を付けることができます。Natspecタグは、SMTCheckerに対して、これらの関数が抽象化されるべきであることを示します。これは、関数の本体は使用されず、関数が呼び出されたときに
+``pow`` や ``sqrt`` などの一般的な数学手法を含む特定の関数は、完全に自動化された方法で分析するには複雑すぎる場合があります。
+このような関数には、Natspecタグで注釈を付けることができます。
+Natspecタグは、SMTCheckerに対して、これらの関数が抽象化されるべきであることを示します。
+これは、関数の本体は使用されず、関数が呼び出されたときに
 
 .. - Return a nondeterministic value, and either keep the state variables unchanged if the abstracted function is view/pure, or also set the state variables to nondeterministic values otherwise. This can be used via the annotation ``/// @custom:smtchecker abstract-function-nondet``.
 
-- 非決定論的な値を返し、抽象化された関数がview/pureであれば状態変数を変更せずに、そうでなければ状態変数を非決定論的な値に設定します。これは、アノテーション ``/// @custom:smtchecker abstract-function-nondet`` を介して使用できます。
+- 非決定論的な値を返し、抽象化された関数がview/pureであれば状態変数を変更せずに、そうでなければ状態変数を非決定論的な値に設定します。
+  これは、アノテーション ``/// @custom:smtchecker abstract-function-nondet`` を介して使用できます。
 
 .. - Act as an uninterpreted function. This means that the semantics of the function (given by the body) are ignored, and the only property this function has is that given the same input it guarantees the same output. This is currently under development and will be available via the annotation ``/// @custom:smtchecker abstract-function-uf``.
 
-- 解釈されない関数として動作します。これは、（ボディで与えられた）関数のセマンティクスが無視され、この関数が持つ唯一の特性は、同じ入力が与えられれば同じ出力が保証されるということです。この関数は現在開発中で、アノテーション ``/// @custom:smtchecker abstract-function-uf`` から利用できるようになる予定です。
+- 解釈されない関数として動作します。
+  これは、（ボディで与えられた）関数のセマンティクスが無視され、この関数が持つ唯一の特性は、同じ入力が与えられれば同じ出力が保証されるということです。
+  この関数は現在開発中で、アノテーション ``/// @custom:smtchecker abstract-function-uf`` から利用できるようになる予定です。
 
 .. _smtchecker_engines:
 
-Model Checking Engines
+.. Model Checking Engines
+
+モデルチェックエンジン
 ======================
 
 .. The SMTChecker module implements two different reasoning engines, a Bounded
-.. Model Checker (BMC) and a system of Constrained Horn Clauses (CHC).  Both
-.. engines are currently under development, and have different characteristics.
-.. The engines are independent and every property warning states from which engine
-.. it came. Note that all the examples above with counterexamples were
-.. reported by CHC, the more powerful engine.
+.. Model Checker (BMC) and a system of Constrained Horn Clauses (CHC).
+.. Both engines are currently under development, and have different characteristics.
+.. The engines are independent and every property warning states from which engine it came.
+.. Note that all the examples above with counterexamples were reported by CHC, the more powerful engine.
 
-SMTCheckerモジュールは、BMC（Bounded Model Checker）とCHC（Constrained Horn Clauses）という2種類の推論エンジンを実装しています。  両エンジンは現在開発中であり、それぞれ異なる特徴を持っています。これらのエンジンは独立しており、すべてのプロパティの警告は、それがどのエンジンから来たかを示しています。なお、上記の反例のある例はすべて、より強力なエンジンであるCHCから報告されています。
+SMTCheckerモジュールは、BMC（Bounded Model Checker）とCHC（Constrained Horn Clauses）という2種類の推論エンジンを実装しています。
+両エンジンは現在開発中であり、それぞれ異なる特徴を持っています。
+これらのエンジンは独立しており、すべてのプロパティの警告は、それがどのエンジンから来たかを示しています。
+なお、上記の反例のある例はすべて、より強力なエンジンであるCHCから報告されています。
 
-.. By default both engines are used, where CHC runs first, and every property that
-.. was not proven is passed over to BMC. You can choose a specific engine via the CLI
-.. option ``--model-checker-engine {all,bmc,chc,none}`` or the JSON option
-.. ``settings.modelChecker.engine={all,bmc,chc,none}``.
+.. By default both engines are used, where CHC runs first, and every property that was not proven is passed over to BMC.
+.. You can choose a specific engine via the CLI option ``--model-checker-engine {all,bmc,chc,none}`` or the JSON option ``settings.modelChecker.engine={all,bmc,chc,none}``.
 
-デフォルトでは、両方のエンジンが使用され、CHCが最初に実行され、証明されなかったすべてのプロパティがBMCに渡されます。特定のエンジンを選択するには、CLIオプション ``--model-checker-engine {all,bmc,chc,none}`` またはJSONオプション ``settings.modelChecker.engine={all,bmc,chc,none}`` を使用します。
+デフォルトでは、両方のエンジンが使用され、CHCが最初に実行され、証明されなかったすべてのプロパティがBMCに渡されます。
+特定のエンジンを選択するには、CLIオプション ``--model-checker-engine {all,bmc,chc,none}`` またはJSONオプション ``settings.modelChecker.engine={all,bmc,chc,none}`` を使用します。
 
 Bounded Model Checker (BMC)
 ---------------------------
@@ -948,7 +1019,12 @@ Bounded Model Checker (BMC)
 .. or indirectly. External function calls are inlined if possible. Knowledge
 .. that is potentially affected by reentrancy is erased.
 
-BMCエンジンは、関数を単独で解析します。つまり、各関数を解析する際に、複数のトランザクションにわたるコントラクトの全体的な動作を考慮しません。  ループも現時点ではこのエンジンでは無視されます。内部の関数呼び出しは、直接的または間接的に再帰的でない限りインライン化されます。外部関数呼び出しは可能な限りインライン化されます。再帰性の影響を受ける可能性のある知識は消去されます。
+BMCエンジンは、関数を単独で解析します。
+つまり、各関数を解析する際に、複数のトランザクションにわたるコントラクトの全体的な動作を考慮しません。
+ループも現時点ではこのエンジンでは無視されます。
+内部の関数呼び出しは、直接的または間接的に再帰的でない限りインライン化されます。
+外部関数呼び出しは可能な限りインライン化されます。
+再帰性の影響を受ける可能性のある知識は消去されます。
 
 .. The characteristics above make BMC prone to reporting false positives,
 .. but it is also lightweight and should be able to quickly find small local bugs.
@@ -966,15 +1042,18 @@ Constrained Horn Clauses (CHC)
 .. by this engine. Internal function calls are supported, and external function
 .. calls assume the called code is unknown and can do anything.
 
-コントラクトのコントロールフローグラフ（CFG）は、Horn節のシステムとしてモデル化されており、コントラクトのライフサイクルは、すべてのpublic/external関数を非決定的に訪れることができるループで表現されています。このようにして、任意の関数を解析する際には、無制限の数のトランザクションにおけるコントラクト全体の動作が考慮されます。ループはこのエンジンで完全にサポートされています。internal関数の呼び出しはサポートされており、external関数の呼び出しは、呼び出されたコードが未知であり、何でもできると仮定します。
+コントラクトのコントロールフローグラフ（CFG）は、Horn節のシステムとしてモデル化されており、コントラクトのライフサイクルは、すべてのpublic/external関数を非決定的に訪れることができるループで表現されています。
+このようにして、任意の関数を解析する際には、無制限の数のトランザクションにおけるコントラクト全体の動作が考慮されます。
+ループはこのエンジンで完全にサポートされています。
+internal関数の呼び出しはサポートされており、external関数の呼び出しは、呼び出されたコードが未知であり、何でもできると仮定します。
 
 .. The CHC engine is much more powerful than BMC in terms of what it can prove,
 .. and might require more computing resources.
 
-CHCエンジンは、BMCよりも証明できる内容がはるかに多く、より多くのコンピューティングリソースを必要とする可能性があります。
+CHCエンジンは、BMCよりも証明できる内容がはるかに多く、より多くの計算資源を必要とする可能性があります。
 
-SMT and Horn solvers
-====================
+SMTソルバーとHornソルバー
+=========================
 
 .. The two engines detailed above use automated theorem provers as their logical
 .. backends.  BMC uses an SMT solver, whereas CHC uses a Horn solver. Often the
@@ -983,7 +1062,9 @@ SMT and Horn solvers
 .. <https://spacer.bitbucket.io/>`_ available as a Horn solver, and `Eldarica
 .. <https://github.com/uuverifiers/eldarica>`_ which does both.
 
-上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。  BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
+上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。
+BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。
+SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
 
 .. The user can choose which solvers should be used, if available, via the CLI
 .. option ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}`` or the JSON option
@@ -993,16 +1074,22 @@ SMT and Horn solvers
 
 .. - ``cvc4`` is only available if the ``solc`` binary is compiled with it. Only BMC uses ``cvc4``.
 
-- ``cvc4`` は、 ``solc`` のバイナリがコンパイルされている場合にのみ使用できます。 ``cvc4`` を使うのはBMCだけです。
+- ``cvc4`` は、 ``solc`` のバイナリがコンパイルされている場合にのみ使用できます。
+  ``cvc4`` を使うのはBMCだけです。
 
-- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
+.. - ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
+
+- ``eld`` は、システムにインストールされている必要があるバイナリを介して使用されます。
+  CHCだけが ``eld`` を使用し、 ``z3`` が有効でない場合にのみ使用します。
 
 .. - ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
 ..   These can be used together with the compiler's `callback mechanism <https://github.com/ethereum/solc-js>`_ so that
 ..   any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
 ..   This can be used by both BMC and CHC depending on which solvers are called.
 
-- ``smtlib2`` はSMT/Hornのクエリを `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ 形式で出力します。   これをコンパイラの `callback mechanism <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
+- ``smtlib2`` はSMT/Hornのクエリを `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ 形式で出力します。
+  これをコンパイラの `コールバックメカニズム <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。
+  これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
 
 .. - ``z3`` is available
 
@@ -1012,31 +1099,37 @@ SMT and Horn solvers
 
 ..   - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
 
-- ``z3`` が使える
+- 以下の場合 ``z3`` が使えます。
 
-  -  ``solc`` がコンパイルされていれば
+  -  ``solc`` がz3とともにコンパイルされている場合。
 
   - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
-  -  ``soljson.js``  (Solidity 0.6.9 以降)では静的に、つまりコンパイラの JavaScript バイナリを使用しています。
+  -  ``soljson.js`` （Solidity 0.6.9 以降）では静的に、つまりコンパイラのJavaScriptバイナリを使用しています。
 
 .. note::
-  z3 version 4.8.16 broke ABI compatibility with previous versions and cannot
-  be used with solc <=0.8.13. If you are using z3 >=4.8.16 please use solc
-  >=0.8.14, and conversely, only use older z3 with older solc releases.
-  We also recommend using the latest z3 release which is what SMTChecker also does.
+
+  .. z3 version 4.8.16 broke ABI compatibility with previous versions and cannot be used with solc <=0.8.13.
+  .. If you are using z3 >=4.8.16 please use solc>=0.8.14, and conversely, only use older z3 with older solc releases.
+  .. We also recommend using the latest z3 release which is what SMTChecker also does.
+
+  z3バージョン4.8.16は、以前のバージョンとのABI互換性を壊し、solc <=0.8.13で使用できません。
+  もしz3 >=4.8.16を使用しているならば、solc>=0.8.14を使用してください。逆に、古いz3は古いsolcリリースとしか使用できません。
+  また、SMTCheckerも最新のz3リリースを使用することをお勧めします。
 
 .. Since both BMC and CHC use ``z3``, and ``z3`` is available in a greater variety
 .. of environments, including in the browser, most users will almost never need to be
 .. concerned about this option. More advanced users might apply this option to try
 .. alternative solvers on more complex problems.
 
-BMCもCHCも ``z3`` を採用しており、 ``z3`` はブラウザを含めてより多様な環境で利用できるため、ほとんどのユーザーはこのオプションを気にする必要はないだろう。上級者であれば、より複雑な問題に対して別のソルバーを試すためにこのオプションを適用するかもしれない。
+BMCもCHCも ``z3`` を採用しており、 ``z3`` はブラウザを含めてより多様な環境で利用できるため、ほとんどのユーザーはこのオプションを気にする必要はないでしょう。
+上級者であれば、より複雑な問題に対して別のソルバーを試すためにこのオプションを適用するかもしれません。
 
 .. Please note that certain combinations of chosen engine and solver will lead to
 .. the SMTChecker doing nothing, for example choosing CHC and ``cvc4``.
 
-なお、選択したエンジンとソルバーの組み合わせによっては、SMTCheckerが何もしない場合があります。例えば、CHCと ``cvc4`` を選択した場合などです。
+なお、選択したエンジンとソルバーの組み合わせによっては、SMTCheckerが何もしない場合があります。
+例えば、CHCと ``cvc4`` を選択した場合などです。
 
 .. Abstraction and False Positives
 
@@ -1050,21 +1143,24 @@ BMCもCHCも ``z3`` を採用しており、 ``z3`` はブラウザを含めて�
 .. verification target is safe, it is indeed safe, that is, there are no false
 .. negatives (unless there is a bug in the SMTChecker).
 
-SMTCheckerは、抽象化を不完全かつ健全な方法で実装しています。バグが報告された場合、それは抽象化によってもたらされた誤検出である可能性があります（知識を消去したり、正確でない型を使用したため）。検証対象が安全であると判断された場合、それは確かに安全であり、つまり（SMTCheckerにバグがない限り）偽陰性は存在しないのです。
+SMTCheckerは、抽象化を不完全かつ健全な方法で実装しています。
+バグが報告された場合、それは抽象化によってもたらされた誤検出である可能性があります（知識を消去したり、正確でない型を使用したため）。
+検証対象が安全であると判断された場合、それは確かに安全であり、つまり（SMTCheckerにバグがない限り）偽陰性は存在しないのです。
 
 .. If a target cannot be proven you can try to help the solver by using the tuning
 .. options in the previous section.
 .. If you are sure of a false positive, adding ``require`` statements in the code
 .. with more information may also give some more power to the solver.
 
-ターゲットが証明できない場合は、前のセクションのチューニングオプションを使ってソルバーを助けることができます。誤検出が確実な場合は、より多くの情報を含む ``require`` 文をコードに追加することで、ソルバーにさらなる力を与えることもできます。
+ターゲットが証明できない場合は、前のセクションのチューニングオプションを使ってソルバーを助けることができます。
+誤検出が確実な場合は、より多くの情報を含む ``require`` 文をコードに追加することで、ソルバーにさらなる力を与えることもできます。
 
-SMT Encoding and Types
-======================
+.. SMT Encoding and Types
 
-.. The SMTChecker encoding tries to be as precise as possible, mapping Solidity types
-.. and expressions to their closest `SMT-LIB <http://smtlib.cs.uiowa.edu/>`_
-.. representation, as shown in the table below.
+SMTエンコーディングと型
+=======================
+
+.. The SMTChecker encoding tries to be as precise as possible, mapping Solidity types and expressions to their closest `SMT-LIB <http://smtlib.cs.uiowa.edu/>`_ representation, as shown in the table below.
 
 SMTCheckerのエンコーディングは可能な限り正確を期しており、Solidityの型や表現を下の表のように最も近い `SMT-LIB <http://smtlib.cs.uiowa.edu/>`_ 表現にマッピングしています。
 
@@ -1094,21 +1190,26 @@ SMTCheckerのエンコーディングは可能な限り正確を期しており�
 
 SMTエンコーディングの内部動作の詳細については、論文 `SMT-based Verification of Solidity Smart Contracts <https://github.com/chriseth/solidity_isola/blob/master/main.pdf>`_ を参照してください。
 
-Function Calls
-==============
+.. Function Calls
+
+関数呼び出し
+============
 
 .. In the BMC engine, function calls to the same contract (or base contracts) are
 .. inlined when possible, that is, when their implementation is available.  Calls
 .. to functions in other contracts are not inlined even if their code is
 .. available, since we cannot guarantee that the actual deployed code is the same.
 
-BMCエンジンでは、同じコントラクト（またはベースコントラクト）の関数呼び出しは、可能な場合、つまりその実装が利用可能な場合にインライン化されます。  他のコントラクトの関数の呼び出しは、そのコードが利用可能であってもインライン化されません。これは、実際にデプロイされたコードが同じであることを保証できないからです。
+BMCエンジンでは、同じコントラクト（またはベースコントラクト）の関数呼び出しは、可能な場合、つまりその実装が利用可能な場合にインライン化されます。
+他のコントラクトの関数の呼び出しは、そのコードが利用可能であってもインライン化されません。
+これは、実際にデプロイされたコードが同じであることを保証できないからです。
 
 .. The CHC engine creates nonlinear Horn clauses that use summaries of the called
 .. functions to support internal function calls. External function calls are treated
 .. as calls to unknown code, including potential reentrant calls.
 
-CHCエンジンは、内部関数の呼び出しをサポートするために、呼び出された関数のサマリーを使用する非線形ホーン句を作成します。外部関数呼び出しは、リエントラント呼び出しの可能性も含め、未知のコードへの呼び出しとして扱われます。
+CHCエンジンは、内部関数の呼び出しをサポートするために、呼び出された関数のサマリーを使用する非線形Horn句を作成します。
+外部関数呼び出しは、リエントラント呼び出しの可能性も含め、未知のコードへの呼び出しとして扱われます。
 
 .. Complex pure functions are abstracted by an uninterpreted function (UF) over
 .. the arguments.
@@ -1194,14 +1295,16 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 .. functions we know that the return value is the same when called on equivalent
 .. parameters. This is enough to prove that the assertion above is always true.
 
-上の例では、SMTCheckerは実際に ``ecrecover`` を計算するほどの表現力はありませんが、関数呼び出しを解釈されない関数としてモデル化することで、同等のパラメータで呼び出された場合に戻り値が同じであることがわかります。このことは、上記の主張が常に真であることを証明するのに十分です。
+上の例では、SMTCheckerは実際に ``ecrecover`` を計算するほどの表現力はありませんが、関数呼び出しを解釈されない関数としてモデル化することで、同等のパラメータで呼び出された場合に戻り値が同じであることがわかります。
+このことは、上記の主張が常に真であることを証明するのに十分です。
 
 .. Abstracting a function call with an UF can be done for functions known to be
 .. deterministic, and can be easily done for pure functions.  It is however
 .. difficult to do this with general external functions, since they might depend
 .. on state variables.
 
-関数呼び出しをUFで抽象化することは、決定論的であることが知られている関数に対しては可能であり、純粋な関数に対しても簡単に行うことができます。  しかし、一般の外部関数では、状態変数に依存する可能性があるため、これを行うことは困難です。
+関数呼び出しをUFで抽象化することは、決定論的であることが知られている関数に対しては可能であり、純粋な関数に対しても簡単に行うことができます。
+しかし、一般の外部関数では、状態変数に依存する可能性があるため、これを行うことは困難です。
 
 Reference Types and Aliasing
 ============================
@@ -1282,9 +1385,10 @@ SMTCheckerは、どの参照が同じデータを参照しているかを追跡�
 .. if ``d`` was assigned, we would need to clear knowledge about ``array`` and
 .. vice-versa.
 
-``array`` と ``d`` は、型が ``uint[]`` であっても、ストレージに配置されているため、知識を消去しないことに注意してください。  しかし、もし ``d`` が割り当てられていたら、 ``array`` に関する知識をクリアする必要があり、その逆もまた然りです。
+``array`` と ``d`` は、型が ``uint[]`` であっても、ストレージに配置されているため、知識を消去しないことに注意してください。
+しかし、もし ``d`` が割り当てられていたら、 ``array`` に関する知識をクリアする必要があり、その逆もまた然りです。
 
-Contract Balance
+コントラクト残高
 ================
 
 .. A contract may be deployed with funds sent to it, if ``msg.value`` > 0 in the
@@ -1331,9 +1435,13 @@ Contract Balance
 .. Another similar assumption taken by the SMTChecker is that an address' balance
 .. can never overflow.
 
-SolidityやEVMでは表現できますが、実際には発生しないと思われるシナリオもあります。そのようなケースの1つが、プッシュ時に動的ストレージの配列の長さがオーバーフローすることです。 ``push`` 操作が長さ2^256 - 1の配列に適用された場合、その長さは静かにオーバーフローします。しかし、実際にはこのようなことは起こり得ません。なぜなら、配列をそこまで成長させるために必要な演算を実行するには、何十億年もかかるからです。SMTCheckerのもう一つの類似した仮定は、アドレスの残高がオーバーフローすることはないというものです。
+SolidityやEVMでは表現できますが、実際には発生しないと思われるシナリオもあります。
+そのようなケースの1つが、プッシュ時に動的ストレージの配列の長さがオーバーフローすることです。
+``push`` 操作が長さ2^256 - 1の配列に適用された場合、その長さは静かにオーバーフローします。
+しかし、実際にはこのようなことは起こり得ません。
+なぜなら、配列をそこまで成長させるために必要な演算を実行するには、何十億年もかかるからです。
+SMTCheckerのもう一つの類似した仮定は、アドレスの残高がオーバーフローすることはないというものです。
 
 .. A similar idea was presented in `EIP-1985 <https://eips.ethereum.org/EIPS/eip-1985>`_.
-.. 
 
 同じようなアイデアが `EIP-1985 <https://eips.ethereum.org/EIPS/eip-1985>`_ でも紹介されていました。
