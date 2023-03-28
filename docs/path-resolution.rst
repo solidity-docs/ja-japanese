@@ -4,15 +4,13 @@
 インポートパスの解決
 ********************
 
-.. In order to be able to support reproducible builds on all platforms, the Solidity compiler has to
-.. abstract away the details of the filesystem where source files are stored.
-.. Paths used in imports must work the same way everywhere while the command-line interface must be
-.. able to work with platform-specific paths to provide good user experience.
+.. In order to be able to support reproducible builds on all platforms, the Solidity compiler has to abstract away the details of the filesystem where source files are stored.
+.. Paths used in imports must work the same way everywhere while the command-line interface must be able to work with platform-specific paths to provide good user experience.
 .. This section aims to explain in detail how Solidity reconciles these requirements.
 
 すべてのプラットフォームで再現可能なビルドをサポートするために、Solidityのコンパイラは、ソースファイルが格納されているファイルシステムの詳細を抽象化する必要があります。
 インポートで使用されるパスは、どこでも同じように動作しなければならない一方で、コマンドラインインターフェースは、良いユーザーエクスペリエンスを提供するために、プラットフォーム固有のパスを扱うことができなければなりません。
-このセクションでは、Solidityがこれらの要件をどのように調整しているかを詳しく説明します。
+このセクションでは、Solidityがこれらの要件をどのように解決しているかを詳しく説明します。
 
 .. index:: ! virtual filesystem, ! VFS, ! source unit name
 .. _virtual-filesystem:
@@ -20,13 +18,11 @@
 Virtual Filesystem
 ==================
 
-.. The compiler maintains an internal database (*virtual filesystem* or *VFS* for short) where each
-.. source unit is assigned a unique *source unit name* which is an opaque and unstructured identifier.
-.. When you use the :ref:`import statement <import>`, you specify an *import path* that references a
-.. source unit name.
+.. The compiler maintains an internal database (*virtual filesystem* or *VFS* for short) where each source unit is assigned a unique *source unit name* which is an opaque and unstructured identifier.
+.. When you use the :ref:`import statement <import>`, you specify an *import path* that references a source unit name.
 
 コンパイラは内部データベース（ *virtual filesystem* 、略して *VFS* ）を保持しており、各ソースユニットには不透明で構造化されていない識別子である一意の *ソースユニット名* が割り当てられています。
-:ref:`import statement <import>` を使用する際には、ソースユニット名を参照する *インポートパス* を指定します。
+:ref:`import文 <import>` を使用する際には、ソースユニット名を参照する *インポートパス* を指定します。
 
 .. index:: ! import callback, ! Host Filesystem Loader
 .. _import-callback:
@@ -35,51 +31,42 @@ Virtual Filesystem
 ----------------------
 
 .. The VFS is initially populated only with files the compiler has received as input.
-.. Additional files can be loaded during compilation using an *import callback*, which is different
-.. depending on the type of compiler you use (see below).
-.. If the compiler does not find any source unit name matching the import path in the VFS, it invokes
-.. the callback, which is responsible for obtaining the source code to be placed under that name.
+.. Additional files can be loaded during compilation using an *import callback*, which is different depending on the type of compiler you use (see below).
+.. If the compiler does not find any source unit name matching the import path in the VFS, it invokes the callback, which is responsible for obtaining the source code to be placed under that name.
 .. An import callback is free to interpret source unit names in an arbitrary way, not just as paths.
-.. If there is no callback available when one is needed or if it fails to locate the source code,
-.. compilation fails.
+.. If there is no callback available when one is needed or if it fails to locate the source code, compilation fails.
 
 VFSには、コンパイラーが入力として受け取ったファイルのみが最初に入力されます。
-使用するコンパイラの種類によって異なる *import コールバック* を使用して、コンパイル中に追加のファイルを読み込むことができます（後述）。
+使用するコンパイラの種類によって異なる *importコールバック* を使用して、コンパイル中に追加のファイルを読み込むことができます（後述）。
 コンパイラは、VFS内のインポートパスに一致するソースユニット名が見つからない場合、コールバックを起動し、その名前で配置されるソースコードを取得する役割を果たします。
 インポートコールバックは、ソースユニット名をパスとしてだけでなく、任意の方法で自由に解釈できます。
 必要なときに利用可能なコールバックがない場合や、ソースコードの取得に失敗した場合は、コンパイルに失敗します。
 
-.. The command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback
-.. that interprets a source unit name as a path in the local filesystem.
-.. The `JavaScript interface <https://github.com/ethereum/solc-js>`_ does not provide any by default,
-.. but one can be provided by the user.
-.. This mechanism can be used to obtain source code from locations other then the local filesystem
-.. (which may not even be accessible, e.g. when the compiler is running in a browser).
-.. For example the `Remix IDE <https://remix.ethereum.org/>`_ provides a versatile callback that
-.. lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
-.. <https://remix-ide.readthedocs.io/en/latest/import.html>`_.
+.. The command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback that interprets a source unit name as a path in the local filesystem.
+.. The `JavaScript interface <https://github.com/ethereum/solc-js>`_ does not provide any by default, but one can be provided by the user.
+.. This mechanism can be used to obtain source code from locations other then the local filesystem (which may not even be accessible, e.g. when the compiler is running in a browser).
+.. For example the `Remix IDE <https://remix.ethereum.org/>`_ provides a versatile callback that lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry <https://remix-ide.readthedocs.io/en/latest/import.html>`_.
 
 コマンドラインコンパイラには、ソースユニット名をローカルファイルシステムのパスとして解釈する初歩的なコールバックである *Host Filesystem Loader* が用意されています。
 `JavaScriptインターフェース <https://github.com/ethereum/solc-js>`_ はデフォルトでは提供していませんが、ユーザーが提供することもできます。
 このメカニズムを使用して、ローカルファイルシステム以外の場所からソースコードを取得できます（ブラウザでコンパイラを実行している場合など、アクセスできない場合もあります）。
-例えば、 `Remix IDE <https://remix.ethereum.org/>`_ は汎用性の高いコールバックを提供しており、これを利用して `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry <https://remix-ide.readthedocs.io/en/latest/import.html>`_ .
+例えば、 `Remix IDE <https://remix.ethereum.org/>`_ は汎用性の高いコールバックを提供しており、これを利用して `HTTP、IPFS、SwarmのURLからファイルをインポートしたり、NPMレジストリのパッケージを直接参照したり <https://remix-ide.readthedocs.io/en/latest/import.html>`_ できます。
 
 .. .. note::
 
 ..     Host Filesystem Loader's file lookup is platform-dependent.
-..     For example backslashes in a source unit name can be interpreted as directory separators or not
-..     and the lookup can be case-sensitive or not, depending on the underlying platform.
+..     For example backslashes in a source unit name can be interpreted as directory separators or not and the lookup can be case-sensitive or not, depending on the underlying platform.
 
-..     For portability it is recommended to avoid using import paths that will work correctly only
-..     with a specific import callback or only on one platform.
-..     For example you should always use forward slashes since they work as path separators also on
-..     platforms that support backslashes.
+..     For portability it is recommended to avoid using import paths that will work correctly only with a specific import callback or only on one platform.
+..     For example you should always use forward slashes since they work as path separators also on platforms that support backslashes.
 
 .. note::
 
-    Host Filesystem Loaderのファイル検索は、プラットフォームに依存します。     例えば、ソースユニット名のバックスラッシュは、ディレクトリセパレータとして解釈されるかどうか、また、検索では大文字と小文字が区別されるかどうかが、基礎となるプラットフォームに依存します。
+    Host Filesystem Loaderのファイル検索は、プラットフォームに依存します。
+    例えば、ソースユニット名のバックスラッシュは、ディレクトリセパレータとして解釈されるかどうか、また、検索では大文字と小文字が区別されるかどうかが、基礎となるプラットフォームに依存します。
 
-    移植性を考慮して、特定のインポートコールバックでのみ正しく動作するインポートパスや、特定のプラットフォームでのみ動作するインポートパスは使用しないことをお勧めします。     たとえば、バックスラッシュをサポートするプラットフォームでもパスの区切りとして機能するフォワードスラッシュを常に使用するべきです。
+    移植性を考慮して、特定のインポートコールバックでのみ正しく動作するインポートパスや、特定のプラットフォームでのみ動作するインポートパスは使用しないことをお勧めします。
+    例えば、バックスラッシュをサポートするプラットフォームでもパスの区切りとして機能するフォワードスラッシュを常に使用するべきです。
 
 Virtual Filesystemの初期コンテンツ
 ----------------------------------
@@ -93,7 +80,7 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 ..    When you compile a file using the command-line interface of the compiler, you provide one or
 ..    more paths to files containing Solidity code:
 
-#. **solc / command-line interface**
+#. **solc / コマンドラインインターフェース**
 
    コンパイラのコマンドラインインターフェースを使用してファイルをコンパイルする際に、Solidityコードを含むファイルへの1つまたは複数のパスを指定します。
 
@@ -101,11 +88,11 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
        solc contract.sol /usr/local/dapp-bin/token.sol
 
-   The source unit name of a file loaded this way is constructed by converting its path to a
-   canonical form and, if possible, making it relative to either the base path or one of the
-   include paths.
-   See :ref:`CLI Path Normalization and Stripping <cli-path-normalization-and-stripping>` for
-   a detailed description of this process.
+   .. The source unit name of a file loaded this way is constructed by converting its path to a canonical form and, if possible, making it relative to either the base path or one of the include paths.
+   .. See :ref:`CLI Path Normalization and Stripping <cli-path-normalization-and-stripping>` for a detailed description of this process.
+
+   この方法で読み込まれたファイルのソースユニット名は、そのパスを正規の形式に変換し、可能であればベースパスまたはインクルードパスのいずれかからの相対パスとすることで構築されます。
+   この処理の詳細については、 :ref:`CLI Path NormalizationとStripping <cli-path-normalization-and-stripping>` を参照してください。
 
    .. index:: standard JSON
 
@@ -138,8 +125,9 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
            "settings": {"outputSelection": {"*": { "*": ["metadata", "evm.bytecode"]}}}
        }
 
-   The ``sources`` dictionary becomes the initial content of the virtual filesystem and its keys
-   are used as source unit names.
+   .. The ``sources`` dictionary becomes the initial content of the virtual filesystem and its keys are used as source unit names.
+
+   ``sources`` 辞書は仮想ファイルシステムの初期コンテンツとなり、そのキーはソースユニット名として使用されます。
 
 .. _initial-vfs-content-standard-json-with-import-callback:
 
@@ -167,11 +155,14 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
            "settings": {"outputSelection": {"*": { "*": ["metadata", "evm.bytecode"]}}}
        }
 
-   If an import callback is available, the compiler will give it the strings specified in
-   ``urls`` one by one, until one is loaded successfully or the end of the list is reached.
+   .. If an import callback is available, the compiler will give it the strings specified in ``urls`` one by one, until one is loaded successfully or the end of the list is reached.
 
-   The source unit names are determined the same way as when using ``content`` - they are keys of
-   the ``sources`` dictionary and the content of ``urls`` does not affect them in any way.
+   インポートコールバックが利用可能な場合、コンパイラーは ``urls`` で指定された文字列を一つずつ、読み込みに成功するかリストの最後に達するまで渡します。
+
+   .. The source unit names are determined the same way as when using ``content`` - they are keys of the ``sources`` dictionary and the content of ``urls`` does not affect them in any way.
+
+   ソースユニット名は ``content`` を使用する場合と同じ方法で決定されます。
+   これらは ``sources`` 辞書のキーであり、 ``urls`` の内容はこれらに何ら影響を与えません。
 
    .. index:: standard input, stdin, <stdin>
 
@@ -188,8 +179,9 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
        echo 'import "./util.sol"; contract C {}' | solc -
 
-   ``-`` used as one of the arguments instructs the compiler to place the content of the standard
-   input in the virtual filesystem under a special source unit name: ``<stdin>``.
+   .. ``-`` used as one of the arguments instructs the compiler to place the content of the standard input in the virtual filesystem under a special source unit name: ``<stdin>``.
+
+   引数の1つとして使われる ``-`` は、標準入力の内容を仮想ファイルシステムの特別なソースユニット名 ``<stdin>`` の下に置くようにコンパイラに指示します。
 
 .. Once the VFS is initialized, additional files can still be added to it only through the import
 .. callback.
@@ -209,12 +201,12 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. - :ref:`Direct imports <direct-imports>`, where you specify the full source unit name directly.
 
-- :ref:`Direct imports <direct-imports>` では、ソースユニットのフルネームを直接指定します。
+- :ref:`ダイレクトインポート <direct-imports>` では、ソースユニットのフルネームを直接指定します。
 
 .. - :ref:`Relative imports <relative-imports>`, where you specify a path starting with ``./`` or ``../``
 ..   to be combined with the source unit name of the importing file.
 
-- :ref:`Relative imports <relative-imports>` では、 ``./`` または ``../`` で始まるパスを指定して、インポートファイルのソースユニット名と組み合わせます。
+- :ref:`相対インポート <relative-imports>` では、 ``./`` または ``../`` で始まるパスを指定して、インポートファイルのソースユニット名と組み合わせます。
 
 .. code-block:: solidity
     :caption: contracts/contract.sol
@@ -238,7 +230,7 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. An import that does not start with ``./`` or ``../`` is a *direct import*.
 
-``./`` や ``../`` で始まらない輸入は、*direct import* です。
+``./`` や ``../`` で始まらないインポートは、*ダイレクトインポート* です。
 
 .. code-block:: solidity
 
@@ -262,7 +254,9 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. note::
 
-    ソースユニット名は単なる識別子であり、その値がたまたまパスのように見えたとしても、シェルで一般的に期待される正規化ルールの対象にはなりません。      ``/./`` や ``/../`` のセグメントや複数のスラッシュのシーケンスがあっても、その一部として残ります。     ソースが標準のJSONインターフェースで提供されている場合、ディスク上の同じファイルを参照するソースユニット名に、異なるコンテンツを関連付けることができます。
+    ソースユニット名は単なる識別子であり、その値がたまたまパスのように見えたとしても、シェルで一般的に期待される正規化ルールの対象にはなりません。
+    ``/./`` や ``/../`` のセグメントや複数のスラッシュのシーケンスがあっても、その一部として残ります。
+    ソースが標準のJSONインターフェースで提供されている場合、ディスク上の同じファイルを参照するソースユニット名に、異なるコンテンツを関連付けることができます。
 
 .. When the source is not available in the virtual filesystem, the compiler passes the source unit name
 .. to the import callback.
@@ -285,7 +279,8 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. note::
 
-    インポートコールバックがディスク上の同じファイルから2つの異なるソースユニット名のソースコードを読み込むことになっても、コンパイラーはそれらを別々のソースユニットと見なします。     重要なのはソースユニット名であって、コードの物理的な場所ではありません。
+    インポートコールバックがディスク上の同じファイルから2つの異なるソースユニット名のソースコードを読み込むことになっても、コンパイラーはそれらを別々のソースユニットと見なします。
+    重要なのはソースユニット名であって、コードの物理的な場所ではありません。
 
 .. index:: ! relative import, ! import; relative
 .. _relative-imports:
@@ -298,7 +293,8 @@ VFSが初期化された後も、インポートコールバックによって�
 .. An import starting with ``./`` or ``../`` is a *relative import*.
 .. Such imports specify a path relative to the source unit name of the importing source unit:
 
-``./`` または ``../`` で始まるインポートは、*相対的なインポート* です。このようなインポートは、インポート元のソースユニット名からの相対パスを指定します。
+``./`` または ``../`` で始まるインポートは、*相対インポート* です。
+このようなインポートは、インポート元のソースユニット名からの相対パスを指定します。
 
 .. code-block:: solidity
     :caption: /project/lib/math.sol
@@ -314,30 +310,41 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. .. note::
 
-..     Relative imports **always** start with ``./`` or ``../`` so ``import "util.sol"``, unlike
-..     ``import "./util.sol"``, is a direct import.
-..     While both paths would be considered relative in the host filesystem, ``util.sol`` is actually
-..     absolute in the VFS.
+..     Relative imports **always** start with ``./`` or ``../`` so ``import "util.sol"``, unlike ``import "./util.sol"``, is a direct import.
+..     While both paths would be considered relative in the host filesystem, ``util.sol`` is actually absolute in the VFS.
 
 .. note::
 
-    相対的なインポートである **always** は ``./`` または ``../`` で始まるので、 ``import "util.sol"`` は ``import "./util.sol"`` とは異なり、直接のインポートとなります。     どちらのパスもホストファイルシステムでは相対パスとみなされますが、VFSでは ``util.sol`` が絶対パスとなります。
+    相対的なインポートは **常に** に ``./`` または ``../`` で始まるので、 ``import "util.sol"`` は ``import "./util.sol"`` とは異なり、ダイレクトインポートとなります。
+    どちらのパスもホストファイルシステムでは相対パスとみなされますが、VFSでは ``util.sol`` が絶対パスとなります。
 
 .. Let us define a *path segment* as any non-empty part of the path that does not contain a separator
 .. and is bounded by two path separators.
 .. A separator is a forward slash or the beginning/end of the string.
 .. For example in ``./abc/..//`` there are three path segments: ``.``, ``abc`` and ``..``.
 
-ここでは、セパレータを含まず、2つのパスセパレータで囲まれた空でない部分を *パスセグメント* と定義します。セパレータとは、フォワードスラッシュや文字列の先頭/末尾のことです。例えば、 ``./abc/..//`` では3つのパスセグメントがあります。 ``.`` 、 ``abc`` 、 ``..``  です。
+ここでは、セパレータを含まず、2つのパスセパレータで囲まれた空でない部分を *パスセグメント* と定義します。
+セパレータとは、フォワードスラッシュや文字列の先頭/末尾のことです。
+例えば、 ``./abc/..//`` では3つのパスセグメントがあります: ``.`` 、 ``abc`` 、 ``..`` 。
 
-The compiler resolves the import into a source unit name based on the import path, in the following way:
+.. The compiler resolves the import into a source unit name based on the import path, in the following way:
+.. 
+.. #. We start with the source unit name of the importing source unit.
+.. #. The last path segment with preceding slashes is removed from the resolved name.
+.. #. Then, for every segment in the import path, starting from the leftmost one:
+..     - If the segment is ``.``, it is skipped.
+..     - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
+..     - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
 
-#. We start with the source unit name of the importing source unit.
-#. The last path segment with preceding slashes is removed from the resolved name.
-#. Then, for every segment in the import path, starting from the leftmost one:
-    - If the segment is ``.``, it is skipped.
-    - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
-    - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
+コンパイラは、インポートパスに基づき、次のようにインポートをソースユニット名に解決します:
+
+#. インポートするソースユニット名から始めます。
+#. 解決された名前から、スラッシュが先行する最後のパスセグメントが削除されます。
+#. 次に、インポートパスの各セグメントについて、左端から順に説明します:
+
+    - セグメントが ``.`` の場合、それはスキップされます。
+    - セグメントが ``...`` の場合、スラッシュが先行する最後のパスセグメントが解決された名前から削除されます。
+    - それ以外の場合は、そのセグメント（解決された名前が空でない場合は、スラッシュが1つ先行する）が解決された名前に追加されます。
 
 .. The removal of the last path segment with preceding slashes is understood to
 .. work as follows:
@@ -350,18 +357,19 @@ The compiler resolves the import into a source unit name based on the import pat
 1. 最後のスラッシュから先はすべて削除されます（例:  ``a/b//c.sol`` が ``a/b//`` になります）。
 2. 後続のスラッシュはすべて削除されます（例:  ``a/b//`` が ``a/b`` になります）。
 
-Note that the process normalizes the part of the resolved source unit name that comes from the import path according
-to the usual rules for UNIX paths, i.e. all ``.`` and ``..`` are removed and multiple slashes are
-squashed into a single one.
-On the other hand, the part that comes from the source unit name of the importing module remains unnormalized.
-This ensures that the ``protocol://`` part does not turn into ``protocol:/`` if the importing file
-is identified with a URL.
+.. Note that the process normalizes the part of the resolved source unit name that comes from the import path according to the usual rules for UNIX paths, i.e. all ``.`` and ``..`` are removed and multiple slashes are squashed into a single one.
+.. On the other hand, the part that comes from the source unit name of the importing module remains unnormalized.
+.. This ensures that the ``protocol://`` part does not turn into ``protocol:/`` if the importing file is identified with a URL.
 
-.. If your import paths are already normalized, you can expect the above algorithm to produce very
-.. intuitive results.
+つまり、 ``.`` と ``..`` はすべて削除され、複数のスラッシュは1つにつぶされます。
+一方、インポートモジュールのソースユニット名から来る部分は非正規化されたままです。
+これにより、インポートファイルがURLで識別される場合、 ``protocol://`` の部分が ``protocol:/`` にならないようにできます。
+
+.. If your import paths are already normalized, you can expect the above algorithm to produce very intuitive results.
 .. Here are some examples of what you can expect if they are not:
 
-インポートパスがすでに正規化されている場合は、上記のアルゴリズムで非常に直感的な結果を得ることができます。以下は、正規化されていない場合の例です。
+インポートパスがすでに正規化されている場合は、上記のアルゴリズムで非常に直感的な結果を得ることができます。
+以下は、正規化されていない場合の例です。
 
 .. code-block:: solidity
     :caption: lib/src/../contract.sol
@@ -380,22 +388,22 @@ is identified with a URL.
 
 .. note::
 
-    先行する ``..`` セグメントを含む相対輸入品の使用はお勧めできません。     同じ効果を得るには、 :ref:`base path and include paths <base-and-include-paths>` を含む直輸入品を使用する方がより確実です。
+    先行する ``..`` セグメントを含む相対インポートの使用はお勧めできません。
+    同じ効果を得るには、 :ref:`ベースパスとインクルードパス <base-and-include-paths>` を含むダイレクトインポートを使用する方がより確実です。
 
 .. index:: ! base path, ! --base-path, ! include paths, ! --include-path
 .. _base-and-include-paths:
-
-.. Base Path and Include Paths
 
 ベースパスとインクルードパス
 ============================
 
 .. The base path and include paths represent directories that the Host Filesystem Loader will load files from.
-.. When a source unit name is passed to the loader, it prepends the base path to it and performs a
-.. filesystem lookup.
+.. When a source unit name is passed to the loader, it prepends the base path to it and performs a filesystem lookup.
 .. If the lookup does not succeed, the same is done with all directories on the include path list.
 
-ベースパスとインクルードパスは、ホストファイルシステムローダがファイルをロードするディレクトリを表します。ローダーにソースユニット名が渡されると、その前にベースパスが付けられ、ファイルシステムのルックアップが行われます。ルックアップが成功しない場合は、インクルードパスリスト上のすべてのディレクトリに対して同様の処理を行います。
+ベースパスとインクルードパスは、ホストファイルシステムローダがファイルをロードするディレクトリを表します。
+ローダーにソースユニット名が渡されると、その前にベースパスが付けられ、ファイルシステムのルックアップが行われます。
+ルックアップが成功しない場合は、インクルードパスリスト上のすべてのディレクトリに対して同様の処理を行います。
 
 .. It is recommended to set the base path to the root directory of your project and use include paths to
 .. specify additional locations that may contain libraries your project depends on.
@@ -429,7 +437,10 @@ is identified with a URL.
 .. If the base path itself is relative, it is interpreted as relative to the current working directory
 .. of the compiler.
 
-デフォルトでは、ベースパスは空で、ソースユニット名は変更されません。ソースユニット名が相対パスの場合、コンパイラを起動したディレクトリでファイルが検索されます。また、ソースユニット名の絶対パスが実際にディスク上の絶対パスとして解釈される唯一の値です。ベースパスが相対パスの場合は、コンパイラの現在の作業ディレクトリからの相対パスとして解釈されます。
+デフォルトでは、ベースパスは空で、ソースユニット名は変更されません。
+ソースユニット名が相対パスの場合、コンパイラを起動したディレクトリでファイルが検索されます。
+また、ソースユニット名の絶対パスが実際にディスク上の絶対パスとして解釈される唯一の値です。
+ベースパスが相対パスの場合は、コンパイラの現在の作業ディレクトリからの相対パスとして解釈されます。
 
 .. .. note::
 
@@ -456,8 +467,10 @@ is identified with a URL.
 
 .. _cli-path-normalization-and-stripping:
 
-CLI Path Normalization and Stripping
-------------------------------------
+.. CLI Path Normalization and Stripping
+
+CLI Path NormalizationとStripping
+---------------------------------
 
 .. On the command line the compiler behaves just as you would expect from any other program:
 .. it accepts paths in a format native to the platform and relative paths are relative to the current
@@ -468,7 +481,10 @@ CLI Path Normalization and Stripping
 .. To achieve this, paths to source files coming from the command line must be converted to a canonical
 .. form, and, if possible, made relative to the base path or one of the include paths.
 
-コマンドラインでは、コンパイラは他のプログラムと同じように動作します。プラットフォームに固有の形式でパスを受け取り、相対パスは現在の作業ディレクトリからの相対パスです。しかし、コマンドラインでパスが指定されたファイルに割り当てられたソースユニット名は、プロジェクトが別のプラットフォームでコンパイルされていたり、コンパイラが別のディレクトリから起動されていたりしても、変更されるべきではありません。そのためには、コマンドラインで指定されたソースファイルのパスを正規の形式に変換し、可能であればベースパスまたはインクルードパスからの相対パスにする必要があります。
+コマンドラインでは、コンパイラは他のプログラムと同じように動作します。
+プラットフォームに固有の形式でパスを受け取り、相対パスは現在の作業ディレクトリからの相対パスです。
+しかし、コマンドラインでパスが指定されたファイルに割り当てられたソースユニット名は、プロジェクトが別のプラットフォームでコンパイルされていたり、コンパイラが別のディレクトリから起動されていたりしても、変更されるべきではありません。
+そのためには、コマンドラインで指定されたソースファイルのパスを正規の形式に変換し、可能であればベースパスまたはインクルードパスからの相対パスにする必要があります。
 
 .. The normalization rules are as follows:
 
@@ -480,7 +496,7 @@ CLI Path Normalization and Stripping
 
 .. - Internal ``.`` and ``..`` segments are collapsed.
 
-- 内部の ``.`` と ``..`` のセグメントは折りたたまれています。
+- 内部の ``.`` と ``..`` のセグメントは折りたたまれます。
 
 .. - Platform-specific path separators are replaced with forward slashes.
 
@@ -489,38 +505,31 @@ CLI Path Normalization and Stripping
 .. - Sequences of multiple consecutive path separators are squashed into a single separator (unless
 ..   they are the leading slashes of an `UNC path <https://en.wikipedia.org/wiki/Path_(computing)#UNC>`_).
 
-- 複数の連続したパスセパレータのシーケンスは、1つのセパレータに潰されます（ `UNC path <https://en.wikipedia.org/wiki/Path_(computing)#UNC>`_ の先頭のスラッシュでない限り）。
+- 複数の連続したパスセパレータのシーケンスは、1つのセパレータに潰されます（ `UNCパス <https://en.wikipedia.org/wiki/Path_(computing)#UNC>`_ の先頭のスラッシュでない限り）。
 
-.. - If the path includes a root name (e.g. a drive letter on Windows) and the root is the same as the
-..   root of the current working directory, the root is replaced with ``/``.
+.. - If the path includes a root name (e.g. a drive letter on Windows) and the root is the same as the root of the current working directory, the root is replaced with ``/``.
 
 - パスにルート名（Windowsのドライブレターなど）が含まれていて、そのルートが現在の作業ディレクトリのルートと同じ場合は、ルートを ``/`` に置き換えます。
 
 .. - Symbolic links in the path are **not** resolved.
 
-..   - The only exception is the path to the current working directory prepended to relative paths in
-..     the process of making them absolute.
-..     On some platforms the working directory is reported always with symbolic links resolved so for
-..     consistency the compiler resolves them everywhere.
+..   - The only exception is the path to the current working directory prepended to relative paths in the process of making them absolute.
+..     On some platforms the working directory is reported always with symbolic links resolved so for consistency the compiler resolves them everywhere.
 
-- パスのシンボリックリンクは **not** で解決します。
+- パスのシンボリックリンクは解決 **されません** 。
 
-  - 唯一の例外は、相対パスを絶対パスにする際に、現在の作業ディレクトリへのパスを前置することです。     一部のプラットフォームでは、作業ディレクトリは常にシンボリックリンクが解決された状態で報告されるため、一貫性を保つためにコンパイラはすべての場所でシンボリックリンクを解決します。
+  - 唯一の例外は、相対パスを絶対パスにする際に、現在の作業ディレクトリへのパスを前置することです。
+    一部のプラットフォームでは、作業ディレクトリは常にシンボリックリンクが解決された状態で報告されるため、一貫性を保つためにコンパイラはすべての場所でシンボリックリンクを解決します。
 
-.. - The original case of the path is preserved even if the filesystem is case-insensitive but
-..   `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ and the actual case on
-..   disk is different.
+.. - The original case of the path is preserved even if the filesystem is case-insensitive but `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ and the actual case on disk is different.
 
-- ファイルシステムでは大文字と小文字を区別しないが、 `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ とディスク上の実際の大文字と小文字が異なる場合でも、パスの元の大文字と小文字は保存される。
+- ファイルシステムでは大文字と小文字を区別しない（case-insensitive）が、 `case-preserving <https://en.wikipedia.org/wiki/Case_preservation>`_ とディスク上の実際の大文字と小文字が異なる場合でも、パスの元の大文字と小文字は保存されます。
 
 .. .. note::
 
 ..     There are situations where paths cannot be made platform-independent.
-..     For example on Windows the compiler can avoid using drive letters by referring to the root
-..     directory of the current drive as ``/`` but drive letters are still necessary for paths leading
-..     to other drives.
-..     You can avoid such situations by ensuring that all the files are available within a single
-..     directory tree on the same drive.
+..     For example on Windows the compiler can avoid using drive letters by referring to the root directory of the current drive as ``/`` but drive letters are still necessary for paths leading to other drives.
+..     You can avoid such situations by ensuring that all the files are available within a single directory tree on the same drive.
 
 .. note::
 
@@ -530,10 +539,8 @@ CLI Path Normalization and Stripping
 
 .. After normalization the compiler attempts to make the source file path relative.
 .. It tries the base path first and then the include paths in the order they were given.
-.. If the base path is empty or not specified, it is treated as if it was equal to the path to the
-.. current working directory (with all symbolic links resolved).
-.. The result is accepted only if the normalized directory path is the exact prefix of the normalized
-.. file path.
+.. If the base path is empty or not specified, it is treated as if it was equal to the path to the current working directory (with all symbolic links resolved).
+.. The result is accepted only if the normalized directory path is the exact prefix of the normalized file path.
 .. Otherwise the file path remains absolute.
 .. This makes the conversion unambiguous and ensures that the relative path does not start with ``../``.
 .. The resulting file path becomes the source unit name.
@@ -543,7 +550,8 @@ CLI Path Normalization and Stripping
 ベースパスが空であったり、指定されていない場合は、カレントワーキングディレクトリへのパス（すべてのシンボリックリンクが解決されている）と同じであるかのように扱われます。
 この結果は、正規化されたディレクトリパスが正規化されたファイルパスの正確なプレフィックスである場合にのみ受け入れられます。
 そうでなければ、ファイルパスは絶対的なままです。
-これにより、変換が曖昧にならず、相対パスが ``../`` で始まらないことが保証されます。変換後のファイルパスがソースユニット名となります。
+これにより、変換が曖昧にならず、相対パスが ``../`` で始まらないことが保証されます。
+変換後のファイルパスがソースユニット名となります。
 
 .. .. note::
 
@@ -557,15 +565,17 @@ CLI Path Normalization and Stripping
 
 .. .. note::
 
-..     Prior to version 0.8.8, CLI path stripping was not performed and the only normalization applied
-..     was the conversion of path separators.
-..     When working with older versions of the compiler it is recommended to invoke the compiler from
-..     the base path and to only use relative paths on the command line.
+..     Prior to version 0.8.8, CLI path stripping was not performed and the only normalization applied was the conversion of path separators.
+..     When working with older versions of the compiler it is recommended to invoke the compiler from the base path and to only use relative paths on the command line.
 
 .. note::
 
     ストリッピングによって生成される相対パスは、ベースパスおよびインクルードパス内で一意でなければなりません。
     例えば、次のコマンドで ``/project/contract.sol`` と ``/lib/contract.sol`` の両方が存在する場合、コンパイラはエラーを発行します。
+
+    .. code-block:: bash
+
+        solc /project/contract.sol --base-path /project --include-path /lib
 
 .. note::
 
@@ -580,41 +590,27 @@ CLI Path Normalization and Stripping
 許可されるパス
 ==============
 
-.. As a security measure, the Host Filesystem Loader will refuse to load files from outside of a few
-.. locations that are considered safe by default:
+.. As a security measure, the Host Filesystem Loader will refuse to load files from outside of a few locations that are considered safe by default:
 
 セキュリティ対策として、Host Filesystem Loaderは、デフォルトで安全とされるいくつかの場所以外からのファイルのロードを拒否します。
 
-.. - Outside of Standard JSON mode:
-
 ..   - The directories containing input files listed on the command line.
-
 ..   - The directories used as :ref:`remapping <import-remapping>` targets.
-..     If the target is not a directory (i.e does not end with ``/``, ``/.`` or ``/..``) the directory
-..     containing the target is used instead.
-
-..   - Base path and include paths.
+..     If the target is not a directory (i.e does not end with ``/``, ``/.`` or ``/..``) the directory containing the target is used instead.
 
 - Standard JSONモード以外の場合。
 
   - コマンドラインで指定された入力ファイルを含むディレクトリ。
-
-  -  :ref:`remapping <import-remapping>` ターゲットとして使用されるディレクトリです。     ターゲットがディレクトリでない場合（ ``/`` 、 ``/.`` 、 ``/..`` で終わらない場合）は、ターゲットを含むディレクトリが代わりに使用されます。
-
-  - ベースパスとインクルードパス
-
-.. - In Standard JSON mode:
-
-..   - Base path and include paths.
+  -  :ref:`リマッピング <import-remapping>` ターゲットとして使用されるディレクトリ。
+     ターゲットがディレクトリでない場合（ ``/`` 、 ``/.`` 、 ``/..`` で終わらない場合）は、ターゲットを含むディレクトリが代わりに使用されます。
+  - ベースパスとインクルードパス。
 
 - Standard JSONモードの場合。
 
-  - ベースパスとインクルードパス
+  - ベースパスとインクルードパス。
 
-.. Additional directories can be whitelisted using the ``--allow-paths`` option.
-.. The option accepts a comma-separated list of paths:
-
-``--allow-paths`` オプションを使って、追加のディレクトリをホワイトリストに登録できます。このオプションには、コンマで区切られたパスのリストを指定できます。
+``--allow-paths`` オプションを使って、追加のディレクトリをホワイトリストに登録できます。
+このオプションでは、コンマで区切ってパスのリストを指定できます。
 
 .. code-block:: bash
 
@@ -625,36 +621,25 @@ CLI Path Normalization and Stripping
         --include-path=/lib/ \
         --allow-paths=../utils/,/tmp/libraries
 
-.. When the compiler is invoked with the command shown above, the Host Filesystem Loader will allow
-.. importing files from the following directories:
+.. When the compiler is invoked with the command shown above, the Host Filesystem Loader will allow importing files from the following directories:
 
 上記のコマンドでコンパイラを起動した場合、Host Filesystem Loaderは以下のディレクトリからのファイルのインポートを許可します。
 
-.. - ``/home/user/project/token/`` (because ``token/`` contains the input file and also because it is
-..   the base path),
-
-- ``/home/user/project/token/`` （ ``token/`` には入力ファイルがあり、またベースパスでもあるため）。
-
+.. - ``/home/user/project/token/`` (because ``token/`` contains the input file and also because it is the base path),
 .. - ``/lib/`` (because ``/lib/`` is one of the include paths),
-
-- ``/lib/`` （ ``/lib/`` はインクルードパスの一つですから）。
-
 .. - ``/home/user/project/libs/`` (because ``libs/`` is a directory containing a remapping target),
-
-- ``/home/user/project/libs/`` （ ``libs/`` はリマップ対象を含むディレクトリのため）。
-
 .. - ``/home/user/utils/`` (because of ``../utils/`` passed to ``--allow-paths``),
-
-- ``/home/user/utils/`` （ ``../utils/`` が ``--allow-paths`` にパスされたため）。
-
 .. - ``/tmp/libraries/`` (because of ``/tmp/libraries`` passed to ``--allow-paths``),
 
+- ``/home/user/project/token/`` （ ``token/`` には入力ファイルがあり、またベースパスでもあるため）。
+- ``/lib/`` （ ``/lib/`` はインクルードパスの一つであるため）。
+- ``/home/user/project/libs/`` （ ``libs/`` はリマップ対象を含むディレクトリのため）。
+- ``/home/user/utils/`` （ ``../utils/`` が ``--allow-paths`` にパスされたため）。
 - ``/tmp/libraries/`` （ ``/tmp/libraries`` が ``--allow-paths`` にパスされたため）。
 
 .. .. note::
 
-..     The working directory of the compiler is one of the paths allowed by default only if it
-..     happens to be the base path (or the base path is not specified or has an empty value).
+..     The working directory of the compiler is one of the paths allowed by default only if it happens to be the base path (or the base path is not specified or has an empty value).
 
 .. note::
 
@@ -663,12 +648,13 @@ CLI Path Normalization and Stripping
 .. .. note::
 
 ..     The compiler does not check if allowed paths actually exist and whether they are directories.
-..     Non-existent or empty paths are simply ignored.
 ..     If an allowed path matches a file rather than a directory, the file is considered whitelisted, too.
 
 .. note::
 
-    コンパイラは、許可されたパスが実際に存在するかどうか、またそれらがディレクトリであるかどうかはチェックしません。     存在しないパスや空のパスは単に無視されます。     許可されたパスがディレクトリではなくファイルに一致した場合、そのファイルもホワイトリストとみなされます。
+    コンパイラは、許可されたパスが実際に存在するかどうか、またそれらがディレクトリであるかどうかはチェックしません。
+    存在しないパスや空のパスは単に無視されます。
+    許可されたパスがディレクトリではなくファイルに一致した場合、そのファイルもホワイトリストとみなされます。
 
 .. .. note::
 
@@ -678,7 +664,9 @@ CLI Path Normalization and Stripping
 
 .. note::
 
-    許可されたパスは、ファイルシステムがそうでない場合でも、大文字と小文字を区別します。     大文字と小文字は、インポートで使われているものと正確に一致しなければなりません。     例えば、 ``--allow-paths tokens`` は ``import "Tokens/IERC20.sol"`` とは一致しません。
+    許可されたパスは、ファイルシステムがそうでない場合でも、大文字と小文字を区別します。
+    大文字と小文字は、インポートで使われているものと正確に一致しなければなりません。
+    例えば、 ``--allow-paths tokens`` は ``import "Tokens/IERC20.sol"`` とは一致しません。
 
 .. .. warning::
 
@@ -690,7 +678,8 @@ CLI Path Normalization and Stripping
 
 .. warning::
 
-    許可されているディレクトリからシンボリックリンクでのみアクセスできるファイルやディレクトリは、自動的にホワイトリストに登録されません。     例えば、上の例の ``token/contract.sol`` が実際には ``/etc/passwd`` を指すシンボリックリンクであった場合、 ``/etc/`` が許可されたパスの一つでない限り、コンパイラはそれを読み込むことを拒否します。
+    許可されているディレクトリからシンボリックリンクでのみアクセスできるファイルやディレクトリは、自動的にホワイトリストに登録されません。
+    例えば、上の例の ``token/contract.sol`` が実際には ``/etc/passwd`` を指すシンボリックリンクであった場合、 ``/etc/`` が許可されたパスの一つでない限り、コンパイラはそれを読み込むことを拒否します。
 
 .. index:: ! remapping; import, ! import; remapping, ! remapping; context, ! remapping; prefix, ! remapping; target
 .. _import-remapping:
@@ -703,14 +692,17 @@ CLI Path Normalization and Stripping
 .. For example you can set up a remapping so that any import from the virtual directory
 .. ``github.com/ethereum/dapp-bin/library/`` would be seen as an import from ``dapp-bin/library/`` instead.
 
-インポートリマッピングでは、インポートを仮想ファイルシステムの異なる場所にリダイレクトできます。このメカニズムは、インポートパスとソースユニット名の間の変換を変更することで機能します。例えば、仮想ディレクトリ ``github.com/ethereum/dapp-bin/library/`` からのインポートを、代わりに ``dapp-bin/library/`` からのインポートと見なすようなリマッピングを設定できます。
+インポートリマッピングでは、インポートを仮想ファイルシステムの異なる場所にリダイレクトできます。
+このメカニズムは、インポートパスとソースユニット名の間の変換を変更することで機能します。
+例えば、仮想ディレクトリ ``github.com/ethereum/dapp-bin/library/`` からのインポートを、代わりに ``dapp-bin/library/`` からのインポートと見なすようなリマッピングを設定できます。
 
 .. You can limit the scope of a remapping by specifying a *context*.
 .. This allows creating remappings that apply only to imports located in a specific library or a specific file.
-.. Without a context a remapping is applied to every matching import in all the files in the virtual
-.. filesystem.
+.. Without a context a remapping is applied to every matching import in all the files in the virtual filesystem.
 
-コンテキスト*を指定することで、リマッピングの範囲を制限できます。これにより、特定のライブラリまたは特定のファイルにあるインポートのみに適用されるリマッピングを作成できます。コンテキストを指定しない場合、リマッピングは仮想ファイルシステム内のすべてのファイルにある、一致するすべてのインポートに適用されます。
+*コンテキスト* を指定することで、リマッピングの範囲を制限できます。
+これにより、特定のライブラリまたは特定のファイルにあるインポートのみに適用されるリマッピングを作成できます。
+コンテキストを指定しない場合、リマッピングは仮想ファイルシステム内のすべてのファイルにある、一致するすべてのインポートに適用されます。
 
 .. Import remappings have the form of ``context:prefix=target``:
 
@@ -746,31 +738,23 @@ CLI Path Normalization and Stripping
     import "github.com/ethereum/dapp-bin/library/math.sol"; // source unit name: dapp-bin/library/math.sol
 
 .. The compiler will look for the file in the VFS under ``dapp-bin/library/math.sol``.
-.. If the file is not available there, the source unit name will be passed to the Host Filesystem
-.. Loader, which will then look in ``/project/dapp-bin/library/iterable_mapping.sol``.
+.. If the file is not available there, the source unit name will be passed to the Host Filesystem Loader, which will then look in ``/project/dapp-bin/library/iterable_mapping.sol``.
 
-コンパイラは、 ``dapp-bin/library/math.sol`` の下のVFSでファイルを探します。そこにファイルがない場合は、ソースユニット名がホストファイルシステムローダに渡され、ホストファイルシステムローダは ``/project/dapp-bin/library/iterable_mapping.sol`` を探します。
+コンパイラは、 ``dapp-bin/library/math.sol`` の下のVFSでファイルを探します。
+そこにファイルがない場合は、ソースユニット名がHost Filesystem Loaderに渡され、Host Filesystem Loaderは ``/project/dapp-bin/library/iterable_mapping.sol`` を探します。
 
 .. .. warning::
 
-..     Information about remappings is stored in contract metadata.
-..     Since the binary produced by the compiler has a hash of the metadata embedded in it, any
-..     modification to the remappings will result in different bytecode.
+..     Since the binary produced by the compiler has a hash of the metadata embedded in it, any modification to the remappings will result in different bytecode.
 
 ..     For this reason you should be careful not to include any local information in remapping targets.
-..     For example if your library is located in ``/home/user/packages/mymath/math.sol``, a remapping
-..     like ``@math/=/home/user/packages/mymath/`` would result in your home directory being included in
-..     the metadata.
-..     To be able to reproduce the same bytecode with such a remapping on a different machine, you
-..     would need to recreate parts of your local directory structure in the VFS and (if you rely on
+..     For example if your library is located in ``/home/user/packages/mymath/math.sol``, a remapping like ``@math/=/home/user/packages/mymath/`` would result in your home directory being included in the metadata.
+..     To be able to reproduce the same bytecode with such a remapping on a different machine, you would need to recreate parts of your local directory structure in the VFS and (if you rely on
 ..     Host Filesystem Loader) also in the host filesystem.
 
-..     To avoid having your local directory structure embedded in the metadata, it is recommended to
-..     designate the directories containing libraries as *include paths* instead.
-..     For example, in the example above ``--include-path /home/user/packages/`` would let you use
-..     imports starting with ``mymath/``.
-..     Unlike remapping, the option on its own will not make ``mymath`` appear as ``@math`` but this
-..     can be achieved by creating a symbolic link or renaming the package subdirectory.
+..     To avoid having your local directory structure embedded in the metadata, it is recommended to designate the directories containing libraries as *include paths* instead.
+..     For example, in the example above ``--include-path /home/user/packages/`` would let you use imports starting with ``mymath/``.
+..     Unlike remapping, the option on its own will not make ``mymath`` appear as ``@math`` but this can be achieved by creating a symbolic link or renaming the package subdirectory.
 
 .. warning::
 
@@ -781,12 +765,11 @@ CLI Path Normalization and Stripping
     例えば、あなたのライブラリが ``/home/user/packages/mymath/math.sol`` にある場合、 ``@math/=/home/user/packages/mymath/`` のようなリマッピングを行うと、あなたのホームディレクトリがメタデータに含まれることになります。
     このようなリマッピングを行った同じバイトコードを別のマシンで再現するためには、ローカルのディレクトリ構造の一部をVFSに、（Host Filesystem Loaderに依存している場合は）ホストファイルシステムにも再現する必要があります。
 
-    ローカルのディレクトリ構造がメタデータに埋め込まれるのを避けるために、ライブラリを含むディレクトリを *include path* として指定することが推奨されます。
+    ローカルのディレクトリ構造がメタデータに埋め込まれるのを避けるために、ライブラリを含むディレクトリを *インクルードパス* として指定することが推奨されます。
     例えば、上記の例では、 ``--include-path /home/user/packages/`` を指定すると、 ``mymath/`` で始まるインポートを使用できます。
     リマッピングとは異なり、このオプションだけでは ``mymath`` を ``@math`` に見せることはできませんが、シンボリックリンクを作成したり、パッケージのサブディレクトリの名前を変更することで実現できます。
 
-.. As a more complex example, suppose you rely on a module that uses an old version of dapp-bin that
-.. you checked out to ``/project/dapp-bin_old``, then you can run:
+.. As a more complex example, suppose you rely on a module that uses an old version of dapp-bin that you checked out to ``/project/dapp-bin_old``, then you can run:
 
 もっと複雑な例として、 ``/project/dapp-bin_old`` にチェックアウトした古いバージョンのdapp-binを使っているモジュールに依存しているとします。
 
@@ -797,14 +780,13 @@ CLI Path Normalization and Stripping
          --base-path /project \
          source.sol
 
-.. This means that all imports in ``module2`` point to the old version but imports in ``module1``
-.. point to the new version.
+.. This means that all imports in ``module2`` point to the old version but imports in ``module1`` point to the new version.
 
-つまり、 ``module2`` のインポート品はすべて旧バージョンを指しますが、 ``module1`` のインポート品は新バージョンを指します。
+つまり、 ``module2`` のインポートはすべて旧バージョンを指しますが、 ``module1`` のインポートは新バージョンを指します。
 
 .. Here are the detailed rules governing the behaviour of remappings:
 
-ここでは、リマップの動作に関する詳細なルールをご紹介します。
+ここでは、リマッピングの動作に関する詳細なルールをご紹介します。
 
 .. #. **Remappings only affect the translation between import paths and source unit names.**
 
@@ -881,31 +863,72 @@ CLI Path Normalization and Stripping
 ..      ``/newProject/con:/new=old`` will match ``/newProject/contract.sol`` and remap it to
 ..      ``oldProject/contract.sol``.
 
-#. **Remappings only affect the translation between import paths and source unit names.**
+#. **リマッピングは、インポートパスとソースユニット名の間の変換にのみ影響します。**
 
-   その他の方法でVFSに追加されたソースユニット名は、リマップできません。    例えば、コマンドラインで指定したパスや、Standard JSONの ``sources.urls`` にあるパスは影響を受けません。
+   その他の方法でVFSに追加されたソースユニット名は、リマッピングできません。
+   例えば、コマンドラインで指定したパスや、Standard JSONの ``sources.urls`` にあるパスは影響を受けません。
 
-#. **Context and prefix must match source unit names, not import paths.**
+   .. code-block:: bash
+
+       solc /project/=/contracts/ /project/contract.sol # source unit name: /project/contract.sol
+
+   上記の例では、コンパイラは ``/project/contract.sol`` からソースコードを読み込み、VFS の ``/contract/contract.sol`` の下ではなく、その正確なソースユニット名の下に置くことになります。
+
+#. **コンテキストとプレフィックスは、インポートパスではなく、ソースユニット名と一致する必要があります。**
 
    - つまり、 ``./`` や ``../`` はソースユニット名への変換時に置き換えられてしまうため、直接リマップできませんが、置き換えられた部分をリマップすることは可能です。
 
-#. **Target is inserted directly into the source unit name and does not necessarily have to be a valid path.**
+     .. code-block:: bash
 
-   - インポートコールバックがそれを処理できる限り、何でもよいのです。      ホスト ファイルシステム ローダーの場合は、相対パスも含まれます。      JavaScriptインターフェースを使用する場合、コールバックが処理できるならば、URLや抽象的な識別子を使用することもできます。
+         solc ./=a/ /project/=b/ /project/contract.sol # source unit name: /project/contract.sol
 
-   - リマッピングは、相対的なインポートがすでにソースユニット名に解決された後に行われます。      つまり、 ``./`` や ``../`` で始まるターゲットは特別な意味を持たず、ソースファイルの位置ではなくベースパスに対する相対的なものです。
+     .. code-block:: solidity
+         :caption: /project/contract.sol
+
+         import "./util.sol" as util; // source unit name: b/util.sol
+
+   - ベースパスや、インポートコールバックによって内部的に追加されるだけのパスの部分をリマッピングすることはできません:
+
+     .. code-block:: bash
+
+         solc /project/=/contracts/ /project/contract.sol --base-path /project # source unit name: contract.sol
+
+     .. code-block:: solidity
+         :caption: /project/contract.sol
+
+         import "util.sol" as util; // source unit name: util.sol
+
+
+#. **Targetはソースユニット名に直接挿入され、必ずしも有効なパスである必要はありません。**
+
+   - インポートコールバックがそれを処理できる限り、何でもよいのです。
+     ホスト ファイルシステム ローダーの場合は、相対パスも含まれます。
+     JavaScriptインターフェースを使用する場合、コールバックが処理できるならば、URLや抽象的な識別子を使用することもできます。
+
+   - リマッピングは、相対的なインポートがすでにソースユニット名に解決された後に行われます。
+     つまり、 ``./`` や ``../`` で始まるターゲットは特別な意味を持たず、ソースファイルの位置ではなくベースパスに対する相対的なものです。
 
    - リマップ対象は正規化されていないので、 ``@root/=./a/b//`` は ``@root/contract.sol`` を ``./a/b//contract.sol`` にリマップし、 ``a/b/contract.sol`` にはなりません。
 
    - ターゲットがスラッシュで終わっていない場合、コンパイラは自動的にスラッシュを追加しません。
 
-#. **Context and prefix are patterns and matches must be exact.**
+     .. code-block:: bash
 
-   -  ``a//b=c`` は ``a/b`` に合わせない。
+         solc /project/=/contracts /project/contract.sol # source unit name: /project/contract.sol
+
+     .. code-block:: solidity
+         :caption: /project/contract.sol
+
+         import "/project/util.sol" as util; // source unit name: /contractsutil.sol
+
+#. **コンテキストとプレフィックスはパターンであり、マッチは正確でなければなりません。**
+
+   -  ``a//b=c`` は ``a/b`` に合わせません。
 
    - ソースユニット名は正規化されていないので、 ``a/b=c`` は ``a//b`` にもマッチしません。
 
-   - ファイル名やディレクトリ名の一部もマッチします。       ``/newProject/con:/new=old`` は ``/newProject/contract.sol`` と一致し、 ``oldProject/contract.sol`` にリマップされます。
+   - ファイル名やディレクトリ名の一部もマッチします。
+     ``/newProject/con:/new=old`` は ``/newProject/contract.sol`` と一致し、 ``oldProject/contract.sol`` にリマップされます。
 
 .. #. **At most one remapping is applied to a single import.**
 
@@ -917,13 +940,14 @@ CLI Path Normalization and Stripping
 ..    - Remappings do not work on other remappings. For example ``a=b b=c c=d`` will not result in ``a``
 ..      being remapped to ``d``.
 
-#. **At most one remapping is applied to a single import.**
+#. **1つのインポートに適用されるリマッピングは、最大で1つです。**
 
    - 複数のリマッピングが同じソースユニット名と一致する場合、最も長く一致する接頭辞を持つものが選択されます。
 
    - プレフィックスが同一の場合は、最後に指定されたものが優先されます。
 
-   - リマッピングは、他のリマッピングには作用しません。例えば、 ``a=b b=c c=d`` は ``a`` を ``d`` にリマッピングすることはありません。
+   - リマッピングは、他のリマッピングには作用しません。
+     例えば、 ``a=b b=c c=d`` は ``a`` を ``d`` にリマッピングすることはありません。
 
 .. #. **Prefix cannot be empty but context and target are optional.**
 
@@ -931,7 +955,7 @@ CLI Path Normalization and Stripping
 
 ..    - Empty ``context`` means that the remapping applies to all imports in all source units.
 
-#. **Prefix cannot be empty but context and target are optional.**
+#. **プレフィックスは空欄にできないが、コンテキストとターゲットは任意である。**
 
    -  ``target`` が空の文字列の場合、 ``prefix`` は単にインポートパスから削除されます。
 
@@ -943,13 +967,12 @@ CLI Path Normalization and Stripping
 =======================
 
 .. Most URL prefixes such as ``https://`` or ``data://`` have no special meaning in import paths.
-.. The only exception is ``file://`` which is stripped from source unit names by the Host Filesystem
-.. Loader.
+.. The only exception is ``file://`` which is stripped from source unit names by the Host Filesystem Loader.
 
-``https://`` や ``data://`` のようなほとんどのURLプレフィックスは、インポートパスでは特別な意味を持ちません。唯一の例外は ``file://`` で、これはHost Filesystem Loaderによってソースユニット名から取り除かれます。
+``https://`` や ``data://`` のようなほとんどのURLプレフィックスは、インポートパスでは特別な意味を持ちません。
+唯一の例外は ``file://`` で、これはHost Filesystem Loaderによってソースユニット名から取り除かれます。
 
-.. When compiling locally you can use import remapping to replace the protocol and domain part with a
-.. local path:
+.. When compiling locally you can use import remapping to replace the protocol and domain part with a local path:
 
 ローカルにコンパイルする場合、インポートリマッピングを使用して、プロトコルとドメインの部分をローカルパスに置き換えることができます。
 
@@ -959,6 +982,7 @@ CLI Path Normalization and Stripping
 
 .. Note the leading ``:``, which is necessary when the remapping context is empty.
 .. Otherwise the ``https:`` part would be interpreted by the compiler as the context.
-.. 
 
-先頭の ``:`` に注目してください。これは、リマッピングコンテキストが空の場合に必要です。そうしないと、 ``https:`` の部分がコンパイラーによって文脈として解釈されてしまいます。
+先頭の ``:`` に注目してください。
+これは、リマッピングコンテキストが空の場合に必要です。
+そうしないと、 ``https:`` の部分がコンパイラーによって文脈として解釈されてしまいます。
