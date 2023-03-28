@@ -145,7 +145,7 @@ instead of library functions.
 
         function register(uint value) public {
             // ここでは、Data型のすべての変数に対応するメンバ関数があります。
-            // 以下の関数呼び出しは， `Set.insert(knownValues, value)` と同じです．
+            // 以下の関数呼び出しは、 `Set.insert(knownValues, value)` と同じです。
             require(knownValues.insert(value));
         }
     }
