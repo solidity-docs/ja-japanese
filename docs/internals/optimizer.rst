@@ -1356,7 +1356,8 @@ This optimization moves movable SSA variable declarations outside the loop.
 .. Only statements at the top level in a loop's body or post block are considered, i.e variable
 .. declarations inside conditional branches will not be moved out of the loop.
 
-考慮されるのは、ループの本体またはポストブロック内のトップレベルの文のみです。つまり、条件分岐内の変数宣言はループの外に移動されません。
+考慮されるのは、ループの本体またはポストブロック内のトップレベルの文のみです。
+つまり、条件分岐内の変数宣言はループの外に移動されません。
 
 要件:
 

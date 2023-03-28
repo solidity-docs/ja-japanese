@@ -169,7 +169,8 @@ Solidityのツール
 ..     Rich tool package to interact with the EVM. Includes a VM, Etherchain API, and a trace-viewer with gas cost display.
 
 * `EVM Lab <https://github.com/ethereum/evmlab/>`_
-    EVMと対話するためのリッチなツールパッケージ。VM、Etherchain API、ガスコストを表示するトレースビューアが含まれています。
+    EVMと対話するためのリッチなツールパッケージ。
+    VM、Etherchain API、ガスコストを表示するトレースビューアが含まれています。
 
 .. * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
 ..     EVM debugger and symbolic execution engine.
@@ -235,7 +236,8 @@ Solidityのツール
 ..     Utility tool for smart contract systems, offering a number of visual outputs and information about the contracts' structure. Also supports querying the function call graph.
 
 * `Sūrya <https://github.com/ConsenSys/surya/>`_
-    スマートコントラクトシステムのためのユーティリティーツールで、多数のビジュアル出力とコントラクトの構造に関する情報を提供します。また、関数コールグラフのクエリもサポートしています。
+    スマートコントラクトシステムのためのユーティリティーツールで、多数のビジュアル出力とコントラクトの構造に関する情報を提供します。
+    また、関数コールグラフのクエリもサポートしています。
 
 .. * `Universal Mutator <https://github.com/agroce/universalmutator>`_
 ..     A tool for mutation generation, with configurable rules and support for Solidity and Vyper.

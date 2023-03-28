@@ -30,7 +30,8 @@ Solidity v0.5.0の破壊的変更点
 .. This section lists the changes that are semantic-only, thus potentially
 .. hiding new and different behavior in existing code.
 
-このセクションでは、セマンティックのみの変更点をリストアップしています。そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
+このセクションでは、セマンティックのみの変更点をリストアップしています。
+そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
 .. * Signed right shift now uses proper arithmetic shift, i.e. rounding towards
   negative infinity, instead of rounding towards zero.  Signed and unsigned

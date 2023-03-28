@@ -27,7 +27,12 @@ C++からの影響は、変数宣言やforループの構文、関数のオー�
 .. are similar to those available in JavaScript. Besides those points, Solidity looks like
 .. most other curly-bracket languages and has no major JavaScript influence anymore.
 
-言語開発の初期において、SolidityはJavaScriptの影響を部分的に受けていました。これは、関数レベルでの変数のスコープや、キーワード ``var`` の使用によるものでした。JavaScriptの影響はバージョン0.4.0から少なくなりました。現在、JavaScriptとの主な類似点は、関数がキーワード ``function`` を使って定義されていることです。また、Solidityは、JavaScriptと同様のインポート構文とセマンティクスをサポートしています。これらの点を除けば、Solidityは他の多くの巻き舌言語と同じように見えますし、もはやJavaScriptの影響は大きくありません。
+言語開発の初期において、SolidityはJavaScriptの影響を部分的に受けていました。
+これは、関数レベルでの変数のスコープや、キーワード ``var`` の使用によるものでした。
+JavaScriptの影響はバージョン0.4.0から少なくなりました。
+現在、JavaScriptとの主な類似点は、関数がキーワード ``function`` を使って定義されていることです。
+また、Solidityは、JavaScriptと同様のインポート構文とセマンティクスをサポートしています。
+これらの点を除けば、Solidityは他の多くの巻き舌言語と同じように見えますし、もはやJavaScriptの影響は大きくありません。
 
 .. Another influence to Solidity was Python. Solidity's modifiers were added trying to model
 .. Python's decorators with a much more restricted functionality. Furthermore, multiple inheritance, C3 linearization,

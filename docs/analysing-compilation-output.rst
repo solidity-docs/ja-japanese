@@ -9,7 +9,10 @@
 .. to use the flag ``--asm`` to analyse the assembly output. Even for large contracts, looking at a
 .. visual diff of the assembly before and after a change is often very enlightening.
 
-コンパイラが生成したアセンブリコードを見てみると便利なことが多い。生成されたバイナリ、すなわち ``solc --bin contract.sol`` の出力は、一般に読みにくい。フラグ ``--asm`` を使用して、アセンブリ出力を分析することをお勧めします。大規模なコントラクトであっても、変更前と変更後のアセンブリの視覚的なdiffを見ることは、しばしば非常に有益です。
+コンパイラが生成したアセンブリコードを見てみると便利なことが多い。
+生成されたバイナリ、すなわち ``solc --bin contract.sol`` の出力は、一般に読みにくい。
+フラグ ``--asm`` を使用して、アセンブリ出力を分析することをお勧めします。
+大規模なコントラクトであっても、変更前と変更後のアセンブリの視覚的なdiffを見ることは、しばしば非常に有益です。
 
 .. Consider the following contract (named, say ``contract.sol``):
 
@@ -188,7 +191,11 @@
 .. that can be obtained using the flags ``--combined-json
 .. generated-sources,generated-sources-runtime``.
 
-``asm``  の出力は、作成/コンストラクタのコードで始まることに注意してください。配置コードは、サブオブジェクトの一部として提供されます（上記の例では、サブオブジェクト ``sub_0`` の一部です）。 ``auxdata`` フィールドはコントラクト :ref:`metadata <encoding-of-the-metadata-hash-in-the-bytecode>` に対応しています。アセンブリ出力のコメントは、ソースの位置を示しています。 ``#utility.yul`` は、フラグ ``--combined-json generated-sources,generated-sources-runtime`` を使用して取得できるユーティリティー関数の内部生成ファイルであることに注意してください。
+``asm``  の出力は、作成/コンストラクタのコードで始まることに注意してください。
+配置コードは、サブオブジェクトの一部として提供されます（上記の例では、サブオブジェクト ``sub_0`` の一部です）。
+ ``auxdata`` フィールドはコントラクト :ref:`metadata <encoding-of-the-metadata-hash-in-the-bytecode>` に対応しています。
+アセンブリ出力のコメントは、ソースの位置を示しています。
+ ``#utility.yul`` は、フラグ ``--combined-json generated-sources,generated-sources-runtime`` を使用して取得できるユーティリティー関数の内部生成ファイルであることに注意してください。
 
 .. Similarly, the optimized assembly can be obtained with the command: ``solc --optimize --asm
 .. contract.sol``. Often times, it is interesting to see if two different sources in Solidity result in
@@ -196,7 +203,10 @@
 .. generates the same bytecode. This can be easily done by taking a ``diff`` of the corresponding
 .. assembly output, after potentially stripping comments that reference the source locations.
 
-同様に、最適化されたアセンブリは、コマンドで得ることができます。 ``solc --optimize --asm contract.sol`` .しばしば、Solidityの2つの異なるソースが同じ最適化されたコードになるかどうかを確認することは興味深いことです。例えば、 ``(a * b) / c`` ,  ``a * b / c`` という式が同じバイトコードを生成するかどうかを確認できます。これは、ソースの位置を参照するコメントを削除した後、対応するアセンブリ出力の ``diff`` を取ることで簡単に行うことができます。
+同様に、最適化されたアセンブリは、コマンドで得ることができます。
+``solc --optimize --asm contract.sol`` .しばしば、Solidityの2つの異なるソースが同じ最適化されたコードになるかどうかを確認することは興味深いことです。
+例えば、 ``(a * b) / c`` ,  ``a * b / c`` という式が同じバイトコードを生成するかどうかを確認できます。
+これは、ソースの位置を参照するコメントを削除した後、対応するアセンブリ出力の ``diff`` を取ることで簡単に行うことができます。
 
 .. .. note::
 
@@ -206,4 +216,5 @@
 
 .. note::
 
-   ``--asm`` 出力は機械で読めるようには設計されていません。そのため、solcのマイナーバージョン間では、出力に変更がある可能性があります。
+  ``--asm`` 出力は機械で読めるようには設計されていません。
+  そのため、solcのマイナーバージョン間では、出力に変更がある可能性があります。

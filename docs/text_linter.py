@@ -12,7 +12,7 @@ def check_terms():
         (":", ("：",)),
         ("ストレージ", ("記憶",)),
         ("でき", ("することができ",)),
-        # ("ます。", ("る。",)),
+        ("ます。", ("る。",)),
         ("です。", ("だ。",)),
         ("", ("・",)),
         ("型", ("タイプ",)),
@@ -49,7 +49,7 @@ def check_kuten():
         lines = open(file).readlines()
         for i, line in enumerate(lines):
             if line.find("。") != -1 and line.find("。") != len(line) - 2:
-                print(f"{file}:{i + 1} '。([^\n])' -> '。\n$1")
+                print(f"{file}:{i + 1} '。([^\\n])' -> '。\\n$1")
 
 if __name__ == "__main__":
     check_terms()

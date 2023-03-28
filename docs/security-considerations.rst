@@ -272,7 +272,8 @@ Authorized Proxies
 tx.origin
 =========
 
-認証に tx.origin を使用しないでください。以下のようなウォレットコントラクトがあるとします。
+認証に tx.origin を使用しないでください。
+以以下のようなウォレットコントラクトがあるとします。
 
 .. code-block:: solidity
 
@@ -364,7 +365,8 @@ Solidityには、これらのオーバーフローを処理する2つのモー�
 
 .. In general, read about the limits of two's complement representation, which even has some more special edge cases for signed numbers.
 
-一般的には、2の補数表現の限界について読んでみてください。2の補数表現には、符号付きの数字に対するより特別なエッジケースもあります。
+一般的には、2の補数表現の限界について読んでみてください。
+2の補数表現には、符号付きの数字に対するより特別なエッジケースもあります。
 
 .. Try to use ``require`` to limit the size of inputs to a reasonable range and use the
 .. :ref:`SMT checker<smt_checker>` to find potential overflows.

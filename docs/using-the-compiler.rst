@@ -25,10 +25,11 @@
 .. If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary.
 .. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
 
-Solidityリポジトリのビルドターゲットの1つは、solidityのコマンドラインコンパイラである ``solc`` です。
-``solc --help`` を使用すると、すべてのオプションの説明を受けることができます。
+Solidityリポジトリのビルドターゲットの1つは、Solidityのコマンドラインコンパイラである ``solc`` です。
+``solc --help`` を実行すると、すべてのオプションの説明を見ることができます。
 コンパイラは、抽象的な構文木（パースツリー）上の単純なバイナリやアセンブリから、ガス使用量の推定値まで、さまざまな出力を行うことができます。
-単一のファイルをコンパイルしたいだけなら、 ``solc --bin sourceFile.sol`` として実行すれば、バイナリを出力します。 ``solc`` のより高度な出力を得たい場合は、 ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` を使ってすべてを別々のファイルに出力するように指示したほうがよいでしょう。
+単一のファイルをコンパイルしたいだけなら、 ``solc --bin sourceFile.sol`` として実行すれば、バイナリを出力します。
+``solc`` のより高度な出力を得たい場合は、 ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol`` を使ってすべてを別々のファイルに出力するように指示したほうがよいでしょう。
 
 オプティマイザオプション
 ------------------------
@@ -39,57 +40,55 @@ Solidityリポジトリのビルドターゲットの1つは、solidityのコマ
 .. If you expect many transactions and do not care for higher deployment cost and output size, set ``--optimize-runs`` to a high number.
 .. This parameter has effects on the following (this might change in the future):
 
-コントラクトをデプロイする前に、 ``solc --optimize --bin sourceFile.sol`` を使ってコンパイルする際にオプティマイザを有効にします。デフォルトでは、オプティマイザは、コントラクトがそのライフタイム全体で200回呼び出されると仮定して最適化します（より具体的には、各オペコードが約200回実行されると仮定します）。最初のコントラクトデプロイを安価にし、後の関数実行を高価にしたい場合は、 ``--optimize-runs=1`` に設定してください。多くのトランザクションが予想され、デプロイコストや出力サイズが高くなっても気にしない場合は、 ``--optimize-runs`` を高い数値に設定してください。このパラメータは以下に影響を与えます（将来的に変更される可能性があります）。
+コントラクトをデプロイする前に、 ``solc --optimize --bin sourceFile.sol`` を使ってコンパイルする際にオプティマイザを有効にします。
+デフォルトでは、オプティマイザは、コントラクトがそのライフタイム全体で200回呼び出されると仮定して最適化します（より具体的には、各オペコードが約200回実行されると仮定します）。
+最初のコントラクトデプロイを安価にし、後の関数実行を高価にしたい場合は、 ``--optimize-runs=1`` に設定してください。
+多くのトランザクションが予想され、デプロイコストや出力サイズが高くなっても気にしない場合は、 ``--optimize-runs`` を高い数値に設定してください。
+このパラメータは以下に影響を与えます（将来的に変更される可能性があります）。
 
 .. - the size of the binary search in the function dispatch routine
 
-- 関数ディスパッチルーチンでのバイナリ検索のサイズ
-
-.. - the way constants like large numbers or strings are stored
-
-- 大きな数字や文字列などの定数の保存方法について
+- 関数ディスパッチルーティンでのバイナリ検索のサイズ
+- 大きな数値や文字列などの定数の保存方法
 
 .. index:: allowed paths, --allow-paths, base path, --base-path, include paths, --include-path
 
 ベースパスとインポートのリマッピング
 ------------------------------------
 
-.. The commandline compiler will automatically read imported files from the filesystem, but
-.. it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
+.. The commandline compiler will automatically read imported files from the filesystem, but it is also possible to provide :ref:`path redirects <import-remapping>` using ``prefix=path`` in the following way:
 
-コマンドラインコンパイラは、インポートされたファイルをファイルシステムから自動的に読み込みますが、以下のように ``prefix=path`` を使って :ref:`path redirects <import-remapping>` を提供することも可能です。
+コマンドラインコンパイラは、インポートされたファイルをファイルシステムから自動的に読み込みますが、以下のように ``prefix=path`` を使って :ref:`パスのリダイレクト <import-remapping>` をすることも可能です。
 
 .. code-block:: bash
 
     solc github.com/ethereum/dapp-bin/=/usr/local/lib/dapp-bin/ file.sol
 
-.. This essentially instructs the compiler to search for anything starting with
-.. ``github.com/ethereum/dapp-bin/`` under ``/usr/local/lib/dapp-bin``.
+.. This essentially instructs the compiler to search for anything starting with　``github.com/ethereum/dapp-bin/`` under ``/usr/local/lib/dapp-bin``.
 
 これは基本的に、 ``github.com/ethereum/dapp-bin/`` で始まるものを ``/usr/local/lib/dapp-bin`` の下で検索するようにコンパイラに指示するものです。
 
-.. When accessing the filesystem to search for imports, :ref:`paths that do not start with ./
-.. or ../ <direct-imports>` are treated as relative to the directories specified using
-.. ``--base-path`` and ``--include-path`` options (or the current working directory if base path is not specified).
+.. When accessing the filesystem to search for imports, :ref:`paths that do not start with ./ or ../ <direct-imports>` are treated as relative to the directories specified using ``--base-path`` and ``--include-path`` options (or the current working directory if base path is not specified).
 .. Furthermore, the part of the path added via these options will not appear in the contract metadata.
 
-インポートを検索するためにファイルシステムにアクセスする際、 :ref:`paths that do not start with ./ or ../ <direct-imports>` は ``--base-path`` および ``--include-path`` オプションで指定されたディレクトリ（ベースパスが指定されていない場合はカレントワーキングディレクトリ）からの相対パスとして扱われます。また、これらのオプションで追加されたパスの部分は、コントラクトのメタデータには表示されません。
+インポートを検索するためにファイルシステムにアクセスする際、 :ref:`./または../で始まらないパス <direct-imports>` は ``--base-path`` および ``--include-path`` オプションで指定されたディレクトリ（ベースパスが指定されていない場合はカレントワーキングディレクトリ）からの相対パスとして扱われます。
+また、これらのオプションで追加されたパスの部分は、コントラクトのメタデータには表示されません。
 
 .. For security reasons the compiler has :ref:`restrictions on what directories it can access <allowed-paths>`.
-.. Directories of source files specified on the command line and target paths of
-.. remappings are automatically allowed to be accessed by the file reader, but everything
-.. else is rejected by default.
-.. Additional paths (and their subdirectories) can be allowed via the
-.. ``--allow-paths /sample/path,/another/sample/path`` switch.
+.. Directories of source files specified on the command line and target paths of remappings are automatically allowed to be accessed by the file reader, but everything else is rejected by default.
+.. Additional paths (and their subdirectories) can be allowed via the ``--allow-paths /sample/path,/another/sample/path`` switch.
 .. Everything inside the path specified via ``--base-path`` is always allowed.
 
-セキュリティ上の理由から、コンパイラは :ref:`restrictions on what directories it can access <allowed-paths>` .コマンドラインで指定されたソースファイルのディレクトリと、リマッピングのターゲットパスは、ファイルリーダーからのアクセスが自動的に許可されますが、それ以外はデフォルトで拒否されます。 ``--allow-paths /sample/path,/another/sample/path``  スイッチで追加のパス（およびそのサブディレクトリ）を許可できます。 ``--base-path``  で指定されたパスの中のものは常に許可されます。
+セキュリティ上の理由から、コンパイラは :ref:`アクセスできるディレクトリに制限 <allowed-paths>` を設けています。
+コマンドラインで指定されたソースファイルのディレクトリと、リマッピングのターゲットパスは、ファイルリーダーからのアクセスが自動的に許可されますが、それ以外はデフォルトで拒否されます。
+``--allow-paths /sample/path,/another/sample/path``  スイッチで追加のパス（およびそのサブディレクトリ）を許可できます。
+``--base-path``  で指定されたパスの中のものは常に許可されます。
 
 .. The above is only a simplification of how the compiler handles import paths.
-.. For a detailed explanation with examples and discussion of corner cases please refer to the section on
-.. :ref:`path resolution <path-resolution>`.
+.. For a detailed explanation with examples and discussion of corner cases please refer to the section on :ref:`path resolution <path-resolution>`.
 
-上記は、コンパイラがインポートパスをどのように処理するかを簡単に説明したものです。例を挙げての詳細な説明やコーナーケースについては、 :ref:`path resolution <path-resolution>` のセクションを参照してください。
+上記は、コンパイラがインポートパスをどのように処理するかを簡単に説明したものです。
+例を交えた詳細な説明やコーナーケースについては、 :ref:`パスの解決 <path-resolution>` のセクションを参照してください。
 
 .. index:: ! linker, ! --link, ! --libraries
 .. _library-linking:
@@ -97,37 +96,50 @@ Solidityリポジトリのビルドターゲットの1つは、solidityのコマ
 ライブラリのリンク
 ------------------
 
-.. If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``. These are placeholders for the actual library addresses.
+.. If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``.
+.. These are placeholders for the actual library addresses.
 .. The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
-.. The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help
-.. identify which libraries the placeholders represent. Note that the fully qualified library name
-.. is the path of its source file and the library name separated by ``:``.
+.. The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help identify which libraries the placeholders represent.
+.. Note that the fully qualified library name is the path of its source file and the library name separated by ``:``.
 .. You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
 
-コントラクトで :ref:`ライブラリ <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` という形式の部分文字列が含まれていることに気づくでしょう。これは、実際のライブラリアドレスのプレースホルダーです。プレースホルダーは、完全修飾ライブラリ名の keccak256 ハッシュの 16 進数エンコーディングの 34 文字のプレフィックスです。また、バイトコードファイルには、プレースホルダーがどのライブラリを表しているかを識別するために、最後に ``// <placeholder> -> <fq library name>`` という形式の行が含まれます。完全修飾ライブラリ名は、そのソースファイルのパスとライブラリ名を ``:`` で区切ったものであることに注意してください。 ``solc`` をリンカーとして使用すると、これらの箇所にライブラリのアドレスを挿入してくれます。
+コントラクトで :ref:`ライブラリ <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` のような部分文字列が含まれていることに気づくでしょう。
+これは、実際のライブラリアドレスのプレースホルダーです。
+プレースホルダーは、完全に修飾されたライブラリ名のkeccak256ハッシュの16進数エンコーディングの34文字のプレフィックスです。
+また、バイトコードファイルには、プレースホルダーがどのライブラリを表しているかを識別するために、最後に ``// <placeholder> -> <fq library name>`` という形式の行が含まれます。
+完全に修飾されたライブラリ名は、そのソースファイルのパスとライブラリ名を ``:`` で区切ったものであることに注意してください。
+``solc`` をリンカーとして使用すると、これらの箇所にライブラリのアドレスを挿入してくれます。
 
 .. Either add ``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` to your command to provide an address for each library (use commas or spaces as separators) or store the string in a file (one library per line) and run ``solc`` using ``--libraries fileName``.
 
-``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` をコマンドに追加して各ライブラリのアドレスを指定するか（セパレータにはカンマまたはスペースを使用）、文字列をファイルに保存して（1行に1ライブラリ）、 ``--libraries fileName`` を使って ``solc`` を実行するかです。
+``--libraries "file.sol:Math=0x1234567890123456789012345678901234567890 file.sol:Heap=0xabCD567890123456789012345678901234567890"`` をコマンドに追加して各ライブラリのアドレスを指定するか（セパレータにはカンマまたはスペースを使用）、文字列をファイルに保存して（1行に1ライブラリ）、 ``--libraries fileName`` を使って ``solc`` を実行するかの2つの方法があります。
 
 .. .. note::
 
-..     Starting Solidity 0.8.1 accepts ``=`` as separator between library and address, and ``:`` as a separator is deprecated. It will be removed in the future. Currently ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` will work too.
+..     Starting Solidity 0.8.1 accepts ``=`` as separator between library and address, and ``:`` as a separator is deprecated.
 
 .. note::
 
-    Solidity 0.8.1より、ライブラリとアドレスの間のセパレータとして ``=`` を受け入れ、セパレータとしての ``:`` は非推奨となりました。将来的には削除される予定です。現在は ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` も動作します。
+    Solidity 0.8.1より、ライブラリとアドレスの間のセパレータとして ``=`` を受け入れ、セパレータとしての ``:`` は非推奨となりました。
+    将来は削除される予定です。
+    現在は ``--libraries "file.sol:Math:0x1234567890123456789012345678901234567890 file.sol:Heap:0xabCD567890123456789012345678901234567890"`` も動作します。
 
 .. index:: --standard-json, --base-path
 
-.. If ``solc`` is called with the option ``--standard-json``, it will expect a JSON input (as explained below) on the standard input, and return a JSON output on the standard output. This is the recommended interface for more complex and especially automated uses. The process will always terminate in a "success" state and report any errors via the JSON output.
+.. If ``solc`` is called with the option ``--standard-json``, it will expect a JSON input (as explained below) on the standard input, and return a JSON output on the standard output.
+.. This is the recommended interface for more complex and especially automated uses.
+.. The process will always terminate in a "success" state and report any errors via the JSON output.
 .. The option ``--base-path`` is also processed in standard-json mode.
 
-``solc`` が ``--standard-json`` オプション付きで呼び出された場合、標準入力に（以下に説明する）JSONの入力を受け取り、標準出力にJSONの出力を返します。これは、より複雑な用途、特に自動化された用途に推奨されるインターフェースです。プロセスは常に「成功」の状態で終了し、エラーがあればJSON出力で報告されます。オプション ``--base-path`` もstandard-jsonモードで処理されます。
+``solc`` が ``--standard-json`` オプション付きで呼び出された場合、標準入力に（以下に説明する）JSONの入力を受け取り、標準出力にJSONの出力を返します。
+これは、より複雑な用途、特に自動化された用途に推奨されるインターフェースです。
+プロセスは常に「成功」の状態で終了し、エラーがあればJSON出力で報告されます。
+オプション ``--base-path`` もstandard-jsonモードで処理されます。
 
 .. If ``solc`` is called with the option ``--link``, all input files are interpreted to be unlinked binaries (hex-encoded) in the ``__$53aea86b7d70b31448b230b20ae141a537$__``-format given above and are linked in-place (if the input is read from stdin, it is written to stdout). All options except ``--libraries`` are ignored (including ``-o``) in this case.
 
-``solc`` がオプション ``--link`` 付きで呼ばれた場合、すべての入力ファイルは、上記で与えられた ``__$53aea86b7d70b31448b230b20ae141a537$__`` 形式のリンクされていないバイナリ（16進コード）と解釈され、その場でリンクされます（入力が標準入力から読み込まれた場合は、標準出力に書き込まれます）。この場合、 ``--libraries`` 以外のオプションはすべて無視されます（ ``-o`` も含む）。
+``solc`` がオプション ``--link`` 付きで呼ばれた場合、すべての入力ファイルは、上記で与えられた ``__$53aea86b7d70b31448b230b20ae141a537$__`` 形式のリンクされていないバイナリ（16進コード）と解釈され、その場でリンクされます（入力が標準入力から読み込まれた場合は、標準出力に書き込まれます）。
+この場合、 ``--libraries`` 以外のオプションはすべて無視されます（ ``-o`` も含む）。
 
 .. .. warning::
 
@@ -142,9 +154,10 @@ Solidityリポジトリのビルドターゲットの1つは、solidityのコマ
 
 .. warning::
 
-    生成されたバイトコード上でライブラリを手動でリンクすることは、コントラクトのメタデータが更新されないため、推奨されません。メタデータにはコンパイル時に指定されたライブラリのリストが含まれており、バイトコードにはメタデータのハッシュが含まれているため、リンクを実行するタイミングによって異なるバイナリが得られることになります。
+    生成されたバイトコード上でライブラリを手動でリンクすることは、コントラクトのメタデータが更新されないため、推奨されません。
+    メタデータにはコンパイル時に指定されたライブラリのリストが含まれており、バイトコードにはメタデータのハッシュが含まれているため、リンクを実行するタイミングによって異なるバイナリが得られることになります。
 
-     コントラクトのコンパイル時にライブラリをリンクするようにコンパイラに依頼するには、 ``solc`` の ``--libraries`` オプションを使用するか、コンパイラへの標準JSONインターフェースを使用する場合は ``libraries`` キーを使用する必要があります。
+    コントラクトのコンパイル時にライブラリをリンクするようにコンパイラに依頼するには、 ``solc`` の ``--libraries`` オプションを使用するか、コンパイラへの標準JSONインターフェースを使用する場合は ``libraries`` キーを使用する必要があります。
 
 .. .. note::
 
@@ -156,7 +169,9 @@ Solidityリポジトリのビルドターゲットの1つは、solidityのコマ
 
 .. note::
 
-    ライブラリのプレースホルダーは、以前はライブラリのハッシュではなく、ライブラリ自体の完全修飾名でした。この形式は ``solc --link`` ではまだサポートされていますが、コンパイラでは出力されなくなりました。この変更は、完全修飾ライブラリ名の最初の36文字しか使用できないため、ライブラリ間の衝突の可能性を減らすために行われました。
+    ライブラリのプレースホルダーは、以前はライブラリのハッシュではなく、ライブラリ自体の完全修飾名でした。
+    この形式は ``solc --link`` ではまだサポートされていますが、コンパイラでは出力されなくなりました。
+    この変更は、完全修飾ライブラリ名の最初の36文字しか使用できないため、ライブラリ間の衝突の可能性を減らすために行われました。
 
 .. _evm-version:
 .. index:: ! EVM version, compile target
@@ -179,7 +194,8 @@ EVMのバージョンをターゲットに設定
 
 .. warning::
 
-   EVMのバージョンを間違えてコンパイルすると、間違った動作、おかしな動作、失敗することがあります。特にプライベートチェーンを実行している場合は、一致するEVMバージョンを使用するようにしてください。
+   EVMのバージョンを間違えてコンパイルすると、間違った動作、おかしな動作、失敗することがあります。
+特にプライベートチェーンを実行している場合は、一致するEVMバージョンを使用するようにしてください。
 
 .. On the command line, you can select the EVM version as follows:
 
@@ -210,7 +226,8 @@ EVMのバージョンをターゲットに設定
 .. Below is a list of target EVM versions and the compiler-relevant changes introduced
 .. at each version. Backward compatibility is not guaranteed between each version.
 
-以下は、対象となるEVMのバージョンと、各バージョンで導入されたコンパイラ関連の変更点の一覧です。各バージョン間の下位互換性は保証されていません。
+以下は、対象となるEVMのバージョンと、各バージョンで導入されたコンパイラ関連の変更点の一覧です。
+各バージョン間の下位互換性は保証されていません。
 
 - ``homestead``
 
@@ -300,7 +317,8 @@ EVMのバージョンをターゲットに設定
 .. more complex and automated setups is the so-called JSON-input-output interface.
 .. The same interface is provided by all distributions of the compiler.
 
-Solidity コンパイラとのインターフェースとして、特に複雑な自動化されたセットアップには、いわゆる JSON-input-output インターフェースを使用することをお勧めします。このインターフェースは、コンパイラのすべてのディストリビューションで提供されています。
+Solidity コンパイラとのインターフェースとして、特に複雑な自動化されたセットアップには、いわゆる JSON-input-output インターフェースを使用することをお勧めします。
+このインターフェースは、コンパイラのすべてのディストリビューションで提供されています。
 
 .. The fields are generally subject to change,
 .. some are optional (as noted), but we try to only make backwards compatible changes.
@@ -311,12 +329,15 @@ Solidity コンパイラとのインターフェースとして、特に複雑�
 .. The standard error output is not used and the process will always terminate in a "success" state, even
 .. if there were errors. Errors are always reported as part of the JSON output.
 
-コンパイラAPIは、JSON形式の入力を期待し、コンパイル結果をJSON形式の出力で出力します。標準のエラー出力は使用されず、エラーがあった場合でも、常に「成功」の状態で処理が終了します。エラーは常にJSON出力の一部として報告されます。
+コンパイラAPIは、JSON形式の入力を期待し、コンパイル結果をJSON形式の出力で出力します。
+標準のエラー出力は使用されず、エラーがあった場合でも、常に「成功」の状態で処理が終了します。
+エラーは常にJSON出力の一部として報告されます。
 
 .. The following subsections describe the format through an example.
 .. Comments are of course not permitted and used here only for explanatory purposes.
 
-以下のサブセクションでは、例を挙げてフォーマットを説明します。もちろん、コメントは許可されておらず、ここでは説明のためにのみ使用されています。
+以下のサブセクションでは、例を挙げてフォーマットを説明します。
+もちろん、コメントは許可されておらず、ここでは説明のためにのみ使用されています。
 
 入力の説明
 ----------
@@ -778,22 +799,18 @@ Solidity コンパイラとのインターフェースとして、特に複雑�
 8. ``UnimplementedFeatureError`` : この機能はコンパイラではサポートされていませんが、将来のバージョンではサポートされる予定です。
 
 .. 9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
-.. 1
 
-9. ``InternalCompilerError`` : コンパイラの内部バグが発生しました。1
+9. ``InternalCompilerError`` : コンパイラの内部バグが発生しました。
 
 .. 10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
-.. 1
 
-10. ``Exception`` : コンパイル時に不明な障害が発生しました - これは問題として報告する必要があります。1
+10. ``Exception`` : コンパイル時に不明な障害が発生しました - これは問題として報告する必要があります。
 
 .. 11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
-.. 1
 
-11. ``CompilerError`` : コンパイラースタックの無効な使用 - これは問題として報告する必要があります。1
+11. ``CompilerError`` : コンパイラースタックの無効な使用 - これは問題として報告する必要があります。
 
 .. 12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
-.. 1
 
 12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。
 

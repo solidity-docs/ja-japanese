@@ -13,7 +13,8 @@ Ethereumでプログラマティックにコントラクトを作成する方法
 
 コントラクトが作成されると、その :ref:`コンストラクタ <constructor>` （ ``constructor`` キーワードで宣言された関数）が一度だけ実行されます。
 
-コンストラクタはオプションです。コンストラクタは1つしか許可されていないので、オーバーロードはサポートされていません。
+コンストラクタはオプションです。
+ココンストラクタは1つしか許可されていないので、オーバーロードはサポートされていません。
 
 .. After the constructor has executed, the final code of the contract is stored on the
 .. blockchain. This code includes all public and external functions and all functions
