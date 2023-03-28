@@ -15,7 +15,7 @@
 .. You may read more about this on the :ref:`security_considerations` page.
 
 エフェクト後の送金方法としては、出金パターンの使用が推奨されます。
-エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクト ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
+エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクトな ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
 これについては、 :ref:`security_considerations` のページで詳しく説明しています。
 
 .. The following is an example of the withdrawal pattern in practice in a contract where the goal is to send the most money to the contract in order to become the "richest", inspired by `King of the Ether <https://www.kingoftheether.com/>`_.
@@ -54,8 +54,7 @@
 
         function withdraw() public {
             uint amount = pendingWithdrawals[msg.sender];
-            // Remember to zero the pending refund before
-            // sending to prevent re-entrancy attacks
+            // Reentrancy攻撃を防ぐため、送金前にpendingしている返金の額をゼロにすることを忘れないでください
             pendingWithdrawals[msg.sender] = 0;
             payable(msg.sender).transfer(amount);
         }
@@ -104,7 +103,7 @@
 
 .. In contrast, if you use the "withdraw" pattern from the first example, the attacker can only cause his or her own withdraw to fail and not the rest of the contract's workings.
 
-一方、最初の例のwithdrawパターンを使用した場合、攻撃者は自分の出金が失敗するだけで、コントラクトの残りの部分の働きを引き起こすことはできません。
+一方、最初の例の出金パターンを使用した場合、攻撃者は自分の出金が失敗するだけで、コントラクトの残りの部分の働きを引き起こすことはできません。
 
 .. index:: access;restricting
 
@@ -113,32 +112,24 @@
 ************
 
 .. Restricting access is a common pattern for contracts.
-.. Note that you can never restrict any human or computer
-.. from reading the content of your transactions or
-.. your contract's state. You can make it a bit harder
-.. by using encryption, but if your contract is supposed
-.. to read the data, so will everyone else.
+.. Note that you can never restrict any human or computer from reading the content of your transactions or your contract's state.
+.. You can make it a bit harder by using encryption, but if your contract is supposed to read the data, so will everyone else.
 
 アクセスを制限することはコントラクトの一般的なパターンです。
 トランザクションの内容やコントラクトの状態を人間やコンピュータに読まれないように制限できないことに注意してください。
 暗号化することで多少難しくできますが、あなたのコントラクトがデータを読めることになっていれば、他の人も読めてしまいます。
 
-.. You can restrict read access to your contract's state
-.. by **other contracts**. That is actually the default
-.. unless you declare your state variables ``public``.
-
-コントラクトの状態に対する読み取りアクセスを **other contracts** で制限できます。
-これは、状態変数を ``public`` で宣言しない限り、実際にはデフォルトです。
+コントラクトの状態を **他のコントラクト** が読み取るアクセスを制限できます。
+状態変数を ``public`` で宣言しない限り、これはデフォルトの動作です。
 
 .. Furthermore, you can restrict who can make modifications to your contract's state or call your contract's functions and this is what this section is about.
 
-さらに、コントラクトの状態を変更したり、コントラクトの関数を呼び出すことができる人を制限できますが、これがこのセクションの目的です。
+さらに、コントラクトの状態を変更したり、コントラクトの関数を呼び出すことができる人を制限できます。
+これがこのセクションの目的です。
 
 .. index:: function;modifier
 
-.. The use of **function modifiers** makes these restrictions highly readable.
-
-**関数修飾子** を使用することで、これらの制限を非常に読みやすくしています。
+**関数修飾子** を使用することで、これらの制限が非常に読みやすくなります。
 
 .. code-block:: solidity
     :force:
@@ -223,9 +214,7 @@
         }
     }
 
-.. A more specialised way in which access to function
-.. calls can be restricted will be discussed
-.. in the next example.
+.. A more specialised way in which access to function calls can be restricted will be discussed in the next example.
 
 関数呼び出しへのアクセスを制限する、より特殊な方法については、次の例で説明します。
 
@@ -282,14 +271,9 @@
 
 ..     **Modifier May be Skipped**.
 ..     This only applies to Solidity before version 0.4.0:
-..     Since modifiers are applied by simply replacing
-..     code and not by using a function call,
-..     the code in the transitionNext modifier
-..     can be skipped if the function itself uses
-..     return. If you want to do that, make sure
-..     to call nextStage manually from those functions.
-..     Starting with version 0.4.0, modifier code
-..     will run even if the function explicitly returns.
+..     Since modifiers are applied by simply replacing code and not by using a function call, the code in the transitionNext modifier can be skipped if the function itself uses return.
+..     If you want to do that, make sure to call nextStage manually from those functions.
+..     Starting with version 0.4.0, modifier code will run even if the function explicitly returns.
 
 .. note::
 
