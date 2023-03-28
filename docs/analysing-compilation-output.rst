@@ -193,9 +193,9 @@
 
 ``asm``  の出力は、作成/コンストラクタのコードで始まることに注意してください。
 配置コードは、サブオブジェクトの一部として提供されます（上記の例では、サブオブジェクト ``sub_0`` の一部です）。
- ``auxdata`` フィールドはコントラクト :ref:`metadata <encoding-of-the-metadata-hash-in-the-bytecode>` に対応しています。
+``auxdata`` フィールドはコントラクト :ref:`metadata <encoding-of-the-metadata-hash-in-the-bytecode>` に対応しています。
 アセンブリ出力のコメントは、ソースの位置を示しています。
- ``#utility.yul`` は、フラグ ``--combined-json generated-sources,generated-sources-runtime`` を使用して取得できるユーティリティー関数の内部生成ファイルであることに注意してください。
+``#utility.yul`` は、フラグ ``--combined-json generated-sources,generated-sources-runtime`` を使用して取得できるユーティリティー関数の内部生成ファイルであることに注意してください。
 
 .. Similarly, the optimized assembly can be obtained with the command: ``solc --optimize --asm
 .. contract.sol``. Often times, it is interesting to see if two different sources in Solidity result in
