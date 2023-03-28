@@ -24,7 +24,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 .. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behaviour anyway.
 
-いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかな意味上の違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。
+いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかなセマンティックな違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。
 このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
 
 .. Semantic Only Changes
@@ -37,26 +37,47 @@ IRベースのコードジェネレーターを導入したのは、コード生
 このセクションでは、セマンティックのみの変更点をリストアップしています。
 そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
-- The order of state variable initialization has changed in case of inheritance.
+.. - The order of state variable initialization has changed in case of inheritance.
 
-  The order used to be:
+..   The order used to be:
 
-  - All state variables are zero-initialized at the beginning.
-  - Evaluate base constructor arguments from most derived to most base contract.
-  - Initialize all state variables in the whole inheritance hierarchy from most base to most derived.
-  - Run the constructor, if present, for all contracts in the linearized hierarchy from most base to most derived.
+..   - All state variables are zero-initialized at the beginning.
+..   - Evaluate base constructor arguments from most derived to most base contract.
+..   - Initialize all state variables in the whole inheritance hierarchy from most base to most derived.
+..   - Run the constructor, if present, for all contracts in the linearized hierarchy from most base to most derived.
 
-  New order:
+..   New order:
 
-  - All state variables are zero-initialized at the beginning.
-  - Evaluate base constructor arguments from most derived to most base contract.
-  - For every contract in order from most base to most derived in the linearized hierarchy:
+..   - All state variables are zero-initialized at the beginning.
+..   - Evaluate base constructor arguments from most derived to most base contract.
+..   - For every contract in order from most base to most derived in the linearized hierarchy:
 
-      1. Initialize state variables.
-      2. Run the constructor (if present).
+..       1. Initialize state variables.
+..       2. Run the constructor (if present).
 
-  This causes differences in contracts where the initial value of a state
-  variable relies on the result of the constructor in another contract:
+..   This causes differences in contracts where the initial value of a state
+..   variable relies on the result of the constructor in another contract:
+
+- 継承した場合の状態変数の初期化の順序が変更されました。
+
+  以前の順序:
+
+  - すべての状態変数は、最初にゼロ初期化されます。
+  - ベースコンストラクタの引数を、最も派生したものから最もベースとなるコントラクトまで評価します。
+  - 最も基本的なものから最も派生的なものまで、継承階層全体のすべての状態変数を初期化します。
+  - 最も基本的なものから最も派生したものまで、線形化された階層内のすべてのコントラクトについて、コンストラクタが存在する場合はそれを実行します。
+
+  新しい順序:
+
+  - すべての状態変数が最初にゼロ初期化されます。
+  - ベースコンストラクタの引数を、最も派生したコントラクトから最もベースとなるコントラクトまで評価します。
+  - 線形化された階層で、最も基本から最も派生した順に、すべてのコントラクトについて:
+
+      1. 状態変数を初期化します。
+      2. コンストラクタを実行します（存在する場合）。
+
+  このため、コントラクトで状態変数の初期値が異なる場合があります。
+  変数は、別のコントラクトのコンストラクタの結果に依存しています:
 
   .. code-block:: solidity
 
@@ -76,8 +97,13 @@ IRベースのコードジェネレーターを導入したのは、コード生
           uint public y = f();
       }
 
-  Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
-  With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
+  .. Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
+  .. With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
+
+  これは、最初に状態変数を初期化することに起因しています: まず、 ``x`` は0に設定され、 ``y`` を初期化する際に、 ``f()`` は0を返し、 ``y`` も0になる。
+  新しいルールでは、 ``y`` は 42 に設定されます。
+  まず ``x`` を 0 に初期化し、次に A のコンストラクタを呼び出して ``x`` を 42 に設定します。
+  最後に ``y`` を初期化する際に ``f()`` が 42 を返すので ``y`` は 42 になります。
 
 .. - When storage structs are deleted, every storage slot that contains a member of the struct is set to zero entirely.
      Formerly, padding space was left untouched.
@@ -106,17 +132,23 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  We have the same behavior for implicit delete, for example when array of structs is shortened.
+  .. We have the same behavior for implicit delete, for example when array of structs is shortened.
 
-- Function modifiers are implemented in a slightly different way regarding function parameters and return variables.
-  This especially has an effect if the placeholder ``_;`` is evaluated multiple times in a modifier.
-  In the old code generator, each function parameter and return variable has a fixed slot on the stack.
-  If the function is run multiple times because ``_;`` is used multiple times or used in a loop, then a
-  change to the function parameter's or return variable's value is visible in the next execution of the function.
-  The new code generator implements modifiers using actual functions and passes function parameters on.
-  This means that multiple evaluations of a function's body will get the same values for the parameters,
-  and the effect on return variables is that they are reset to their default (zero) value for each
-  execution.
+  暗黙の削除は、例えば構造体の配列が短くなったときにも同じ動作をします。
+
+.. - Function modifiers are implemented in a slightly different way regarding function parameters and return variables.
+..   This especially has an effect if the placeholder ``_;`` is evaluated multiple times in a modifier.
+..   In the old code generator, each function parameter and return variable has a fixed slot on the stack.
+..   If the function is run multiple times because ``_;`` is used multiple times or used in a loop, then a change to the function parameter's or return variable's value is visible in the next execution of the function.
+..   The new code generator implements modifiers using actual functions and passes function parameters on.
+..   This means that multiple evaluations of a function's body will get the same values for the parameters, and the effect on return variables is that they are reset to their default (zero) value for each execution.
+
+- 関数修飾子は、関数のパラメータと戻り変数に関して、若干異なる方法で実装されています。
+  これは特に、プレースホルダー ``_;`` が修飾子の中で複数回評価される場合に影響を及ぼします。
+  古いコードジェネレーターでは、各関数パラメータとリターン変数はスタック上に固定されたスロットを持っています。
+  もし ``_;`` が複数回使われたり、ループ内で使われたりして関数が複数回実行されると、関数パラメータの値やリターン変数の値の変化は、関数の次の実行で見えるようになります。
+  新しいコードジェネレータでは、実際の関数を使用して修飾子を実装し、関数パラメータを渡します。
+  つまり、関数本体を複数回評価しても、パラメータは同じ値になり、リターン変数は実行ごとにデフォルト（ゼロ）値にリセットされるという効果があります。
 
   .. code-block:: solidity
 
@@ -129,8 +161,9 @@ IRベースのコードジェネレーターを導入したのは、コード生
           modifier mod() { _; _; }
       }
 
-  If you execute ``f(0)`` in the old code generator, it will return ``1``, while
-  it will return ``0`` when using the new code generator.
+  .. If you execute ``f(0)`` in the old code generator, it will return ``1``, while it will return ``0`` when using the new code generator.
+
+  古いコードジェネレータで ``f(0)`` を実行すると ``1`` が返され、新しいコードジェネレータを使うと ``0`` が返されます。
 
   .. code-block:: solidity
 
@@ -152,15 +185,19 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  The function ``C.foo()`` returns the following values:
+  .. The function ``C.foo()`` returns the following values:
 
-  - Old code generator: ``1`` as the return variable is initialized to ``0`` only once before the first ``_;``
-    evaluation and then overwritten by the ``return 1;``. It is not initialized again for the second ``_;``
-    evaluation and ``foo()`` does not explicitly assign it either (due to ``active == false``), thus it keeps
-    its first value.
+  .. - Old code generator: ``1`` as the return variable is initialized to ``0`` only once before the first ``_;`` evaluation and then overwritten by the ``return 1;``.
+  ..   It is not initialized again for the second ``_;`` evaluation and ``foo()`` does not explicitly assign it either (due to ``active == false``), thus it keeps its first value.
 
-  - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before
-    each ``_;`` evaluation.
+  .. - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before each ``_;`` evaluation.
+    
+  関数 ``C.foo()`` は以下の値を返します：
+
+  - 古いコードジェネレータ: 戻り値の変数である ``1`` は、最初の ``_;`` 評価の前に一度だけ ``0`` に初期化され、その後 ``return 1;`` によって上書きされます。
+    2回目の ``_;`` 評価では再び初期化されず、 ``foo()`` も明示的に代入しないので（ ``active == false`` のため）、最初の値を保持します。
+
+  - 新しいコードジェネレータ: ``0`` は、リターンパラメータを含むすべてのパラメータが、各 ``_;`` 評価の前に再初期化されるからです。
 
   .. index:: ! evaluation order; expression
 
@@ -169,6 +206,12 @@ IRベースのコードジェネレーターを導入したのは、コード生
 ..   This can lead to semantic differences.
 
 ..   For example:
+
+- 旧コードジェネレータの場合、式の評価順は不定です。
+  新しいコードジェネレータでは、ソース順（左から右）に評価するようにしていますが、保証はしません。
+  このため、意味上の差異が生じることがあります。
+
+  例えば、以下のようなものです:
 
   .. code-block:: solidity
 
@@ -180,17 +223,25 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  The function ``preincr_u8(1)`` returns the following values:
+  .. The function ``preincr_u8(1)`` returns the following values:
 
-  - Old code generator: 3 (``1 + 2``) but the return value is unspecified in general
+  .. - Old code generator: 3 (``1 + 2``) but the return value is unspecified in general
 
-  - New code generator: 4 (``2 + 2``) but the return value is not guaranteed
+  .. - New code generator: 4 (``2 + 2``) but the return value is not guaranteed
+
+  関数 ``preincr_u8(1)`` は、以下の値を返します:
+
+  - 古いコード生成器です: 3 (``1 + 2``)。ただし、一般に戻り値は不特定です。
+
+  - 新しいコードジェネレーターです: 4 (``2 + 2``)。ただし、戻り値は保証されません。
 
   .. index:: ! evaluation order; function arguments
 
-  On the other hand, function argument expressions are evaluated in the same order
-  by both code generators with the exception of the global functions ``addmod`` and ``mulmod``.
-  For example:
+  .. On the other hand, function argument expressions are evaluated in the same order by both code generators with the exception of the global functions ``addmod`` and ``mulmod``.
+  .. For example:
+
+  一方、関数の引数の式は、グローバル関数 ``addmod`` と ``mulmod`` を除いて、両方のコードジェネレータで同じ順序で評価されます。
+  例えば、以下のようになります:
 
   .. code-block:: solidity
 
@@ -205,15 +256,23 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  The function ``g(1, 2)`` returns the following values:
+  .. The function ``g(1, 2)`` returns the following values:
 
-  - Old code generator: ``10`` (``add(2 + 3, 2 + 3)``) but the return value is unspecified in general
+  .. - Old code generator: ``10`` (``add(2 + 3, 2 + 3)``) but the return value is unspecified in general
 
-  - New code generator: ``10`` but the return value is not guaranteed
+  .. - New code generator: ``10`` but the return value is not guaranteed
 
-  The arguments to the global functions ``addmod`` and ``mulmod`` are evaluated right-to-left by the old code generator
-  and left-to-right by the new code generator.
-  For example:
+  .. The arguments to the global functions ``addmod`` and ``mulmod`` are evaluated right-to-left by the old code generator and left-to-right by the new code generator.
+  .. For example:
+
+  関数 ``g(1, 2)`` は以下の値を返します:
+
+  - 古いコードジェネレータ： ``10`` (``add(2 + 3, 2 + 3)``)。ただし、一般に戻り値は不特定です。
+
+  - 新しいコードジェネレーター： ``10`` 。ただし、戻り値は保証されません。
+
+  グローバル関数 ``addmod`` と ``mulmod`` の引数は、古いコードジェネレータでは右から左に、新しいコードジェネレータでは左から右に評価されます。
+  例えば、以下のようになります:
 
   .. code-block:: solidity
 
@@ -229,18 +288,29 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  The function ``f()`` returns the following values:
+  .. The function ``f()`` returns the following values:
 
-  - Old code generator: ``aMod = 0`` and ``mMod = 2``
+  .. - Old code generator: ``aMod = 0`` and ``mMod = 2``
 
-  - New code generator: ``aMod = 4`` and ``mMod = 0``
+  .. - New code generator: ``aMod = 4`` and ``mMod = 0``
 
-.. - The new code generator imposes a hard limit of ``type(uint64).max``
-..   (``0xffffffffffffffff``) for the free memory pointer. Allocations that would
-..   increase its value beyond this limit revert. The old code generator does not
-..   have this limit.
+  関数 ``f()`` は以下の値を返します:
+
+  - 旧コードジェネレーター: ``aMod = 0`` と ``mMod = 2`` です。
+
+  - 新しいコードジェネレーター: ``aMod = 4`` と ``mMod = 0`` です。
+
+.. - The new code generator imposes a hard limit of ``type(uint64).max`` (``0xffffffffffffffff``) for the free memory pointer.
+     Allocations that would increase its value beyond this limit revert.
+     The old code generator does not have this limit.
 
 ..   For example:
+
+- 新しいコードジェネレーターでは、空きメモリポインタの上限が ``type(uint64).max`` (``0xffffffffffff``) に設定されました。
+  この制限を越えて値を増やすような割り当ては、リバートされます。
+  古いコードジェネレーターには、この制限はありません。
+
+  例えば:
 
   .. code-block:: solidity
       :force:
@@ -258,11 +328,17 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  The function `f()` behaves as follows:
+  .. The function `f()` behaves as follows:
 
-  - Old code generator: runs out of gas while zeroing the array contents after the large memory allocation
+  .. - Old code generator: runs out of gas while zeroing the array contents after the large memory allocation
 
-  - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
+  .. - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
+
+  関数 `f()` は以下のような挙動をします：
+
+  - 古いコードジェネレータ: 大きなメモリ割り当ての後、配列の内容をゼロにするときにガス欠になります。
+
+  - 新しいコードジェネレータ: フリーメモリポインタのオーバーフローによりリバートします（ガス欠はしない）。
 
 .. Internals
 
@@ -276,32 +352,19 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 .. index:: function pointers
 
-.. The old code generator uses code offsets or tags for values of internal function pointers. This is especially complicated since
-.. these offsets are different at construction time and after deployment and the values can cross this border via storage.
+.. The old code generator uses code offsets or tags for values of internal function pointers.
+.. This is especially complicated since these offsets are different at construction time and after deployment and the values can cross this border via storage.
 .. Because of that, both offsets are encoded at construction time into the same value (into different bytes).
 
-これにより、例えば、一部のコントラクトに違いが生じます。
+古いコードジェネレータは、内部関数ポインタの値にコードオフセットまたはタグを使用しています。
+特に、これらのオフセットは構築時とデプロイ後では異なり、値はストレージを介してこの境界を越えることができるので、これは複雑です。
+そのため、構築時には両方のオフセットが同じ値に（異なるバイトに）エンコードされます。
 
-- メモリからストレージへの ``bytes`` 配列のコピーは、異なる方法で実装されています。   従来のコードジェネレータは常にワード全体をコピーしていましたが、新しいコードジェネレータではバイト配列の最後をカットしています。以前の動作では、ダーティなデータが配列の終わりの後（ただし、同じストレージスロット内）にコピーされることがありました。   これにより、例えばいくつかのコントラクトに違いが生じます。
+.. In the new code generator, function pointers use internal IDs that are allocated in sequence.
+.. Since calls via jumps are not possible, calls through function pointers always have to use an internal dispatch function that uses the ``switch`` statement to select the right function.
 
-- 旧コードジェネレータでは、式の評価順序は不定です。   新しいコードジェネレータでは、ソースオーダー（左から右）で評価するようにしていますが、それを保証するものではありません。
-  このため、意味的な違いが生じることがあります。
-
-  例えば、以下のように。
-
-- 新しいコードジェネレータでは、フリーメモリポインタに ``type(uint64).max`` （ ``0xffffffffffffffff`` ）というハードリミットが設定されています。
-  この制限を超えて値を増やすような割り当てはリバートします。
-  古いコードジェネレータにはこの制限はありません。
-
-  例えば、以下のように。
-
-古いコードジェネレータでは、内部関数ポインタの値にコードオフセットやタグを使用しています。これらのオフセットはコンストラクション時とデプロイ後で異なり、値はストレージを介してこの境界を越えることができるため、特に複雑になっています。そのため、構築時には両方のオフセットを同じ値に（異なるバイトに）エンコードします。
-
-.. In the new code generator, function pointers use internal IDs that are allocated in sequence. Since calls via jumps are not possible,
-.. calls through function pointers always have to use an internal dispatch function that uses the ``switch`` statement to select
-.. the right function.
-
-新しいコードジェネレータでは、関数ポインタは、順番に割り当てられる内部IDを使用します。ジャンプによる呼び出しができないため、関数ポインタによる呼び出しは、常に ``switch`` 文を使って正しい関数を選択する内部ディスパッチ関数を使用する必要があります。
+新しいコードジェネレータでは、関数ポインタは、順番に割り当てられる内部IDを使用します。
+ジャンプによる呼び出しができないため、関数ポインタによる呼び出しは、常に ``switch`` 文を使って正しい関数を選択する内部ディスパッチ関数を使用する必要があります。
 
 .. The ID ``0`` is reserved for uninitialized function pointers which then cause a panic in the dispatch function when called.
 
@@ -310,7 +373,8 @@ ID  ``0`` は、初期化されていない関数ポインタ用に予約され�
 .. In the old code generator, internal function pointers are initialized with a special function that always causes a panic.
 .. This causes a storage write at construction time for internal function pointers in storage.
 
-古いコードジェネレータでは、内部関数ポインタは、常にパニックを起こす特別な関数で初期化されます。このため、ストレージ内の内部関数ポインタの構築時にストレージへの書き込みが発生します。
+古いコードジェネレータでは、内部関数ポインタは、常にパニックを起こす特別な関数で初期化されます。
+このため、ストレージ内の内部関数ポインタの構築時にストレージへの書き込みが発生します。
 
 クリーンアップ
 --------------
@@ -321,7 +385,9 @@ ID  ``0`` は、初期化されていない関数ポインタ用に予約され�
 .. The new code generator performs cleanup after any operation that can result in dirty bits.
 .. The hope is that the optimizer will be powerful enough to eliminate redundant cleanup operations.
 
-古いコードジェネレータは、ダーティビットの値によって結果が影響を受ける可能性のある操作の前にのみ、クリーンアップを行います。新しいコードジェネレータでは、ダーティビットが発生する可能性のある操作の後にクリーンアップを行います。オプティマイザが強力になり、冗長なクリーンアップ処理がなくなることを期待しています。
+古いコードジェネレータは、ダーティビットの値によって結果が影響を受ける可能性のある操作の前にのみ、クリーンアップを行います。
+新しいコードジェネレータでは、ダーティビットが発生する可能性のある操作の後にクリーンアップを行います。
+オプティマイザが強力になり、冗長なクリーンアップ処理がなくなることを期待しています。
 
 例えば、以下のようになります。
 
@@ -341,22 +407,14 @@ ID  ``0`` は、初期化されていない関数ポインタ用に予約され�
         }
     }
 
-.. The function ``f(1)`` returns the following values:
-
 関数 ``f(1)`` は以下の値を返します。
 
-.. - Old code generator: (``fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe``, ``00000000000000000000000000000000000000000000000000000000000000fe``)
-
-- 古いコードジェネレータ。( ``fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`` ,  ``00000000000000000000000000000000000000000000000000000000000000fe`` )
-
-.. - New code generator: (``00000000000000000000000000000000000000000000000000000000000000fe``, ``00000000000000000000000000000000000000000000000000000000000000fe``)
-
-- 新しいコードジェネレータです。( ``00000000000000000000000000000000000000000000000000000000000000fe`` ,  ``00000000000000000000000000000000000000000000000000000000000000fe`` )
+- 古いコードジェネレータ: ( ``fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`` ,  ``00000000000000000000000000000000000000000000000000000000000000fe`` )
+- 新しいコードジェネレータ: ( ``00000000000000000000000000000000000000000000000000000000000000fe`` ,  ``00000000000000000000000000000000000000000000000000000000000000fe`` )
 
 .. Note that, unlike the new code generator, the old code generator does not perform a cleanup after the bit-not assignment (``a = ~a``).
 .. This results in different values being assigned (within the inline assembly block) to return value ``r1`` between the old and new code generators.
 .. However, both code generators perform a cleanup before the new value of ``a`` is assigned to ``r2``.
-.. 
 
 なお、新コードジェネレータとは異なり、旧コードジェネレータでは、ビットの否定（not）の割り当て（ ``a = ~a`` ）の後にクリーンアップを行いません。
 このため、新旧のコードジェネレータでは、インラインアセンブリブロック内で戻り値 ``r1`` に割り当てられる値が異なります。
