@@ -711,25 +711,26 @@ Unicodeリテラル
 関数型 ``A`` は、それらのパラメータ型が同一であり、戻り値の型が同一であり、それらの内部/外部プロパティが同一であり、 ``A`` の状態の変更可能性が ``B`` の状態の変更可能性よりも制限されている場合に限り、関数型 ``B`` に暗黙的に変換可能です。具体的には
 
 -  ``pure`` 関数を ``view`` 、 ``non-payable`` 関数に変換可能
-
 -  ``view`` 関数から ``non-payable`` 関数への変換が可能
-
 -  ``payable`` 関数から ``non-payable`` 関数への変換が可能
 
 それ以外の関数型間の変換はできません。
 
+.. To clarify, rejecting ether is more restrictive than not rejecting ether.
+.. This means you can override a payable function with a non-payable but not the other way around.
+
 ``payable`` と ``non-payable`` のルールは少しわかりにくいかもしれませんが、要するにある関数が ``payable`` であれば、ゼロのEtherの支払いも受け入れるということなので、 ``non-payable`` でもあるということです。
 一方、 ``non-payable`` 関数は送られてきたEtherを拒否しますので、 ``non-payable`` 関数を ``payable`` 関数に変換できません。
-To clarify, rejecting ether is more restrictive than not rejecting ether.
-This means you can override a payable function with a non-payable but not the
-other way around.
+明確にするために、etherを拒否することは、etherを拒否しないことよりも制限されます。
+つまり、payableな関数をnon-payableな関数で上書きすることは可能ですが、その逆はできません。
 
-Additionally, When you define a ``non-payable`` function pointer,
-the compiler does not enforce that the pointed function will actually reject ether.
-Instead, it enforces that the function pointer is never used to send ether.
-Which makes it possible to assign a ``payable`` function pointer to a ``non-payable``
-function pointer ensuring both types behave the same way, i.e, both cannot be used
-to send ether.
+.. Additionally, When you define a ``non-payable`` function pointer, the compiler does not enforce that the pointed function will actually reject ether.
+.. Instead, it enforces that the function pointer is never used to send ether.
+.. Which makes it possible to assign a ``payable`` function pointer to a ``non-payable`` function pointer ensuring both types behave the same way, i.e, both cannot be used to send ether.
+
+さらに、 ``non-payable`` な関数ポインタを定義した場合、コンパイラは指定した関数が実際にEtherを拒否することを強制するわけではありません。
+その代わりに、その関数ポインタは決して ether を送るために使われないことを強制します。
+そのため、 ``payable`` な関数ポインタを ``non-payable`` な関数ポインタに割り当てることで、両方の型が同じように動作する、つまり、どちらもEtherを送信するために使用できないことを保証することが可能になります。
 
 関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
 

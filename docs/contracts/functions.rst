@@ -122,7 +122,8 @@
 .. are initialized with their :ref:`default value <default-value>` and have that
 .. value until they are (re-)assigned.
 
-リターン変数の名前は省略可能です。リターン変数は、他のローカル変数と同様に使用でき、 :ref:`default value <default-value>` で初期化され、（再）割り当てされるまでその値を保持します。
+リターン変数の名前は省略可能です。
+リターン変数は、他のローカル変数と同様に使用でき、 :ref:`default value <default-value>` で初期化され、（再）割り当てされるまでその値を保持します。
 
 .. You can either explicitly assign to return variables and
 .. then leave the function as above,
@@ -413,7 +414,8 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
 .. room to perform other operations except basic logging. The following operations
 .. will consume more gas than the 2300 gas stipend:
 
-最悪の場合、 ``receive`` 関数は2300のガスが使えることに頼るしかなく（ ``send`` や ``transfer`` を使用した場合など）、基本的なロギング以外の操作を行う余裕はありません。以下のような操作は、2300ガスの規定値よりも多くのガスを消費します。
+最悪の場合、 ``receive`` 関数は2300のガスが使えることに頼るしかなく（ ``send`` や ``transfer`` を使用した場合など）、基本的なロギング以外の操作を行う余裕はありません。
+以下のような操作は、2300ガスの規定値よりも多くのガスを消費します。
 
 .. - Writing to storage
 .. - Creating a contract
@@ -505,7 +507,9 @@ Fallback関数
 .. (equal to ``msg.data``) and can return data in ``output``. The returned data will not be
 .. ABI-encoded. Instead it will be returned without modifications (not even padding).
 
-パラメータ付きバージョンを使用した場合、 ``input`` にはコントラクトに送信された完全なデータ（ ``msg.data`` に等しい）が含まれ、 ``output`` でデータを返すことができます。返されたデータはABIエンコードされません。代わりに、修正なしで（パディングさえもしない）返されます。
+パラメータ付きバージョンを使用した場合、 ``input`` にはコントラクトに送信された完全なデータ（ ``msg.data`` に等しい）が含まれ、 ``output`` でデータを返すことができます。
+返されたデータはABIエンコードされません。
+代わりに、修正なしで（パディングさえもしない）返されます。
 
 .. In the worst case, if a payable fallback function is also used in
 .. place of a receive function, it can only rely on 2300 gas being
@@ -553,7 +557,8 @@ Fallback関数
     contract Test {
         uint x;
         // この関数はこのコントラクトに送られるすべてのメッセージに対して呼び出されます（他の関数は存在しません）。
-        // このコントラクトにEtherを送信すると例外が発生します。なぜなら、fallback関数が `payable` 修飾子を持たないからです。
+        // このコントラクトにEtherを送信すると例外が発生します。
+        // なぜなら、fallback関数が `payable` 修飾子を持たないからです。
         fallback() external { x = 1; }
     }
 

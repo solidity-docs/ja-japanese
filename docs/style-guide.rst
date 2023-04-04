@@ -9,69 +9,71 @@
 ******************
 
 .. This guide is intended to provide coding conventions for writing Solidity code.
-.. This guide should be thought of as an evolving document that will change over
-.. time as useful conventions are found and old conventions are rendered obsolete.
+.. This guide should be thought of as an evolving document that will change over time as useful conventions are found and old conventions are rendered obsolete.
 
-このガイドは、Solidityのコードを書くためのコーディング規約を提供することを目的としています。このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化した文書と考えるべきです。
+このガイドは、Solidityのコードを書くためのコーディング規約を提供することを目的としています。
+このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化する文書として考えるべきです。
 
-.. Many projects will implement their own style guides.  In the event of
-.. conflicts, project specific style guides take precedence.
+.. Many projects will implement their own style guides.
+.. In the event of conflicts, project specific style guides take precedence.
 
-多くのプロジェクトでは、独自のスタイルガイドを導入しています。  矛盾が生じた場合は、プロジェクト独自のスタイルガイドが優先されます。
+多くのプロジェクトでは、独自のスタイルガイドを導入しています。
+矛盾が生じた場合は、プロジェクト独自のスタイルガイドが優先されます。
 
-.. The structure and many of the recommendations within this style guide were
-.. taken from python's
-.. `pep8 style guide <https://peps.python.org/pep-0008/>`_.
+.. The structure and many of the recommendations within this style guide were taken from python's `pep8 style guide <https://peps.python.org/pep-0008/>`_.
 
-このスタイルガイドの構造や推奨事項の多くは、pythonの `pep8 style guide <https://peps.python.org/pep-0008/>`_ から引用されています。
+このスタイルガイドの構造や推奨事項の多くは、Pythonの `pep8スタイルガイド <https://peps.python.org/pep-0008/>`_ から引用されています。
 
-.. The goal of this guide is *not* to be the right way or the best way to write
-.. Solidity code.  The goal of this guide is *consistency*.  A quote from python's
-.. `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
-.. captures this concept well.
+.. The goal of this guide is *not* to be the right way or the best way to write Solidity code.
+.. The goal of this guide is *consistency*.
+.. A quote from python's `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ captures this concept well.
 
-このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法であることではありません。  このガイドの目的は、 *一貫性* です。Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこの概念をよく表しています。
+このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法であることではありません。
+このガイドの目的は、 *一貫性* です。
+Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこの概念をよく表しています。
 
 .. .. note::
 
-..     A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is most important.
+..     A style guide is about consistency.
+..     Consistency with this style guide is important.
+..     Consistency within a project is more important.
+..     Consistency within one module or function is most important.
 
 ..     But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don't hesitate to ask!
 
 .. note::
 
-    スタイルガイドとは一貫性のことです。このスタイルガイドとの一貫性は重要です。プロジェクト内での一貫性はより重要です。一つのモジュールや関数の中での一貫性が最も重要です。
+    スタイルガイドとは一貫性のことです。
+    このスタイルガイドとの一貫性は重要です。
+    プロジェクト内での一貫性はより重要です。
+    一つのモジュールや関数の中での一貫性が最も重要です。
 
-    しかし、最も重要なことです。 **know when to be inconsistent**  -- 時には、スタイルガイドが適用できないこともあります。迷ったときは、自分のベストな判断で行動しましょう。他の例を見て、何がベストなのかを判断してください。そして、迷わず質問してください。
+    しかし、最も重要なことは、 **一貫性がないことを自覚すること** です。
+    時には、スタイルガイドが適用できないこともあります。
+    迷ったときは、自分のベストな判断で行動しましょう。
+    他の例を見て、何がベストなのかを判断してください。
+    そして、迷わず質問してください！
 
 ****************
 コードレイアウト
 ****************
 
-Indentation
-===========
+インデント
+==========
 
-.. Use 4 spaces per indentation level.
+インデントレベルごとに4つのスペースを使用してください。
 
-インデントレベルごとに4つのスペースを使用します。
+タブかスペースか
+================
 
-Tabs or Spaces
-==============
-
-.. Spaces are the preferred indentation method.
-
-スペースは、好ましいインデント方法です。
-
-.. Mixing tabs and spaces should be avoided.
+スペースのほうが好ましいインデント方法です。
 
 タブとスペースの混在は避けてください。
 
-Blank Lines
-===========
+空行
+====
 
-.. Surround top level declarations in Solidity source with two blank lines.
-
-Solidity sourceのトップレベル宣言を2行の空行で囲む。
+Solidityのソースコードでは、トップレベルの宣言を2つの空行で囲んでください。
 
 .. Yes:
 
@@ -171,30 +173,26 @@ NG:
 
 .. _maximum_line_length:
 
-Maximum Line Length
-===================
+最大の行の長さ
+==============
 
-Maximum suggested line length is 120 characters.
+.. Maximum suggested line length is 120 characters.
+
+推奨される行の長さは最大120文字です。
 
 .. Wrapped lines should conform to the following guidelines.
 
-巻き線は以下のガイドラインに沿ってください。
+ラップされる行は以下のガイドラインに沿ってください。
 
 .. 1. The first argument should not be attached to the opening parenthesis.
-
-1. 第1引数は、開始括弧に付けてはいけません。
-
 .. 2. One, and only one, indent should be used.
-
-2. インデントは1つだけにしてください。
-
 .. 3. Each argument should fall on its own line.
-
-3. それぞれの主張は、それぞれのライン上にあるべきものです。
-
 .. 4. The terminating element, :code:`);`, should be placed on the final line by itself.
 
-4. 終端要素である :code: `);`  は、それ自体で最終行に配置する必要があります。
+1. 第1引数は、開始括弧に付けてはいけません。
+2. インデントは1つだけにしてください。
+3. それぞれの主張は、それぞれのライン上にあるべきものです。
+4. 終端要素である :code:`);` は、それ自体で最終行に配置する必要があります。
 
 関数コール
 
@@ -314,15 +312,17 @@ NG:
                       amount,
                       options);
 
-Source File Encoding
-====================
+.. Source File Encoding
+
+ソースファイルのエンコーディング
+================================
 
 .. UTF-8 or ASCII encoding is preferred.
 
-UTF-8またはASCIIのエンコーディングが望ましい。
+UTF-8またはASCIIのエンコーディングが望ましいです。
 
-Imports
-=======
+インポート
+==========
 
 .. Import statements should always be placed at the top of the file.
 
@@ -367,8 +367,10 @@ NG:
         // ...
     }
 
-Order of Functions
-==================
+.. Order of Functions
+
+関数の順番
+==========
 
 .. Ordering helps readers identify which functions they can call and to find the constructor and fallback definitions easier.
 
@@ -376,7 +378,7 @@ Order of Functions
 
 .. Functions should be grouped according to their visibility and ordered:
 
-関数は視認性に応じてグループ化し、順序立てて配置する。
+関数は可視性に応じてグループ化し、順序立てて配置する。
 
 .. - constructor
 
@@ -814,23 +816,15 @@ NG:
 関数の修飾順序は次のようになります。
 
 .. 1. Visibility
-
-1. 視認性
-
 .. 2. Mutability
-
-2. 可変型
-
 .. 3. Virtual
-
-3. バーチャル
-
 .. 4. Override
-
-4. オーバーライド
-
 .. 5. Custom modifiers
 
+1. 可視性
+2. ミュータビリティ
+3. バーチャル
+4. オーバーライド
 5. カスタム修飾子
 
 .. Yes:
@@ -866,7 +860,8 @@ NG:
 .. parenthesis and opening bracket should be placed on their own line as well at
 .. the same indentation level as the function declaration.
 
-長い関数宣言の場合は、各引数を関数本体と同じインデントレベルで一行にまとめることをお勧めします。  閉じ括弧と開き括弧も同様に、関数宣言と同じインデントレベルで一行に置く必要があります。
+長い関数宣言の場合は、各引数を関数本体と同じインデントレベルで一行にまとめることをお勧めします。
+閉じ括弧と開き括弧も同様に、関数宣言と同じインデントレベルで一行に置く必要があります。
 
 .. Yes:
 
@@ -920,7 +915,7 @@ NG:
 .. If a long function declaration has modifiers, then each modifier should be
 .. dropped to its own line.
 
-長い関数宣言に修飾語がある場合は、各修飾語をそれぞれの行に落とす必要があります。
+長い関数宣言に修飾子がある場合は、各修飾子をそれぞれの行に落とす必要があります。
 
 .. Yes:
 
@@ -980,7 +975,7 @@ NG:
 
 .. Multiline output parameters and return statements should follow the same style recommended for wrapping long lines found in the :ref:`Maximum Line Length <maximum_line_length>` section.
 
-複数行の出力パラメータやreturn文は、 :ref:`Maximum Line Length <maximum_line_length>` セクションで推奨されている長い行の折り返しと同じスタイルにしてください。
+複数行の出力パラメータやreturn文は、 :ref:`最大の行の長さ <maximum_line_length>` セクションで推奨されている長い行の折り返しと同じスタイルにしてください。
 
 .. Yes:
 
@@ -1032,9 +1027,7 @@ NG:
                 veryLongReturnArg1);
     }
 
-.. For constructor functions on inherited contracts whose bases require arguments,
-.. it is recommended to drop the base constructors onto new lines in the same
-.. manner as modifiers if the function declaration is long or hard to read.
+.. For constructor functions on inherited contracts whose bases require arguments, it is recommended to drop the base constructors onto new lines in the same manner as modifiers if the function declaration is long or hard to read.
 
 ベースが引数を必要とする継承されたコントラクトのコンストラクタ関数については、関数宣言が長い場合や読みにくい場合には、修飾子と同じ方法でベースのコンストラクタを新しい行に落とすことをお勧めします。
 
@@ -1138,19 +1131,19 @@ NG:
     function shortFunction() public { doSomething(); }
 
 .. These guidelines for function declarations are intended to improve readability.
-.. Authors should use their best judgment as this guide does not try to cover all
-.. possible permutations for function declarations.
+.. Authors should use their best judgment as this guide does not try to cover all possible permutations for function declarations.
 
-この関数宣言のガイドラインは、読みやすさを向上させることを目的としています。このガイドラインは、関数宣言のすべての可能性を網羅するものではありませんので、執筆者は最善の判断を下す必要があります。
+この関数宣言のガイドラインは、読みやすさを向上させることを目的としています。
+このガイドラインは、関数宣言のすべての可能性を網羅するものではありませんので、執筆者は最善の判断を下す必要があります。
 
-Mappings
-========
+マッピング
+==========
 
-.. In variable declarations, do not separate the keyword ``mapping`` from its
-.. type by a space. Do not separate any nested ``mapping`` keyword from its type by
-.. whitespace.
+.. In variable declarations, do not separate the keyword ``mapping`` from its type by a space.
+.. Do not separate any nested ``mapping`` keyword from its type by whitespace.
 
-変数宣言では、キーワード ``mapping`` とその型を空白で区切らない。また、ネストした ``mapping`` キーワードとその型を空白で区切らない。
+変数宣言では、キーワード ``mapping`` とその型を空白で区切らない。
+また、ネストした ``mapping`` キーワードとその型を空白で区切らない。
 
 .. Yes:
 
@@ -1174,11 +1167,12 @@ NG:
     mapping (uint => mapping (bool => Data[])) public data;
     mapping(uint => mapping (uint => s)) data;
 
-Variable Declarations
-=====================
+.. Variable Declarations
 
-.. Declarations of array variables should not have a space between the type and
-.. the brackets.
+変数宣言
+========
+
+.. Declarations of array variables should not have a space between the type and the brackets.
 
 配列変数の宣言では、型と括弧の間にスペースを入れてはいけません。
 
@@ -1198,8 +1192,10 @@ NG:
 
     uint [] x;
 
-Other Recommendations
-=====================
+.. Other Recommendations
+
+その他の推奨事項
+================
 
 .. * Strings should be quoted with double-quotes instead of single-quotes.
 
@@ -1251,12 +1247,13 @@ NG:
     x += 3+4;
     x |= y&&z;
 
-.. * Operators with a higher priority than others can exclude surrounding
-..   whitespace in order to denote precedence.  This is meant to allow for
-..   improved readability for complex statements. You should always use the same
-..   amount of whitespace on either side of an operator:
+.. * Operators with a higher priority than others can exclude surrounding whitespace in order to denote precedence.
+..   This is meant to allow for improved readability for complex statements.
+..   You should always use the same amount of whitespace on either side of an operator:
 
-* 優先順位の高い演算子は、優先順位を示すために周囲の空白を除外できます。  これは、複雑な文の可読性を高めるためのものです。演算子の両側には、常に同じ量の空白を使用する必要があります。
+* 優先順位の高い演算子は、優先順位を示すために周囲の空白を除外できます。
+  これは、複雑な文の可読性を高めるためのものです。
+  演算子の両側には、常に同じ量の空白を使用する必要があります。
 
 .. Yes:
 
@@ -1307,8 +1304,7 @@ NG:
 
 .. .. note::
 
-..     It might be clearer to declare types close to their use in events or state
-..     variables.
+..     It might be clearer to declare types close to their use in events or state variables.
 
 .. note::
 
@@ -1344,29 +1340,26 @@ No:
 命名規則
 ********
 
-.. Naming conventions are powerful when adopted and used broadly.  The use of
-.. different conventions can convey significant *meta* information that would
-.. otherwise not be immediately available.
+.. Naming conventions are powerful when adopted and used broadly.
+.. The use of different conventions can convey significant *meta* information that would otherwise not be immediately available.
 
 命名規則は、広く採用され使用されることで力を発揮します。
 異なる規約を使用することで、他の方法ではすぐには得られない重要なメタ情報を伝えることができます。
 
-.. The naming recommendations given here are intended to improve the readability,
-.. and thus they are not rules, but rather guidelines to try and help convey the
-.. most information through the names of things.
+.. The naming recommendations given here are intended to improve the readability, and thus they are not rules, but rather guidelines to try and help convey the most information through the names of things.
 
 ここで述べられているネーミングの推奨事項は、読みやすさを向上させることを目的としているため、ルールではなく、物事の名前を通して最も多くの情報を伝えるためのガイドラインとなっています。
 
-.. Lastly, consistency within a codebase should always supersede any conventions
-.. outlined in this document.
+.. Lastly, consistency within a codebase should always supersede any conventions outlined in this document.
 
 最後に、コードベース内の一貫性は、常にこのドキュメントで説明されている規約よりも優先されるべきです。
 
-Naming Styles
-=============
+.. Naming Styles
 
-.. To avoid confusion, the following names will be used to refer to different
-.. naming styles.
+命名スタイル
+============
+
+.. To avoid confusion, the following names will be used to refer to different naming styles.
 
 混乱を避けるために、以下の名称は異なるネーミングスタイルを参照するために使用されます。
 
@@ -1401,34 +1394,42 @@ Naming Styles
 .. .. note::
 ..  When using initialisms in CapWords, capitalize all the letters of the initialisms. Thus HTTPServerError is better than HttpServerError. When using initialisms in mixedCase, capitalize all the letters of the initialisms, except keep the first one lower case if it is the beginning of the name. Thus xmlHTTPRequest is better than XMLHTTPRequest.
 
-.. note::  When using initialisms in CapWords, capitalize all the letters of the initialisms. Thus HTTPServerError is better than HttpServerError. When using initialisms in mixedCase, capitalize all the letters of the initialisms, except keep the first one lower case if it is the beginning of the name. Thus xmlHTTPRequest is better than XMLHTTPRequest.
+.. note::
 
-Names to Avoid
+    CapWordsで頭文字を使用する場合は、頭文字のすべての文字を大文字にします。
+    したがって、HttpServerErrorよりもHTTPServerErrorの方がよいです。
+    頭文字をmixedCaseで使用する場合は、頭文字の文字をすべて大文字にします。
+    ただし、名前の先頭の文字は小文字にします。
+    したがって、xmlHTTPRequestの方がXMLHTTPRequestよりも優れている。
+
+.. Names to Avoid
+
+避けるべき名前
 ==============
 
 .. * ``l`` - Lowercase letter el
-
-* ``l``  - 小文字のel
-
 .. * ``O`` - Uppercase letter oh
-
-* ``O``  - 大文字のoh
-
 .. * ``I`` - Uppercase letter eye
 
-* ``I``  - 大文字の「目
+* ``l``  - 小文字のエル
+* ``O``  - 大文字のオー
+* ``I``  - 大文字のアイ
 
-.. Never use any of these for single letter variable names.  They are often
-.. indistinguishable from the numerals one and zero.
+.. Never use any of these for single letter variable names.
+.. They are often indistinguishable from the numerals one and zero.
 
-これらは一文字の変数名には絶対に使用しないでください。  これらは、数字のoneやzeroと区別がつかないことがあります。
+これらは一文字の変数名には絶対に使用しないでください。
+これらは、数字のoneやzeroと区別がつかないことがあります。
 
-Contract and Library Names
-==========================
+.. Contract and Library Names
+
+コントラクトとライブラリの名前
+==============================
 
 .. * Contracts and libraries should be named using the CapWords style. Examples: ``SimpleToken``, ``SmartBank``, ``CertificateHashRepository``, ``Player``, ``Congress``, ``Owned``.
 
-*  コントラクトやライブラリの名前は、CapWordsスタイルを使用してください。例aa, ab, ac, ad, ae, af.
+* コントラクトやライブラリの名前は、CapWordsスタイルを使用してください。
+  例: ``SimpleToken``, ``SmartBank``, ``CertificateHashRepository``, ``Player``, ``Congress``, ``Owned`` 。
 
 .. * Contract and library names should also match their filenames.
 
@@ -1436,7 +1437,7 @@ Contract and Library Names
 
 .. * If a contract file includes multiple contracts and/or libraries, then the filename should match the *core contract*. This is not recommended however if it can be avoided.
 
-* コントラクトファイルに複数のコントラクトやライブラリが含まれている場合、ファイル名は*コアコントラクト*と一致させる必要があります。しかし、これは避けることができるならば、推奨されません。
+* コントラクトファイルに複数のコントラクトやライブラリが含まれている場合、ファイル名は *コアコントラクト* と一致させる必要があります。しかし、これは避けることができるならば、推奨されません。
 
 .. As shown in the example below, if the contract name is ``Congress`` and the library name is ``Owned``, then their associated filenames should be ``Congress.sol`` and ``Owned.sol``.
 
@@ -1471,7 +1472,7 @@ OK:
 
 .. and in ``Congress.sol``:
 
-と ``Congress.sol`` にあります。
+そして、 ``Congress.sol`` で次のコードになっている。
 
 .. code-block:: solidity
 
@@ -1513,7 +1514,7 @@ NG:
 
 .. and in ``Congress.sol``:
 
-と ``Congress.sol`` にあります。
+そして、 ``Congress.sol`` で次のコードになっている。
 
 .. code-block:: solidity
 
@@ -1526,98 +1527,97 @@ NG:
         //...
     }
 
-Struct Names
-============
+構造体名
+========
 
-.. Structs should be named using the CapWords style. Examples: ``MyCoin``, ``Position``, ``PositionXY``.
-
-構造体の名前は、CapWordsスタイルを使用する必要があります。
+構造体の名前は、CapWordsスタイルを使用してください。
 例: ``MyCoin`` 、 ``Position`` 、 ``PositionXY`` 。
 
-Event Names
-===========
+イベント名
+==========
 
-.. Events should be named using the CapWords style. Examples: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer``.
-
-イベントの名称は、CapWordsスタイルを使用してください。
+イベント名は、CapWordsスタイルを使用してください。
 例: ``Deposit``, ``Transfer``, ``Approval``, ``BeforeTransfer``, ``AfterTransfer`` 。
 
-Function Names
-==============
+関数名
+======
 
-.. Functions should use mixedCase. Examples: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner``.
-
-関数はミックスケースを使用してください。
+関数はmixedCaseを使用してください。
 例: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner`` 。
 
 Function Argument Names
 =======================
 
-.. Function arguments should use mixedCase. Examples: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner``.
+.. Function arguments should use mixedCase.
 
-関数の引数には、ミックスケースを使用する必要があります。
+関数の引数には、mixedCaseを使用してください。
 例: ``initialSupply``, ``account``, ``recipientAddress``, ``senderAddress``, ``newOwner`` 。
 
-.. When writing library functions that operate on a custom struct, the struct
-.. should be the first argument and should always be named ``self``.
+.. When writing library functions that operate on a custom struct, the struct should be the first argument and should always be named ``self``.
 
 カスタム構造体を操作するライブラリ関数を書くときは、構造体を第1引数にして、常に ``self`` という名前にしてください。
 
-Local and State Variable Names
-==============================
+.. Local and State Variable Names
 
-.. Use mixedCase. Examples: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate``.
+ローカル変数名と状態変数名
+==========================
 
-MixedCaseを使用します。
+mixedCaseを使用してください。
 例: ``totalSupply``, ``remainingSupply``, ``balancesOf``, ``creatorAddress``, ``isPreSale``, ``tokenExchangeRate`` 。
 
-Constants
-=========
+定数
+====
 
-.. Constants should be named with all capital letters with underscores separating
-.. words. Examples: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION``.
+.. Constants should be named with all capital letters with underscores separating words.
 
 定数の名前は、すべて大文字で、アンダースコアで単語を区切ってください。
 例: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION`` 。
 
-Modifier Names
-==============
+修飾子名
+========
 
-.. Use mixedCase. Examples: ``onlyBy``, ``onlyAfter``, ``onlyDuringThePreSale``.
-
-MixedCaseを使用します。
+mixedCaseを使用してください。
 例: ``onlyBy`` 、 ``onlyAfter`` 、 ``onlyDuringThePreSale`` 。
 
-Enums
-=====
+.. Enums
 
-.. Enums, in the style of simple type declarations, should be named using the CapWords style. Examples: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation``.
+列挙
+====
 
-Enumは、単純な型宣言のスタイルで、CapWordsスタイルを使用して名前を付ける必要があります。
+.. Enums, in the style of simple type declarations, should be named using the CapWords style.
+
+列挙（enum）は、単純な型宣言のスタイルで、CapWordsスタイルを使用してください。
 例: ``TokenGroup``, ``Frame``, ``HashStyle``, ``CharacterLocation`` 。
 
-Avoiding Naming Collisions
-==========================
+.. Avoiding Naming Collisions
+
+名前の衝突の回避
+================
 
 * ``singleTrailingUnderscore_``
 
-This convention is suggested when the desired name collides with that of
-an existing state variable, function, built-in or otherwise reserved name.
+.. This convention is suggested when the desired name collides with that of an existing state variable, function, built-in or otherwise reserved name.
 
-Underscore Prefix for Non-external Functions and Variables
-==========================================================
+この規約は、希望する名前が、既存の状態変数、関数、組み込み、またはその他の予約名と衝突する場合に提案されます。
+
+.. Underscore Prefix for Non-external Functions and Variables
+
+非外部関数および変数のためのアンダースコア接頭辞
+================================================
 
 * ``_singleLeadingUnderscore``
 
-This convention is suggested for non-external functions and state variables (``private`` or ``internal``). State variables without a specified visibility are ``internal`` by default.
+.. This convention is suggested for non-external functions and state variables (``private`` or ``internal``). State variables without a specified visibility are ``internal`` by default.
 
-When designing a smart contract, the public-facing API (functions that can be called by any account)
-is an important consideration.
-Leading underscores allow you to immediately recognize the intent of such functions,
-but more importantly, if you change a function from non-external to external (including ``public``)
-and rename it accordingly, this forces you to review every call site while renaming.
-This can be an important manual check against unintended external functions
-and a common source of security vulnerabilities (avoid find-replace-all tooling for this change).
+この規約は、外部関数と状態変数（ ``private`` または ``internal`` ）以外では推奨されています。可視性の指定がない状態変数は、デフォルトで ``internal`` となります。
+
+.. When designing a smart contract, the public-facing API (functions that can be called by any account) is an important consideration.
+.. Leading underscores allow you to immediately recognize the intent of such functions, but more importantly, if you change a function from non-external to external (including ``public``) and rename it accordingly, this forces you to review every call site while renaming.
+.. This can be an important manual check against unintended external functions and a common source of security vulnerabilities (avoid find-replace-all tooling for this change).
+
+スマートコントラクトを設計する際、public-facing API（どのアカウントからも呼び出せる関数）は重要な検討事項です。
+アンダースコアを付けると、そのような関数の意図をすぐに認識することができますが、より重要なのは、関数を非外部から外部（ ``public`` を含む）に変更し、それに応じて名前を変更すると、名前を変更する際にすべての呼び出しサイトを確認しなければならない点です。
+これは、意図しない外部関数に対する重要な手動チェックであり、セキュリティ脆弱性の一般的な原因でもあります（この変更のためのfind-replace-allツールは避けてください）。
 
 .. _style_guide_natspec:
 
@@ -1625,16 +1625,15 @@ and a common source of security vulnerabilities (avoid find-replace-all tooling 
 NatSpec
 *******
 
-.. Solidity contracts can also contain NatSpec comments. They are written with a
-.. triple slash (``///``) or a double asterisk block (``/** ... */``) and
-.. they should be used directly above function declarations or statements.
+.. Solidity contracts can also contain NatSpec comments.
+.. They are written with a triple slash (``///``) or a double asterisk block (``/** ... */``) and they should be used directly above function declarations or statements.
 
-Solidityのコントラクトには、NatSpecコメントを含めることができます。コメントはトリプルスラッシュ( ``///`` )またはダブルアスタリスクブロック( ``/** ... */`` )で記述し、関数宣言や文の直上で使用する必要があります。
+Solidityのコントラクトには、NatSpecコメントを含めることができます。
+コメントはトリプルスラッシュ（ ``///`` ）またはダブルアスタリスクブロック（ ``/** ... */`` ）で記述し、関数宣言や文の直上で使用する必要があります。
 
-.. For example, the contract from :ref:`a simple smart contract <simple-smart-contract>` with the comments
-.. added looks like the one below:
+.. For example, the contract from :ref:`a simple smart contract <simple-smart-contract>` with the comments added looks like the one below:
 
-例えば、 :ref:`a simple smart contract <simple-smart-contract>` の コントラクトにコメントを加えたものは、以下のようになります。
+例えば、 :ref:`シンプルなスマートコントラクト <simple-smart-contract>` のコントラクトにコメントを加えたものは、次のようになります。
 
 .. code-block:: solidity
 
@@ -1667,4 +1666,4 @@ Solidityのコントラクトは、すべてのパブリックインターフェ
 
 .. Please see the section about :ref:`NatSpec <natspec>` for a detailed explanation.
 
-詳しい説明は「 :ref:`NatSpec <natspec>` 」の項を参照してください。
+詳しい説明は :ref:`NatSpec <natspec>` の項を参照してください。

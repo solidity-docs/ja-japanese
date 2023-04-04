@@ -456,7 +456,8 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. constructor, the contract will assume the default constructor, which is
 .. equivalent to ``constructor() {}``. For example:
 
-コンストラクタがない場合、コントラクトはデフォルトコンストラクタを想定しますが、これは ``constructor() {}`` と同等です。例えば、以下のようになります。
+コンストラクタがない場合、コントラクトはデフォルトコンストラクタを想定しますが、これは ``constructor() {}`` と同等です。
+例えば、以下のようになります。
 
 .. code-block:: solidity
 
@@ -547,7 +548,8 @@ superを使うときに呼び出される実際の関数は、型はわかって
 もう1つは、派生したコンストラクタの一部として修飾子を呼び出す方法です（ ``Base(y * y)`` ）。
 コンストラクタの引数が定数で、コントラクトの動作を定義したり、記述したりする場合は、最初の方法が便利です。
 ベースのコンストラクタの引数が派生コントラクトの引数に依存する場合は、2 番目の方法を使用する必要があります。
-引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。両方の場所で引数を指定するとエラーになります。
+引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。
+両方の場所で引数を指定するとエラーになります。
 
 If a derived contract does not specify the arguments to all of its base
 contracts' constructors, it must be declared abstract. In that case, when
