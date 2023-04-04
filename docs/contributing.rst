@@ -241,7 +241,14 @@ SMTテストを実行するためには、 ``libz3`` ライブラリがインス
 
 .. .. note::
 
+<<<<<<< HEAD
 ..     To get a list of all unit tests run by Soltest, run ``./build/test/soltest --list_content=HRF``.
+=======
+If you want to debug using GDB, make sure you build differently than the "usual".
+For example, you could run the following command in your ``build`` folder:
+
+.. code-block:: bash
+>>>>>>> english/develop
 
 .. note::
 

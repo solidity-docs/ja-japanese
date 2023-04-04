@@ -17,8 +17,14 @@
 
     このセクションは :ref:`solcjs <solcjs>` には適用されず、コマンドラインモードで使用されても適用されません。
 
+<<<<<<< HEAD
 基本的な使い方
 --------------
+=======
+One of the build targets of the Solidity repository is ``solc``, the Solidity commandline compiler.
+Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
+If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
+>>>>>>> english/develop
 
 .. One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
 .. Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
@@ -251,6 +257,7 @@ EVMのバージョンをターゲットに設定
   - ``revert`` のオペコードが導入されたことで、 ``revert()`` がガスを無駄にしないようになりました。
 
 - ``constantinople``
+<<<<<<< HEAD
 
   .. - Opcodes ``create2`, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
 
@@ -260,6 +267,10 @@ EVMのバージョンをターゲットに設定
 
   - シフト演算子は、シフトオペコードを使用するため、より少ないガスで済みます。
 
+=======
+   - Opcodes ``create2``, ``extcodehash``, ``shl``, ``shr`` and ``sar`` are available in assembly.
+   - Shifting operators use shifting opcodes and thus need less gas.
+>>>>>>> english/develop
 - ``petersburg``
 
   .. - The compiler behaves the same way as with constantinople.
@@ -797,6 +808,22 @@ Solidity コンパイラとのインターフェースとして、特に複雑�
 
 12. ``FatalError`` : 致命的なエラーが正しく処理されていない - これは問題として報告する必要があります。
 
+<<<<<<< HEAD
 13. ``YulException``: Error during Yul Code generation - this should be reported as an issue.
+=======
+1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
+2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
+3. ``ParserError``: Source code doesn't conform to the language rules.
+4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
+5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
+6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
+7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
+8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
+9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
+10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
+11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
+12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
+13. ``YulException``: Error during Yul code generation - this should be reported as an issue.
+>>>>>>> english/develop
 14. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
 15. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
