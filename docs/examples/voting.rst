@@ -2,15 +2,17 @@
 
 .. _voting:
 
-******
+****
 投票
-******
+****
 
-次のコントラクトは非常に複雑ですが、Solidityの機能の多くを紹介しています。これは、投票コントラクトを実装しています。
+次のコントラクトは非常に複雑ですが、Solidityの機能の多くを紹介しています。
+これは、投票コントラクトを実装しています。
 もちろん、電子投票の主な問題点は、いかにして正しい人に投票権を割り当てるか、いかにして操作を防ぐかです。
 ここですべての問題を解決するわけではありませんが、少なくとも、投票数のカウントが **自動的** に行われ、同時に **完全に透明** であるように、委任投票を行う方法を紹介する予定です。
 
-アイデアとしては、1つの投票用紙に対して1つのコントラクトを作成し、それぞれの選択肢に短い名前をつけます。そして、議長を務めるコントラクトの作成者が、各アドレスに個別に投票権を与えます。
+アイデアとしては、1つの投票用紙に対して1つのコントラクトを作成し、それぞれの選択肢に短い名前をつけます。
+そして、議長を務めるコントラクトの作成者が、各アドレスに個別に投票権を与えます。
 
 そして、そのアドレスを持つ人は、自分で投票するか、信頼できる人に投票を委任するかを選ぶことができます。
 
@@ -89,8 +91,10 @@
             require(to != msg.sender, "Self-delegation is disallowed.");
 
             // `to` もデリゲートされている限り、デリゲートを転送します。
-            // 一般的に、このようなループは非常に危険です。なぜなら、ループが長くなりすぎると、ブロック内で利用できる量よりも多くのガスが必要になる可能性があるからです。
-            // この場合、デリゲーションは実行されません。しかし、他の状況では、このようなループによってコントラクトが完全に「スタック」してしまう可能性があります。
+            // 一般的に、このようなループは非常に危険です。
+            // なぜなら、ループが長くなりすぎると、ブロック内で利用できる量よりも多くのガスが必要になる可能性があるからです。
+            // この場合、デリゲーションは実行されません。
+            // しかし、他の状況では、このようなループによってコントラクトが完全に「スタック」してしまう可能性があります。
             while (voters[to].delegate != address(0)) {
                 to = voters[to].delegate;
 
@@ -150,10 +154,8 @@
     }
 
 改良の可能性
-=====================
+============
 
-Currently, many transactions are needed to
-assign the rights to vote to all participants.
-Moreover, if two or more proposals have the same
-number of votes, ``winningProposal()`` is not able
-to register a tie. Can you think of a way to fix these issues?
+Currently, many transactions are needed to assign the rights to vote to all participants.
+Moreover, if two or more proposals have the same number of votes, ``winningProposal()`` is not able to register a tie.
+Can you think of a way to fix these issues?

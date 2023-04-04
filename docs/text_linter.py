@@ -38,6 +38,7 @@ def check_terms():
         ("参照して", ("ご覧",)),
         ("作成者", ("オリジネーター",)),
         ("将来", ("将来的に",)),
+        ("``:", ("`` :",)),
     ]
 
     for correct_term, wrong_terms in term_list:
