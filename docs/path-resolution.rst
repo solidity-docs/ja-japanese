@@ -327,6 +327,7 @@ VFSが初期化された後も、インポートコールバックによって�
 セパレータとは、フォワードスラッシュや文字列の先頭/末尾のことです。
 例えば、 ``./abc/..//`` では3つのパスセグメントがあります: ``.`` 、 ``abc`` 、 ``..`` 。
 
+<<<<<<< HEAD
 .. The compiler resolves the import into a source unit name based on the import path, in the following way:
 .. 
 .. #. We start with the source unit name of the importing source unit.
@@ -335,6 +336,15 @@ VFSが初期化された後も、インポートコールバックによって�
 ..     - If the segment is ``.``, it is skipped.
 ..     - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
 ..     - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
+=======
+#. We start with the source unit name of the importing source unit.
+#. The last path segment with preceding slashes is removed from the resolved name.
+#. Then, for every segment in the import path, starting from the leftmost one:
+
+    - If the segment is ``.``, it is skipped.
+    - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
+    - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
+>>>>>>> english/develop
 
 コンパイラは、インポートパスに基づき、次のようにインポートをソースユニット名に解決します:
 

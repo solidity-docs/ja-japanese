@@ -265,8 +265,12 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 * ``send``
 
+<<<<<<< HEAD
 ``send`` は、 ``transfer`` の低レベルのカウンターパートです。
 実行に失敗した場合、現在のコントラクトは例外的に停止しませんが、 ``send`` は ``false`` を返します。
+=======
+``send`` is the low-level counterpart of ``transfer``. If the execution fails, the current contract will not stop with an exception, but ``send`` will return ``false``.
+>>>>>>> english/develop
 
 .. warning::
 

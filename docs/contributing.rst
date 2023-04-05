@@ -243,6 +243,12 @@ SMTテストを実行するためには、 ``libz3`` ライブラリがインス
 GDBを使ってデバッグしたい場合は、「通常」とは異なる方法でビルドするようにしてください。
 例えば、 ``build`` フォルダで以下のコマンドを実行します。 
 
+<<<<<<< HEAD
+=======
+If you want to debug using GDB, make sure you build differently than the "usual".
+For example, you could run the following command in your ``build`` folder:
+
+>>>>>>> english/develop
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
