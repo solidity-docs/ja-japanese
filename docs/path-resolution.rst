@@ -105,7 +105,7 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
 #. **Standard JSON**
 
-   :ref:`Standard JSON <compiler-api>`  APIを使用する場合（ `JavaScript interface    <https://github.com/ethereum/solc-js>`_ または ``--standard-json`` コマンドラインオプションを使用）、すべてのソースファイルのコンテンツなどを含むJSONフォーマットの入力を提供します。
+   :ref:`Standard JSON <compiler-api>`  APIを使用する場合（ `JavaScriptインターフェース <https://github.com/ethereum/solc-js>`_ または ``--standard-json`` コマンドラインオプションを使用）、すべてのソースファイルのコンテンツなどを含むJSONフォーマットの入力を提供します。
 
    .. code-block:: json
 
@@ -955,7 +955,7 @@ CLI Path NormalizationとStripping
 
 ..    - Empty ``context`` means that the remapping applies to all imports in all source units.
 
-#. **プレフィックスは空欄にできないが、コンテキストとターゲットは任意である。**
+#. **プレフィックスは空欄にできないが、コンテキストとターゲットは任意です。**
 
    -  ``target`` が空の文字列の場合、 ``prefix`` は単にインポートパスから削除されます。
 

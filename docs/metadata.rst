@@ -39,7 +39,7 @@ shall match with the one contained in the bytecode.
     {
       // 必須: メタデータのフォーマットのバージョン
       "version": "1",
-      // 必須:ソースコード言語。基本的に仕様の「サブバージョン」を選択する。
+      // 必須:ソースコード言語。基本的に仕様の「サブバージョン」を選択します。
       "language": "Solidity",
       // 必須: コンパイラの詳細。内容は各言語に固有のもの。
       "compiler": {
@@ -71,7 +71,7 @@ shall match with the one contained in the bytecode.
       {
         // Solidityには必須: import remappingsのソートされたリスト
         "remappings": [ ":g=/dir" ],
-        // オプション: オプティマイザの設定。「enabled」および「runs」フィールドは非推奨であり、後方互換性のためにのみ与えられている。
+        // オプション: オプティマイザの設定。「enabled」および「runs」フィールドは非推奨であり、後方互換性のためにのみ与えられています。
         "optimizer": {
           "enabled": true,
           "runs": 500,
@@ -197,7 +197,7 @@ shall match with the one contained in the bytecode.
 .. encoding is not easy to find, its length is added in a two-byte big-endian
 .. encoding. 
 
-将来的には、メタデータファイルを検索する他の方法をサポートするかもしれないので、マッピング ``{"ipfs": <IPFS hash>, "solc": <compiler version>}`` は `CBOR <https://tools.ietf.org/html/rfc7049>`_ エンコードされて保存されます。
+将来は、メタデータファイルを検索する他の方法をサポートするかもしれないので、マッピング ``{"ipfs": <IPFS hash>, "solc": <compiler version>}`` は `CBOR <https://tools.ietf.org/html/rfc7049>`_ エンコードされて保存されます。
 マッピングにはさらに多くのキーが含まれている可能性があり（後述）、そのエンコーディングの始まりを見つけるのは容易ではないため、その長さは2バイトのビッグエンディアンのエンコーディングで追加されます。
 現在のバージョンのSolidityコンパイラは、通常、デプロイされたバイトコードの末尾に以下を追加します。
 
@@ -235,7 +235,7 @@ boolean field ``settings.metadata.appendCBOR`` in Standard JSON input can be set
 
 .. note::
 
-  コンパイラは現在、メタデータのIPFSハッシュをデフォルトで使用していますが、将来的にはbzzr1ハッシュやその他のハッシュも使用する可能性があるため、 ``0xa2 0x64 'i' 'p' 'f' 's'`` から始まるこのシーケンスに依存しないようにしてください。
+  コンパイラは現在、メタデータのIPFSハッシュをデフォルトで使用していますが、将来はbzzr1ハッシュやその他のハッシュも使用する可能性があるため、 ``0xa2 0x64 'i' 'p' 'f' 's'`` から始まるこのシーケンスに依存しないようにしてください。
   また、このCBOR構造に追加のデータを加えるかもしれないため、適切なCBORパーサーを使用することが最良の選択肢です。
 
 インターフェースの自動生成とNatSpecの使用方法

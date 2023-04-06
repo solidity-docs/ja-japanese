@@ -183,7 +183,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 .. to an unconditional jump.
 
 すべての ``JUMP`` 命令と ``JUMPI`` 命令のターゲットがわかっていれば、プログラムの完全なコントロールフローグラフを作成できます。
-一つだけわからないターゲットがある場合（ジャンプターゲットは原理的に入力から計算できるため、このようなことが起こりうる）、ブロックの入力状態に関する知識をすべて消去しなければならない。
+一つだけわからないターゲットがある場合（ジャンプターゲットは原理的に入力から計算できるため、このようなことが起こりうる）、ブロックの入力状態に関する知識をすべて消去しなければなりません。
 なぜなら、そのブロックは未知の ``JUMP`` のターゲットになりうるからです。
 opcode-based optimizerモジュールは、条件が定数で評価される ``JUMPI`` を見つけた場合、それを無条件ジャンプに変換します。
 
@@ -581,7 +581,7 @@ VarDeclInitializer
 今のところ、ゼロリテラルでの初期化のみをサポートしています。
 
 疑似SSAトランスフォーム
--------------------------
+-----------------------
 
 .. The purpose of this components is to get the program into a longer form,
 .. so that other components can more easily work with it. The final representation
@@ -747,9 +747,10 @@ SSATransform
 
 コードのどこかに代入されている変数 ``a`` （値が宣言されていて再代入されない変数は変更されない）について、以下の変換を行います。
 
-- ``let a := v`` を ``let a_i := v   let a := a_i`` で置き換える。
+- ``let a := v`` を ``let a_i := v   let a := a_i`` で置き換えます。
 
-- ``a := v`` を ``let a_i := v   a := a_i`` に置き換える。ここで ``i`` は ``a_i`` にまだ使われていない数。
+- ``a := v`` を ``let a_i := v   a := a_i`` に置き換えます。
+  ここで ``i`` は ``a_i`` にまだ使われていない数です。
 
 .. Furthermore, always record the current value of ``i`` used for ``a`` and replace each
 .. reference to ``a`` by ``a_i``.
@@ -960,12 +961,9 @@ movabilityは、式の特性の一つです。
 .. - opcodes that read or write memory, storage or external state information
 .. - opcodes that depend on the current PC, memory size or returndata size
 
-- 関数の呼び出し（関数内のすべての文がmovableであれば、将来的に緩和される可能性があります。）
-
+- 関数の呼び出し（関数内のすべての文がmovableであれば、将来緩和される可能性あり）
 - 副作用のある（可能性のある）オペコード（ ``call`` や ``selfdestruct`` など）
-
 - メモリ、ストレージ、外部の状態情報を読み書きするオペコード
-
 - 現在のPC、メモリサイズ、リターンデータのサイズに依存するオペコード
 
 DataflowAnalyzer
@@ -983,7 +981,7 @@ DataflowAnalyzer
 Dataflow Analyzerは、それ自体はオプティマイザではありませんが、他のコンポーネントのツールとして使用されます。
 ASTをトラバースしながら、各変数の現在の値を追跡します（その値がmovableな式である限り）。
 各変数に現在割り当てられている式の一部である変数を記録します。
-変数 ``a`` に代入されるたびに、 ``a`` の現在の格納値が更新され、 ``a`` が ``b`` の現在格納されている式の一部であるときは、すべての変数 ``b`` のすべての格納値がクリアされる。
+変数 ``a`` に代入されるたびに、 ``a`` の現在の格納値が更新され、 ``a`` が ``b`` の現在格納されている式の一部であるときは、すべての変数 ``b`` のすべての格納値がクリアされます。
 
 .. At control-flow joins, knowledge about variables is cleared if they have or would be assigned
 .. in any of the control-flow paths. For instance, upon entering a
@@ -1147,9 +1145,8 @@ ConditionalSimplifier
 
 SSAフォームを破棄します。
 
-.. Currently, this tool is very limited, mostly because we do not yet have support
-.. for boolean types. Since conditions only check for expressions being nonzero,
-.. we cannot assign a specific value.
+.. Currently, this tool is very limited, mostly because we do not yet have support for boolean types.
+.. Since conditions only check for expressions being nonzero, we cannot assign a specific value.
 
 現在のところ、このツールは非常に限定されています。
 主な理由は、ブーリアン型をまだサポートしていないからです。
@@ -1160,16 +1157,16 @@ SSAフォームを破棄します。
 .. - switch cases: insert "<condition> := <caseLabel>"
 .. - after if statement with terminating control-flow, insert "<condition> := 0"
 
-- スイッチケースで「<condition> := <caseLabel>」を挿入する。
-- 終了コントロールフローのif文の後に、「<条件> := 0」を挿入する。
+- スイッチケースで「<condition> := <caseLabel>」を挿入します。
+- 終了コントロールフローのif文の後に、「<条件> := 0」を挿入します。
 
 今後の機能:
 
 .. - allow replacements by "1"
 .. - take termination of user-defined functions into account
 
-- "1"による置き換えを可能にする。
-- ユーザー定義関数の終了を考慮に入れる。
+- 「1」による置き換えを可能にします。
+- ユーザー定義関数の終了を考慮に入れます。
 
 .. Works best with SSA form and if dead code removal has run before.
 
@@ -1505,17 +1502,14 @@ ExpressionInliner
 
 オプティマイザのこのコンポーネントは、関数式の中にあるインライン化できる関数、つまり以下のような関数をインライン化することで、制限付きの関数のインライン化を行います。
 
-- 単一の値を返す。
-
-- ``r := <functional expression>`` のようなボディを持つ。
-
-- 自分自身も ``r`` も右辺で参照しない。
+- 単一の値を返す
+- ``r := <functional expression>`` のようなボディを持つ
+- 自分自身も ``r`` も右辺で参照しない
 
 さらに、すべてのパラメータについて、以下のすべてが真である必要があります。
 
 - 引数がmovableである
-
-- パラメータの参照回数が関数ボディ内で2回以下であるか、または引数のコストがかなり低い（"コスト"は最大でも1で、0xffまでの定数のようなもの）。
+- パラメータの参照回数が関数ボディ内で2回以下であるか、または引数のコストがかなり低い（"コスト"は最大でも1で、0xffまでの定数のようなもの）
 
 .. Example: The function to be inlined has the form of ``function f(...) -> r { r := E }`` where
 .. ``E`` is an expression that does not reference ``r`` and all arguments in the function call are movable expressions.
@@ -1568,7 +1562,7 @@ Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体�
 .. results in heavy gains, the specialized function is kept,
 .. otherwise the original function is used instead.
 
-将来的には、関数をすぐにインライン化するのではなく、関数を特殊化するバックトラックコンポーネントを組み込むことも考えています。
+将来は、関数をすぐにインライン化するのではなく、関数を特殊化するバックトラックコンポーネントを組み込むことも考えています。
 その後、この特殊化された関数に対してオプティマイザを実行します。
 その結果、大きな利益が得られた場合は、特化された関数を残し、そうでない場合は元の関数を代わりに使用します。
 
@@ -1628,9 +1622,7 @@ ExpressionJoiner
 SSAReverser
 ^^^^^^^^^^^
 
-.. This is a tiny step that helps in reversing the effects of the SSA transform
-.. if it is combined with the Common Subexpression Eliminator and the
-.. Unused Pruner.
+.. This is a tiny step that helps in reversing the effects of the SSA transform if it is combined with the Common Subexpression Eliminator and the Unused Pruner.
 
 これは、Common Subexpression EliminatorやUnused Prunerと組み合わせることで、SSAトランスフォームの効果を元に戻すのに役立つ小さな一歩です。
 

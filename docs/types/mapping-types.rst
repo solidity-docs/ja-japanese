@@ -158,7 +158,8 @@ for the inputs and outputs in the ABI for the mapping's getter.
 .. top of them and iterate over that.
 .. For example, the code below implements an ``IterableMapping`` library that the ``User`` contract then adds data to, and the ``sum`` function iterates over to sum all the values.
 
-マッピングはイテレートできません。つまり、キーを列挙することもできません。
+マッピングはイテレートできません。
+つまり、キーを列挙することもできません。
 しかし、マッピングの上にデータ構造を実装し、その上で反復処理を行うことは可能です。
 例えば、以下のコードでは、 ``IterableMapping`` ライブラリを実装し、 ``User`` コントラクトがデータを追加し、 ``sum`` 関数がすべての値を合計するために反復処理を行います。
 
@@ -237,7 +238,7 @@ for the inputs and outputs in the ABI for the mapping's getter.
     contract User {
         // データを保持する構造体
         itmap data;
-        // データ型にライブラリ関数を適用する。
+        // データ型にライブラリ関数を適用します。
         using IterableMapping for itmap;
 
         // 何かを挿入する
@@ -248,7 +249,7 @@ for the inputs and outputs in the ABI for the mapping's getter.
             return data.size;
         }
 
-        // 保存されているすべてのデータの合計を計算する。
+        // 保存されているすべてのデータの合計を計算します。
         function sum() public view returns (uint s) {
             for (
                 Iterator i = data.iterateStart();

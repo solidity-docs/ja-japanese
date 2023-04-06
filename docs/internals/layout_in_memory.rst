@@ -18,11 +18,10 @@ Solidityは4つの32バイトスロットを確保しており、特定のバイ
 
 - ``0x60`` - ``0x7f`` （32バイト）: ゼロスロット
 
-.. Scratch space can be used between statements (i.e. within inline assembly). The zero slot
-.. is used as initial value for dynamic memory arrays and should never be written to
-.. (the free memory pointer points to ``0x80`` initially).
+.. Scratch space can be used between statements (i.e. within inline assembly).
+.. The zero slot is used as initial value for dynamic memory arrays and should never be written to (the free memory pointer points to ``0x80`` initially).
 
-スクラッチ領域は、ステートメントの間（インラインアセンブリ内）で使用できます。
+スクラッチ領域は、文の間（インラインアセンブリ内）で使用できます。
 ゼロスロットは、動的メモリ配列の初期値として使用され、決して書き込まれてはいけません（フリーメモリポインタは初期値として ``0x80`` を指します）。
 
 .. Solidity always places new objects at the free memory pointer and

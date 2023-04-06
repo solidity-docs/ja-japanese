@@ -46,10 +46,9 @@ Solidityのコンパイラは、残りのビットに含まれる潜在的なゴ
 
 上記の設計原理に加えて、Solidityのコンパイラは、入力データがスタックに読み込まれる際に、入力データをクリーニングします。
 
-.. Different types have different rules for cleaning up invalid values:
+.. The following table describes the cleaning rules applied to different types, where ``higher bits`` refers to the remaining bits in case the type has less than 256 bits.
 
-The following table describes the cleaning rules applied to different types,
-where ``higher bits`` refers to the remaining bits in case the type has less than 256 bits.
+次の表は、異なるタイプに適用されるクリーニングルールを説明するもので、 ``higher bits`` は、タイプが256ビット未満の場合の残りのビットを指します。
 
 .. csv-table::
    :header: "型", "有効な値", "無効な値のクリーンアップ"
@@ -60,8 +59,11 @@ where ``higher bits`` refers to the remaining bits in case the type has less tha
    "符号付き整数", "higher bits set to the sign bit", "currently silently signextends to a valid  value, i.e. all higher bits are set to the sign bit; may throw an exception in the future"
    "符号なし整数", "上位ビットがゼロ", "currently silently masks to a valid value, i.e. all higher bits are set to zero; may throw an exception in the future"
 
-Note that valid and invalid values are dependent on their type size.
-Consider ``uint8``, the unsigned 8-bit type, which has the following valid values:
+.. Note that valid and invalid values are dependent on their type size.
+.. Consider ``uint8``, the unsigned 8-bit type, which has the following valid values:
+
+有効な値と無効な値は、その型サイズに依存することに注意してください。
+符号なし8ビット型である ``uint8`` を考えてみると、次のような有効な値があります:
 
 .. code-block:: none
 
@@ -71,14 +73,18 @@ Consider ``uint8``, the unsigned 8-bit type, which has the following valid value
     ....
     0000...0000 1111 1111
 
-Any invalid value will have the higher bits set to zero:
+.. Any invalid value will have the higher bits set to zero:
+
+無効な値は、上位ビットが0に設定されます:
 
 .. code-block:: none
 
     0101...1101 0010 1010   invalid value
     0000...0000 0010 1010   cleaned value
 
-For ``int8``, the signed 8-bit type, the valid values are:
+.. For ``int8``, the signed 8-bit type, the valid values are:
+
+符号付き8ビット型である ``int8`` の場合、有効な値は次のとおりです:
 
 Negative
 
@@ -99,8 +105,9 @@ Positive
     ....
     0000...0000 1111 1111
 
-The compiler will ``signextend`` the sign bit, which is 1 for negative and 0 for
-positive values, overwriting the higher bits:
+.. The compiler will ``signextend`` the sign bit, which is 1 for negative and 0 for positive values, overwriting the higher bits:
+
+コンパイラは符号ビットを ``signextend`` する。符号ビットは負の値を1、正の値を0とし、上位ビットを上書きします:
 
 Negative
 

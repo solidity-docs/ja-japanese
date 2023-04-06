@@ -41,7 +41,7 @@
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。
 
 * `Embark <https://framework.embarklabs.io/>`_
-    非中央集権的なアプリケーションを構築・デプロイするためのDeveloperプラットフォーム。
+    非中央集権的なアプリケーションを構築及びデプロイするための開発者プラットフォーム。
 
 * `Foundry <https://github.com/foundry-rs/foundry>`_
     Rustで書かれたEthereumアプリケーション開発のための高速、ポータブル、モジュラーなツールキット。

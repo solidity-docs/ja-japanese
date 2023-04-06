@@ -7,24 +7,32 @@ Solidityコンパイラのインストール
 ################################
 
 バージョニング
-===============
+==============
+
+.. In addition, patch level releases with major release 0 (i.e. 0.x.y) will not contain breaking changes.
+.. That means code that compiles with version 0.x.y can be expected to compile with 0.x.z where z > y.
 
 Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に従っています。
-In addition, patch level releases with major release 0 (i.e. 0.x.y) will not
-contain breaking changes. That means code that compiles with version 0.x.y
-can be expected to compile with 0.x.z where z > y.
+さらに、メジャーリリース0（つまり0.x.y）のパッチレベルリリースには、破壊的な変更が含まれません。
+つまり、バージョン0.x.yでコンパイルされたコードは、0.x.z（z > y）でコンパイルされることが期待できます。
 
-In addition to releases, we provide **nightly development builds** with the
-intention of making it easy for developers to try out upcoming features and
-provide early feedback. Note, however, that while the nightly builds are usually
-very stable, they contain bleeding-edge code from the development branch and are
-not guaranteed to be always working. Despite our best efforts, they might
-contain undocumented and/or broken changes that will not become a part of an
-actual release. They are not meant for production use.
+.. In addition to releases, we provide **nightly development builds** with the intention of making it easy for developers to try out upcoming features and provide early feedback.
+.. Note, however, that while the nightly builds are usually very stable, they contain bleeding-edge code from the development branch and are not guaranteed to be always working.
+.. Despite our best efforts, they might contain undocumented and/or broken changes that will not become a part of an actual release.
+.. They are not meant for production use.
 
-When deploying contracts, you should use the latest released version of Solidity. This
-is because breaking changes, as well as new features and bug fixes are introduced regularly.
-We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+リリースに加え、開発者が簡単に次期機能を試し、早期にフィードバックを提供できるようにすることを意図して、 **nightly development builds** を提供しています。
+ただし、ナイトリービルドは通常非常に安定していますが、開発ブランチからの最先端のコードを含んでおり、常に動作することを保証するものではないことに注意してください。
+私たちの最善の努力にもかかわらず、文書化されていない、あるいは破壊的変更が含まれている可能性があり、実際のリリースの一部にはなりません。
+また、本番環境での使用は想定していません。
+
+.. When deploying contracts, you should use the latest released version of Solidity.
+.. This is because breaking changes, as well as new features and bug fixes are introduced regularly.
+.. We currently use a 0.x version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+
+コントラクトをデプロイする場合は、Solidityの最新リリースバージョンを使用する必要があります。
+これは、新しい機能やバグ修正だけでなく、破壊的な変更が定期的に導入されるからです。
+現在、0.x のバージョン番号を使用していますが、これは `この速いペースでの変更を示すため <https://semver.org/#spec-item-4>`_ です。
 
 Remix
 =====
@@ -49,7 +57,8 @@ npm / Node.js
 ``solcjs`` の使い方は、独自の `リポジトリ <https://github.com/ethereum/solc-js>`_ の中で説明されています。
 
 注: solc-jsプロジェクトは、Emscriptenを使用してC++  `solc` から派生しており、両者は同じコンパイラのソースコードを使用しています。
-`solc-js` はJavaScriptプロジェクト（Remixなど）で直接使用できます。使用方法はsolc-jsのリポジトリを参照してください。
+`solc-js` はJavaScriptプロジェクト（Remixなど）で直接使用できます。
+使用方法はsolc-jsのリポジトリを参照してください。
 
 .. code-block:: bash
 
@@ -64,9 +73,11 @@ npm / Node.js
 Docker
 ======
 
-SolidityのビルドのDockerイメージは、 ``ethereum`` オーガナイゼーションの ``solc`` イメージを使って利用できます。最新のリリースバージョンには ``stable`` タグを、developブランチの不安定な可能性のある変更には ``nightly`` タグを使用してください。
+SolidityのビルドのDockerイメージは、 ``ethereum`` オーガナイゼーションの ``solc`` イメージを使って利用できます。
+最新のリリースバージョンには ``stable`` タグを、developブランチの不安定な可能性のある変更には ``nightly`` タグを使用してください。
 
-Dockerイメージはコンパイラ実行ファイルを実行するので、すべてのコンパイラ引数を渡すことができます。例えば、以下のコマンドは、ステーブル版の ``solc`` イメージ（まだ持っていない場合）を取り出し、 ``--help`` 引数を渡して新しいコンテナで実行します。
+Dockerイメージはコンパイラ実行ファイルを実行するので、すべてのコンパイラ引数を渡すことができます。
+例えば、以下のコマンドは、ステーブル版の ``solc`` イメージ（まだ持っていない場合）を取り出し、 ``--help`` 引数を渡して新しいコンテナで実行します。
 
 .. code-block:: bash
 
@@ -78,7 +89,8 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
 
     docker run ethereum/solc:0.5.4 --help
 
-ホストマシンでSolidityのファイルをコンパイルするためにDockerイメージを使用するには、入出力用のローカルフォルダーをマウントし、コンパイルするコントラクトを指定します。例えば、以下のようになります。
+ホストマシンでSolidityのファイルをコンパイルするためにDockerイメージを使用するには、入出力用のローカルフォルダーをマウントし、コンパイルするコントラクトを指定します。
+例えば、以下のようになります。
 
 .. code-block:: bash
 
@@ -113,18 +125,27 @@ nightlyバージョンは、以下のコマンドでインストールできま�
     sudo apt-get update
     sudo apt-get install solc
 
-Furthermore, some Linux distributions provide their own packages. These packages are not directly
-maintained by us, but usually kept up-to-date by the respective package maintainers.
+.. Furthermore, some Linux distributions provide their own packages.
+.. These packages are not directly maintained by us, but usually kept up-to-date by the respective package maintainers.
 
-For example, Arch Linux has packages for the latest development version:
+さらに、一部のLinuxディストリビューションでは、独自のパッケージが提供されています。
+これらのパッケージは私たちが直接メンテナンスしているわけではありませんが、通常はそれぞれのパッケージメンテナによって最新に保たれています。
+
+.. For example, Arch Linux has packages for the latest development version:
+
+例えば、Arch Linuxでは、最新の開発版のパッケージが用意されています:
 
 .. code-block:: bash
 
     pacman -S solidity
 
-There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
-It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_. To
-install the latest stable version of solc:
+.. There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
+.. It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_.
+.. To install the latest stable version of solc:
+
+`snapパッケージ <https://snapcraft.io/solc>`_ もありますが、 **現在メンテナンスされていません** 。
+`サポートされているLinuxディストリビューション <https://snapcraft.io/docs/core/install>`_ すべてでインストール可能です。
+最新の安定版のsolcをインストールするには:
 
 .. code-block:: bash
 
@@ -138,12 +159,15 @@ install the latest stable version of solc:
 
 .. note::
 
-    ``solc`` スナップはstrict confinementを使用します。これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。     詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ を参照してください。
+    ``solc`` スナップはstrict confinementを使用します。
+    これはスナップパッケージにとって最も安全なモードですが、 ``/home`` と ``/media`` ディレクトリ内のファイルにしかアクセスできないなどの制限があります。
+    詳細については、 `Demystifying Snap Confinement <https://snapcraft.io/blog/demystifying-snap-confinement>`_ を参照してください。
 
 macOSパッケージ
 ===============
 
-私たちは、SolidityコンパイラをHomebrewを通じて、build-from-sourceバージョンとして配布しています。ビルド済みのボトルは現在サポートされていません。
+私たちは、SolidityコンパイラをHomebrewを通じて、build-from-sourceバージョンとして配布しています。
+ビルド済みのボトルは現在サポートされていません。
 
 .. code-block:: bash
 
@@ -177,7 +201,8 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 静的バイナリ
 ============
 
-`solc-bin`_ では、サポートしているすべてのプラットフォーム用の過去および現在のコンパイラバージョンの静的ビルドを含むリポジトリを管理しています。ここにはnightlyビルドも置かれています。
+`solc-bin`_ では、サポートしているすべてのプラットフォーム用の過去および現在のコンパイラバージョンの静的ビルドを含むリポジトリを管理しています。
+ここにはnightlyビルドも置かれています。
 
 リポジトリは、エンドユーザーがすぐに使えるバイナリを素早く簡単に入手できるだけでなく、サードパーティのツールとの親和性も考慮しています。
 
@@ -191,9 +216,14 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 - ファイルは HTTP と HTTPS の両方で提供されます。ファイルリストを安全な方法（git、HTTPS、IPFS、またはローカルにキャッシュ）で取得し、バイナリをダウンロードした後にバイナリのハッシュを検証する限り、バイナリ自体にHTTPSを使用する必要はありません。
 
-同じバイナリは、ほとんどの場合、 `Solidity release page on Github`_ で入手できます。異なる点は、Githubのリリースページにある古いリリースを一般的には更新しないことです。つまり、命名規則が変わっても名前を変えないし、リリース時にサポートされていなかったプラットフォーム用のビルドも追加しません。これは ``solc-bin`` でのみ起こります。
+同じバイナリは、ほとんどの場合、 `Solidity release page on Github`_ で入手できます。
+異なる点は、Githubのリリースページにある古いリリースを一般的には更新しないことです。
+つまり、命名規則が変わっても名前を変えないし、リリース時にサポートされていなかったプラットフォーム用のビルドも追加しません。
+これは ``solc-bin`` でのみ起こります。
 
-``solc-bin`` リポジトリには、複数のトップレベルのディレクトリがあり、それぞれが1つのプラットフォームを表しています。それぞれのディレクトリには、利用可能なバイナリの一覧を示す ``list.json`` ファイルが含まれています。例えば、 ``emscripten-wasm32/list.json`` にはバージョン0.7.4についての以下の情報があります。
+``solc-bin`` リポジトリには、複数のトップレベルのディレクトリがあり、それぞれが1つのプラットフォームを表しています。
+それぞれのディレクトリには、利用可能なバイナリの一覧を示す ``list.json`` ファイルが含まれています。
+例えば、 ``emscripten-wasm32/list.json`` にはバージョン0.7.4についての以下の情報があります。
 
 .. code-block:: json
 
@@ -218,7 +248,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 - このファイルはIPFSの `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_ でも公開されています。
 
-- このファイルは、将来的にはSwarmの `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_ で公開されるかもしれません。
+- このファイルは、将来はSwarmの `16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1`_ で公開されるかもしれません。
 
 - keccak256ハッシュを ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3`` と比較することで、バイナリの完全性を確認できます。  ハッシュは、 `sha3sum`_ が提供する ``keccak256sum`` ユーティリティーを使ってコマンドラインで計算するか、JavaScriptで `keccak256() function   from ethereumjs-util`_ を使って計算できます。
 
@@ -240,7 +270,9 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
     バイナリは https://ethereum.github.io/solc-bin/ にもありますが、このページはバージョン 0.7.2 のリリース直後に更新が停止しており、プラットフォームを問わず、新しいリリースやnightlyビルドを受け取ることはなく、また、非emscripten のビルドを含む新しいディレクトリ構造にも対応していません。
 
-    使用している場合は、ドロップインで置き換え可能な https://binaries.soliditylang.org に切り替えてください。これにより、基盤となるホスティングの変更を透明性のある方法で行い、混乱を最小限に抑えることができます。私たちがコントロールできない ``ethereum.github.io`` ドメインとは異なり、 ``binaries.soliditylang.org`` は長期的に機能し、同じURL構造を維持することが保証されています。
+    使用している場合は、ドロップインで置き換え可能な https://binaries.soliditylang.org に切り替えてください。
+    これにより、基盤となるホスティングの変更を透明性のある方法で行い、混乱を最小限に抑えることができます。
+    私たちがコントロールできない ``ethereum.github.io`` ドメインとは異なり、 ``binaries.soliditylang.org`` は長期的に機能し、同じURL構造を維持することが保証されています。
 
 .. _IPFS: https://ipfs.io
 .. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
@@ -265,17 +297,17 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 +-----------------------------------+-------------------------------------------------------+
 | Software                          | Notes                                                 |
 +===================================+=======================================================+
-| `CMake`_ (version 3.21.3+ on      | Cross-platform build file generator.                  |
+| `CMake`_ (version 3.21.3+ on      | クロスプラットフォームのビルドファイルジェネレーター。|
 | Windows, 3.13+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Boost`_ (version 1.77 on         | C++ libraries.                                        |
+| `Boost`_ (version 1.77 on         | C++ライブラリ。                                       |
 | Windows, 1.65+ otherwise)         |                                                       |
 +-----------------------------------+-------------------------------------------------------+
-| `Git`_                            | Command-line tool for retrieving source code.         |
+| `Git`_                            | ソースコードを取得するためのコマンドラインツール。    |
 +-----------------------------------+-------------------------------------------------------+
-| `z3`_ (version 4.8.16+, Optional) | For use with SMT checker.                             |
+| `z3`_ (version 4.8.16+, Optional) | SMTチェッカーと併用する場合。                         |
 +-----------------------------------+-------------------------------------------------------+
-| `cvc4`_ (Optional)                | For use with SMT checker.                             |
+| `cvc4`_ (Optional)                | SMTチェッカーと併用する場合。                         |
 +-----------------------------------+-------------------------------------------------------+
 
 .. _cvc4: https://cvc4.cs.stanford.edu/web/
@@ -286,27 +318,32 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 .. note::
 
-    Solidityのバージョンが0.5.10以前の場合、Boostのバージョン1.70以上に対して正しくリンクできないことがあります。     これを回避するには、cmakeコマンドを実行してsolidityを設定する前に、一時的に ``<Boost install path>/lib/cmake/Boost-1.70.0`` の名前を変更することが考えられます。
+    Solidityのバージョンが0.5.10以前の場合、Boostのバージョン1.70以上に対して正しくリンクできないことがあります。
+    これを回避するには、cmakeコマンドを実行してsolidityを設定する前に、一時的に ``<Boost install path>/lib/cmake/Boost-1.70.0`` の名前を変更することが考えられます。
 
     0.5.10以降、Boost 1.70以上とのリンクは手動での操作なしに動作します。
 
 .. note::
 
-    デフォルトのビルド構成では、特定のZ3バージョン（コードが最後に更新された時点での最新のもの）が必要です。Z3のリリース間に導入された変更により、わずかに異なる(ただし有効な)結果が返されることがよくあります。私たちのSMTテストはこれらの違いを考慮しておらず、書かれたバージョンとは異なるバージョンで失敗する可能性があります。これは、異なるバージョンを使用したビルドが欠陥であることを意味するものではありません。CMakeに ``-DSTRICT_Z3_VERSION=OFF`` オプションを渡しておけば、上の表にある要件を満たす任意のバージョンでビルドできます。     ただし、この場合、SMT テストをスキップするために  ``scripts/tests.sh``  に  ``--no-smt``  オプションを渡すことを忘れないでください。
+    デフォルトのビルド構成では、特定のZ3バージョン（コードが最後に更新された時点での最新のもの）が必要です。
+    Z3のリリース間に導入された変更により、わずかに異なる(ただし有効な)結果が返されることがよくあります。
+    私たちのSMTテストはこれらの違いを考慮しておらず、書かれたバージョンとは異なるバージョンで失敗する可能性があります。
+    これは、異なるバージョンを使用したビルドが欠陥であることを意味するものではありません。
+    CMakeに ``-DSTRICT_Z3_VERSION=OFF`` オプションを渡しておけば、上の表にある要件を満たす任意のバージョンでビルドできます。
+    ただし、この場合、SMT テストをスキップするために  ``scripts/tests.sh``  に  ``--no-smt``  オプションを渡すことを忘れないでください。
 
 .. note::
-    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
-    compiler to treat all warnings as errors.
-    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
-    If you are only interested in creating a release build and do not intend to modify the source code
-    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
-    Doing this is not recommended for general use but may be necessary when using a toolchain we are
-    not testing with or trying to build an older version with newer tools.
-    If you encounter such warnings, please consider
-    `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+    .. By default the build is performed in *pedantic mode*, which enables extra warnings and tells the compiler to treat all warnings as errors.
+    .. This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
+    .. If you are only interested in creating a release build and do not intend to modify the source code to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
+    .. Doing this is not recommended for general use but may be necessary when using a toolchain we are not testing with or trying to build an older version with newer tools.
+    .. If you encounter such warnings, please consider `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
 
-Minimum Compiler Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^
+    デフォルトでは、ビルドは *pedantic mode* で実行され、余分な警告を有効にし、すべての警告をエラーとして扱うようにコンパイラに指示します。
+    これにより、開発者は警告が発生したときに修正することを余儀なくされ、「後で修正する」ことが蓄積されることがありません。
+    もしあなたがリリースビルドを作ることにしか興味がなく、そのような警告に対処するためにソースコードを修正するつもりがないのであれば、CMakeに ``-DPEDANTIC=OFF`` オプションを渡してこのモードを無効にすることが可能です。
+    この方法は一般的な使用では推奨されませんが、私たちがテストしていないツールチェーンを使用する場合や、古いバージョンを新しいツールでビルドしようとする場合には必要かもしれません。
+    もしこのような警告に遭遇したら、 `それらを報告すること <https://github.com/ethereum/solidity/issues/new>`_ を検討してください。
 
 最小コンパイラバージョン
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -314,22 +351,21 @@ Minimum Compiler Versions
 以下のC++コンパイラとその最小バージョンでSolidityのコードベースを構築できます。
 
 -  `GCC <https://gcc.gnu.org>`_ 、バージョン8以上
-
 -  `Clang <https://clang.llvm.org/>`_ 、バージョン7以上
-
 -  `MSVC <https://visualstudio.microsoft.com/vs/>`_ 、バージョン2019以上
 
 前提知識 - macOS
 ----------------
 
-macOSでビルドする場合は、最新版の `Xcode installed <https://developer.apple.com/xcode/download/>`_ を用意してください。
+macOSでビルドする場合は、最新版の `Xcodeがインストールされていること <https://developer.apple.com/xcode/download/>`_ を確認してください。
 Xcodeを初めてインストールする場合や、新しいバージョンをインストールしたばかりの場合は、コマンドラインでのビルドを行う前にライセンスに同意する必要があります。
 
 .. code-block:: bash
 
     sudo xcodebuild -license accept
 
-私たちのOS Xのビルドスクリプトは、外部の依存関係をインストールするために `Homebrew <https://brew.sh>`_ パッケージマネージャーを使用しています。もし、最初からやり直したいと思ったときのために、 `Homebrewのアンインストール <https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_ の方法を紹介します。
+私たちのOS Xのビルドスクリプトは、外部の依存関係をインストールするために `Homebrew <https://brew.sh>`_ パッケージマネージャーを使用しています。
+もし、最初からやり直したいと思ったときのために、 `Homebrewのアンインストール <https://docs.brew.sh/FAQ#how-do-i-uninstall-homebrew>`_ の方法を紹介します。
 
 前提知識 - Windows
 ------------------
@@ -348,18 +384,15 @@ SolidityのWindowsビルドには、以下の依存関係をインストール�
 
 すでに1つのIDEを持っていて、コンパイラとライブラリだけが必要な場合は、Visual Studio 2019 Build Toolsをインストールできます。
 
-Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両方を提供します。そのため、IDEを持っておらず、Solidityを開発したい場合は、すべてのセットアップを簡単に行うことができるVisual Studio 2019を選択するとよいでしょう。
+Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両方を提供します。
+そのため、IDEを持っておらず、Solidityを開発したい場合は、すべてのセットアップを簡単に行うことができるVisual Studio 2019を選択するとよいでしょう。
 
 ここでは、「Visual Studio 2019 Build Tools」または「Visual Studio 2019」にインストールされるべきコンポーネントのリストを示します。
 
 * Visual Studio C++のコア関数
-
 * VC++ 2019 v141ツールセット(x86,x64)
-
 * Windows Universal CRT SDK
-
 * Windows 8.1 SDK
-
 * C++/CLIのサポート
 
 .. _Visual Studio 2019: https://www.visualstudio.com/vs/
@@ -403,8 +436,10 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 
 **ビルドする前に、必ず外部依存関係（上記参照）をインストールしてください。**
 
-Solidityプロジェクトでは、CMakeを使ってビルドの設定を行います。繰り返しのビルドを高速化するために、 `ccache`_ をインストールするとよいでしょう。
-CMakeはそれを自動的にピックアップします。Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似ています。
+Solidityプロジェクトでは、CMakeを使ってビルドの設定を行います。
+繰り返しのビルドを高速化するために、 `ccache`_ をインストールするとよいでしょう。
+CMakeはそれを自動的にピックアップします。
+Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似ています。
 
 .. _ccache: https://ccache.dev/
 
@@ -435,7 +470,9 @@ CMakeはそれを自動的にピックアップします。Solidityのビルド�
 
 ``scripts\install_deps.ps1`` がインストールしたバージョンのブーストを使用したい場合は、 ``cmake`` の呼び出しの引数として ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` と ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded`` を追加で渡す必要があります。
 
-これにより、そのビルドディレクトリに **solidity.sln** が作成されるはずです。そのファイルをダブルクリックすると、Visual Studioが起動します。   **Release** 構成での構築をお勧めしますが、その他の構成でも動作します。
+これにより、そのビルドディレクトリに **solidity.sln** が作成されるはずです。
+そのファイルをダブルクリックすると、Visual Studioが起動します。
+**Release** 構成での構築をお勧めしますが、その他の構成でも動作します。
 
 あるいは、次のようにコマンドラインでWindows用にビルドすることもできます。
 
@@ -453,7 +490,8 @@ CMakeオプション
 SMTソルバー
 -----------
 
-SolidityはSMTソルバーに対してビルドでき、システムで見つかった場合、デフォルトでそうします。それぞれのソルバーは `cmake` オプションで無効にできます。
+SolidityはSMTソルバーに対してビルドでき、システムで見つかった場合、デフォルトでそうします。
+それぞれのソルバーは `cmake` オプションで無効にできます。
 
 *注: 場合によっては、ビルドに失敗したときの回避策としても有効です。*
 
@@ -476,16 +514,14 @@ SolidityはSMTソルバーに対してビルドでき、システムで見つか
 Solidityバージョンの文字列は、4つの部分で構成されています。
 
 - バージョン番号
-
 - プレリリースのタグ。通常は ``develop.YYYY.MM.DD`` または ``nightly.YYYY.MM.DD`` に設定されています。
-
 - コミット。フォーマットは ``commit.GITHASH`` です。
-
 - プラットフォーム。任意の数の項目を持ち、プラットフォームとコンパイラに関する詳細を含むます。
 
 ローカルに変更があった場合、そのコミットは ``.mod`` でポストフィックスされます。
 
-これらのパーツはSemVerの要求に応じて組み合わせられます。SolidityのプレリリースタグはSemVerのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
+これらのパーツはSemVerの要求に応じて組み合わせられます。
+SolidityのプレリリースタグはSemVerのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
 
 リリース例: ``0.4.8+commit.60cc1668.Emscripten.clang``。
 
@@ -494,7 +530,9 @@ Solidityバージョンの文字列は、4つの部分で構成されていま�
 バージョニングについての重要な情報
 ==================================
 
-リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。変更がマージされたときには、SemVerと変更の重要度に応じてバージョンを上げる必要があります。最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
+リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。
+変更がマージされたときには、SemVerと変更の重要度に応じてバージョンを上げる必要があります。
+最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
 
 例:
 

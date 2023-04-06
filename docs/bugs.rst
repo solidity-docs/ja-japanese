@@ -82,13 +82,11 @@
 ..     later.
 ..     If no conditions are given, assume that the bug is present.
 .. check
-..     This field contains different checks that report whether the smart contract
-..     contains the bug or not. The first type of check are JavaScript regular
-..     expressions that are to be matched against the source code ("source-regex")
-..     if the bug is present.  If there is no match, then the bug is very likely
-..     not present. If there is a match, the bug might be present.  For improved
-..     accuracy, the checks should be applied to the source code after stripping
-..     comments.
+..     This field contains different checks that report whether the smart contract contains the bug or not.
+..     The first type of check are JavaScript regular expressions that are to be matched against the source code ("source-regex") if the bug is present.
+..     If there is no match, then the bug is very likely not present.
+..     If there is a match, the bug might be present.
+..     For improved accuracy, the checks should be applied to the source code after stripping comments.
 ..     The second type of check are patterns to be checked on the compact AST of
 ..     the Solidity program ("ast-compact-json-path"). The specified search query
 ..     is a `JsonPath <https://github.com/json-path/JsonPath>`_ expression.
@@ -105,28 +103,35 @@ summary
 description
    バグの詳細な説明。
 link
-   より詳細な情報があるウェブサイトのURL。オプション。
+   より詳細な情報があるウェブサイトのURL。
+   オプション。
 introduced
-   バグを含んで最初に公開されたコンパイラバージョン。オプション。
+   バグを含んで最初に公開されたコンパイラバージョン。
+   オプション。
 fixed
    バグを含まなくなって最初に公開されたコンパイラバージョン。
 publish
-   バグが公に知られるようになった日付。オプション。
+   バグが公に知られるようになった日付。
+   オプション。
 severity
    バグの深刻度: very low、low、medium、high。
    コントラクトテストでの発見可能性、発生の可能性、悪用による被害の可能性を考慮しています。
 conditions
    バグを発生させるために満たさなければならない条件。
    以下のキーが使用できます。
-   ``optimizer``: ブール値。バグを有効にするにはオプティマイザがオンになっていなければならないことを意味します。
-   ``evmVersion``: どのEVMバージョンのコンパイラ設定がバグを引き起こすかを示す文字列。この文字列には比較演算子を含めることができます。
+   ``optimizer``: ブール値。
+   バグを有効にするにはオプティマイザがオンになっていなければならないことを意味します。
+   ``evmVersion``: どのEVMバージョンのコンパイラ設定がバグを引き起こすかを示す文字列。
+   この文字列には比較演算子を含めることができます。
    例えば、 ``">=constantinople"``  は EVM バージョンが  ``constantinople``  以降に設定されている場合にバグが発生することを意味します。
 check
    このフィールドには、スマートコントラクトにバグが含まれているかどうかを報告するさまざまなチェックが含まれます。
    最初のタイプのチェックは、バグが存在する場合にソースコード（「source-regex」）に対してマッチされるJavaScriptの正規表現です。
-   一致しない場合は、バグが存在しない可能性が高いです。一致するものがあれば、そのバグは存在する可能性があります。
+   一致しない場合は、バグが存在しない可能性が高いです。
+   一致するものがあれば、そのバグは存在する可能性があります。
    精度を上げるためには、コメントを削除した後のソースコードにチェックを適用する必要があります。
-   2番目のタイプのチェックは、SolidityプログラムのコンパクトASTにチェックするパターンです（「ast-compact-json-path」）。指定された検索クエリは、 `JsonPath <https://github.com/json-path/JsonPath>`_ の式です。
+   2番目のタイプのチェックは、SolidityプログラムのコンパクトASTにチェックするパターンです（「ast-compact-json-path」）。
+   指定された検索クエリは、 `JsonPath <https://github.com/json-path/JsonPath>`_ の式です。
    SolidityのASTの少なくとも1つのパスがクエリにマッチする場合、バグが存在する可能性が高いです。
 
 .. literalinclude:: bugs.json

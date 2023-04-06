@@ -1,6 +1,6 @@
-****************
+**********
 言語の文法
-****************
+**********
 
 .. a4:autogrammar:: SolidityParser
    :only-reachable-from: SolidityParser.sourceUnit

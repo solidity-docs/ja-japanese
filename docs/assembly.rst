@@ -104,17 +104,17 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
         // 上記と同じですが、コード全体をインラインアセンブリで実現します。
         function sumPureAsm(uint[] memory data) public pure returns (uint sum) {
             assembly {
-                // 長さ（最初の32バイト）を読み込む
+                // 長さ（最初の32バイト）を読み込みます。
                 let len := mload(data)
 
-                // 長さのフィールドをスキップする。
+                // 長さのフィールドをスキップします。
                 //
-                // in-placeでインクリメントできるように一時的な変数を保持する。
+                // in-placeでインクリメントできるように一時的な変数を保持します。
                 //
                 // 注: data をインクリメントすると、このアセンブリブロックの後では data 変数は使用できなくなります。
                 let dataElementLocation := add(data, 0x20)
 
-                // 上限に達するまで反復する。
+                // 上限に達するまで反復します。
                 for
                     { let end := add(dataElementLocation, mul(len, 0x20)) }
                     lt(dataElementLocation, end)
@@ -138,7 +138,8 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. Local variables of value type are directly usable in inline assembly.
 .. They can both be read and assigned to.
 
-値型のローカル変数は、インラインアセンブリで直接使用できます。読み込みと代入の両方が可能です。
+値型のローカル変数は、インラインアセンブリで直接使用できます。
+読み込みと代入の両方が可能です。
 
 .. Local variables that refer to memory evaluate to the address of the variable in memory not the value itself.
 .. Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data
@@ -172,7 +173,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
     pragma solidity >=0.8.10 <0.9.0;
 
     contract C {
-        // 返り値を格納する変数 @fun に新しいセレクタとアドレスを代入する。
+        // 返り値を格納する変数 @fun に新しいセレクタとアドレスを代入します。
         function combineToFunctionPointer(address newAddress, uint newSelector) public pure returns (function() external fun) {
             assembly {
                 fun.selector := newSelector
@@ -212,7 +213,8 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 
 .. Local Solidity variables are available for assignments, for example:
 
-ローカルSolidityの変数は代入に利用できます。例:
+ローカルSolidityの変数は代入に利用できます。
+例:
 
 .. code-block:: solidity
     :force:

@@ -128,7 +128,7 @@
 .. - for value types, ``h`` pads the value to 32 bytes in the same way as when storing the value in memory.
 .. - for strings and byte arrays, ``h(k)`` is just the unpadded data.
 
-マッピングキー ``k`` に対応する値は ``keccak256(h(k) . p)`` に位置し、 ``.`` は連結、 ``h`` はキーの型に応じて適用される関数である。
+マッピングキー ``k`` に対応する値は ``keccak256(h(k) . p)`` に位置し、 ``.`` は連結、 ``h`` はキーの型に応じて適用される関数です。
 
 - 値型の場合、 ``h`` はメモリに値を格納するときと同じように、値を32バイトにパディングします。
 
@@ -205,7 +205,7 @@
 
 .. note::
 
-  無効にエンコードされたスロットの処理は現在サポートされていませんが、将来的に追加される可能性があります。
+  無効にエンコードされたスロットの処理は現在サポートされていませんが、将来追加される可能性があります。
   IR経由でコンパイルしている場合、不正にエンコードされたスロットを読むと ``Panic(0x22)`` エラーが発生します。
 
 JSON出力
@@ -254,7 +254,8 @@ JSON出力
 
 - ``offset`` はエンコーディングに応じたストレージスロット内のバイト単位のオフセットです。
 
-- ``slot`` は、状態変数が存在する、あるいは、開始するストレージスロットです。この数値は非常に大きくなる可能性があるため、JSONの値は文字列として表されます。
+- ``slot`` は、状態変数が存在する、あるいは、開始するストレージスロットです。
+  この数値は非常に大きくなる可能性があるため、JSONの値は文字列として表されます。
 
 - ``type`` は、変数の型情報のキーとなる識別子です（以下に記載）。
 
@@ -291,17 +292,18 @@ JSON出力
 
 - ``encoding`` は、データがストレージでどのようにエンコードされているかを示すもので、可能な値は以下の通りです。
 
-  -  ``inplace`` : データがストレージに連続してレイアウトされている（ :ref:`上記<storage-inplace-encoding>` 参照）。
+  -  ``inplace``: データがストレージに連続してレイアウトされている（ :ref:`上記<storage-inplace-encoding>` 参照）。
 
-  -  ``mapping`` : Keccak-256ハッシュベースの方式（ :ref:`上記<storage-hashed-encoding>` 参照）。
+  -  ``mapping``: Keccak-256ハッシュベースの方式（ :ref:`上記<storage-hashed-encoding>` 参照）。
 
-  -  ``dynamic_array`` : Keccak-256ハッシュベースの方式（ :ref:`上記<storage-hashed-encoding>` 参照）。
+  -  ``dynamic_array``: Keccak-256ハッシュベースの方式（ :ref:`上記<storage-hashed-encoding>` 参照）。
 
-  -  ``bytes`` : シングルスロット、あるいは、データサイズに応じたKeccak-256ハッシュベース（ :ref:`上記<bytes-and-string>` 参照）。
+  -  ``bytes``: シングルスロット、あるいは、データサイズに応じたKeccak-256ハッシュベース（ :ref:`上記<bytes-and-string>` 参照）。
 
 - ``label`` は正規化された型名です。
 
-- ``numberOfBytes`` は使用されたバイト数（10進数の文字列）です。 ``numberOfBytes > 32`` の場合は、複数のスロットが使用されていることを意味することに注意してください。
+- ``numberOfBytes`` は使用されたバイト数（10進数の文字列）です。
+  ``numberOfBytes > 32`` の場合は、複数のスロットが使用されていることを意味することに注意してください。
 
 .. Some types have extra information besides the four above. Mappings contain
 .. its ``key`` and ``value`` types (again referencing an entry in this mapping

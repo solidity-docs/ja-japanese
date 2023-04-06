@@ -1,11 +1,11 @@
-*******************************************
+********************************
 単位とグローバルで利用可能な変数
-*******************************************
+********************************
 
 .. index:: wei, finney, szabo, gwei, ether
 
 Etherの単位
-============
+===========
 
 リテラルの数に ``wei`` 、 ``gwei`` 、 ``ether`` の接尾辞を付けて、Etherの別の単位を指定できますが、接尾辞のないEtherの数はWeiとみなされます。
 
@@ -31,13 +31,9 @@ Etherの単位
 秒を基本単位とし、単位は次のように単純なものです。
 
 * ``1 == 1 seconds``
-
 * ``1 minutes == 60 seconds``
-
 * ``1 hours == 60 minutes``
-
 * ``1 days == 24 hours``
-
 * ``1 weeks == 7 days``
 
 .. Take care if you perform calendar calculations using these units, because
@@ -46,14 +42,15 @@ Etherの単位
 .. Due to the fact that leap seconds cannot be predicted, an exact calendar
 .. library has to be updated by an external oracle.
 
-これらの単位を使ってカレンダーの計算を行う場合、 `leap seconds <https://en.wikipedia.org/wiki/Leap_second>`_ のために1年が365日ではなく、1日が24時間でもないので注意が必要です。
+これらの単位を使ってカレンダーの計算を行う場合、 `うるう秒 <https://en.wikipedia.org/wiki/Leap_second>`_ のために1年が365日ではなく、1日が24時間でもないので注意が必要です。
 うるう秒が予測できないため、正確なカレンダーライブラリは外部のオラクルで更新する必要があります。
 
 .. note::
 
     上記の理由により、バージョン0.5.0では接尾語の ``years`` が削除されました。
 
-これらの接尾辞は、変数には適用できません。例えば、関数のパラメータを日単位で解釈したい場合は、以下のようになります。
+これらの接尾辞は、変数には適用できません。
+例えば、関数のパラメータを日単位で解釈したい場合は、以下のようになります。
 
 .. code-block:: solidity
 
@@ -66,14 +63,14 @@ Etherの単位
 .. _special-variables-functions:
 
 特別な変数と関数
-===============================
+================
 
 グローバルな名前空間に常に存在し、主にブロックチェーンに関する情報を提供するために使用されたり、汎用的なユーティリティー関数である特別な変数や関数があります。
 
 .. index:: abi, block, coinbase, difficulty, prevrandao, encode, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin
 
 ブロックとトランザクションのプロパティ
-----------------------------------------
+--------------------------------------
 
 - ``blockhash(uint blockNumber) returns (bytes32)``: ``blocknumber`` が直近256個のブロックの一つである場合は、与えられたブロックのハッシュ、そうでない場合はゼロを返す
 
@@ -83,13 +80,15 @@ Etherの単位
 
 - ``block.coinbase`` (``address payable``): カレントブロックのマイナーのアドレス
 
-- ``block.difficulty`` (``uint``): カレントブロックの難易度（ ``EVM < Paris`` ）。For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` (`EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
+- ``block.difficulty`` (``uint``):
+  現在のブロックの難易度（ ``EVM < Paris`` ）。
+  EVMの他のバージョンでは、 ``block.prevrandao`` の非推奨のエイリアスとして動作ます（ `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ ）。
 
 - ``block.gaslimit`` (``uint``): カレントブロックのガスリミット
 
 - ``block.number`` (``uint``): カレントブロックの番号
 
-- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``)
+- ``block.prevrandao`` (``uint``): ビーコンチェーンが提供する乱数（ ``EVM >= Paris`` ）
 
 - ``block.timestamp`` ( ``uint`` ): カレントブロックのタイムスタンプ（Unixエポックからの秒数）
 
@@ -122,7 +121,7 @@ Etherの単位
 .. note::
 
     コントラクトが、ブロックに含まれるトランザクションのコンテキストではなく、オフチェーンで評価される場合、 ``block.*`` と ``tx.*`` が特定のブロックやトランザクションの値を参照していると仮定すべきではない。
-    これらの値は、コントラクトを実行するEVM実装によって提供され、任意のものとなり得る。
+    これらの値は、コントラクトを実行するEVM実装によって提供され、任意のものとなり得ます。
 
 .. .. note::
 
@@ -166,7 +165,7 @@ Etherの単位
 .. index:: abi, encoding, packed
 
 ABIエンコーディングおよびデコーディングの関数
------------------------------------------------
+---------------------------------------------
 
 .. - ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABI-decodes the given data, while the types are given in parentheses as second argument. Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
 .. - ``abi.encode(...) returns (bytes memory)``: ABI-encodes the given arguments
@@ -174,11 +173,13 @@ ABIエンコーディングおよびデコーディングの関数
 .. - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI-encodes the given arguments starting from the second and prepends the given four-byte selector
 .. - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
 
-- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABIは与えられたデータをデコードしますが、型は第2引数として括弧内に与えられます。例 ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``。
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABIは与えられたデータをデコードしますが、型は第2引数として括弧内に与えられます。
+  例: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``。
 
 - ``abi.encode(...) returns (bytes memory)``: 与えられた引数をABIエンコードします。
 
-- ``abi.encodePacked(...) returns (bytes memory)``: 与えられた引数の :ref:`packed encoding <abi_packed_mode>` を実行します。パックされたエンコーディングは曖昧になる可能性があることに注意してください。
+- ``abi.encodePacked(...) returns (bytes memory)``: 与えられた引数の :ref:`packed encoding <abi_packed_mode>` を実行します。
+  パックされたエンコーディングは曖昧になる可能性があることに注意してください。
 
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: 与えられた引数を2番目から順にABIエンコードし、与えられた4バイトのセレクタを前に付加します。
 
@@ -198,21 +199,21 @@ ABIエンコーディングおよびデコーディングの関数
     これらのエンコーディング関数は、実際に外部関数を呼び出すことなく、外部関数呼び出しのためにデータを細工するために使用できます。
     さらに、 ``keccak256(abi.encodePacked(a, b))`` は構造化されたデータのハッシュを計算する方法でもあります（ただし、異なる関数パラメータタイプを使って「ハッシュの衝突」を工作することが可能なので注意が必要です）。
 
-エンコーディングの詳細については、 :ref:`ABI<ABI>` および :ref:`tightly packed encoding<abi_packed_mode>` に関するドキュメントを参照してください。
+エンコーディングの詳細については、 :ref:`ABI<ABI>` および :ref:`タイトにパックするエンコーディング<abi_packed_mode>` に関するドキュメントを参照してください。
 
 .. index:: bytes members
 
 bytesのメンバー
 ---------------
 
-- ``bytes.concat(...) returns (bytes memory)`` :  :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>`。
+- ``bytes.concat(...) returns (bytes memory)``: :ref:`可変個の bytes, bytes1, ..., bytes32 の引数を一つのバイト列に連結します<bytes-concat>` 。
 
 .. index:: string members
 
 stringのメンバー
 ----------------
 
-- ``string.concat(...) returns (string memory)``: :ref:`Concatenates variable number of string arguments to one string array<string-concat>`
+- ``string.concat(...) returns (string memory)``: :ref:`可変個の文字列引数を1つの文字列に連結します <string-concat>` 。
 
 
 .. index:: assert, revert, require
@@ -229,7 +230,8 @@ stringのメンバー
     条件が満たされないとリバートします - 入力や外部コンポーネントのエラーに使用されます。
 
 ``require(bool condition, string memory message)``
-    条件が満たされないとリバートします - 入力や外部コンポーネントのエラーに使用します。また、エラーメッセージも表示されます。
+    条件が満たされないとリバートします - 入力や外部コンポーネントのエラーに使用します。
+    また、エラーメッセージも表示されます。
 
 ``revert()``
     実行を中止し、状態変化をリバートします。
@@ -245,10 +247,12 @@ stringのメンバー
 ------------------------
 
 ``addmod(uint x, uint y, uint k) returns (uint)``
-    任意の精度で加算が実行され、 ``2**256`` で切り捨てられない ``(x + y) % k`` を計算します。バージョン0.5.0から ``k != 0`` であることをアサートします。
+    任意の精度で加算が実行され、 ``2**256`` で切り捨てられない ``(x + y) % k`` を計算します。
+    バージョン0.5.0から ``k != 0`` であることをアサートします。
 
 ``mulmod(uint x, uint y, uint k) returns (uint)``
-    任意の精度で乗算が実行され、 ``2**256`` で切り捨てられない ``(x * y) % k`` を計算します。バージョン0.5.0から ``k != 0`` であることをアサートします。
+    任意の精度で乗算が実行され、 ``2**256`` で切り捨てられない ``(x * y) % k`` を計算します。
+    バージョン0.5.0から ``k != 0`` であることをアサートします。
 
 
 ``keccak256(bytes memory) returns (bytes32)``
@@ -341,19 +345,24 @@ stringのメンバー
     :ref:`address` のコードハッシュ
 
 ``<address payable>.transfer(uint256 amount)``
-    指定された量のWeiを :ref:`address` に送る、失敗するとリバートされる。2300ガスのみ使用可能（調整不可）。
+    指定された量のWeiを :ref:`address` に送る、失敗するとリバートされます。
+    2300ガスのみ使用可能（調整不可）。
 
 ``<address payable>.send(uint256 amount) returns (bool)``
-    指定された量のWeiを :ref:`address` に送り、失敗すると ``false`` を返す。2300ガスのみ使用可能（調整不可）。
+    指定された量のWeiを :ref:`address` に送り、失敗すると ``false`` を返します。
+    2300ガスのみ使用可能（調整不可）。
 
 ``<address>.call(bytes memory) returns (bool, bytes memory)``
-    与えたペイロードで低レベルの ``CALL`` を発行し、成功条件とリターンデータを返す。利用可能なすべてのガスを送金できる（調整可能）。
+    与えたペイロードで低レベルの ``CALL`` を発行し、成功条件とリターンデータを返します。
+    利用可能なすべてのガスを送金できる（調整可能）。
 
 ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``
-    与えたペイロードで低レベルの ``DELEGATECALL`` を発行し、成功条件とリターンデータを返す。利用可能なすべてのガスを送金できる（調整可能）。
+    与えたペイロードで低レベルの ``DELEGATECALL`` を発行し、成功条件とリターンデータを返します。
+    利用可能なすべてのガスを送金できる（調整可能）。
 
 ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
-    与えたペイロードで低レベルの ``STATICCALL`` を発行し、成功条件とリターンデータを返す。利用可能なすべてのガスを送金できる（調整可能）。
+    与えたペイロードで低レベルの ``STATICCALL`` を発行し、成功条件とリターンデータを返します。
+    利用可能なすべてのガスを送金できる（調整可能）。
 
 詳しくは、 :ref:`address` の項を参照してください。
 
@@ -388,8 +397,9 @@ stringのメンバー
 
 .. note::
 
-   バージョン0.5.0以前のSolidityでは、 ``this.balance`` などのコントラクトインスタンスからアドレスメンバーにアクセスできました。
-   これは現在では禁止されており、アドレスへの明示的な変換を行う必要があります。 ``address(this).balance`` です。
+    バージョン0.5.0以前のSolidityでは、 ``this.balance`` などのコントラクトインスタンスからアドレスメンバーにアクセスできました。
+    これは現在では禁止されており、アドレスへの明示的な変換を行う必要があります
+    ``address(this).balance`` です。
 
 .. .. note::
 
@@ -429,19 +439,20 @@ stringのメンバー
 ..     - the contract is only really destroyed at the end of the transaction and ``revert`` s might "undo" the destruction.
 
 ``selfdestruct(address payable recipient)``
-    現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了する。
+    現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了します。
     ``selfdestruct`` はEVMから引き継いだいくつかの特殊性を持っていることに注意してください。
 
     - 受信側コントラクトのレシーブ関数が実行されない。
 
-    - コントラクトが実際に破壊されるのはトランザクション終了時であり、 ``revert`` はその破壊を「元に戻す」かもしれません。
+    - コントラクトが実際に破壊されるのはトランザクション終了時であり、 ``revert`` はその破壊を「リバートする」かもしれません。
 
 さらに、現在のコントラクトのすべての関数は、現在の関数を含めて直接呼び出すことができます。
 
 .. warning::
-    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
-    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour
-    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+
+    バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、非推奨の警告が発生します、 
+    というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変わることになるからです。
 
 .. note::
 
@@ -452,14 +463,14 @@ stringのメンバー
 .. _meta-type:
 
 型情報
-----------------
+------
 
 .. The expression ``type(X)`` can be used to retrieve information about the type
 .. ``X``. Currently, there is limited support for this feature (``X`` can be either
 .. a contract or an integer type) but it might be expanded in the future.
 
 ``type(X)`` という式を使って、 ``X`` という型に関する情報を取り出すことができます。
-現在のところ、この機能のサポートは限られていますが（ ``X`` はコントラクト型か整数型のどちらかです）、将来的には拡張されるかもしれません。
+現在のところ、この機能のサポートは限られていますが（ ``X`` はコントラクト型か整数型のどちらかです）、将来は拡張されるかもしれません。
 
 コントラクト型 ``C`` には以下のプロパティがあります。
 
@@ -521,7 +532,8 @@ stringのメンバー
 予約語
 ======
 
-これらのキーワードはSolidityで予約されています。将来的には構文の一部になるかもしれません。
+これらのキーワードはSolidityで予約されています。
+将来は構文の一部になるかもしれません。
 
 ``after``, ``alias``, ``apply``, ``auto``, ``byte``, ``case``, ``copyof``, ``default``,
 ``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,

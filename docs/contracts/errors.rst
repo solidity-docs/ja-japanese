@@ -44,13 +44,11 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 スコープが異なっている限り、同じエラーを複数の場所で定義できます。
 エラーのインスタンスは、 ``revert`` 文を使ってのみ作成できます。
 
-.. The error creates data that is then passed to the caller with the revert operation
-.. to either return to the off-chain component or catch it in a :ref:`try/catch statement <try-catch>`.
-.. Note that an error can only be caught when coming from an external call,
-.. reverts happening in internal calls or inside the same function cannot be caught.
+.. The error creates data that is then passed to the caller with the revert operation to either return to the off-chain component or catch it in a :ref:`try/catch statement <try-catch>`.
+.. Note that an error can only be caught when coming from an external call, reverts happening in internal calls or inside the same function cannot be caught.
 
 エラーが発生すると、データが作成され、リバート操作で呼び出し側に渡され、オフチェーンコンポーネントに戻るか、 :ref:`try/catch文 <try-catch>` でキャッチされます。
-エラーをキャッチできるのは、外部からの呼び出しの場合のみで、内部呼び出しや同じ関数内で発生した復帰はキャッチできないことに注意してください。
+エラーをキャッチできるのは、外部からの呼び出しの場合のみで、内部呼び出しや同じ関数内で発生したリバートはキャッチできないことに注意してください。
 
 .. If you do not provide any parameters, the error only needs four bytes of
 .. data and you can use :ref:`NatSpec <natspec>` as above
@@ -72,14 +70,12 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 
 .. .. note::
 
-..     It is possible for a contract to revert
-..     with different errors of the same name or even with errors defined in different places
-..     that are indistinguishable by the caller. For the outside, i.e. the ABI,
-..     only the name of the error is relevant, not the contract or file where it is defined.
+..     It is possible for a contract to revert with different errors of the same name or even with errors defined in different places that are indistinguishable by the caller.
+..     For the outside, i.e. the ABI, only the name of the error is relevant, not the contract or file where it is defined.
 
 .. note::
 
-    コントラクトが同じ名前の異なるエラーで復帰することは可能ですし、呼び出し元では区別できない異なる場所で定義されたエラーであっても可能です。
+    コントラクトが同じ名前の異なるエラーでリバートすることは可能ですし、呼び出し元では区別できない異なる場所で定義されたエラーであっても可能です。
     外部、つまりABIにとっては、エラーの名前だけが重要であり、そのエラーが定義されているコントラクトやファイルは関係ありません。
 
 .. The statement ``require(condition, "description");`` would be equivalent to
@@ -90,13 +86,9 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 ``require(condition, "description");`` という文は、 ``error Error(string)`` を定義できれば ``if (!condition) revert Error("description")`` と同じになります。
 ただし、 ``Error`` は組み込み型であり、ユーザーが提供するコードでは定義できないことに注意してください。
 
-.. Similarly, a failing ``assert`` or similar conditions will revert with an error
-.. of the built-in type ``Panic(uint256)``.
+.. Similarly, a failing ``assert`` or similar conditions will revert with an error of the built-in type ``Panic(uint256)``.
 
-同様に、 ``assert`` が失敗した場合や同様の条件の場合は、ビルトイン型の ``Panic(uint256)`` エラーで復帰します。
-
-Members of Errors
-=================
+同様に、 ``assert`` が失敗した場合や同様の条件の場合は、ビルトイン型の ``Panic(uint256)`` エラーでリバートします。
 
 .. .. note::
 
@@ -114,4 +106,11 @@ Members of Errors
     その理由は、インナーコールのリバートデータは、デフォルトでは外部コールのチェーンを通じて伝搬されるからです。
     つまり、内側の呼び出しは、それを呼び出したコントラクトから来たように見えるリバートデータを「偽造」できるということです。
 
-- ``error.selector``: A ``bytes4`` value containing the error selector.
+.. Members of Errors
+
+エラーのメンバー
+================
+
+.. - ``error.selector``: A ``bytes4`` value containing the error selector.
+
+- ``error.selector``: エラーセレクタを含む ``bytes4`` の値。

@@ -100,7 +100,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
   .. Previously, ``y`` would be set to 0. This is due to the fact that we would first initialize state variables: First, ``x`` is set to 0, and when initializing ``y``, ``f()`` would return 0 causing ``y`` to be 0 as well.
   .. With the new rules, ``y`` will be set to 42. We first initialize ``x`` to 0, then call A's constructor which sets ``x`` to 42. Finally, when initializing ``y``, ``f()`` returns 42 causing ``y`` to be 42.
 
-  これは、最初に状態変数を初期化することに起因しています: まず、 ``x`` は0に設定され、 ``y`` を初期化する際に、 ``f()`` は0を返し、 ``y`` も0になる。
+  これは、最初に状態変数を初期化することに起因しています: まず、 ``x`` は0に設定され、 ``y`` を初期化する際に、 ``f()`` は0を返し、 ``y`` も0になります。
   新しいルールでは、 ``y`` は 42 に設定されます。
   まず ``x`` を 0 に初期化し、次に A のコンストラクタを呼び出して ``x`` を 42 に設定します。
   最後に ``y`` を初期化する際に ``f()`` が 42 を返すので ``y`` は 42 になります。
@@ -143,7 +143,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 ..   The new code generator implements modifiers using actual functions and passes function parameters on.
 ..   This means that multiple evaluations of a function's body will get the same values for the parameters, and the effect on return variables is that they are reset to their default (zero) value for each execution.
 
-- 関数修飾子は、関数のパラメータと戻り変数に関して、若干異なる方法で実装されています。
+- 関数修飾子は、関数のパラメータとリターン変数に関して、若干異なる方法で実装されています。
   これは特に、プレースホルダー ``_;`` が修飾子の中で複数回評価される場合に影響を及ぼします。
   古いコードジェネレーターでは、各関数パラメータとリターン変数はスタック上に固定されたスロットを持っています。
   もし ``_;`` が複数回使われたり、ループ内で使われたりして関数が複数回実行されると、関数パラメータの値やリターン変数の値の変化は、関数の次の実行で見えるようになります。
@@ -192,7 +192,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
   .. - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before each ``_;`` evaluation.
     
-  関数 ``C.foo()`` は以下の値を返します：
+  関数 ``C.foo()`` は以下の値を返します:
 
   - 古いコードジェネレータ: 戻り値の変数である ``1`` は、最初の ``_;`` 評価の前に一度だけ ``0`` に初期化され、その後 ``return 1;`` によって上書きされます。
     2回目の ``_;`` 評価では再び初期化されず、 ``foo()`` も明示的に代入しないので（ ``active == false`` のため）、最初の値を保持します。
@@ -267,9 +267,9 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
   関数 ``g(1, 2)`` は以下の値を返します:
 
-  - 古いコードジェネレータ： ``10`` (``add(2 + 3, 2 + 3)``)。ただし、一般に戻り値は不特定です。
+  - 古いコードジェネレータ: ``10`` (``add(2 + 3, 2 + 3)``)。ただし、一般に戻り値は不特定です。
 
-  - 新しいコードジェネレーター： ``10`` 。ただし、戻り値は保証されません。
+  - 新しいコードジェネレーター: ``10`` 。ただし、戻り値は保証されません。
 
   グローバル関数 ``addmod`` と ``mulmod`` の引数は、古いコードジェネレータでは右から左に、新しいコードジェネレータでは左から右に評価されます。
   例えば、以下のようになります:
@@ -334,7 +334,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
   .. - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
 
-  関数 `f()` は以下のような挙動をします：
+  関数 ``f()`` は以下のような挙動をします:
 
   - 古いコードジェネレータ: 大きなメモリ割り当ての後、配列の内容をゼロにするときにガス欠になります。
 

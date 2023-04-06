@@ -177,8 +177,7 @@
 整数型
 ------
 
-.. Decimal and hexadecimal number literals can be implicitly converted to any integer type
-.. that is large enough to represent it without truncation:
+.. Decimal and hexadecimal number literals can be implicitly converted to any integer type that is large enough to represent it without truncation:
 
 10進数や16進数のリテラルは、切り捨てずに表現できる大きさの整数型に暗黙のうちに変換できます。
 
@@ -186,7 +185,7 @@
 
     uint8 a = 12; // OK
     uint32 b = 1234; // OK
-    uint16 c = 0x123456; // 失敗。0x3456 に切り捨てなければならないため。
+    uint16 c = 0x123456; // 失敗、0x3456に切り捨てなければならないため。
 
 .. .. note::
 
@@ -200,7 +199,7 @@
     0.8.0からは、このような明示的な変換は暗黙的な変換と同様に厳格になりました。
 
 固定サイズバイト列
-----------------------
+------------------
 
 .. Decimal number literals cannot be implicitly converted to fixed-size byte arrays. Hexadecimal
 .. number literals can be, but only if the number of hex digits exactly fits the size of the bytes
@@ -236,7 +235,7 @@
     bytes2 f = "xyz"; // NG
 
 アドレス
-------------
+--------
 
 .. As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
 .. test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
