@@ -44,7 +44,8 @@
 
 5バイト目からは、エンコードされた引数が続きます。
 このエンコーディングは他の場所でも使用されています。
-例えば、戻り値やイベントの引数も同じようにエンコーディングされます。ただし、関数を指定する4バイトのセレクタはありません。
+例えば、戻り値やイベントの引数も同じようにエンコーディングされます。
+ただし、関数を指定する4バイトのセレクタはありません。
 
 型
 ==
@@ -56,20 +57,27 @@
 ..   ``M % 8 == 0``, and ``0 < N <= 80``, which denotes the value ``v`` as ``v / (10 ** N)``.
 .. - ``function``: an address (20 bytes) followed by a function selector (4 bytes). Encoded identical to ``bytes24``.
 
-- ``uint<M>`` :  ``M`` ビット、 ``0 < M <= 256`` 、 ``M % 8 == 0`` の符号なし整数型。例えば ``uint32`` 、 ``uint8`` 、 ``uint256`` 。
-- ``int<M>`` :  ``M`` ビット、 ``0 < M <= 256`` 、 ``M % 8 == 0`` の2の補数の符号付き整数型。
-- ``address`` : 仮定される解釈と言語の型付けを除き、 ``uint160`` と同等。関数セレクタの計算には ``address`` を使用。
-- ``uint``, ``int`` : それぞれ ``uint256`` と ``int256`` の同義語。関数セレクタの計算には ``uint256`` と ``int256`` を使用。
-- ``bool`` : 0と1に限定された ``uint8`` と同等。関数セレクタの計算には ``bool`` を使用。
-- ``fixed<M>x<N>`` :  ``M`` ビット、 ``8 <= M <= 256`` 、 ``M % 8 == 0`` 、 ``0 < N <= 80`` の符号付き固定小数点10進数で、 ``v`` の値を ``v / (10 ** N)`` と表記。
-- ``ufixed<M>x<N>`` :  ``fixed<M>x<N>`` の符号なしのバリアント。
-- ``fixed``, ``ufixed`` : それぞれ ``fixed128x18`` と ``ufixed128x18`` の同義語。関数セレクタの計算には、 ``fixed128x18`` と ``ufixed128x18`` を使用。
-- ``bytes<M>`` :  ``M`` バイトのバイナリ型、 ``0 < M <= 32`` 。
-- ``function`` : アドレス（20バイト）の後に関数セレクタ（4バイト）が続く。 ``bytes24`` と同じようにエンコード。
+- ``uint<M>``:  ``M`` ビット、 ``0 < M <= 256`` 、 ``M % 8 == 0`` の符号なし整数型。
+  例えば ``uint32`` 、 ``uint8`` 、 ``uint256`` 。
+- ``int<M>``:  ``M`` ビット、 ``0 < M <= 256`` 、 ``M % 8 == 0`` の2の補数の符号付き整数型。
+- ``address``: 仮定される解釈と言語の型付けを除き、 ``uint160`` と同等。
+  関数セレクタの計算には ``address`` を使用。
+- ``uint``, ``int``: それぞれ ``uint256`` と ``int256`` の同義語。
+  関数セレクタの計算には ``uint256`` と ``int256`` を使用。
+- ``bool``: 0と1に限定された ``uint8`` と同等。
+  関数セレクタの計算には ``bool`` を使用。
+- ``fixed<M>x<N>``:  ``M`` ビット、 ``8 <= M <= 256`` 、 ``M % 8 == 0`` 、 ``0 < N <= 80`` の符号付き固定小数点10進数で、 ``v`` の値を ``v / (10 ** N)`` と表記。
+- ``ufixed<M>x<N>``:  ``fixed<M>x<N>`` の符号なしのバリアント。
+- ``fixed``, ``ufixed``: それぞれ ``fixed128x18`` と ``ufixed128x18`` の同義語。
+  関数セレクタの計算には、 ``fixed128x18`` と ``ufixed128x18`` を使用。
+- ``bytes<M>``:  ``M`` バイトのバイナリ型、 ``0 < M <= 32`` 。
+- ``function``: アドレス（20バイト）の後に関数セレクタ（4バイト）が続く。
+  ``bytes24`` と同じようにエンコード。
 
 次のような（固定サイズの）配列型が存在します。
 
-- ``<type>[M]`` : 与えられた型の ``M`` 個の要素の固定長の配列。 ``M >= 0`` 。
+- ``<type>[M]``: 与えられた型の ``M`` 個の要素の固定長の配列。
+   ``M >= 0`` 。
 
   .. note::
 
@@ -77,13 +85,14 @@
 
 次のような非固定サイズの型が存在します。
 
-- ``bytes`` : 動的サイズのバイトシーケンス。
-- ``string`` : UTF-8でエンコードされていると仮定した動的サイズのユニコード文字列。
-- ``<type>[]`` : 指定された型の要素を持つ可変長の配列。
+- ``bytes``: 動的サイズのバイトシーケンス。
+- ``string``: UTF-8でエンコードされていると仮定した動的サイズのユニコード文字列。
+- ``<type>[]``: 指定された型の要素を持つ可変長の配列。
 
 型は、カンマで区切って括弧で囲むことでタプルにまとめることができます。
 
-- ``(T1,T2,...,Tn)`` :  ``T1`` , ...,  ``Tn`` の各型からなるタプル。 ``n >= 0`` 。
+- ``(T1,T2,...,Tn)``:  ``T1`` , ...,  ``Tn`` の各型からなるタプル。
+  ``n >= 0`` 。
 
 タプルのタプル、タプルの配列などを作ることが可能です。
 また、ゼロタプルを作ることも可能です（ ``n == 0`` ）。
@@ -140,7 +149,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 静的な型と動的な型を区別します。
 静的型はインプレースでエンコードされ、動的型は現在のブロックの後に別個に割り当てられた場所でエンコードされます。
 
-**定義:**  次のような型を「動的」と呼びます。
+**定義:** 次のような型を「動的」と呼びます。
 
 * ``bytes``
 * ``string``
@@ -150,7 +159,8 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 それ以外の型は「静的」と呼ばれます。
 
-**定義:**   ``len(a)`` は、2進数の文字列 ``a`` のバイト数です。 ``len(a)`` の型は ``uint256`` とします。
+**定義:** ``len(a)`` は、2進数の文字列 ``a`` のバイト数です。
+``len(a)`` の型は ``uint256`` とします。
 
 .. We define ``enc``, the actual encoding, as a mapping of values of the ABI types to binary strings such
 .. that ``len(enc(X))`` depends on the value of ``X`` if and only if the type of ``X`` is dynamic.
@@ -160,7 +170,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 .. **Definition:** For any ABI value ``X``, we recursively define ``enc(X)``, depending
 .. on the type of ``X`` being
 
-**定義:**  任意のABI値 ``X`` に対して、 ``X`` の型に応じて ``enc(X)`` を再帰的に定義します。
+**定義:** 任意のABI値 ``X`` に対して、 ``X`` の型に応じて ``enc(X)`` を再帰的に定義します。
 
 .. - ``(T1,...,Tk)`` for ``k >= 0`` and any types ``T1``, ..., ``Tk``
 
@@ -235,28 +245,28 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
   ``enc(X) = enc(k) pad_right(X)`` 、すなわち、バイト数は ``uint256`` に続いて ``X`` の実際の値をバイト列として符号化し、その後に ``len(enc(X))`` が32の倍数になるような最小数のゼロバイトが続きます。
 
-- ``string`` :
+- ``string``:
 
   ``enc(X) = enc(enc_utf8(X))`` 、つまり ``X`` はUTF-8でエンコードされ、この値は ``bytes`` 型と解釈され、さらにエンコードされます。
   なお、この後のエンコードで使用する長さは、文字数ではなく、UTF-8でエンコードされた文字列のバイト数です。
 
-- ``uint<M>`` : ``enc(X)`` は、 ``X`` のビッグエンディアンのエンコーディングで、高次（左）側に0バイトをパディングし、長さが32バイトになるようにしたものです。
+- ``uint<M>``: ``enc(X)`` は、 ``X`` のビッグエンディアンのエンコーディングで、高次（左）側に0バイトをパディングし、長さが32バイトになるようにしたものです。
 
-- ``address`` : ``uint160`` と同様です。
+- ``address``: ``uint160`` と同様です。
 
-- ``int<M>`` : ``enc(X)`` は ``X`` のビッグエンディアンの2の補数で、高次（左）側に負の ``X`` には ``0xff`` バイト、非負の ``X`` には0バイトをパディングし、長さが32バイトになるようにしたものです。
+- ``int<M>``: ``enc(X)`` は ``X`` のビッグエンディアンの2の補数で、高次（左）側に負の ``X`` には ``0xff`` バイト、非負の ``X`` には0バイトをパディングし、長さが32バイトになるようにしたものです。
 
-- ``bool`` : ``uint8`` と同様に、 ``true`` には ``1`` 、 ``false`` には ``0`` が使われます。
+- ``bool``: ``uint8`` と同様に、 ``true`` には ``1`` 、 ``false`` には ``0`` が使われます。
 
-- ``fixed<M>x<N>`` : ``enc(X)`` は ``enc(X * 10**N)`` で ``X * 10**N`` は ``int256`` と解釈されます。
+- ``fixed<M>x<N>``: ``enc(X)`` は ``enc(X * 10**N)`` で ``X * 10**N`` は ``int256`` と解釈されます。
 
-- ``fixed`` : ``fixed128x18`` と同様です。
+- ``fixed``: ``fixed128x18`` と同様です。
 
-- ``ufixed<M>x<N>`` : ``enc(X)`` は ``enc(X * 10**N)`` で ``X * 10**N`` は ``uint256`` と解釈されます。
+- ``ufixed<M>x<N>``: ``enc(X)`` は ``enc(X * 10**N)`` で ``X * 10**N`` は ``uint256`` と解釈されます。
 
-- ``ufixed`` : ``ufixed128x18`` と同様です。
+- ``ufixed``: ``ufixed128x18`` と同様です。
 
-- ``bytes<M>`` : ``enc(X)`` は、 ``X`` のバイト列に末尾にゼロバイトを追加して32バイトにしたものです。
+- ``bytes<M>``: ``enc(X)`` は、 ``X`` のバイト列に末尾にゼロバイトを追加して32バイトにしたものです。
 
 なお、任意の ``X`` に対して、 ``len(enc(X))`` は32の倍数です。
 
@@ -304,9 +314,11 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 ``Foo`` の例では、 ``69`` と ``true`` というパラメータで ``baz`` を呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです。
 
-- ``0xcdcd77c0`` : メソッドID。シグネチャ ``baz(uint32,bool)`` のASCII形式のKeccakハッシュの最初の4バイトです。
-- ``0x0000000000000000000000000000000000000000000000000000000000000045`` : 第1パラメータ。32バイトにパディングされたuint32の値 ``69`` 。
-- ``0x0000000000000000000000000000000000000000000000000000000000000001`` : 第2パラメータ。32バイトにパディングされたboolの値 ``true`` 。
+- ``0xcdcd77c0``: メソッドID。シグネチャ ``baz(uint32,bool)`` のASCII形式のKeccakハッシュの最初の4バイトです。
+- ``0x0000000000000000000000000000000000000000000000000000000000000045``: 第1パラメータ。
+  32バイトにパディングされたuint32の値 ``69`` 。
+- ``0x0000000000000000000000000000000000000000000000000000000000000001``: 第2パラメータ。
+  32バイトにパディングされたboolの値 ``true`` 。
 
 合わせると、
 
@@ -319,9 +331,9 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 ``bar`` を ``["abc", "def"]`` の引数で呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです。
 
-- ``0xfce353f6`` : メソッドID。シグネチャ ``bar(bytes3[2])`` から得られます。
-- ``0x6162630000000000000000000000000000000000000000000000000000000000`` : 第1パラメータの最初の部分で、 ``bytes3`` の値 ``"abc"`` （左寄せ）。
-- ``0x6465660000000000000000000000000000000000000000000000000000000000`` : 第1パラメータの2番目の部分で、 ``bytes3`` の値 ``"def"`` （左寄せ）。
+- ``0xfce353f6``: メソッドID。シグネチャ ``bar(bytes3[2])`` から得られます。
+- ``0x6162630000000000000000000000000000000000000000000000000000000000``: 第1パラメータの最初の部分で、 ``bytes3`` の値 ``"abc"`` （左寄せ）。
+- ``0x6465660000000000000000000000000000000000000000000000000000000000``: 第1パラメータの2番目の部分で、 ``bytes3`` の値 ``"def"`` （左寄せ）。
 
 合わせると、
 
@@ -331,16 +343,16 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 引数 ``"dave"`` 、 ``true`` 、 ``[1,2,3]`` で ``sam`` を呼び出したい場合、合計292バイトを渡すことになり、その内訳は以下の通りです。
 
-- ``0xa5643bf2`` : メソッドID。シグネチャ ``sam(bytes,bool,uint256[])`` から得られます。 ``uint`` はその正規の表現である ``uint256`` に置き換えられていることに注意してください。
-- ``0x0000000000000000000000000000000000000000000000000000000000000060`` : 第1引数（動的型）のデータ部の位置で、引数ブロックの先頭からのバイト数で表します。この場合は ``0x60`` 。
-- ``0x0000000000000000000000000000000000000000000000000000000000000001`` : 第2引数: boolでtrue。
-- ``0x00000000000000000000000000000000000000000000000000000000000000a0`` : 第3引数（動的型）のデータ部の位置で、単位はバイトです。この場合は ``0xa0`` 。
-- ``0x0000000000000000000000000000000000000000000000000000000000000004`` : 第1引数のデータ部で、バイト配列の要素数から始まります。この場合は4。
-- ``0x6461766500000000000000000000000000000000000000000000000000000000`` : 第1引数の内容:  ``"dave"`` のUTF-8（ここではASCIIと同等）エンコードで右をパディングして32バイトにしたもの。
-- ``0x0000000000000000000000000000000000000000000000000000000000000003`` : 第3引数のデータ部で、配列の要素数から始まります。この場合は3。
-- ``0x0000000000000000000000000000000000000000000000000000000000000001`` : 第3引数の最初のエントリ。
-- ``0x0000000000000000000000000000000000000000000000000000000000000002`` : 第3引数の2番目のエントリ。
-- ``0x0000000000000000000000000000000000000000000000000000000000000003`` : 第3引数の3番目のエントリ。
+- ``0xa5643bf2``: メソッドID。シグネチャ ``sam(bytes,bool,uint256[])`` から得られます。 ``uint`` はその正規の表現である ``uint256`` に置き換えられていることに注意してください。
+- ``0x0000000000000000000000000000000000000000000000000000000000000060``: 第1引数（動的型）のデータ部の位置で、引数ブロックの先頭からのバイト数で表します。この場合は ``0x60`` 。
+- ``0x0000000000000000000000000000000000000000000000000000000000000001``: 第2引数: boolでtrue。
+- ``0x00000000000000000000000000000000000000000000000000000000000000a0``: 第3引数（動的型）のデータ部の位置で、単位はバイトです。この場合は ``0xa0`` 。
+- ``0x0000000000000000000000000000000000000000000000000000000000000004``: 第1引数のデータ部で、バイト配列の要素数から始まります。この場合は4。
+- ``0x6461766500000000000000000000000000000000000000000000000000000000``: 第1引数の内容:  ``"dave"`` のUTF-8（ここではASCIIと同等）エンコードで右をパディングして32バイトにしたもの。
+- ``0x0000000000000000000000000000000000000000000000000000000000000003``: 第3引数のデータ部で、配列の要素数から始まります。この場合は3。
+- ``0x0000000000000000000000000000000000000000000000000000000000000001``: 第3引数の最初のエントリ。
+- ``0x0000000000000000000000000000000000000000000000000000000000000002``: 第3引数の2番目のエントリ。
+- ``0x0000000000000000000000000000000000000000000000000000000000000003``: 第3引数の3番目のエントリ。
 
 合わせると、
 
@@ -553,7 +565,9 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 .. address, a series of up to four topics and some arbitrary length binary data. Events leverage the existing function
 .. ABI in order to interpret this (together with an interface spec) as a properly typed structure.
 
-イベントは、Ethereumのログ/イベントウォッチングプロトコルを抽象化したものです。ログエントリは、コントラクトのアドレス、最大4つのトピックのシリーズ、任意の長さのバイナリデータを提供します。Eventsは、既存の関数ABIを活用して、これを（インターフェース仕様とともに）適切に型付けされた構造として解釈します。
+イベントは、Ethereumのログ/イベントウォッチングプロトコルを抽象化したものです。
+ログエントリは、コントラクトのアドレス、最大4つのトピックのシリーズ、任意の長さのバイナリデータを提供します。
+イベントは、既存の関数ABIを活用して、これを（インターフェース仕様とともに）適切に型付けされた構造として解釈します。
 
 .. Given an event name and series of event parameters, we split them into two sub-series: those which are indexed and
 .. those which are not.
@@ -561,7 +575,9 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 .. alongside the Keccak hash of the event signature to form the topics of the log entry.
 .. Those which are not indexed form the byte array of the event.
 
-イベント名と一連のイベントパラメータが与えられると、それらを2つのサブシリーズに分割する。インデックスが付けられているものは、最大で3つ（非匿名イベントの場合）または4つ（匿名イベントの場合）あり、イベント署名のKeccakハッシュと一緒にログエントリのトピックを形成するために使用される。インデックスが付けられていないものは、イベントのバイト配列を形成する。
+イベント名と一連のイベントパラメータが与えられると、それらを2つのサブシリーズに分割します。
+インデックスが付けられているものは、最大で3つ（非匿名イベントの場合）または4つ（匿名イベントの場合）あり、イベント署名のKeccakハッシュと一緒にログエントリのトピックを形成するために使用されます。
+インデックスが付けられていないものは、イベントのバイト配列を形成します。
 
 .. In effect, a log entry using this ABI is described as:
 
@@ -569,25 +585,26 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 .. - ``address``: the address of the contract (intrinsically provided by Ethereum);
 
-- ``address`` : コントラクトのアドレス（Ethereumが本質的に提供するもの）。
+- ``address``: コントラクトのアドレス（Ethereumが本質的に提供するもの）。
 
 .. - ``topics[0]``: ``keccak(EVENT_NAME+"("+EVENT_ARGS.map(canonical_type_of).join(",")+")")`` (``canonical_type_of``
 ..   is a function that simply returns the canonical type of a given argument, e.g. for ``uint indexed foo``, it would
 ..   return ``uint256``). This value is only present in ``topics[0]`` if the event is not declared as ``anonymous``;
 
-- ``topics[0]`` : ``keccak(EVENT_NAME+"("+EVENT_ARGS.map(canonical_type_of).join(",")+")")`` （ ``canonical_type_of`` は、与えられた引数の正規の型を単純に返す関数であり、例えば ``uint indexed foo`` の場合は ``uint256`` を返す）。この値は、イベントが ``anonymous`` として宣言されていない場合、 ``topics[0]`` にのみ存在する。
+- ``topics[0]``: ``keccak(EVENT_NAME+"("+EVENT_ARGS.map(canonical_type_of).join(",")+")")`` （ ``canonical_type_of`` は、与えられた引数の正規の型を単純に返す関数であり、例えば ``uint indexed foo`` の場合は ``uint256`` を返す）。
+  この値は、イベントが ``anonymous`` として宣言されていない場合、 ``topics[0]`` にのみ存在します。
 
 .. - ``topics[n]``: ``abi_encode(EVENT_INDEXED_ARGS[n - 1])`` if the event is not declared as ``anonymous``
 ..   or ``abi_encode(EVENT_INDEXED_ARGS[n])`` if it is (``EVENT_INDEXED_ARGS`` is the series of ``EVENT_ARGS`` that
 ..   are indexed);
 
-- ``topics[n]`` :  ``abi_encode(EVENT_INDEXED_ARGS[n]) - 1])`` イベントが ``anonymous`` として宣言されていない場合は ``abi_encode(EVENT_INDEXED_ARGS[n])``、宣言されている場合は ``abi_encode(EVENT_INDEXED_ARGS[n])`` となります（ ``EVENT_INDEXED_ARGS`` はインデックス化された ``EVENT_ARGS`` のシリーズです）。
+- ``topics[n]``:  ``abi_encode(EVENT_INDEXED_ARGS[n]) - 1])`` イベントが ``anonymous`` として宣言されていない場合は ``abi_encode(EVENT_INDEXED_ARGS[n])``、宣言されている場合は ``abi_encode(EVENT_INDEXED_ARGS[n])`` となります（ ``EVENT_INDEXED_ARGS`` はインデックス化された ``EVENT_ARGS`` のシリーズです）。
 
 .. - ``data``: ABI encoding of ``EVENT_NON_INDEXED_ARGS`` (``EVENT_NON_INDEXED_ARGS`` is the series of ``EVENT_ARGS``
 ..   that are not indexed, ``abi_encode`` is the ABI encoding function used for returning a series of typed values
 ..   from a function, as described above).
 
-- ``data`` : ``EVENT_NON_INDEXED_ARGS`` のABIエンコーディング（ ``EVENT_NON_INDEXED_ARGS`` はインデックスが付いていない一連の ``EVENT_ARGS`` 、 ``abi_encode`` は上述のように関数から型付けされた一連の値を返すために使用されるABIエンコーディング関数）。
+- ``data``: ``EVENT_NON_INDEXED_ARGS`` のABIエンコーディング（ ``EVENT_NON_INDEXED_ARGS`` はインデックスが付いていない一連の ``EVENT_ARGS`` 、 ``abi_encode`` は上述のように関数から型付けされた一連の値を返すために使用されるABIエンコーディング関数）。
 
 .. For all types of length at most 32 bytes, the ``EVENT_INDEXED_ARGS`` array contains
 .. the value directly, padded or sign-extended (for signed integers) to 32 bytes, just as for regular ABI encoding.
@@ -615,17 +632,17 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 エラー
 ======
 
-.. In case of a failure inside a contract, the contract can use a special opcode to abort execution and revert
-.. all state changes. In addition to these effects, descriptive data can be returned to the caller.
-.. This descriptive data is the encoding of an error and its arguments in the same way as data for a function
-.. call.
+.. In case of a failure inside a contract, the contract can use a special opcode to abort execution and revert all state changes.
+.. In addition to these effects, descriptive data can be returned to the caller.
+.. This descriptive data is the encoding of an error and its arguments in the same way as data for a function call.
 
-コントラクト内部で障害が発生した場合、コントラクトは特別なオペコードを使用して実行を中止し、すべての状態変化を元に戻すことができます。これらの効果に加えて、記述的データを呼び出し元に返すことができます。この記述データは、関数呼び出しのデータと同じように、エラーとその引数をエンコードしたものです。
+コントラクト内部で障害が発生した場合、コントラクトは特別なオペコードを使用して実行を中止し、すべての状態変化をリバートできます。
+これらの効果に加えて、記述的データを呼び出し元に返すことができます。
+この記述データは、関数呼び出しのデータと同じように、エラーとその引数をエンコードしたものです。
 
-.. As an example, let us consider the following contract whose ``transfer`` function always
-.. reverts with a custom error of "insufficient balance":
+.. As an example, let us consider the following contract whose ``transfer`` function always reverts with a custom error of "insufficient balance":
 
-例として、 ``transfer`` 関数が常に「残高不足」というカスタムエラーで復帰してしまう次のコントラクトを考えてみましょう。
+例として、 ``transfer`` 関数が常に「残高不足」というカスタムエラーでリバートしてしまう次のコントラクトを考えてみましょう。
 
 .. code-block:: solidity
 
@@ -677,21 +694,22 @@ JSON
 関数の記述は、フィールドを持つJSONオブジェクトです。
 
 
-- ``type`` : ``"function"`` 、 ``"constructor"`` 、 ``"receive"`` （ :ref:`「receive Ether」関数 <receive-ether-function>` ）、 ``"fallback"`` （ :ref:`「default」関数 <fallback-function>` ）のいずれかです。
-- ``name`` : 関数の名前。
-- ``inputs`` : オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
+- ``type``: ``"function"`` 、 ``"constructor"`` 、 ``"receive"`` （ :ref:`「receive Ether」関数 <receive-ether-function>` ）、 ``"fallback"`` （ :ref:`「default」関数 <fallback-function>` ）のいずれかです。
+- ``name``: 関数の名前。
+- ``inputs``: オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
 
-  * ``name`` : パラメータの名前。
-  * ``type`` : パラメータの正規の型（詳細は後述）。
-  * ``components`` : タプル型に使用（詳細は後述）。
+  * ``name``: パラメータの名前。
+  * ``type``: パラメータの正規の型（詳細は後述）。
+  * ``components``: タプル型に使用（詳細は後述）。
 
-- ``outputs`` :  ``inputs`` と同様のオブジェクトの配列。
-- ``stateMutability`` : 以下のいずれかの値を持つ文字列。
+- ``outputs``:  ``inputs`` と同様のオブジェクトの配列。
+- ``stateMutability``: 以下のいずれかの値を持つ文字列。
   ``pure`` （ :ref:`ブロックチェーンのステートを読まないように指定 <pure-functions>` ）、
   ``view`` （ :ref:`ブロックチェーンのステートを修正しないように指定 <view-functions>` ）、
   ``nonpayable`` （関数はEtherを受け取らない、デフォルト）と ``payable`` （関数はEtherを受け取る）があります。
 
-コンストラクタ、receive関数、fallback関数は ``name`` や ``outputs`` を持ちません。receive関数とfallback関数には ``inputs`` もありません。
+コンストラクタ、receive関数、fallback関数は ``name`` や ``outputs`` を持ちません。
+receive関数とfallback関数には ``inputs`` もありません。
 
 .. note::
 
@@ -705,26 +723,26 @@ JSON
 
 イベントの記述は、同様のフィールドを持つJSONオブジェクトです。
 
-- ``type`` : 常に ``"event"`` 。
-- ``name`` : イベントの名前。
-- ``inputs`` : オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
+- ``type``: 常に ``"event"`` 。
+- ``name``: イベントの名前。
+- ``inputs``: オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
 
-  * ``name`` : パラメータの名前。
-  * ``type`` : パラメータの正規の型（詳細は後述）。
-  * ``components`` : タプル型に使用（詳細は後述）。
-  * ``indexed`` : フィールドがログのトピックの一部である場合は ``true`` 、ログのデータセグメントの一部である場合は ``false`` 。
+  * ``name``: パラメータの名前。
+  * ``type``: パラメータの正規の型（詳細は後述）。
+  * ``components``: タプル型に使用（詳細は後述）。
+  * ``indexed``: フィールドがログのトピックの一部である場合は ``true`` 、ログのデータセグメントの一部である場合は ``false`` 。
 
-- ``anonymous`` : イベントが ``anonymous`` と宣言された場合は ``true`` 。
+- ``anonymous``: イベントが ``anonymous`` と宣言された場合は ``true`` 。
 
 エラーの記述は以下の通りです。
 
-- ``type`` : 常に ``"error"`` 。
-- ``name`` : エラーの名前。
-- ``inputs`` : オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
+- ``type``: 常に ``"error"`` 。
+- ``name``: エラーの名前。
+- ``inputs``: オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
 
-  *  ``name`` : パラメータの名前。
-  *  ``type`` : パラメータの正規の型（詳細は後述）。
-  *  ``components`` : タプル型に使用（詳細は後述）。
+  *  ``name``: パラメータの名前。
+  *  ``type``: パラメータの正規の型（詳細は後述）。
+  *  ``components``: タプル型に使用（詳細は後述）。
 
 .. .. note::
 
@@ -883,15 +901,13 @@ JSON
 ============================
 
 .. Strict encoding mode is the mode that leads to exactly the same encoding as defined in the formal specification above.
-.. This means offsets have to be as small as possible while still not creating overlaps in the data areas and thus no gaps are
-.. allowed.
+.. This means offsets have to be as small as possible while still not creating overlaps in the data areas and thus no gaps are allowed.
 
 厳密なエンコーディングモードとは、上記の正式な仕様で定義されているのと全く同じエンコーディングになるモードです。
 つまり、データ領域にオーバーラップを生じさせないようにしながら、オフセットはできるだけ小さくしなければならず、したがってギャップは許されません。
 
-.. Usually, ABI decoders are written in a straightforward way by just following offset pointers, but some decoders
-.. might enforce strict mode. The Solidity ABI decoder currently does not enforce strict mode, but the encoder
-.. always creates data in strict mode.
+.. Usually, ABI decoders are written in a straightforward way by just following offset pointers, but some decoders might enforce strict mode.
+.. The Solidity ABI decoder currently does not enforce strict mode, but the encoder always creates data in strict mode.
 
 通常、ABIデコーダはオフセットポインタに従うだけの素直な方法で書かれていますが、デコーダによってはストリクトモードを強制する場合があります。
 SolidityのABIデコーダは、現在のところストリクトモードを強制していませんが、エンコーダは常にストリクトモードでデータを作成します。
@@ -926,20 +942,19 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 ..   no distinction between head and tail, as in the ABI encoding, and the length
 ..   of an array is not encoded.
 
-- エンコードの際、すべてがインプレースでエンコードされます。つまり、ABIのエンコーディングのように、先頭と末尾の区別がなく、配列の長さもエンコードされません。
+- エンコードの際、すべてがインプレースでエンコードされます。
+  つまり、ABIのエンコーディングのように、先頭と末尾の区別がなく、配列の長さもエンコードされません。
 
 .. - The direct arguments of ``abi.encodePacked`` are encoded without padding,
 ..   as long as they are not arrays (or ``string`` or ``bytes``).
 
 - ``abi.encodePacked`` の直接引数は、配列（または ``string`` や ``bytes`` ）でない限り、パディングなしでエンコードされます。
 
-.. - The encoding of an array is the concatenation of the
-..   encoding of its elements **with** padding.
+.. - The encoding of an array is the concatenation of the encoding of its elements **with** padding.
 
-- 配列のエンコーディングは、その要素のエンコーディングを **with** パディングで連結したものです。
+- 配列のエンコーディングは、その要素のエンコーディングとパディングを連結したものです。
 
-.. - Dynamically-sized types like ``string``, ``bytes`` or ``uint[]`` are encoded
-..   without their length field.
+.. - Dynamically-sized types like ``string``, ``bytes`` or ``uint[]`` are encoded without their length field.
 
 - ``string`` 、 ``bytes`` 、 ``uint[]`` のような動的なサイズの型は、長さフィールドなしでエンコードされます。
 
@@ -953,7 +968,7 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 
 .. If padding is needed, explicit type conversions can be used: ``abi.encodePacked(uint16(0x12)) == hex"0012"``.
 
-パディングが必要な場合は、明示的な型変換を行うことができます。 ``abi.encodePacked(uint16(0x12)) == hex"0012"`` .
+パディングが必要な場合は、明示的な型変換を行うことができます: ``abi.encodePacked(uint16(0x12)) == hex"0012"`` 。
 
 .. Since packed encoding is not used when calling functions, there is no special support for prepending a function selector.
 

@@ -2,11 +2,13 @@
 
 .. _contract_structure:
 
-***********************
+******************
 コントラクトの構造
-***********************
+******************
 
-Solidityのコントラクトは、オブジェクト指向言語のクラスに似ています。各コントラクトは、 :ref:`structure-state-variables` 、 :ref:`structure-functions` 、 :ref:`structure-function-modifiers` 、 :ref:`structure-events` 、 :ref:`structure-errors` 、 :ref:`structure-struct-types` 、 :ref:`structure-enum-types` の宣言を含むことができます。さらに、コントラクトは他のコントラクトを継承できます。
+Solidityのコントラクトは、オブジェクト指向言語のクラスに似ています。
+各コントラクトは、 :ref:`structure-state-variables` 、 :ref:`structure-functions` 、 :ref:`structure-function-modifiers` 、 :ref:`structure-events` 、 :ref:`structure-errors` 、 :ref:`structure-struct-types` 、 :ref:`structure-enum-types` の宣言を含むことができます。
+さらに、コントラクトは他のコントラクトを継承できます。
 
 また、 :ref:`ライブラリ<libraries>` や :ref:`インターフェース<interfaces>` と呼ばれる特別な種類のコントラクトもあります。
 
@@ -15,7 +17,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. _structure-state-variables:
 
 状態変数
-===============
+========
 
 状態変数は、コントラクトストレージに値が永続的に保存される変数です。
 
@@ -34,9 +36,10 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. _structure-functions:
 
 関数
-=========
+====
 
-関数は、実行可能なコードの単位です。関数は通常、コントラクトの中で定義されますが、コントラクトの外で定義することもできます。
+関数は、実行可能なコードの単位です。
+関数は通常、コントラクトの中で定義されますが、コントラクトの外で定義することもできます。
 
 .. code-block:: solidity
 
@@ -60,7 +63,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. _structure-function-modifiers:
 
 関数修飾子
-==================
+==========
 
 関数修飾子を使うと、宣言的に関数のセマンティクスを変更できます（コントラクトセクションの :ref:`modifiers` を参照）。
 
@@ -119,7 +122,8 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 
 エラーは障害が発生したときの記述的な名前とデータを定義できます。
 エラーは :ref:`リバート文<revert-statement>` で使用できます。
-文字列による説明に比べて、エラーははるかに安価で、追加データをエンコードできます。NatSpecを使って、ユーザーにエラーを説明できます。
+文字列による説明に比べて、エラーははるかに安価で、追加データをエンコードできます。
+NatSpecを使って、ユーザーにエラーを説明できます。
 
 .. code-block:: solidity
 
@@ -146,7 +150,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. _structure-struct-types:
 
 構造体型
-=============
+========
 
 構造体（struct）は、複数の変数をグループ化できるカスタム定義の型です（型の項の :ref:`structs` を参照）。
 
@@ -167,7 +171,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. _structure-enum-types:
 
 列挙型
-==========
+======
 
 列挙（enum）は、有限の「定数値」を持つカスタム型を作成するために使用できます（型の項の :ref:`enums` を参照）。
 

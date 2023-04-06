@@ -64,7 +64,7 @@ Ethereumでプログラマティックにコントラクトを作成する方法
         }
 
         function changeName(bytes32 newName) public {
-            // 作成者のみが名称を変更できる。
+            // 作成者のみが名称を変更できます。
             // コントラクトの比較は、アドレスに明示的に変換することで取得できるアドレスをもとに行う。
             if (msg.sender == address(creator))
                 name = newName;
@@ -74,8 +74,8 @@ Ethereumでプログラマティックにコントラクトを作成する方法
             // トークンを送信できるのは、現在の所有者のみです。
             if (msg.sender != owner) return;
 
-            // 以下に定義する `TokenCreator` コントラクトの関数を用いて、送金を進めるべきかどうかを作成者コントラクトに問い合わせる。
-            // 呼び出しに失敗した場合（ガス欠など）、ここでの実行も失敗する。
+            // 以下に定義する `TokenCreator` コントラクトの関数を用いて、送金を進めるべきかどうかを作成者コントラクトに問い合わせます。
+            // 呼び出しに失敗した場合（ガス欠など）、ここでの実行も失敗します。
             if (creator.isTokenTransferOK(owner, newOwner))
                 owner = newOwner;
         }
@@ -87,7 +87,8 @@ Ethereumでプログラマティックにコントラクトを作成する方法
             returns (OwnedToken tokenAddress)
         {
             // 新しい `Token` コントラクトを作成し、そのアドレスを返す。
-            // JavaScript 側から見ると、この関数の戻り値の型は `address` です。これは ABI で利用可能な最も近い型だからです。
+            // JavaScript 側から見ると、この関数の戻り値の型は `address` です。
+            // これは ABI で利用可能な最も近い型だからです。
             return new OwnedToken(name);
         }
 
@@ -102,7 +103,7 @@ Ethereumでプログラマティックにコントラクトを作成する方法
             pure
             returns (bool ok)
         {
-            // 送金を進めるかどうか、任意の条件をチェックする。
+            // 送金を進めるかどうか、任意の条件をチェックします。
             return keccak256(abi.encodePacked(currentOwner, newOwner))[0] == 0x7f;
         }
     }

@@ -1,8 +1,8 @@
 .. index:: ! inheritance, ! base class, ! contract;base, ! deriving
 
-***********
+****
 継承
-***********
+****
 
 Solidityは、ポリモーフィズムを含む多重継承をサポートしています。
 
@@ -112,7 +112,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
             if (msg.sender == owner) info = newInfo;
         }
 
-        // ここでは、 `override` のみを指定し、 `virtual` は指定しない。
+        // ここでは、 `override` のみを指定し、 `virtual` は指定しません。
         // これは、 `PriceFeed` から派生したコントラクトは、もう `destroy` の挙動を変更できないことを意味します。
         function destroy() public override(Destructible, Named) { Named.destroy(); }
         function get() public view returns(uint r) { return info; }
@@ -203,7 +203,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. although its type is known. This is similar for ordinary
 .. virtual method lookup.
 
-``Base2`` が ``super`` の関数を呼び出す場合、単純にそのベースコントラクトの1つでこの関数を呼び出すのではない。
+``Base2`` が ``super`` の関数を呼び出す場合、単純にそのベースコントラクトの1つでこの関数を呼び出すのではありません。
 むしろ、最終的な継承グラフの次のベースコントラクトでこの関数を呼び出すので、 ``Base1.destroy()`` を呼び出すことになります（最終的な継承順序は--最も派生したコントラクトから始まることに注意してください: Final、Base2、Base1、Destructible、owned）。
 superを使うときに呼び出される実際の関数は、型はわかっていても、使われるクラスのコンテキストではわかりません。
 これは通常の仮想メソッドの検索でも同様です。
@@ -213,7 +213,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. _function-overriding:
 
 関数オーバーライド
-===================
+==================
 
 .. The overriding function may only change the visibility of the overridden function from ``external`` to ``public``.
 .. The mutability may be changed to a more strict one following the order:
@@ -374,7 +374,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. _modifier-overriding:
 
 修飾子オーバーライド
-=======================
+====================
 
 .. Function modifiers can override each other. This works in the same way as
 .. :ref:`function overriding <function-overriding>` (except that there is no overloading for modifiers). The
@@ -430,7 +430,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. _constructor:
 
 コンストラクタ
-=================
+==============
 
 コンストラクタは、 ``constructor`` キーワードで宣言されたオプションの関数で、コントラクトの作成時に実行され、コントラクトの初期化コードを実行できます。
 
@@ -494,7 +494,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
 ベースコンストラクタの引数
-===============================
+==========================
 
 .. The constructors of all the base contracts will be called following the
 .. linearization rules explained below. If the base constructors have arguments,
@@ -564,7 +564,7 @@ code snippet, see ``Derived3`` and ``DerivedFromDerived``.
 .. _multi-inheritance:
 
 多重継承とリニアライゼーション
-======================================
+==============================
 
 .. Languages that allow multiple inheritance have to deal with
 .. several problems.  One is the `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
@@ -595,7 +595,7 @@ SolidityはPythonに似ていますが、ベースクラスの有向非環状グ
 .. In the following code, Solidity will give the
 .. error "Linearization of inheritance graph impossible".
 
-以下のコードでは、Solidityが "Linearization of inheritance graph impossible" というエラーを出します。
+以下のコードでは、Solidityが「Linearization of inheritance graph impossible」というエラーを出します。
 
 .. code-block:: solidity
 
@@ -664,7 +664,7 @@ SolidityはPythonに似ていますが、ベースクラスの有向非環状グ
     }
 
 同じ名前の異なる種類のメンバーの継承
-======================================================
+====================================
 
 コントラクト内の以下のペアが継承により同じ名前になっている場合はエラーとなります。
     - 関数と修飾子

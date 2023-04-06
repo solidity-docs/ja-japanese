@@ -9,15 +9,15 @@ Solidity v0.5.0の破壊的変更点
 完全なリストは `リリースのチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.5.0>`_ を参照してください。
 
 .. note::
-   .. Contracts compiled with Solidity v0.5.0 can still interface with contracts
-   .. and even libraries compiled with older versions without recompiling or
-   .. redeploying them.  Changing the interfaces to include data locations and
-   .. visibility and mutability specifiers suffices. See the
-   .. :ref:`Interoperability With Older Contracts <interoperability>` section below.
+  .. Contracts compiled with Solidity v0.5.0 can still interface with contracts
+  .. and even libraries compiled with older versions without recompiling or
+  .. redeploying them.  Changing the interfaces to include data locations and
+  .. visibility and mutability specifiers suffices.
+  .. See the :ref:`Interoperability With Older Contracts <interoperability>` section below.
 
-   Solidity v0.5.0でコンパイルされたコントラクトは、古いバージョンでコンパイルされたコントラクトやライブラリを再コンパイルや再配置することなく、それらとインターフェースをとることができます。
-   データの場所や可視性・可変性の指定子を含むようにインターフェースを変更すれば十分です。
-   以下の :ref:`Interoperability With Older Contracts <interoperability>` セクションを参照してください。
+  Solidity v0.5.0でコンパイルされたコントラクトは、古いバージョンでコンパイルされたコントラクトやライブラリを再コンパイルや再配置することなく、それらとインターフェースをとることができます。
+  データの場所や可視性と可変性の指定子を含むようにインターフェースを変更すれば十分です。
+  以下の :ref:`Interoperability With Older Contracts <interoperability>` セクションを参照してください。
 
 .. Semantic Only Changes
 
@@ -178,7 +178,7 @@ Solidity v0.5.0の破壊的変更点
   あるコントラクト型から、そのベースまたは祖先の型の1つへの変換のみが可能です。
   あるコントラクトが、変換したいコントラクト型を継承していないものの、互換性があると確信している場合、最初に ``address`` に変換することでこれを回避できます。
   例:  ``A`` と ``B`` がコントラクト型で、 ``B`` は ``A`` から継承されず、 ``b`` は ``B`` 型のコントラクトである場合、 ``A(address(b))`` を使って ``b`` を ``A`` 型に変換できます。
-  なお、以下に説明するように、マッチング・ペイバック・フォールバック関数にも注意する必要があります。
+  なお、以下に説明するように、マッチングで支払い可能なフォールバック関数にも注意する必要があります。
 
 .. * The ``address`` type  was split into ``address`` and ``address payable``,
   where only ``address payable`` provides the ``transfer`` function.  An

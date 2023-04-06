@@ -1,4 +1,5 @@
 import glob
+import unicodedata
 
 def check_terms():
 
@@ -10,14 +11,14 @@ def check_terms():
         ("代入", ("割り当て",)),
         (" ", ("　",)),
         (":", ("：",)),
-        (": ", (" : ",)),
         ("、", ("，",)),
         ("。", ("．",)),
         ("+", ("＋",)),
         ("ストレージ", ("記憶",)),
         ("でき", ("することができ",)),
-        ("ます。", ("る。",)),
+        ("ます。", ("る。",)), # だ・である調を使うときは、「。」を使わないようにしたい
         ("です。", ("だ。",)),
+        ("?", ("ない。",)),
         ("", ("・",)),
         ("型", ("タイプ",)),
         ("シグネチャ", ("シグネチャー",)),
@@ -38,7 +39,8 @@ def check_terms():
         ("参照して", ("ご覧",)),
         ("作成者", ("オリジネーター",)),
         ("将来", ("将来的に",)),
-        ("``:", ("`` :",)),
+        ("``: ", ("`` : ",)),
+        # (": ", (" : ",)),
     ]
 
     for correct_term, wrong_terms in term_list:
@@ -47,15 +49,55 @@ def check_terms():
                 lines = open(file).readlines()
                 for i, line in enumerate(lines):
                     if wrong_term in line:
-                        print(f"{file}:{i + 1} '{wrong_term}' => '{correct_term}'")
+                        print(f"{file}:{i + 1}  '{wrong_term}' => '{correct_term}'")
+
 
 def check_kuten():
     for file in glob.glob("./**/*.rst", recursive=True):
         lines = open(file).readlines()
         for i, line in enumerate(lines):
+            lstripped_line = line.lstrip()
+            if len(lstripped_line) > 0 and lstripped_line[0] in "-*#/|1234567890":
+                continue
             if line.find("。") != -1 and line.find("。") != len(line) - 2:
-                print(f"{file}:{i + 1} '。([^\\n])' -> '。\\n$1")
+                print(f"{file}:{i + 1}  '。([^\\n])' -> '。\\n$1")
+
+
+def check_headers():
+    def get_char_width(text):
+        width = 0
+        for c in text:
+            if unicodedata.east_asian_width(c) in 'FWA':
+                width += 2
+            else:
+                width += 1
+        return width
+
+    for file in glob.glob("./**/*.rst", recursive=True):
+        lines = open(file).readlines()
+        for i in range(len(lines) - 1):
+            line = lines[i][:-1]
+            next_line = lines[i + 1][:-1]
+
+            if len(line) == 0 or len(next_line) == 0:
+                continue
+
+            if len(set(next_line)) != 1:
+                continue
+
+            if next_line[0] not in "=-^~*":
+                continue
+
+            line_length = get_char_width(line)
+            next_line_length = len(next_line)
+
+            if line_length != next_line_length:
+                print(f"{file}:{i + 1}  Header length mismatch: {line_length} != {next_line_length}")
+
+            if line_length == len(line):
+                print(f"{file}:{i}  Header might be not translated: {line}")
 
 if __name__ == "__main__":
     check_terms()
     check_kuten()
+    check_headers()

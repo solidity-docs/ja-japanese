@@ -49,7 +49,7 @@ Solidity v0.6.0の破壊的変更点
 * 関数は、 ``virtual`` キーワードでマークされているか、インターフェースで定義されている場合にのみオーバーライドできるようになりました。
   インターフェースの外で実装されていない関数は、 ``virtual`` とマークされなければなりません。
   関数や修飾子をオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。
-  複数の並列ベースで定義された関数や修飾子をオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります。 ``override(Base1, Base2)`` .
+  複数の並列ベースで定義された関数や修飾子をオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります: ``override(Base1, Base2)`` 。
 
 .. * Member-access to ``length`` of arrays is now always read-only, even for storage arrays.
 ..   It is no longer possible to resize storage arrays by assigning a new value to their length. Use ``push()``, ``push(value)`` or ``pop()`` instead, or assign a full array, which will of course overwrite the existing content.

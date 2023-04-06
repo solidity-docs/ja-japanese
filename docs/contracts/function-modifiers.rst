@@ -22,7 +22,8 @@
         constructor() { owner = payable(msg.sender); }
         address payable owner;
 
-        // このコントラクトは修飾子を定義するだけで、それを使用することはありません。派生コントラクトで使用されます。
+        // このコントラクトは修飾子を定義するだけで、それを使用することはありません。
+        // 派生コントラクトで使用されます。
         // 関数本体は、修飾子の定義にある特別な記号 `_;` が現れる場所に挿入されます。
         // これは、オーナーがこの関数を呼び出した場合は関数が実行され、そうでない場合は例外がスローされることを意味します。
         modifier onlyOwner {
@@ -109,9 +110,13 @@
 修飾子は、自分が修飾する関数の引数や戻り値に暗黙のうちにアクセスしたり変更したりできません。
 修飾子の値は、呼び出しの時点で明示的に渡されるだけです。
 
-In function modifiers, it is necessary to specify when you want the function to which the modifier is applied to be run.
-The placeholder statement (denoted by a single underscore character ``_``) is used to denote where the body of the function being modified should be inserted.
-Note that the placeholder operator is different from using underscores as leading or trailing characters in variable names, which is a stylistic choice.
+.. In function modifiers, it is necessary to specify when you want the function to which the modifier is applied to be run.
+.. The placeholder statement (denoted by a single underscore character ``_``) is used to denote where the body of the function being modified should be inserted.
+.. Note that the placeholder operator is different from using underscores as leading or trailing characters in variable names, which is a stylistic choice.
+
+関数修飾子では、修飾子が適用された関数をいつ実行させたいかを指定する必要があります。
+プレースホルダステートメント（アンダースコア1文字 ``_`` で示される）は、修飾される関数のボディが挿入されるべき場所を示すために使用されます。
+プレースホルダ演算子は、アンダースコアを変数名の先頭や末尾に使用するのとは異なることに注意してください（これはスタイル上の選択です）。
 
 .. Explicit returns from a modifier or function body only leave the current
 .. modifier or function body. Return variables are assigned and
@@ -126,8 +131,7 @@ Note that the placeholder operator is different from using underscores as leadin
 
 .. An explicit return from a modifier with ``return;`` does not affect the values returned by the function.
 .. The modifier can, however, choose not to execute the function body at all and in that case the return
-.. variables are set to their :ref:`default values<default-value>` just as if the function had an empty
-.. body.
+.. variables are set to their :ref:`default values<default-value>` just as if the function had an empty body.
 
 ``return;`` を持つ修飾子からの明示的なリターンは、関数が返す値に影響を与えません。
 しかし、修飾子は、関数本体を全く実行しないことを選択でき、その場合、関数本体が空であった場合と同様に、戻り値の変数は :ref:`デフォルト値<default-value>` に設定されます。
@@ -135,11 +139,8 @@ Note that the placeholder operator is different from using underscores as leadin
 ``_`` マークは修飾子の中で複数回現れることがあります。
 それぞれの出現箇所は、関数本体で置き換えられます。
 
-.. Arbitrary expressions are allowed for modifier arguments and in this context,
-.. all symbols visible from the function are visible in the modifier. Symbols
-.. introduced in the modifier are not visible in the function (as they might
-.. change by overriding).
-.. 
+.. Arbitrary expressions are allowed for modifier arguments and in this context, all symbols visible from the function are visible in the modifier.
+.. Symbols introduced in the modifier are not visible in the function (as they might change by overriding).
 
 修飾子の引数には任意の式が許されており、このコンテキストでは、関数から見えるすべてのシンボルが修飾子でも見えます。
 修飾子で導入されたシンボルは、（オーバーライドによって変更される可能性があるため）関数では見えません。

@@ -45,7 +45,7 @@ Solidity v0.8.0の破壊的変更点
   明示的にしたい場合は、代わりに ``pragma abicoder v2;`` を使用してください。
 
   ABI coder v2は、v1よりも多くの型をサポートし、入力に対してより多くのサニティチェックを行うことに注意してください。
-  ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1では復帰しなかったコントラクトコールがリバートすることがあります。
+  ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1ではリバートしなかったコントラクトコールがリバートすることがあります。
 
 .. * Exponentiation is right associative, i.e., the expression ``a**b**c`` is parsed as ``a**(b**c)``.
 ..   Before 0.8.0, it was parsed as ``(a**b)**c``.

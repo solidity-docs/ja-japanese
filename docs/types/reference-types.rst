@@ -20,7 +20,8 @@
 ------------------
 
 すべての参照型には、それがどこに保存されているかについて、「データロケーション」という追加のアノテーションがあります。
-データロケーションは3つあります。 ``memory`` 、 ``storage`` 、 ``calldata`` です。
+データロケーションは3つあります。
+``memory`` 、 ``storage`` 、 ``calldata`` です。
 コールデータは、関数の引数が格納される、変更不可能で永続性のない領域で、ほとんどメモリのように動作します。
 
 .. note::
@@ -46,12 +47,11 @@
 データロケーションは、データの永続性だけでなく、代入のセマンティクスにも関係します。
 
 * ``storage`` と ``memory`` の間（または ``calldata`` から）の代入では、常に独立したコピーが作成されます。
-
-* ``memory`` から ``memory`` への代入では、参照のみが作成されます。つまり、あるメモリ変数の変更は、同じデータを参照している他のすべてのメモリ変数にも反映されるということです。
-
+* ``memory`` から ``memory`` への代入では、参照のみが作成されます。
+  つまり、あるメモリ変数の変更は、同じデータを参照している他のすべてのメモリ変数にも反映されるということです。
 * ``storage`` から **ローカル** ストレージ変数への代入もまた、参照のみを代入します。
-
-* その他の ``storage`` への代入は、常にコピーされます。このケースの例としては、状態変数やストレージ構造体型のローカル変数のメンバへの代入がありますが、ローカル変数自体が単なる参照であっても同様です。
+* その他の ``storage`` への代入は、常にコピーされます。
+  このケースの例としては、状態変数やストレージ構造体型のローカル変数のメンバへの代入がありますが、ローカル変数自体が単なる参照であっても同様です。
 
 .. code-block:: solidity
 
@@ -96,22 +96,34 @@
 
 固定サイズ ``k`` 、要素型 ``T`` の配列の型は ``T[k]`` 、動的サイズの配列は ``T[]`` と書きます。
 
-例えば、 ``uint`` の動的配列を5個並べた配列は ``uint[][5]`` と書きます。この表記法は、他のいくつかの言語とは逆になっています。Solidityでは、たとえ ``X`` がそれ自体配列であっても、 ``X[3]`` は常に ``X`` 型の3つの要素を含む配列です。これは、Cなどの他の言語ではそうではありません。
+例えば、 ``uint`` の動的配列を5個並べた配列は ``uint[][5]`` と書きます。
+この表記法は、他のいくつかの言語とは逆になっています。
+Solidityでは、たとえ ``X`` がそれ自体配列であっても、 ``X[3]`` は常に ``X`` 型の3つの要素を含む配列です。
+これは、Cなどの他の言語ではそうではありません。
 
 インデックスはゼロベースで、アクセスは宣言とは逆方向になります。
 
-例えば、変数 ``uint[][5] memory x`` がある場合、3番目の動的配列の7番目の ``uint`` にアクセスするには ``x[2][6]`` を使い、3番目の動的配列にアクセスするには ``x[2]`` を使います。繰り返しになりますが、配列にもなる ``T`` 型に対して配列 ``T[5] a`` がある場合、 ``a[2]`` は常に ``T`` 型です。
+例えば、変数 ``uint[][5] memory x`` がある場合、3番目の動的配列の7番目の ``uint`` にアクセスするには ``x[2][6]`` を使い、3番目の動的配列にアクセスするには ``x[2]`` を使います。
+繰り返しになりますが、配列にもなる ``T`` 型に対して配列 ``T[5] a`` がある場合、 ``a[2]`` は常に ``T`` 型です。
 
-配列の要素は、マッピングや構造体など、どのような型でもよいです。一般的な型の制限が適用され、マッピングは ``storage`` データの場所にしか保存できず、一般に公開されている関数には :ref:`ABI型<ABI>` のパラメータが必要となります。
+配列の要素は、マッピングや構造体など、どのような型でもよいです。
+一般的な型の制限が適用され、マッピングは ``storage`` データの場所にしか保存できず、一般に公開されている関数には :ref:`ABI型<ABI>` のパラメータが必要となります。
 
-状態変数の配列に ``public`` をマークして、Solidityに :ref:`getter <visibility-and-getters>` を作成させることが可能です。数値インデックスは、getterの必須パラメータとなります。
+状態変数の配列に ``public`` をマークして、Solidityに :ref:`ゲッター <visibility-and-getters>` を作成させることが可能です。
+数値インデックスは、getterの必須パラメータとなります。
+
+.. Methods ``.push()`` and ``.push(value)`` can be used to append a new element at the end of a dynamically-sized array, where ``.push()`` appends a zero-initialized element and returns a reference to it.
 
 配列の終端を超えてアクセスすると、アサーションが失敗します。
-Methods ``.push()`` and ``.push(value)`` can be used to append a new element at the end of a dynamically-sized array, where ``.push()`` appends a zero-initialized element and returns a reference to it.
+メソッド ``.push()`` と ``.push(value)`` は、動的なサイズの配列の末尾に新しい要素を追加するために使用できます。
 
 .. note::
-    Dynamically-sized arrays can only be resized in storage.
-    In memory, such arrays can be of arbitrary size but the size cannot be changed once an array is allocated.
+
+    .. Dynamically-sized arrays can only be resized in storage.
+    .. In memory, such arrays can be of arbitrary size but the size cannot be changed once an array is allocated.
+
+    動的なサイズの配列は、ストレージ内でのみサイズを変更できます。
+    メモリ上では、このような配列は任意のサイズにできますが、配列が割り当てられるとサイズを変更できません。
 
 .. index:: ! string, ! bytes
 
@@ -130,9 +142,11 @@ Solidityには文字列操作関数はありませんが、サードパーティ
 また、 ``keccak256(abi.encodePacked(s1)) == keccak256(abi.encodePacked(s2))`` を使って2つの文字列をそのkeccak256-hashで比較したり、 ``string.concat(s1, s2)`` を使って2つの文字列を連結できます。
 
 ``memory`` で ``bytes1[]`` を使うと要素間に31個のパディングバイトを追加するので、 ``bytes1[]`` よりも ``bytes`` を使用した方が安価です。
-なお、 ``storage`` では、タイトパッキングのためパディングは存在しません。 :ref:`bytesとstring <bytes-and-string>` を参照してください。
+なお、 ``storage`` では、タイトパッキングのためパディングは存在しません。
+:ref:`bytesとstring <bytes-and-string>` を参照してください。
 原則として、任意の長さの生バイトデータには ``bytes`` を、任意の長さの文字列（UTF-8）データには ``string`` を使用してください。
-長さを一定のバイト数に制限できる場合は、値型 ``bytes1`` 〜 ``bytes32`` のいずれかを必ず使用してください。その方がはるかに安価です）。
+長さを一定のバイト数に制限できる場合は、値型 ``bytes1`` 〜 ``bytes32`` のいずれかを必ず使用してください。
+その方がはるかに安価です。
 
 .. note::
 
@@ -144,16 +158,24 @@ Solidityには文字列操作関数はありませんが、サードパーティ
 .. _bytes-concat:
 .. _string-concat:
 
-The functions ``bytes.concat`` and ``string.concat``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``bytes.concat`` 関数と ``string.concat`` 関数
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can concatenate an arbitrary number of ``string`` values using ``string.concat``.
-The function returns a single ``string memory`` array that contains the contents of the arguments without padding.
-If you want to use parameters of other types that are not implicitly convertible to ``string``, you need to convert them to ``string`` first.
+.. You can concatenate an arbitrary number of ``string`` values using ``string.concat``.
+.. The function returns a single ``string memory`` array that contains the contents of the arguments without padding.
+.. If you want to use parameters of other types that are not implicitly convertible to ``string``, you need to convert them to ``string`` first.
 
-Analogously, the ``bytes.concat`` function can concatenate an arbitrary number of ``bytes`` or ``bytes1 ... bytes32`` values.
-The function returns a single ``bytes memory`` array that contains the contents of the arguments without padding.
-If you want to use string parameters or other types that are not implicitly convertible to ``bytes``, you need to convert them to ``bytes`` or ``bytes1``/.../``bytes32`` first.
+``string.concat`` を使えば、任意の数の ``string`` の値を連結することができます。
+この関数は、引数の内容をパディングせずに格納した単一の ``string memory`` を返します。
+暗黙のうちに ``string`` に変換できない他の型のパラメータを使用したい場合は、まず ``string`` に変換する必要があります。
+
+.. Analogously, the ``bytes.concat`` function can concatenate an arbitrary number of ``bytes`` or ``bytes1 ... bytes32`` values.
+.. The function returns a single ``bytes memory`` array that contains the contents of the arguments without padding.
+.. If you want to use string parameters or other types that are not implicitly convertible to ``bytes``, you need to convert them to ``bytes`` or ``bytes1``/.../``bytes32`` first.
+
+同様に、 ``bytes.concat`` 関数は、任意の数の ``bytes`` または ``bytes1 ... bytes32`` 値を連結させることができます。
+この関数は、引数の内容をパディングせずに格納した単一の ``bytes memory`` を返します。
+文字列パラメータや、暗黙のうちに ``bytes`` に変換できない他の型を使用したい場合は、最初に ``bytes`` または ``bytes1``/.../``bytes32`` に変換する必要があります。
 
 .. code-block:: solidity
 
@@ -205,16 +227,19 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
 ^^^^^^^^^^^^
 
 配列リテラルは、1つまたは複数の式を角括弧（ ``[...]`` ）で囲んだコンマ区切りのリストです。
-例えば、 ``[1, a, f(3)]`` です。配列リテラルの型は以下のように決定されます。
+例えば、 ``[1, a, f(3)]`` です。
+配列リテラルの型は以下のように決定されます。
 
 これは、常に静的サイズのメモリ配列で、その長さは式の数です。
 
 配列の基本型は、リストの最初の式の型で、他のすべての式が暗黙的に変換できるようになっています。
 これができない場合は型エラーとなります。
 
-すべての要素に変換できる型があるだけでは不十分です。要素の一つがその型でなければなりません。
+すべての要素に変換できる型があるだけでは不十分です。
+要素の一つがその型でなければなりません。
 
-下の例では、それぞれの定数の型が ``uint8`` であることから、 ``[1, 2, 3]`` の型は ``uint8[3] memory`` となります。結果を ``uint[3] memory`` 型にしたい場合は、最初の要素を ``uint`` に変換する必要があります。
+下の例では、それぞれの定数の型が ``uint8`` であることから、 ``[1, 2, 3]`` の型は ``uint8[3] memory`` となります。
+結果を ``uint[3] memory`` 型にしたい場合は、最初の要素を ``uint`` に変換する必要があります。
 
 .. code-block:: solidity
 
@@ -230,7 +255,8 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-配列リテラル ``[1, -1]`` が無効なのは、最初の式の型が ``uint8`` であるのに対し、2番目の式の型が ``int8`` であり、両者を暗黙的に変換できないからです。これを動作させるには、例えば ``[int8(1), -1]`` を使用します。
+配列リテラル ``[1, -1]`` が無効なのは、最初の式の型が ``uint8`` であるのに対し、2番目の式の型が ``int8`` であり、両者を暗黙的に変換できないからです。
+これを動作させるには、例えば ``[int8(1), -1]`` を使用します。
 
 異なる型の固定サイズのメモリ配列は、（基底型が変換できても）相互に変換できないため、二次元配列リテラルを使用する場合は、常に共通の基底型を明示的に指定する必要があります。
 
@@ -248,7 +274,8 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-固定サイズのメモリ配列を、動的サイズのメモリ配列に代入することはできません。つまり、以下のことはできません。
+固定サイズのメモリ配列を、動的サイズのメモリ配列に代入することはできません。
+つまり、以下のことはできません。
 
 .. code-block:: solidity
 
@@ -263,7 +290,7 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-将来的にはこの制限を解除する予定ですが、ABIでの配列の渡し方の関係で複雑になっています。
+将来はこの制限を解除する予定ですが、ABIでの配列の渡し方の関係で複雑になっています。
 
 動的なサイズの配列を初期化したい場合は、個々の要素を代入する必要があります。
 
@@ -296,7 +323,7 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
     この関数は、要素への参照を返すので、 ``x.push().t = 2`` や ``x.push() = b`` のように使用できます。
 **push(x)**:
     動的ストレージ配列と ``bytes``（ ``string`` ではありません）には、 ``push(x)`` というメンバ関数があり、配列の最後に与えられた要素を追加するのに使用できます。
-    この関数は何も返しません。 
+    この関数は何も返しません。
 **pop()**:
     動的ストレージ配列と ``bytes`` （ ``string`` ではありません）には ``pop()`` というメンバ関数があり、配列の最後から要素を削除するのに使用できます。
     この関数は、削除された要素に対して :ref:`delete<delete>`  を暗黙的に呼び出します。
@@ -394,13 +421,13 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
 
         function createMemoryArray(uint size) public pure returns (bytes memory) {
-            // 動的メモリ配列は `new` を用いて作成する。
+            // 動的メモリ配列は `new` を用いて作成します。
             uint[2][] memory arrayOfPairs = new uint[2][](size);
 
             // インライン配列は常に静的サイズであり、リテラルのみを使用する場合は、少なくとも1つの型を提供する必要があります。
             arrayOfPairs[0] = [uint(1), 2];
 
-            // 動的バイト列を作成する。
+            // 動的バイト列を作成します。
             bytes memory b = new bytes(200);
             for (uint i = 0; i < b.length; i++)
                 b[i] = bytes1(uint8(i));
@@ -410,13 +437,18 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
 
 .. index:: ! array;dangling storage references
 
-Dangling References to Storage Array Elements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Dangling References to Storage Array Elements
 
-When working with storage arrays, you need to take care to avoid dangling references.
-A dangling reference is a reference that points to something that no longer exists or has been
-moved without updating the reference. A dangling reference can for example occur, if you store a
-reference to an array element in a local variable and then ``.pop()`` from the containing array:
+文字列の要素へのダングリング参照
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. When working with storage arrays, you need to take care to avoid dangling references.
+.. A dangling reference is a reference that points to something that no longer exists or has been moved without updating the reference.
+.. A dangling reference can for example occur, if you store a reference to an array element in a local variable and then ``.pop()`` from the containing array:
+
+文字列を扱う場合、ぶら下がり参照を避けるように注意する必要があります。
+ぶら下がり参照とは、もはや存在しないものを指す参照、あるいは参照を更新せずに移動された参照のことです。
+例えば、ローカル変数に配列の要素への参照を格納した後、格納されている配列から ``.pop()`` を行うと、ダングリング参照が発生する可能性があります:
 
 .. code-block:: solidity
 
@@ -440,15 +472,12 @@ reference to an array element in a local variable and then ``.pop()`` from the c
         }
     }
 
-The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no
-longer refers to a valid element of ``s``. Since the compiler assumes that unused storage
-is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage,
-so the last element of ``s`` after that ``push()`` will have length ``1`` and contain
-``0x42`` as its first element.
+The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no longer refers to a valid element of ``s``.
+Since the compiler assumes that unused storage is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage, so the last element of ``s`` after that ``push()`` will have length ``1`` and contain ``0x42`` as its first element.
 
-Note that Solidity does not allow to declare references to value types in storage. These kinds
-of explicit dangling references are restricted to nested reference types. However, dangling references
-can also occur temporarily when using complex expressions in tuple assignments:
+Note that Solidity does not allow to declare references to value types in storage.
+These kinds of explicit dangling references are restricted to nested reference types.
+However, dangling references can also occur temporarily when using complex expressions in tuple assignments:
 
 .. code-block:: solidity
 
@@ -483,12 +512,9 @@ can also occur temporarily when using complex expressions in tuple assignments:
         }
     }
 
-It is always safer to only assign to storage once per statement and to avoid
-complex expressions on the left-hand-side of an assignment.
+It is always safer to only assign to storage once per statement and to avoid complex expressions on the left-hand-side of an assignment.
 
-You need to take particular care when dealing with references to elements of
-``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short
-to long layout in storage<bytes-and-string>`.
+You need to take particular care when dealing with references to elements of ``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short to long layout in storage<bytes-and-string>`.
 
 .. code-block:: solidity
 
@@ -505,20 +531,13 @@ to long layout in storage<bytes-and-string>`.
         }
     }
 
-Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short
-layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of
-``x``. However, the second ``x.push()`` switches the bytes array to large layout.
-Now the element that ``x.push()`` referred to is in the data area of the array while
-the reference still points at its original location, which is now a part of the length field
-and the assignment will effectively garble the length of ``x``.
-To be safe, only enlarge bytes arrays by at most one element during a single
-assignment and do not simultaneously index-access the array in the same statement.
+Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of ``x``.
+However, the second ``x.push()`` switches the bytes array to large layout.
+Now the element that ``x.push()`` referred to is in the data area of the array while the reference still points at its original location, which is now a part of the length field and the assignment will effectively garble the length of ``x``.
+To be safe, only enlarge bytes arrays by at most one element during a single assignment and do not simultaneously index-access the array in the same statement.
 
-While the above describes the behaviour of dangling storage references in the
-current version of the compiler, any code with dangling references should be
-considered to have *undefined behaviour*. In particular, this means that
-any future version of the compiler may change the behaviour of code that
-involves dangling references.
+While the above describes the behaviour of dangling storage references in the current version of the compiler, any code with dangling references should be considered to have *undefined behaviour*.
+In particular, this means that any future version of the compiler may change the behaviour of code that involves dangling references.
 
 Be sure to avoid dangling references in your code!
 
@@ -535,7 +554,8 @@ Be sure to avoid dangling references in your code!
 
 ``start`` が ``end`` より大きい場合や、 ``end`` が配列の長さより大きい場合は、例外が発生します。
 
-``start`` と ``end`` はどちらもオプションです。 ``start`` はデフォルトで ``0`` 、 ``end`` はデフォルトで配列の長さになります。
+``start`` と ``end`` はどちらもオプションです。
+``start`` はデフォルトで ``0`` 、 ``end`` はデフォルトで配列の長さになります。
 
 配列スライスは、メンバーを持ちません。
 スライスは、基礎となる型の配列に暗黙的に変換可能で、インデックスアクセスをサポートします。
@@ -612,7 +632,7 @@ Solidityでは、構造体の形で新しい型を定義する方法を提供し
         mapping(uint => Campaign) campaigns;
 
         function newCampaign(address payable beneficiary, uint goal) public returns (uint campaignID) {
-            campaignID = numCampaigns++; // campaignIDは返り値です。 
+            campaignID = numCampaigns++; // campaignIDは返り値です。
             // "campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)"は、
             // 右側がマッピングを含むメモリ構造体"Campaign"を作成するため、使用することはできません。
             Campaign storage c = campaigns[campaignID];

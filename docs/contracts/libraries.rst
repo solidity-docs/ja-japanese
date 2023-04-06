@@ -2,9 +2,9 @@
 
 .. _libraries:
 
-*************
+**********
 ライブラリ
-*************
+**********
 
 ライブラリはコントラクトに似ていますが、その目的は、特定のアドレスに一度だけデプロイされ、そのコードはEVMの ``DELEGATECALL`` （Homesteadまでの ``CALLCODE`` ）機能を使って再利用されることです。
 ライブラリ関数が呼び出された場合、そのコードは呼び出したコントラクトのコンテキストで実行されます。
@@ -48,11 +48,9 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 
 .. index:: using for, set
 
-.. The following example illustrates how to use libraries (but using a manual method,
-.. be sure to check out :ref:`using for <using-for>` for a
-.. more advanced example to implement a set).
+.. The following example illustrates how to use libraries (but using a manual method, be sure to check out :ref:`using for <using-for>` for a more advanced example to implement a set).
 
-次の例では、ライブラリを使用する方法を説明しています（ただし、手動の方法を使用しています。集合を実装するためのより高度な例については、必ず :ref:`using for <using-for>` を参照してください）。
+次の例では、ライブラリを使用する方法を説明しています（ただし、マニュアルの方法を使用しており、集合を実装するためのより高度な例については、必ず :ref:`using for <using-for>` を参照してください）。
 
 .. code-block:: solidity
 
@@ -65,7 +63,7 @@ EVMでこれを実現するために、コントラクトから呼び出され�
     }
 
     library Set {
-        // 最初のパラメータは「ストレージ参照」型であるため、呼び出しの一部として、そのストレージアドレスのみが渡され、その内容は渡されないことに注意してください。 
+        // 最初のパラメータは「ストレージ参照」型であるため、呼び出しの一部として、そのストレージアドレスのみが渡され、その内容は渡されないことに注意してください。
         // これはライブラリ関数の特別な機能です。
         // もし関数がそのオブジェクトのメソッドとみなすことができるならば、最初のパラメータを `self` と呼ぶのが慣例となっています。
         function insert(Data storage self, uint value)
@@ -124,7 +122,8 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 .. ``msg.value`` changed, though).
 
 ``Set.contains`` 、 ``Set.insert`` 、 ``Set.remove`` の呼び出しは、すべて外部のコントラクト／ライブラリへの呼び出し（ ``DELEGATECALL`` ）としてコンパイルされています。
-ライブラリを使用している場合は、実際の外部関数の呼び出しが行われることに注意してください。 ``msg.sender`` 、 ``msg.value`` 、 ``this`` は、この呼び出しでも値が保持されますが（ホームステッド以前は、 ``CALLCODE`` を使用していたため、 ``msg.sender`` と ``msg.value`` は変化していましたが）。
+ライブラリを使用している場合は、実際の外部関数の呼び出しが行われることに注意してください。
+``msg.sender`` 、 ``msg.value`` 、 ``this`` は、この呼び出しでも値が保持されますが（ホームステッド以前は、 ``CALLCODE`` を使用していたため、 ``msg.sender`` と ``msg.value`` は変化していましたが）。
 
 .. The following example shows how to use :ref:`types stored in memory <data-location>` and
 .. internal functions in libraries in order to implement
@@ -253,13 +252,10 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 ..   followed by ``storage`` to it.
 
 - 値型、非ストレージ ``string`` 、非ストレージ ``bytes`` はコントラクトABIと同じ識別子を使用しています。
-
-- 非ストレージ型の配列型はコントラクトABIと同じ規則に従っています。すなわち、動的配列は ``<type>[]`` 、 ``M`` 要素の固定サイズ配列は ``<type>[M]`` です。
-
+- 非ストレージ型の配列型はコントラクトABIと同じ規則に従っています。
+  すなわち、動的配列は ``<type>[]`` 、 ``M`` 要素の固定サイズ配列は ``<type>[M]`` です。
 - ストレージを持たない構造体は、完全修飾名で参照されます。
-
 - ストレージポインターマッピングでは、 ``<keyType>`` と ``<valueType>`` がそれぞれマッピングのキー型とバリュー型の識別子である ``mapping(<keyType> => <valueType>) storage`` を使用します。
-
 - 他のストレージポインタ型は、対応する非ストレージ型の型識別子を使用しますが、それに1つのスペースとそれに続く ``storage`` が追加されます。
 
 .. The argument encoding is the same as for the regular contract ABI, except for storage pointers, which are encoded as a
@@ -292,7 +288,7 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 .. _call-protection:
 
 ライブラリのためのコールプロテクション
-=======================================
+======================================
 
 .. As mentioned in the introduction, if a library's code is executed
 .. using a ``CALL`` instead of a ``DELEGATECALL`` or ``CALLCODE``,

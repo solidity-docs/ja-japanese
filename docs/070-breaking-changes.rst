@@ -34,7 +34,8 @@ Solidity v0.7.0の破壊的変更点
 ..   The old syntax -- ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` -- will cause an error.
 
 * 外部関数やコントラクト作成コールで、Etherやガスが新しい構文で指定されるようになりました。
-  ``x.f{gas: 10000, value: 2 ether}(arg1, arg2)`` です。従来の構文（ ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` ）ではエラーになります。
+  ``x.f{gas: 10000, value: 2 ether}(arg1, arg2)`` です。
+  従来の構文（ ``x.f.gas(10000).value(2 ether)(arg1, arg2)`` ）ではエラーになります。
 
 .. * The global variable ``now`` is deprecated, ``block.timestamp`` should be used instead.
 ..   The single identifier ``now`` is too generic for a global variable and could give the impression

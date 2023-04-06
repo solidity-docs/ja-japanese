@@ -118,12 +118,10 @@
     }
 
 .. The names of return variables can be omitted.
-.. Return variables can be used as any other local variable and they
-.. are initialized with their :ref:`default value <default-value>` and have that
-.. value until they are (re-)assigned.
+.. Return variables can be used as any other local variable and they are initialized with their :ref:`default value <default-value>` and have that value until they are (re-)assigned.
 
 リターン変数の名前は省略可能です。
-リターン変数は、他のローカル変数と同様に使用でき、 :ref:`default value <default-value>` で初期化され、（再）割り当てされるまでその値を保持します。
+リターン変数は、他のローカル変数と同様に使用でき、 :ref:`デフォルト値 <default-value>` で初期化され、（再）代入されるまでその値を保持します。
 
 .. You can either explicitly assign to return variables and
 .. then leave the function as above,
@@ -131,7 +129,7 @@
 .. (either a single or :ref:`multiple ones<multi-return>`) directly with the ``return``
 .. statement:
 
-上記のように明示的にリターン変数に代入してから関数を残すか、 ``return`` 文でリターン値（シングルまたは :ref:`multiple ones<multi-return>` ）を直接指定できます。
+上記のように明示的にリターン変数に代入してから関数を残すか、 ``return`` 文でリターン値（一個あるいは :ref:`複数個<multi-return>` ）を直接指定できます。
 
 .. code-block:: solidity
 
@@ -155,21 +153,31 @@ return変数を持つ関数を終了するためにearly  ``return`` を使用�
 
 .. note::
 
-    You cannot return some types from non-internal functions.
-    This includes the types listed below and any composite types that recursively contain them:
+    .. You cannot return some types from non-internal functions.
+    .. This includes the types listed below and any composite types that recursively contain them:
 
-    - mappings,
-    - internal function types,
-    - reference types with location set to ``storage``,
-    - multi-dimensional arrays (applies only to :ref:`ABI coder v1 <abi_coder>`),
-    - structs (applies only to :ref:`ABI coder v1 <abi_coder>`).
+    非内部関数から返せない型もあります。
+    これには、以下に挙げる型と、それらを再帰的に含む複合型が含まれます。
 
-    This restriction does not apply to library functions because of their different :ref:`internal ABI <library-selectors>`.
+    .. - internal function types,
+    .. - reference types with location set to ``storage``,
+    .. - multi-dimensional arrays (applies only to :ref:`ABI coder v1 <abi_coder>`),
+    .. - structs (applies only to :ref:`ABI coder v1 <abi_coder>`).
+
+    - マッピング
+    - 内部関数型
+    - ロケーションが ``storage`` に設定されている参照型
+    - 多次元配列（ :ref:`ABI coder v1 <abi_coder>` にのみ適用されます）
+    - 構造体（ :ref:`ABI coder v1 <abi_coder>` にのみ適用されます）
+
+    .. This restriction does not apply to library functions because of their different :ref:`internal ABI <library-selectors>`.
+
+    ライブラリ関数は :ref:`内部ABI <library-selectors>` が異なるため、この制限は適用されません。
 
 .. _multi-return:
 
 複数の値を返す
--------------------------
+--------------
 
 .. When a function has multiple return types, the statement ``return (v0, v1, ..., vn)`` can be used to return multiple values.
 .. The number of components must be the same as the number of return variables
@@ -181,14 +189,14 @@ return変数を持つ関数を終了するためにearly  ``return`` を使用�
 .. _state-mutability:
 
 ステートのミュータビリティ
-===========================
+==========================
 
 .. index:: ! view function, function;view
 
 .. _view-functions:
 
-View関数
---------------
+view関数
+--------
 
 関数は ``view`` を宣言でき、その場合は状態を変更しないことが約束されます。
 
@@ -270,8 +278,8 @@ View関数
 
 .. _pure-functions:
 
-Pure関数
---------------
+pure関数
+--------
 
 .. Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
 .. In particular, it should be possible to evaluate a ``pure`` function at compile-time given
@@ -303,13 +311,9 @@ Pure関数
 .. #. Using inline assembly that contains certain opcodes.
 
 #. 状態変数からの読み出し。
-
 #. ``address(this).balance`` または ``<address>.balance`` へのアクセス。
-
 #. ``block`` 、 ``tx`` 、 ``msg`` （ ``msg.sig`` 、 ``msg.data`` を除く）のメンバーのいずれかにアクセスすること。
-
 #. ``pure`` とマークされていない関数を呼び出すこと。
-
 #. 特定のオペコードを含むインラインアセンブリの使用。
 
 .. code-block:: solidity
@@ -332,7 +336,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 .. state made previously in code that did not have the ``view`` or ``pure`` restriction
 .. are reverted and that code has the option to catch the ``revert`` and not pass it on.
 
-``view`` や ``pure`` の制限を受けていないコードで以前に行われた状態の変更のみが元に戻され、そのコードは ``revert`` をキャッチして渡さないというオプションを持っているため、状態の変更を元に戻すことは「状態の修正」とはみなされません。
+``view`` や ``pure`` の制限を受けていないコードで以前に行われた状態の変更のみがリバートされ、そのコードは ``revert`` をキャッチして渡さないというオプションを持っているため、状態の変更をリバートすることは「状態の修正」とはみなされません。
 
 .. This behaviour is also in line with the ``STATICCALL`` opcode.
 
@@ -346,7 +350,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 
 .. warning::
 
-  EVMのレベルで関数が状態を読み取るのを防ぐことはできず、状態に書き込むのを防ぐことしかできません（つまり、EVMのレベルで強制できるのは ``view`` だけで、 ``pure`` はできません）。
+    EVMのレベルで関数が状態を読み取るのを防ぐことはできず、状態に書き込むのを防ぐことしかできません（つまり、EVMのレベルで強制できるのは ``view`` だけで、 ``pure`` はできません）。
 
 .. .. note::
 
@@ -380,14 +384,14 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 .. _special-functions:
 
 特殊な関数
-=================
+==========
 
 .. index:: ! receive ether function, function;receive ! receive
 
 .. _receive-ether-function:
 
-Receive Ether関数
-----------------------
+receive Ether関数
+-----------------
 
 .. A contract can have at most one ``receive`` function, declared using
 .. ``receive() external payable { ... }``
@@ -423,21 +427,16 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
 .. - Sending Ether
 
 - ストレージへの書き込み
-
 - コントラクトの作成
-
 - 大量のガスを消費する外部関数の呼び出し
-
 - Etherの送信
 
 .. warning::
-    When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``)
-    but the receiving contract does not define a receive Ether function or a payable fallback function,
-    an exception will be thrown, sending back the Ether (this was different
-    before Solidity v0.4.0). If you want your contract to receive Ether,
-    you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
-    not recommended, since the fallback is invoked and would not fail for interface confusions
-    on the part of the sender).
+    .. When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``) but the receiving contract does not define a receive Ether function or a payable fallback function, an exception will be thrown, sending back the Ether (this was different before Solidity v0.4.0).
+    .. If you want your contract to receive Ether, you have to implement a receive Ether function (using payable fallback functions for receiving Ether is not recommended, since the fallback is invoked and would not fail for interface confusions on the part of the sender).
+
+    Etherがコントラクトに直接送信され（関数呼び出しなしで、送信者は ``send`` または ``transfer`` を使用）、受信側のコントラクトがreceive Ether関数またはpayable fallback関数を定義しない場合、例外が発生しEtherを送り返します（Solidity v0.4.0以前は異なっていました）。
+    コントラクトでEtherを受信したい場合は、receive Ether関数を実装する必要があります（Etherを受信するためにpayable fallback関数を使用することは推奨されていません）。
 
 .. .. warning::
 
@@ -469,7 +468,7 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.6.0 <0.9.0;
 
-    // このコントラクトは、送られてきたEtherをすべて保持し、それを取り戻す方法はない。
+    // このコントラクトは、送られてきたEtherをすべて保持し、それを取り戻す方法はありません。
     contract Sink {
         event Received(address, uint);
         receive() external payable {
@@ -481,8 +480,8 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
 
 .. _fallback-function:
 
-Fallback関数
------------------
+fallback関数
+------------
 
 .. A contract can have at most one ``fallback`` function, declared using either ``fallback () external [payable]``
 .. or ``fallback (bytes calldata input) external [payable] returns (bytes memory output)``
@@ -672,7 +671,7 @@ Fallback関数
 上記の両方の ``f`` 関数のオーバーロードは、Solidity内では異なるものと考えられていますが、最終的にはABI用のアドレス型を受け入れます。
 
 オーバーロードの解決と引数のマッチング
------------------------------------------
+--------------------------------------
 
 .. Overloaded functions are selected by matching the function declarations in the current scope
 .. to the arguments supplied in the function call. Functions are selected as overload candidates

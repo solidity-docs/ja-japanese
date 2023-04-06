@@ -378,34 +378,22 @@ NG:
 
 .. Functions should be grouped according to their visibility and ordered:
 
-関数は可視性に応じてグループ化し、順序立てて配置する。
+関数は可視性に応じてグループ化し、順序立てて配置します。
 
 .. - constructor
-
-- ビルダー
-
 .. - receive function (if exists)
-
-- 受信関数（ある場合）
-
 .. - fallback function (if exists)
-
-- フォールバック関数（存在する場合）
-
 .. - external
-
-- 外部
-
 .. - public
-
-- 公開
-
 .. - internal
-
-- インターナル
-
 .. - private
 
+- コンストラクタ
+- 受信関数（ある場合）
+- フォールバック関数（存在する場合）
+- 外部
+- パブリック
+- 内部
 - プライベート
 
 .. Within a grouping, place the ``view`` and ``pure`` functions last.
@@ -486,8 +474,10 @@ NG:
         // ...
     }
 
-Whitespace in Expressions
-=========================
+.. Whitespace in Expressions
+
+式中の空白文字
+==============
 
 .. Avoid extraneous whitespace in the following  situations:
 
@@ -495,7 +485,8 @@ Whitespace in Expressions
 
 .. Immediately inside parenthesis, brackets or braces, with the exception of single line function declarations.
 
-括弧、大括弧、中括弧のすぐ内側。ただし、1行の関数宣言は例外です。
+括弧、大括弧、中括弧のすぐ内側。
+ただし、1行の関数宣言は例外です。
 
 .. Yes:
 
@@ -543,7 +534,7 @@ NG:
 
 .. More than one space around an assignment or other operator to align with another:
 
-代入や他の演算子の周りに1つ以上のスペースを設けて整列させる。
+代入や他の演算子の周りに1つ以上のスペースを設けて整列させます。
 
 .. Yes:
 
@@ -567,7 +558,7 @@ NG:
 
 .. Don't include a whitespace in the receive and fallback functions:
 
-受信関数とフォールバック関数に空白を入れない。
+受信関数とフォールバック関数に空白を入れてはいけません:
 
 .. Yes:
 
@@ -597,26 +588,22 @@ NG:
         ...
     }
 
-Control Structures
-==================
+.. Control Structures
 
-.. The braces denoting the body of a contract, library, functions and structs
-.. should:
+制御構造
+========
+
+.. The braces denoting the body of a contract, library, functions and structs should:
 
 コントラクト、ライブラリ、関数、構造体の本体を示す中括弧は、次のようにします。
 
 .. * open on the same line as the declaration
-
-* 宣言と同じ行に開く
-
-.. * close on their own line at the same indentation level as the beginning of the
-..   declaration.
-
-* は、宣言の先頭と同じインデントレベルで独立した行に閉じます。
-
+.. * close on their own line at the same indentation level as the beginning of the declaration.
 .. * The opening brace should be preceded by a single space.
 
-* 冒頭のブレースの前には半角スペースを入れてください。
+* 宣言と同じ行にオープンする
+* 宣言の先頭と同じインデントレベルで独立した行でクローズする
+* 冒頭のブレースの前に半角スペースを入れる
 
 .. Yes:
 
@@ -724,7 +711,8 @@ NG:
 .. placed on the same line as the ``if``'s closing brace. This is an exception compared
 .. to the rules of other block-like structures.
 
-``else`` または ``else if`` 句を持つ ``if`` ブロックでは、 ``else`` は ``if`` の閉じ括弧と同じ行に配置する。これは、他のブロックのような構造のルールに比べて例外的なものです。
+``else`` または ``else if`` 句を持つ ``if`` ブロックでは、 ``else`` は ``if`` の閉じ括弧と同じ行に配置します。
+これは、他のブロックのような構造のルールに比べて例外的なものです。
 
 .. Yes:
 
@@ -758,8 +746,10 @@ NG:
         x -= 1;
     }
 
-Function Declaration
-====================
+.. Function Declaration
+
+関数宣言
+========
 
 .. For short function declarations, it is recommended for the opening brace of the
 .. function body to be kept on the same line as the function declaration.
@@ -1142,8 +1132,8 @@ NG:
 .. In variable declarations, do not separate the keyword ``mapping`` from its type by a space.
 .. Do not separate any nested ``mapping`` keyword from its type by whitespace.
 
-変数宣言では、キーワード ``mapping`` とその型を空白で区切らない。
-また、ネストした ``mapping`` キーワードとその型を空白で区切らない。
+変数宣言では、キーワード ``mapping`` とその型は空白で区切りません。
+また、ネストした ``mapping`` キーワードとその型は空白で区切りません。
 
 .. Yes:
 
@@ -1400,7 +1390,7 @@ No:
     したがって、HttpServerErrorよりもHTTPServerErrorの方がよいです。
     頭文字をmixedCaseで使用する場合は、頭文字の文字をすべて大文字にします。
     ただし、名前の先頭の文字は小文字にします。
-    したがって、xmlHTTPRequestの方がXMLHTTPRequestよりも優れている。
+    したがって、xmlHTTPRequestの方がXMLHTTPRequestよりも優れています。
 
 .. Names to Avoid
 
@@ -1472,7 +1462,7 @@ OK:
 
 .. and in ``Congress.sol``:
 
-そして、 ``Congress.sol`` で次のコードになっている。
+そして、 ``Congress.sol`` で次のコードになっています。
 
 .. code-block:: solidity
 
@@ -1514,7 +1504,7 @@ NG:
 
 .. and in ``Congress.sol``:
 
-そして、 ``Congress.sol`` で次のコードになっている。
+そして、 ``Congress.sol`` で次のコードになっています。
 
 .. code-block:: solidity
 
@@ -1545,8 +1535,8 @@ NG:
 関数はmixedCaseを使用してください。
 例: ``getBalance``, ``transfer``, ``verifyOwner``, ``addMember``, ``changeOwner`` 。
 
-Function Argument Names
-=======================
+関数の引数名
+============
 
 .. Function arguments should use mixedCase.
 
@@ -1609,14 +1599,15 @@ mixedCaseを使用してください。
 
 .. This convention is suggested for non-external functions and state variables (``private`` or ``internal``). State variables without a specified visibility are ``internal`` by default.
 
-この規約は、外部関数と状態変数（ ``private`` または ``internal`` ）以外では推奨されています。可視性の指定がない状態変数は、デフォルトで ``internal`` となります。
+この規約は、外部関数と状態変数（ ``private`` または ``internal`` ）以外では推奨されています。
+可視性の指定がない状態変数は、デフォルトで ``internal`` となります。
 
 .. When designing a smart contract, the public-facing API (functions that can be called by any account) is an important consideration.
 .. Leading underscores allow you to immediately recognize the intent of such functions, but more importantly, if you change a function from non-external to external (including ``public``) and rename it accordingly, this forces you to review every call site while renaming.
 .. This can be an important manual check against unintended external functions and a common source of security vulnerabilities (avoid find-replace-all tooling for this change).
 
 スマートコントラクトを設計する際、public-facing API（どのアカウントからも呼び出せる関数）は重要な検討事項です。
-アンダースコアを付けると、そのような関数の意図をすぐに認識することができますが、より重要なのは、関数を非外部から外部（ ``public`` を含む）に変更し、それに応じて名前を変更すると、名前を変更する際にすべての呼び出しサイトを確認しなければならない点です。
+アンダースコアを付けると、そのような関数の意図をすぐに認識できますが、より重要なのは、関数を非外部から外部（ ``public`` を含む）に変更し、それに応じて名前を変更すると、名前を変更する際にすべての呼び出しサイトを確認しなければならない点です。
 これは、意図しない外部関数に対する重要な手動チェックであり、セキュリティ脆弱性の一般的な原因でもあります（この変更のためのfind-replace-allツールは避けてください）。
 
 .. _style_guide_natspec:

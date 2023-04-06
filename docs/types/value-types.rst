@@ -4,8 +4,10 @@
 値型
 ====
 
-The following are called value types because their variables will always be passed by value, i.e. they are always copied when they
-are used as function arguments or in assignments.
+.. The following are called value types because their variables will always be passed by value, i.e. they are always copied when they are used as function arguments or in assignments.
+
+下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます、 
+つまり、関数の引数や代入で使われるときは、常にコピーされます。
 
 .. index:: ! bool, ! true, ! false
 
@@ -17,13 +19,9 @@ are used as function arguments or in assignments.
 演算子:
 
 * ``!`` （論理的否定）
-
 * ``&&`` （論理積、"and"）
-
 * ``||`` （論理和、"or"）
-
 * ``==`` （等号）
-
 * ``!=`` （不等号）
 
 演算子 ``||`` と ``&&`` は、共通の短絡ルールを適用します。
@@ -42,22 +40,22 @@ are used as function arguments or in assignments.
 演算子:
 
 * 比較: ``<=``, ``<``,  ``==``,  ``!=``,  ``>=``, ``>`` ( ``bool`` に評価)
-
 * ビット演算子: ``&``, ``|``, ``^`` (ビットごとの排他的論理和), ``~`` (ビットごとの否定)
-
 * シフト演算子: ``<<`` (左シフト), ``>>`` (右シフト)
-
 * 算術演算子: ``+``, ``-``, 単項 ``-`` (符号付き整数の場合のみ), ``*``, ``/``, ``%`` (モジュロ), ``**`` (指数)
 
 整数型の ``X`` の場合、 ``type(X).min`` と ``type(X).max`` を使って、その型で表現できる最小値と最大値にアクセスできます。
 
 .. warning::
 
-  Solidityの整数は、ある範囲に制限されています。例えば、 ``uint32`` の場合、 ``0`` から ``2**32 - 1`` までとなります。
-  これらの型に対して算術演算を行うには2つのモードがあります。"ラッピング"または"チェックなし"モードと"チェックあり"モードです。
-  デフォルトでは、演算は常に"チェック"されます。
-  つまり、演算結果が型の値の範囲外になると、呼び出しは :ref:`failing assertion<assert-and-require>` で戻されます。
-  ``unchecked { ... }`` を使って"チェックなし"モードに切り替えることができます。詳細は :ref:`unchecked <unchecked>` の項を参照してください。
+    Solidityの整数は、ある範囲に制限されています。
+    例えば、 ``uint32`` の場合、 ``0`` から ``2**32 - 1`` までとなります。
+    これらの型に対して算術演算を行うには2つのモードがあります。
+    "ラッピング"または"チェックなし"モードと"チェックあり"モードです。
+    デフォルトでは、演算は常に"チェック"されます。
+    つまり、演算結果が型の値の範囲外になると、呼び出しは :ref:`failing assertion<assert-and-require>` でリバートされます。
+    ``unchecked { ... }`` を使って"チェックなし"モードに切り替えることができます。
+    詳細は :ref:`unchecked <unchecked>` の項を参照してください。
 
 比較
 ^^^^
@@ -76,10 +74,10 @@ are used as function arguments or in assignments.
 シフト演算の結果は、左オペランドの型を持ち、型に合わせて結果を切り捨てます。
 右のオペランドは符号なしの型でなければならず、符号ありの型でシフトしようとするとコンパイルエラーになります。
 
-シフトは、以下の方法で2の累乗を使って"シミュレート"できます。なお、左オペランドの型への切り捨ては常に最後に行われますが、明示的には言及されていません。
+シフトは、以下の方法で2の累乗を使って"シミュレート"できます。
+なお、左オペランドの型への切り捨ては常に最後に行われますが、明示的には言及されていません。
 
 -  ``x << y`` は数学的表現で ``x * 2**y`` に相当します。
-
 -  ``x >> y`` は、数学的表現で ``x / 2**y`` を負の無限大に向けて丸めたものに相当します。
 
 .. warning::
@@ -119,12 +117,13 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 .. note::
 
-  ゼロによる除算は、 :ref:`パニックエラー<assert-and-require>` を引き起こします。このチェックは ``unchecked { ... }`` で無効にできます。
+    ゼロによる除算は、 :ref:`パニックエラー<assert-and-require>` を引き起こします。
+    このチェックは ``unchecked { ... }`` で無効にできます。
 
 .. note::
 
-  ``type(int).min / (-1)`` という式は、除算でオーバーフローが発生する唯一のケースです。
-  チェックされた算術モードでは、これは失敗したアサーションを引き起こしますが、ラッピングモードでは、値は ``type(int).min`` になります。
+    ``type(int).min / (-1)`` という式は、除算でオーバーフローが発生する唯一のケースです。
+    チェックされた算術モードでは、これは失敗したアサーションを引き起こしますが、ラッピングモードでは、値は ``type(int).min`` になります。
 
 モジュロ
 ^^^^^^^^
@@ -169,7 +168,8 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 .. warning::
 
-    固定小数点数はSolidityではまだ完全にはサポートされていません。宣言できますが、代入したり、代入解除したりできません。
+    固定小数点数はSolidityではまだ完全にはサポートされていません。
+    宣言できますが、代入したり、代入解除したりできません。
 
 ``fixed``  /  ``ufixed``: さまざまなサイズの符号付きおよび符号なしの固定小数点数。
 キーワード ``ufixedMxN`` と ``fixedMxN`` 、 ``M`` は型で取るビット数、 ``N`` は小数点以下の数を表します。
@@ -201,7 +201,8 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 -  ``address payable``:  ``address`` と同じですが、メンバの ``transfer`` と ``send`` が追加されます。
 
-この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーンな ``address`` はEtherを送ることが想定されない、というものです。例えば、 ``address`` の変数に格納されたアドレスがEtherを受信できるように構築されていないスマートコントラクトである可能性があります。
+この区別の背景にある考え方は、 ``address payable`` はEtherを送ることができるアドレスであるのに対し、プレーンな ``address`` はEtherを送ることが想定されない、というものです。
+例えば、 ``address`` の変数に格納されたアドレスがEtherを受信できるように構築されていないスマートコントラクトである可能性があります。
 
 型変換:
 
@@ -261,7 +262,7 @@ Solidityでは、除算はゼロに向かって丸められます。
 .. note::
 
     ``x`` がコントラクトアドレスの場合、そのコード（具体的には、 :ref:`receive-ether-function` があればその :ref:`receive-ether-function` 、 :ref:`fallback-function` があればその :ref:`fallback-function` ）が ``transfer`` コールとともに実行されます（これはEVMの機能であり、防ぐことはできません）。
-    その実行がガス欠になるか、何らかの形で失敗した場合、Ether送金は元に戻され、現在のコントラクトは例外的に停止します。
+    その実行がガス欠になるか、何らかの形で失敗した場合、Ether送金はリバートされ、現在のコントラクトは例外的に停止します。
 
 * ``send``
 
@@ -311,7 +312,8 @@ ABIに準拠していないコントラクトとのインターフェースや�
 
     address(nameReg).call{value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
-最後に、これらの修飾子は組み合わせることができます。その順番は問題ではありません。
+最後に、これらの修飾子は組み合わせることができます。
+その順番は問題ではありません。
 
 .. code-block:: solidity
 
@@ -337,7 +339,7 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 .. note::
 
     スマートコントラクトのコードでは、状態の読み書きにかかわらず、ハードコードされたガスの値に依存することは、多くの落とし穴があるので避けたほうがよいでしょう。
-    また、ガスへのアクセスが将来的に変わる可能性もあります。
+    また、ガスへのアクセスが将来変わる可能性もあります。
 
 * ``code`` and ``codehash``
 
@@ -419,8 +421,14 @@ You can query the deployed code for any smart contract. Use ``.code`` to get the
 動的サイズのバイト列
 --------------------
 
-``bytes``: 動的なサイズのバイト配列、 :ref:`arrays` を参照。値型ではありません。
-``string``: 動的サイズのUTF-8エンコードされた文字列で、 :ref:`arrays` を参照。値型ではありません。
+``bytes``:
+    動的なサイズのバイト配列。
+    :ref:`arrays` を参照。
+    値型ではありません！
+``string``:
+    動的サイズのUTF-8エンコードされた文字列。
+    :ref:`arrays` を参照。
+    値型ではありません！
 
 .. index:: address, literal;address
 
@@ -445,7 +453,8 @@ You can query the deployed code for any smart contract. Use ``.code`` to get the
 ----------------------------
 
 整数リテラルは、0～9の範囲の数字の列で構成されます。
-小数点以下の数字として解釈されます。例えば、 ``69`` は69を意味します。
+小数点以下の数字として解釈されます。
+例えば、 ``69`` は69を意味します。
 Solidityには8進数のリテラルは存在せず、先頭のゼロは無効です。
 
 Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
@@ -466,7 +475,8 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
 数値リテラル式は、非リテラル型に変換されるまで（すなわち、数値リテラル式以外のもの（ブーリアンリテラルなど）と一緒に使用するか、明示的に変換することにより）、任意の精度を保持します。
 このため、数値リテラル式では、計算がオーバーフローしたり、除算が切り捨てられたりすることはありません。
 
-例えば、 ``(2**800 + 1) - 2**800`` の結果は定数 ``1`` （ ``uint8`` 型）になりますが、中間の結果はマシンのワードサイズに収まりません。さらに、 ``.5 * 8`` の結果は整数の ``4`` になります（ただし、その間には非整数が使われています）。
+例えば、 ``(2**800 + 1) - 2**800`` の結果は定数 ``1`` （ ``uint8`` 型）になりますが、中間の結果はマシンのワードサイズに収まりません。
+さらに、 ``.5 * 8`` の結果は整数の ``4`` になります（ただし、その間には非整数が使われています）。
 
 .. warning::
     While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
@@ -484,7 +494,8 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
 
 .. warning::
 
-    バージョン0.4.0以前のSolidityでは、整数リテラルの除算は切り捨てられていましたが、有理数に変換されるようになりました。つまり、 ``5 / 2`` は ``2`` とはならず、 ``2.5`` となります。
+    バージョン0.4.0以前のSolidityでは、整数リテラルの除算は切り捨てられていましたが、有理数に変換されるようになりました。
+    つまり、 ``5 / 2`` は ``2`` とはならず、 ``2.5`` となります。
 
 .. note::
 
@@ -511,43 +522,40 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
 文字列リテラルと文字列型
 ------------------------
 
-文字列リテラルは、ダブルクオートまたはシングルクオート（ ``"foo"`` または ``'bar'`` ）で記述され、連続した複数の部分に分割することもできます（ ``"foo" "bar"`` は ``"foobar"`` に相当）。これは長い文字列を扱う際に便利です。
+文字列リテラルは、ダブルクオートまたはシングルクオート（ ``"foo"`` または ``'bar'`` ）で記述され、連続した複数の部分に分割することもできます（ ``"foo" "bar"`` は ``"foobar"`` に相当）。
+これは長い文字列を扱う際に便利です。
 また、C言語のように末尾にゼロを付けることはなく、 ``"foo"`` は4バイトではなく3バイトです。
 整数リテラルと同様に、その型は様々ですが、 ``bytes1``, ..., ``bytes32`` に暗黙のうちに変換され、それが適合する場合は、 ``bytes`` や ``string`` に変換されます。
 
 例えば、 ``bytes32 samevar = "stringliteral"`` では文字列リテラルが ``bytes32`` 型に割り当てられると、生のバイト形式で解釈されます。
 
-文字列リテラルには、印刷可能なASCII文字のみを含めることができます。つまり、0x20から0x7Eまでの文字です。
+文字列リテラルには、印刷可能なASCII文字のみを含めることができます。
+つまり、0x20から0x7Eまでの文字です。
 
 さらに、文字列リテラルは以下のエスケープ文字にも対応しています。
 
--  ``\<newline>`` (実際の改行のエスケープ)
+- ``\<newline>`` (実際の改行のエスケープ)
+- ``\\`` (バックスラッシュ)
+- ``\'`` (シングルクォート)
+- ``\"`` (ダブルクォート)
+- ``\n`` (改行)
+- ``\r`` (キャリッジリターン)
+- ``\t`` (タブ)
+- ``\xNN`` (ヘックスエスケープ、下記参照)
+- ``\uNNNN`` (Unicodeエスケープ、下記参照)
 
--  ``\\`` (バックスラッシュ)
-
--  ``\'`` (シングルクォート)
-
--  ``\"`` (ダブルクォート)
-
--  ``\n`` (改行)
-
--  ``\r`` (キャリッジリターン)
-
--  ``\t`` (タブ)
-
--  ``\xNN`` (ヘックスエスケープ、下記参照)
-
--  ``\uNNNN`` (Unicodeエスケープ、下記参照)
-
-``\xNN`` は16進数の値を受け取り、適切なバイトを挿入します。 ``\uNNNN`` はUnicodeコードポイントを受け取り、UTF-8シーケンスを挿入します。
+``\xNN`` は16進数の値を受け取り、適切なバイトを挿入します。
+``\uNNNN`` はUnicodeコードポイントを受け取り、UTF-8シーケンスを挿入します。
 
 .. note::
 
-    バージョン0.8.0までは、さらに3つのエスケープシーケンスがありました。 ``\b``、 ``\f``、 ``\v`` です。
+    バージョン0.8.0までは、さらに3つのエスケープシーケンスがありました。
+    ``\b``、 ``\f``、 ``\v`` です。
     これらは他の言語ではよく使われていますが、実際にはほとんど必要ありません。
     もし必要であれば、他のASCII文字と同じように16進数のエスケープ、すなわち ``\x08`` 、 ``\x0c`` 、 ``\x0b`` を使って挿入できます。
 
-次の例の文字列の長さは10バイトです。この文字列は、改行バイトで始まり、ダブルクォート、シングルクォート、バックスラッシュ文字、そして（セパレータなしで）文字列 ``abcdef`` が続きます。
+次の例の文字列の長さは10バイトです。
+この文字列は、改行バイトで始まり、ダブルクォート、シングルクォート、バックスラッシュ文字、そして（セパレータなしで）文字列 ``abcdef`` が続きます。
 
 .. code-block:: solidity
     :force:
@@ -555,12 +563,14 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
     "\n\"\'\\abc\
     def"
 
-改行ではない Unicode の行終端記号（LF、VF、FF、CR、NEL、LS、PS など）は、文字列リテラルを終了するものとみなされます。改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
+改行ではない Unicode の行終端記号（LF、VF、FF、CR、NEL、LS、PS など）は、文字列リテラルを終了するものとみなされます。
+改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
 
 Unicodeリテラル
 ---------------
 
-通常の文字列リテラルはASCIIのみを含むことができますが、Unicodeリテラル（キーワード ``unicode`` を前に付けたもの）は、有効なUTF-8シーケンスを含むことができます。また、Unicodeリテラルは、通常の文字列リテラルと同じエスケープシーケンスにも対応しています。
+通常の文字列リテラルはASCIIのみを含むことができますが、Unicodeリテラル（キーワード ``unicode`` を前に付けたもの）は、有効なUTF-8シーケンスを含むことができます。
+また、Unicodeリテラルは、通常の文字列リテラルと同じエスケープシーケンスにも対応しています。
 
 .. code-block:: solidity
 
@@ -571,7 +581,9 @@ Unicodeリテラル
 16進数リテラル
 --------------
 
-16進数リテラルは、キーワード ``hex`` を前に付け、ダブルクオートまたはシングルクオートで囲みます（ ``hex"001122FF"`` 、 ``hex'0011_22_FF'`` ）。リテラルの内容は16進数でなければならず、バイト境界のセパレータとしてアンダースコアを1つ使用することも可能です。リテラルの値は、16進数をバイナリ表現したものになります。
+16進数リテラルは、キーワード ``hex`` を前に付け、ダブルクオートまたはシングルクオートで囲みます（ ``hex"001122FF"`` 、 ``hex'0011_22_FF'`` ）。
+リテラルの内容は16進数でなければならず、バイト境界のセパレータとしてアンダースコアを1つ使用することも可能です。
+リテラルの値は、16進数をバイナリ表現したものになります。
 
 空白で区切られた複数の16進数リテラルは、1つのリテラルに連結されます。
 ``hex"00112233" hex"44556677"`` は ``hex"0011223344556677"`` と同じです。
@@ -585,12 +597,14 @@ Unicodeリテラル
 列挙
 ----
 
-列挙（enum）はSolidityでユーザー定義型を作成する一つの方法です。すべての整数型との間で明示的に変換できますが、暗黙的な変換はできません。
+列挙（enum）はSolidityでユーザー定義型を作成する一つの方法です。
+すべての整数型との間で明示的に変換できますが、暗黙的な変換はできません。
 整数型からの明示的な変換は、実行時に値が列挙型の範囲内にあるかどうかをチェックし、そうでない場合は :ref:`パニックエラー<assert-and-require>` を発生させます。
 列挙型は少なくとも1つのメンバーを必要とし、宣言時のデフォルト値は最初のメンバーです。
 列挙型は256以上のメンバーを持つことはできません。
 
-データ表現は、C言語のenumと同じです。オプションは、 ``0`` から始まる後続の符号なし整数値で表されます。
+データ表現は、C言語のenumと同じです。
+オプションは、 ``0`` から始まる後続の符号なし整数値で表されます。
 
 ``type(NameOfEnum).min`` と ``type(NameOfEnum).max`` を使えば、与えられたenumの最小値と最大値を得ることができます。
 
@@ -637,11 +651,17 @@ Unicodeリテラル
 ユーザー定義の値型
 ------------------
 
-ユーザー定義の値型は、基本的な値型をゼロコストで抽象化して作成できます。これは、エイリアスに似ていますが、型の要件がより厳しくなっています。
+ユーザー定義の値型は、基本的な値型をゼロコストで抽象化して作成できます。
+これは、エイリアスに似ていますが、型の要件がより厳しくなっています。
 
-ユーザー定義の値型は、 ``type C is V`` を使って定義されます。 ``C`` は新しく導入される型の名前で、 ``V`` は組み込みの値の型（「基礎となる型」）でなければなりません。関数 ``C.wrap`` は、基礎となる型からカスタム型への変換に使用されます。同様に、関数 ``C.unwrap`` はカスタム型から基礎型への変換に使用されます。
+ユーザー定義の値型は、 ``type C is V`` を使って定義されます。
+``C`` は新しく導入される型の名前で、 ``V`` は組み込みの値の型（「基礎となる型」）でなければなりません。
+関数 ``C.wrap`` は、基礎となる型からカスタム型への変換に使用されます。
+同様に、関数 ``C.unwrap`` はカスタム型から基礎型への変換に使用されます。
 
-``C`` 型には、演算子や付属のメンバ関数がありません。特に、演算子 ``==`` も定義されていません。他の型との間の明示的および暗黙的な変換は許されません。
+``C`` 型には、演算子や付属のメンバ関数がありません。
+特に、演算子 ``==`` も定義されていません。
+他の型との間の明示的および暗黙的な変換は許されません。
 
 このような型の値のデータ表現は、基礎となる型から継承され、基礎となる型はABIでも使用されます。
 
@@ -652,34 +672,37 @@ Unicodeリテラル
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.8;
 
-    // 18進数、256ビット幅の固定小数点型をユーザー定義の値型を使用して表現する。
+    // 18進数、256ビット幅の固定小数点型をユーザー定義の値型を使用して表現します。
     type UFixed256x18 is uint256;
 
     /// UFixed256x18に対して固定小数点演算を行うための最小限のライブラリ
     library FixedMath {
         uint constant multiplier = 10**18;
 
-        /// 2つのUFixed256x18の値を足す。uint256のチェックされた算術に依存して、オーバーフローでリバートします。
+        /// 2つのUFixed256x18の値を足します。
+        /// uint256のチェックされた算術に依存して、オーバーフローでリバートします。
         function add(UFixed256x18 a, UFixed256x18 b) internal pure returns (UFixed256x18) {
             return UFixed256x18.wrap(UFixed256x18.unwrap(a) + UFixed256x18.unwrap(b));
         }
-        /// UFixed256x18の値とuint256の値を掛ける。uint256のチェックされた算術に依存して、オーバーフローでリバートします。
+        /// UFixed256x18の値とuint256の値を掛けます。
+        /// uint256のチェックされた算術に依存して、オーバーフローでリバートします。
         function mul(UFixed256x18 a, uint256 b) internal pure returns (UFixed256x18) {
             return UFixed256x18.wrap(UFixed256x18.unwrap(a) * b);
         }
-        /// UFixed256x18の数のフロアを取る。
-        /// @return the largest integer that does not exceed `a`.
+        /// UFixed256x18の数のフロアを取ります。
+        /// @return `a` を超えない最大の整数。
         function floor(UFixed256x18 a) internal pure returns (uint256) {
             return UFixed256x18.unwrap(a) / multiplier;
         }
         /// uint256 を同じ値の UFixed256x18 に変換します。
-        /// 整数が大きすぎる場合はリバートする。
+        /// 整数が大きすぎる場合はリバートします。
         function toUFixed256x18(uint256 a) internal pure returns (UFixed256x18) {
             return UFixed256x18.wrap(a * multiplier);
         }
     }
 
-``UFixed256x18.wrap`` と ``FixedMath.toUFixed256x18`` は同じ署名を持っていますが、全く異なる2つの処理を行っていることに注目してください。 ``UFixed256x18.wrap`` 関数は入力と同じデータ表現の ``UFixed256x18`` を返すのに対し、 ``toUFixed256x18`` は同じ数値を持つ ``UFixed256x18`` を返します。
+``UFixed256x18.wrap`` と ``FixedMath.toUFixed256x18`` は同じ署名を持っていますが、全く異なる2つの処理を行っていることに注目してください。
+``UFixed256x18.wrap`` 関数は入力と同じデータ表現の ``UFixed256x18`` を返すのに対し、 ``toUFixed256x18`` は同じ数値を持つ ``UFixed256x18`` を返します。
 
 .. index:: ! function type, ! type; function
 
@@ -688,9 +711,12 @@ Unicodeリテラル
 関数型
 ------
 
-関数型は、関数の型です。関数型の変数は、関数から代入でき、関数型のパラメータは、関数呼び出しに関数を渡したり、関数呼び出しから関数を返したりするのに使われます。関数型には、 *内部（internal）* 関数と *外部（external）* 関数の2種類があります。
+関数型は、関数の型です。
+関数型の変数は、関数から代入でき、関数型のパラメータは、関数呼び出しに関数を渡したり、関数呼び出しから関数を返したりするのに使われます。
+関数型には、 *内部（internal）* 関数と *外部（external）* 関数の2種類があります。
 
-内部関数は、現在のコントラクトのコンテキストの外では実行できないため、現在のコントラクトの内部（より具体的には、現在のコードユニットの内部で、内部ライブラリ関数や継承された関数も含む）でのみ呼び出すことができます。内部関数の呼び出しは、現在のコントラクトの関数を内部で呼び出す場合と同様に、そのエントリーラベルにジャンプすることで実現します。
+内部関数は、現在のコントラクトのコンテキストの外では実行できないため、現在のコントラクトの内部（より具体的には、現在のコードユニットの内部で、内部ライブラリ関数や継承された関数も含む）でのみ呼び出すことができます。
+内部関数の呼び出しは、現在のコントラクトの関数を内部で呼び出す場合と同様に、そのエントリーラベルにジャンプすることで実現します。
 
 外部関数は、アドレスと関数シグネチャで構成されており、外部関数呼び出しを介して渡したり、外部関数呼び出しから返したりできます。
 
@@ -704,17 +730,20 @@ Unicodeリテラル
 パラメータ型とは対照的に、リターン型は空にできません。
 関数型が何も返さない場合は、 ``returns (<return types>)`` の部分をすべて省略しなければなりません。
 
-デフォルトでは、関数型は内部的なものなので、 ``internal`` キーワードは省略できます。これは関数型にのみ適用されることに注意してください。コントラクトで定義された関数については、可視性を明示的に指定する必要があり、デフォルトはありません。
+デフォルトでは、関数型は内部的なものなので、 ``internal`` キーワードは省略できます。
+これは関数型にのみ適用されることに注意してください。
+コントラクトで定義された関数については、可視性を明示的に指定する必要があり、デフォルトはありません。
 
 変換:
 
-関数型 ``A`` は、それらのパラメータ型が同一であり、戻り値の型が同一であり、それらの内部/外部プロパティが同一であり、 ``A`` の状態の変更可能性が ``B`` の状態の変更可能性よりも制限されている場合に限り、関数型 ``B`` に暗黙的に変換可能です。具体的には
+関数型 ``A`` は、それらのパラメータ型が同一であり、戻り値の型が同一であり、それらの内部/外部プロパティが同一であり、 ``A`` の状態の変更可能性が ``B`` の状態の変更可能性よりも制限されている場合に限り、関数型 ``B`` に暗黙的に変換可能です。
+具体的には以下です。
 
 -  ``pure`` 関数を ``view`` 、 ``non-payable`` 関数に変換可能
 -  ``view`` 関数から ``non-payable`` 関数への変換が可能
 -  ``payable`` 関数から ``non-payable`` 関数への変換が可能
 
-それ以外の関数型間の変換はできません。
+これら以外の関数型間の変換はできません。
 
 .. To clarify, rejecting ether is more restrictive than not rejecting ether.
 .. This means you can override a payable function with a non-payable but not the other way around.
@@ -732,26 +761,35 @@ Unicodeリテラル
 その代わりに、その関数ポインタは決して ether を送るために使われないことを強制します。
 そのため、 ``payable`` な関数ポインタを ``non-payable`` な関数ポインタに割り当てることで、両方の型が同じように動作する、つまり、どちらもEtherを送信するために使用できないことを保証することが可能になります。
 
-関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
+関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。
+また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
 
 外部関数型がSolidityのコンテキスト外で使用される場合は、 ``function`` 型として扱われ、アドレスに続いて関数識別子をまとめて1つの ``bytes24`` 型にエンコードします。
 
-現在のコントラクトのパブリック関数は、内部関数としても外部関数としても使用できることに注意してください。 ``f`` を内部関数として使用したい場合は ``f`` を、外部関数として使用したい場合は ``this.f`` を使用してください。
+現在のコントラクトのパブリック関数は、内部関数としても外部関数としても使用できることに注意してください。
+``f`` を内部関数として使用したい場合は ``f`` を、外部関数として使用したい場合は ``this.f`` を使用してください。
 
-内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。
+内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。
+これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。
+一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。
 
 .. note::
-    External functions with ``calldata`` parameters are incompatible with external function types with ``calldata`` parameters.
-    They are compatible with the corresponding types with ``memory`` parameters instead.
-    For example, there is no function that can be pointed at by a value of type ``function (string calldata) external`` while
-    ``function (string memory) external`` can point at both ``function f(string memory) external {}`` and
-    ``function g(string calldata) external {}``.
-    This is because for both locations the arguments are passed to the function in the same way.
-    The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
-    Marking the parameters as ``calldata`` only affects the implementation of the external function and is
-    meaningless in a function pointer on the caller's side.
+    .. External functions with ``calldata`` parameters are incompatible with external function types with ``calldata`` parameters.
+    .. They are compatible with the corresponding types with ``memory`` parameters instead.
+    .. For example, there is no function that can be pointed at by a value of type ``function (string calldata) external`` while ``function (string memory) external`` can point at both ``function f(string memory) external {}`` and ``function g(string calldata) external {}``.
+    .. This is because for both locations the arguments are passed to the function in the same way.
+    .. The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
+    .. Marking the parameters as ``calldata`` only affects the implementation of the external function and is meaningless in a function pointer on the caller's side.
 
-ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
+    ``calldata`` パラメータを持つ外部関数は、 ``calldata`` パラメータを持つ外部関数型と互換性がありません。
+    代わりに ``memory`` パラメータを持つ対応する型と互換性があります。
+    例えば、 ``function (string calldata) external`` 型の値が指すことのできる関数はありませんが、 ``function (string memory) external`` は ``function f(string memory) external {}`` と ``function g(string calldata) external {}`` を指すことができます。
+    これは、どちらの場所でも、引数が同じように関数に渡されるからです。
+    呼び出し元はcalldataを直接外部関数に渡すことはできず、常に引数をメモリにABIエンコードします。
+    パラメータを ``calldata`` としてマークすることは、外部関数の実装にのみ影響し、呼び出し側の関数ポインタでは意味を持ちません。
+
+ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。
+インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
 
 メンバー:
 
@@ -763,7 +801,10 @@ Unicodeリテラル
 
 .. note::
 
-  外部（またはパブリック）関数には、追加のメンバー ``.gas(uint)`` と ``.value(uint)`` がありました。これらはSolidity 0.6.2で非推奨となり、Solidity 0.7.0で削除されました。代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。詳細は :ref:`外部関数呼び出し<external-function-calls>` を参照してください。
+    外部（またはパブリック）関数には、追加のメンバー ``.gas(uint)`` と ``.value(uint)`` がありました。
+    これらはSolidity 0.6.2で非推奨となり、Solidity 0.7.0で削除されました。
+    代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。
+    詳細は :ref:`外部関数呼び出し<external-function-calls>` を参照してください。
 
 メンバーの使用法を示す例:
 

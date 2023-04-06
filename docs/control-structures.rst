@@ -1,13 +1,13 @@
-##################################
+############
 式と制御構造
-##################################
+############
 
 .. index:: ! parameter, parameter;input, parameter;output, function parameter, parameter;function, return variable, variable;return, return
 
 .. index:: if, else, while, do/while, for, break, continue, return, switch, goto
 
 制御構造
-===================
+========
 
 カーリーブレース言語で知られている制御構造のほとんどがSolidityで利用可能です。
 
@@ -25,12 +25,12 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 .. _function-calls:
 
 関数呼び出し
-==============
+============
 
 .. _internal-function-calls:
 
 内部関数呼び出し
------------------------
+----------------
 
 コントラクトの関数はそのコントラクト内の関数を、直接（「内部的に」）、再帰的に呼び出すことができます。
 
@@ -55,7 +55,7 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 .. _external-function-calls:
 
 外部関数呼び出し
------------------------
+----------------
 
 関数の呼び出しには、 ``this.g(8);`` と ``c.g(2);`` の記法を使うこともできます。
 ``c`` はコントラクトのインスタンス、 ``g`` は ``c`` に属する関数です。
@@ -72,7 +72,7 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 
 他のコントラクトの関数を呼び出す場合、特別なオプション ``{value: 10, gas: 10000}`` で呼び出しとともに送られるweiまたはガスの量を指定できます。
 なお、ガスの値を明示的に指定することは推奨されません。
-オペコードのガスコストは将来的に変更される可能性があるからです。
+オペコードのガスコストは将来変更される可能性があるからです。
 コントラクトに送ったWeiは、そのコントラクトの総残高に追加されます。
 
 .. code-block:: solidity
@@ -163,8 +163,10 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
     Solidity 0.6.2以前は、valueとgasを指定する方法として、 ``f.value(x).gas(g)()`` を使用することが推奨されていました。
     これはSolidity 0.6.2で非推奨となり、Solidity 0.7.0からはできなくなりました。
 
-Function Calls with Named Parameters
-------------------------------------
+.. Function Calls with Named Parameters
+
+名前付きパラメータを使った関数呼び出し
+--------------------------------------
 
 関数呼び出しの引数は、次の例のように ``{ }`` で囲まれていれば、任意の順序で名前を与えることができます。
 引数リストは、関数宣言のパラメータリストと名前が一致していなければなりませんが、任意の順序にできます。
@@ -187,13 +189,18 @@ Function Calls with Named Parameters
 
     }
 
-Omitted Names in Function Definitions
--------------------------------------
+.. Omitted Names in Function Definitions
 
-The names of parameters and return values in the function declaration can be omitted.
-Those items with omitted names will still be present on the stack, but they are
-inaccessible by name. An omitted return value name
-can still return a value to the caller by use of the ``return`` statement.
+関数定義での名前の省略
+----------------------
+
+.. The names of parameters and return values in the function declaration can be omitted.
+.. Those items with omitted names will still be present on the stack, but they are inaccessible by name.
+..  An omitted return value name can still return a value to the caller by use of the ``return`` statement.
+
+関数宣言のパラメータや戻り値の名前は省略できます。
+名前が省略された項目はスタック上に存在しますが、名前からアクセスすることはできません。
+省略された戻り値名は、 ``return`` 文を使用することで、呼び出し元に値を返すことは可能です。
 
 .. code-block:: solidity
 
@@ -212,7 +219,7 @@ can still return a value to the caller by use of the ``return`` statement.
 .. _creating-contracts:
 
 ``new`` を使ったコントラクト作成
-==================================
+================================
 
 コントラクトは、 ``new`` キーワードを使って他のコントラクトを作成できます。
 作成されるコントラクトの完全なコードは、作成するコントラクトがコンパイルされるときに知られていなければならないので、再帰的な作成依存は不可能です。
@@ -247,7 +254,7 @@ can still return a value to the caller by use of the ``return`` statement.
 作成に失敗した場合（スタック不足、残高不足、その他の問題）、例外が発生します。
 
 ソルトされたコントラクト作成 / create2
------------------------------------------
+--------------------------------------
 
 コントラクトを作成する際、コントラクトのアドレスは、作成するコントラクトのアドレスと、コントラクトを作成するたびに増加するカウンタから計算されます。
 
@@ -278,7 +285,8 @@ can still return a value to the caller by use of the ``return`` statement.
 
     contract C {
         function createDSalted(bytes32 salt, uint arg) public {
-            // この複雑な式は、アドレスがどのように事前計算されるかを示しているに過ぎません。これは説明のために存在するだけです。
+            // この複雑な式は、アドレスがどのように事前計算されるかを示しているに過ぎません。
+            // これは説明のために存在するだけです。
             // 実際には ``new D{salt: salt}(arg)`` だけが必要です。
             address predictedAddress = address(uint160(uint(keccak256(abi.encodePacked(
                 bytes1(0xff),
@@ -313,7 +321,7 @@ can still return a value to the caller by use of the ``return`` statement.
     これは、コンストラクタが2つの作成の間に変更された可能性のある外部状態を照会し、それを格納する前にデプロイされたバイトコードに組み込むことができるという事実によるものです。
 
 式の評価順序
-==================================
+============
 
 .. The evaluation order of expressions is not specified (more formally, the order
 .. in which the children of one node in the expression tree are evaluated is not
@@ -327,7 +335,7 @@ can still return a value to the caller by use of the ``return`` statement.
 .. index:: ! assignment
 
 代入
-==========
+====
 
 .. index:: ! assignment;destructuring
 
@@ -356,9 +364,9 @@ Solidityは内部的にタプル型を許可しています。
         }
 
         function g() public {
-            // 型付きで宣言され、返されたタプルから代入される変数は、すべての要素を指定する必要はない（ただし、数は一致しなければならない）。
+            // 型付きで宣言され、返されたタプルから代入される変数は、すべての要素を指定する必要はありません（ただし、数は一致しなければなりません）。
             (uint x, , uint y) = f();
-            // 値をスワップする一般的なトリック -- 値を持たないストレージ型では機能しない。
+            // 値をスワップする一般的なトリック -- 値を持たないストレージ型では機能しません。
             (x, y) = (y, x);
             // コンポーネントは省略可能です（変数宣言の場合も同様）。
             (index, , ) = f(); // indexを7に設定
@@ -371,9 +379,8 @@ Solidityは内部的にタプル型を許可しています。
 
 .. .. note::
 
-..     Prior to version 0.5.0 it was possible to assign to tuples of smaller size, either
-..     filling up on the left or on the right side (which ever was empty). This is
-..     now disallowed, so both sides have to have the same number of components.
+..     Prior to version 0.5.0 it was possible to assign to tuples of smaller size, either filling up on the left or on the right side (which ever was empty).
+..     This is now disallowed, so both sides have to have the same number of components.
 
 .. note::
 
@@ -391,7 +398,7 @@ Solidityは内部的にタプル型を許可しています。
     参照型が含まれる場合に複数の変数に同時に代入すると、予期しないコピー動作になることがあるので注意が必要です。
 
 配列と構造体の複雑さ
-------------------------------------
+--------------------
 
 代入のセマンティクスは、 ``bytes`` や ``string`` などの配列や構造体などの非値型ではより複雑になりますが。
 詳細は :ref:`データロケーションと代入の動作<data-location-assignment>` を参照してください。
@@ -426,7 +433,7 @@ Solidityは内部的にタプル型を許可しています。
 .. _default-value:
 
 スコーピングと宣言
-========================
+==================
 
 宣言された変数は、バイト表現がすべてゼロである初期のデフォルト値を持ちます。
 変数の「デフォルト値」は、その型が何であれ、典型的な「ゼロ状態」です。
@@ -527,7 +534,7 @@ C99のスコープルールの特別な例として、以下では、 ``x`` へ�
 .. _unchecked:
 
 算術演算のチェックをするかしないか
-======================================
+==================================
 
 オーバーフローまたはアンダーフローとは、制限のない整数に対して算術演算を実行したときに、結果の値が結果の型の範囲外になってしまうことです。
 
@@ -656,7 +663,7 @@ Solidityでは、エラー処理に状態を戻す例外を使用します。
 ``Error`` は「通常の」エラー状態に使用され、 ``Panic`` はバグのないコードでは存在してはならないエラーに使用されます。
 
 ``assert`` を介したパニックと ``require`` を介したエラー
------------------------------------------------------------
+--------------------------------------------------------
 
 コンビニエンス関数である ``assert`` と ``require`` は、条件をチェックし、条件を満たさない場合は例外を投げることができます。
 
@@ -798,17 +805,14 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
         }
     }
 
-.. Internally, Solidity performs a revert operation (instruction
-.. ``0xfd``). This causes
-.. the EVM to revert all changes made to the state. The reason for reverting
-.. is that there is no safe way to continue execution, because an expected effect
-.. did not occur. Because we want to keep the atomicity of transactions, the
-.. safest action is to revert all changes and make the whole transaction
-.. (or at least call) without effect.
+.. Internally, Solidity performs a revert operation (instruction ``0xfd``). 
+.. This causes the EVM to revert all changes made to the state.
+.. The reason for reverting is that there is no safe way to continue execution, because an expected effect did not occur.
+.. Because we want to keep the atomicity of transactions, the safest action is to revert all changes and make the whole transaction (or at least call) without effect.
 
-内部的には、Solidityは元に戻す操作（命令 ``0xfd`` ）を行います。
+内部的には、Solidityはリバートする操作（命令 ``0xfd`` ）を行います。
 これにより、EVMは状態に加えられたすべての変更をリバートします。
-元に戻す理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。
+リバートする理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。
 トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更をリバートし、トランザクション全体（または少なくともコール）を効果なしにすることです。
 
 .. In both cases, the caller can react on such failures using ``try``/``catch``, but
@@ -997,7 +1001,7 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 .. It is planned to support other types of error data in the future.
 .. The strings ``Error`` and ``Panic`` are currently parsed as is and are not treated as identifiers.
 
-将来的には、他の型のエラーデータにも対応する予定です。
+将来は、他の型のエラーデータにも対応する予定です。
 文字列 ``Error`` と ``Panic`` は、現在、そのまま解析され、識別子としては扱われません。
 
 .. In order to catch all error cases, you have to have at least the clause
@@ -1025,18 +1029,14 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 
 .. .. note::
 
-..     If execution reaches a catch-block, then the state-changing effects of
-..     the external call have been reverted. If execution reaches
-..     the success block, the effects were not reverted.
-..     If the effects have been reverted, then execution either continues
-..     in a catch block or the execution of the try/catch statement itself
-..     reverts (for example due to decoding failures as noted above or
-..     due to not providing a low-level catch clause).
+..     If execution reaches a catch-block, then the state-changing effects of the external call have been reverted.
+..     If execution reaches the success block, the effects were not reverted.
+..     If the effects have been reverted, then execution either continues in a catch block or the execution of the try/catch statement itself reverts (for example due to decoding failures as noted above or due to not providing a low-level catch clause).
 
 .. note::
 
-    実行がキャッチブロックに到達した場合、外部呼び出しの状態変化の影響は元に戻されています。
-    実行が成功ブロックに到達した場合、その効果は元に戻されていません。
+    実行がキャッチブロックに到達した場合、外部呼び出しの状態変化の影響はリバートされています。
+    実行が成功ブロックに到達した場合、その効果はリバートされていません。
     効果がリバートした場合、実行はcatchブロック内で継続されるか、try/catch文の実行自体がリバートします（例えば、上述のようなデコードの失敗や、低レベルのcatch句を提供していないことが原因です）。
 
 .. .. note::

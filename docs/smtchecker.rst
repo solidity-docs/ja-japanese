@@ -576,8 +576,8 @@ SMTCheckerでは、ソルバーごとに選択されたハードコードされ�
 .. the JSON option ``settings.modelChecker.timeout=<time>``, where 0 means no timeout.
 
 このオプションを大まかに説明すると、1回のクエリにつき「数秒のタイムアウト」となります。
-もちろん、多くのプロパティは非常に複雑で、決定論が問題にならないような解決に多くの時間を必要とする。
-SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティを解決できない場合、CLIオプション ``--model-checker-timeout <time>`` またはJSONオプション ``settings.modelChecker.timeout=<time>`` を介して、ミリ秒単位でタイムアウトを与えることができる。
+もちろん、多くのプロパティは非常に複雑で、決定論が問題にならないような解決に多くの時間を必要とします。
+SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティを解決できない場合、CLIオプション ``--model-checker-timeout <time>`` またはJSONオプション ``settings.modelChecker.timeout=<time>`` を介して、ミリ秒単位でタイムアウトを与えることができます。
 
 .. _smtchecker_targets:
 
@@ -646,8 +646,10 @@ CLIの場合、 ``<targets>`` は1つまたは複数の検証ターゲットの�
 
 検証対象をいつ、どのように分割するかについての正確なヒューリスティックはありませんが、特に大規模なコントラクトを扱う場合には有効です。
 
-Proved Targets
-==============
+.. Proved Targets
+
+証明されたターゲット
+====================
 
 .. If there are any proved targets, the SMTChecker issues one warning per engine stating how many targets were proved.
 .. If the user wishes to see all the specific proved targets, the CLI option ``--model-checker-show-proved`` and the JSON option ``settings.modelChecker.showProved = true`` can be used.
@@ -655,17 +657,21 @@ Proved Targets
 証明されたターゲットがある場合、SMTCheckerはエンジンごとに、証明されたターゲットの数を示す警告を1回発行します。
 もしユーザーが証明されたターゲットをすべて見たい場合は、CLIオプション ``--model-checker-show-proved`` とJSONオプション ``settings.modelChecker.showProved = true`` を使用できます。
 
-Unproved Targets
-================
+.. Unproved Targets
+
+証明されていないターゲット
+==========================
 
 .. If there are any unproved targets, the SMTChecker issues one warning stating how many unproved targets there are.
 .. If the user wishes to see all the specific unproved targets, the CLI option ``--model-checker-show-unproved`` and the JSON option ``settings.modelChecker.showUnproved = true`` can be used.
 
-検証されていないターゲットがある場合、SMTCheckerは検証されていないターゲットの数を示す1つの警告を発行します。
+証明されていないターゲットがある場合、SMTCheckerは証明されていないターゲットの数を示す1つの警告を発行します。
 ユーザーが特定の未処理のターゲットをすべて表示したい場合は、CLIオプション ``--model-checker-show-unproved`` およびJSONオプション ``settings.modelChecker.showUnproved = true`` を使用できます。
 
-Unsupported Language Features
-=============================
+.. Unsupported Language Features
+
+未サポートの言語機能
+====================
 
 .. Certain Solidity language features are not completely supported by the SMT encoding that the SMTChecker applies, for example assembly blocks.
 .. The unsupported construct is abstracted via overapproximation to preserve soundness, meaning any properties reported safe are safe even though this feature is unsupported.
@@ -674,13 +680,16 @@ Unsupported Language Features
 .. If the user wishes to see all the specific unsupported features, the CLI option ``--model-checker-show-unsupported`` and the JSON option ``settings.modelChecker.showUnsupported = true`` can be used, where their default value is ``false``.
 
 SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の一部の機能が完全にサポートされていません（例えば、アセンブリブロック）。
-サポートされていない構成は、健全性を保つために過近接によって抽象化されます。つまり、この機能がサポートされていなくても、安全と報告されたプロパティは安全です。
+サポートされていない構成は、健全性を保つために過近接によって抽象化されます。
+つまり、この機能がサポートされていなくても、安全と報告されたプロパティは安全です。
 しかし、このような抽象化は、対象となるプロパティがサポートされていない機能の正確な動作に依存している場合、誤検出を引き起こす可能性があります。
 エンコーダがこのようなケースに遭遇した場合、デフォルトでは、サポートされていない機能をいくつ見たかを示す一般的な警告を報告することになります。
 もしユーザーがサポートされていない機能をすべて見たい場合は、CLIオプション ``--model-checker-show-unsupported`` とJSONオプション ``settings.modelChecker.showUnsupported = true`` を使用できます（デフォルト値は ``false`` です）。
 
-Verified Contracts
-==================
+.. Verified Contracts
+
+検証されたコントラクト
+======================
 
 .. By default all the deployable contracts in the given sources are analyzed separately as
 .. the one that will be deployed. This means that if a contract has many direct
@@ -1109,13 +1118,14 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
 
 .. note::
 
-  .. z3 version 4.8.16 broke ABI compatibility with previous versions and cannot be used with solc <=0.8.13.
-  .. If you are using z3 >=4.8.16 please use solc>=0.8.14, and conversely, only use older z3 with older solc releases.
-  .. We also recommend using the latest z3 release which is what SMTChecker also does.
+    .. z3 version 4.8.16 broke ABI compatibility with previous versions and cannot be used with solc <=0.8.13.
+    .. If you are using z3 >=4.8.16 please use solc>=0.8.14, and conversely, only use older z3 with older solc releases.
+    .. We also recommend using the latest z3 release which is what SMTChecker also does.
 
-  z3バージョン4.8.16は、以前のバージョンとのABI互換性を壊し、solc <=0.8.13で使用できません。
-  もしz3 >=4.8.16を使用しているならば、solc>=0.8.14を使用してください。逆に、古いz3は古いsolcリリースとしか使用できません。
-  また、SMTCheckerも最新のz3リリースを使用することをお勧めします。
+    z3バージョン4.8.16は、以前のバージョンとのABI互換性を壊し、solc <=0.8.13で使用できません。
+    もしz3 >=4.8.16を使用しているならば、solc>=0.8.14を使用してください。
+    逆に、古いz3は古いsolcリリースとしか使用できません。
+    また、SMTCheckerも最新のz3リリースを使用することをお勧めします。
 
 .. Since both BMC and CHC use ``z3``, and ``z3`` is available in a greater variety
 .. of environments, including in the browser, most users will almost never need to be
