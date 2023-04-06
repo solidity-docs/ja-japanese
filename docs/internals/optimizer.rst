@@ -538,7 +538,7 @@ ForLoopConditionIntoBody
 .. This transformation can also be useful when paired with ``LoopInvariantCodeMotion``, since
 .. invariants in the loop-invariant conditions can then be taken outside the loop.
 
-ループ不変条件の不変量をループの外に出すことができるので、この変換は ``LoopInvariantCodeMotion`` と組み合わせても有効です。
+ループ不変条件の不変量をループの外に出すことができるため、この変換は ``LoopInvariantCodeMotion`` と組み合わせても有効です。
 
 .. _for-loop-init-rewriter:
 

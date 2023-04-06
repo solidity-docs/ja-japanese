@@ -36,3 +36,9 @@ PDF:
 cd docs
 make latexpdf
 ```
+
+<!--
+### その他注意点
+
+- `.. NOTE: `はメモ。
+-->
