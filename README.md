@@ -10,7 +10,9 @@ Solidityドキュメントの翻訳者のチャットは https://forum.solidityl
 ## 翻訳に際して
 
 ### 同期PRの対処の仕方
-基本的にGitHubのGUIだけでは難しいため、Solidity本家のリポジトリで`git diff <old commit hash>..<new commit hash>`で差分を確認し、その結果を各ファイルごとに`/<file name>`コマンドで検索して変更点を見ながら修正すると楽。
+基本的にGitHubのGUIだけでは難しい。
+前回の同期PRの最終コミットハッシュから、今回の同期PRの最新コミットハッシュ間の差分を、Solidity本家のリポジトリで、`git diff <old commit hash>..<new commit hash>`のようにして確認し、その結果を各ファイルごとに`/<file name>`コマンドで検索して変更点を見ながら修正すると楽。
+修正は、`gh pr checkout sync-<version>-<commit hash>`や`gh pr checkout <ID>`を用いるなどして行う。
 
 ### 環境構築の一例
 
