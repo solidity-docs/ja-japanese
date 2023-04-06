@@ -94,20 +94,16 @@ Solidity v0.7.0の破壊的変更点
 未使用または安全でない機能の削除
 ================================
 
-Mappings outside Storage
+ストレージ外のマッピング
 ------------------------
 
-.. * If a struct or array contains a mapping, it can only be used in storage.
-..   Previously, mapping members were silently skipped in memory, which is confusing and error-prone.
+.. 参考: https://github.com/ethereum/solidity/issues/6444
 
-* 構造体や配列にマッピングが含まれている場合、そのマッピングはストレージでのみ使用できます。
-  これまでは、マッピングのメンバーはメモリ内で静かにスキップされていたため、混乱してエラーが発生しやすくなっていました。
+* 構造体や配列にマッピングが含まれている場合、その構造体と配列はストレージでのみ使用できるようになりました。
+  これまでは、マッピングのメンバーはメモリ内では無視されていたため、混乱してエラーが発生しやすい状況になっていました。
 
-.. * Assignments to structs or arrays in storage does not work if they contain mappings.
-..   Previously, mappings were silently skipped during the copy operation, which is misleading and error-prone.
-
-* ストレージ内の構造体や配列への代入にマッピングが含まれていると動作しません。
-  これまでは、マッピングはコピー操作中に自動的にスキップされていましたが、これは誤解を招きやすく、エラーが発生しやすいものでした。
+* ストレージ内の構造体や配列にマッピングが含まれていると代入が動作しなくなるようになりました。
+  これまでは、マッピングはコピー操作中に自動的に無視されていましたが、これは誤解を招きやすく、エラーが発生しやすい状況になっていました。
 
 関数とイベント
 --------------
@@ -139,8 +135,10 @@ Mappings outside Storage
   以前は、この効果は継承されていました。
   現在では、この関数を利用するすべての派生コントラクトで ``using`` 文を繰り返さなければなりません。
 
-Expressions
------------
+.. Expressions
+
+式
+--
 
 .. * Shifts by signed types are disallowed.
 ..   Previously, shifts by negative amounts were allowed, but reverted at runtime.

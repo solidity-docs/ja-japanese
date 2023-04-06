@@ -72,7 +72,7 @@
 
     ..         Solidity plugin for IntelliJ IDEA (and all other JetBrains IDEs).
 
-    * `IntelliJ IDEA plugin <https://plugins.jetbrains.com/plugin/9475-solidity/>`_ 
+    * `IntelliJ IDEA plugin <https://plugins.jetbrains.com/plugin/9475-solidity/>`_
         IntelliJ IDEA（およびその他すべてのJetBrains IDEs）用のSolidityプラグイン。
 
 
@@ -120,7 +120,7 @@ Solidityのツール
 .. * `ABI to Solidity interface converter <https://gist.github.com/chriseth/8f533d133fa0c15b0d6eaf3ec502c82b>`_
 ..     A script for generating contract interfaces from the ABI of a smart contract.
 
-* `ABI to Solidity interface converter <https://gist.github.com/chriseth/8f533d133fa0c15b0d6eaf3ec502c82b>`_ 
+* `ABI to Solidity interface converter <https://gist.github.com/chriseth/8f533d133fa0c15b0d6eaf3ec502c82b>`_
     スマートコントラクトのABIからコントラクトインターフェースを生成するためのスクリプト。
 
 .. * `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_
@@ -132,13 +132,13 @@ Solidityのツール
 .. * `Doxity <https://github.com/DigixGlobal/doxity>`_
 ..     Documentation Generator for Solidity.
 
-* `Doxity <https://github.com/DigixGlobal/doxity>`_ 
+* `Doxity <https://github.com/DigixGlobal/doxity>`_
     Documentation Generator for Solidity.
 
 .. * `Ethlint <https://github.com/duaraghav8/Ethlint>`_
 ..     Linter to identify and fix style and security issues in Solidity.
 
-* `Ethlint <https://github.com/duaraghav8/Ethlint>`_ 
+* `Ethlint <https://github.com/duaraghav8/Ethlint>`_
     Solidityのスタイルとセキュリティの問題を特定し、修正するためのリンター。
 
 .. * `evmdis <https://github.com/Arachnid/evmdis>`_
@@ -157,7 +157,7 @@ Solidityのツール
 .. * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
 ..     EVM debugger and symbolic execution engine.
 
-* `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_ 
+* `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
     EVMデバッガとシンボリック実行エンジン。
 
 .. * `leafleth <https://github.com/clemlak/leafleth>`_
@@ -219,7 +219,7 @@ Solidityのツール
 
 * `Sūrya <https://github.com/ConsenSys/surya/>`_
     スマートコントラクトシステムのためのユーティリティーツールで、多数のビジュアル出力とコントラクトの構造に関する情報を提供します。
-    また、関数コールグラフのクエリもサポートしています。
+    また、関数呼び出しグラフのクエリもサポートしています。
 
 .. * `Universal Mutator <https://github.com/agroce/universalmutator>`_
 ..     A tool for mutation generation, with configurable rules and support for Solidity and Vyper.

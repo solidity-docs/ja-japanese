@@ -57,7 +57,7 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 外部関数呼び出し
 ----------------
 
-関数の呼び出しには、 ``this.g(8);`` と ``c.g(2);`` の記法を使うこともできます。
+関数呼び出しには、 ``this.g(8);`` と ``c.g(2);`` の記法を使うこともできます。
 ``c`` はコントラクトのインスタンス、 ``g`` は ``c`` に属する関数です。
 いずれかの方法で関数 ``g`` を呼び出すと、ジャンプを介して直接呼び出されるのではなく、メッセージコールを使用して「外部から」呼び出されることになります。
 ``this`` の関数呼び出しはコンストラクタでは使用できないことに注意してください。
@@ -105,7 +105,7 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 .. warning::
 
   注意すべきなのは、 ``feed.info{value: 10, gas: 800}`` は関数呼び出しで ``value`` と送信される ``gas`` の量をローカルに設定しているだけで、最後の括弧内は実際の呼び出しを実行しているということです。
-  そのため、 ``feed.info{value: 10, gas: 800}`` は関数を呼び出して ``value`` と ``gas`` の設定が失われることはなく、 ``feed.info{value: 10, gas: 800}()`` のみが関数の呼び出しを実行します。
+  そのため、 ``feed.info{value: 10, gas: 800}`` は関数をコールして ``value`` と ``gas`` の設定が失われることはなく、 ``feed.info{value: 10, gas: 800}()`` のみが関数呼び出しを実行します。
 
 .. Due to the fact that the EVM considers a call to a non-existing contract to
 .. always succeed, Solidity uses the ``extcodesize`` opcode to check that
@@ -622,11 +622,9 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 ======================================================
 
 .. Solidity uses state-reverting exceptions to handle errors.
-.. Such an exception undoes all changes made to the
-.. state in the current call (and all its sub-calls) and
-.. flags an error to the caller.
+.. Such an exception undoes all changes made to the state in the current call (and all its sub-calls) and flags an error to the caller.
 
-Solidityでは、エラー処理に状態を戻す例外を使用します。
+Solidityでは、エラーの処理にステートをリバートする例外を使用します。
 このような例外は、現在の呼び出し（およびそのすべてのサブコール）で行われた状態への変更をすべてリバートし、呼び出し側にエラーを通知します。
 
 .. When exceptions happen in a sub-call, they "bubble up" (i.e.,
@@ -681,7 +679,7 @@ Solidityでは、エラー処理に状態を戻す例外を使用します。
 Assertは、内部エラーのテストや不変性のチェックにのみ使用します。
 適切に機能しているコードは、外部からの不正な入力に対してもパニックを起こさないはずです。
 もしそうなってしまったら、コントラクトにバグがあるので修正する必要があります。
-言語解析ツールは コントラクトを評価し、パニックを引き起こす条件や関数の呼び出しを特定します。
+言語解析ツールは コントラクトを評価し、パニックを引き起こす条件や関数呼び出しを特定します。
 
 .. A Panic exception is generated in the following situations.
 .. The error code supplied with the error data indicates the kind of panic.
@@ -805,7 +803,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
         }
     }
 
-.. Internally, Solidity performs a revert operation (instruction ``0xfd``). 
+.. Internally, Solidity performs a revert operation (instruction ``0xfd``).
 .. This causes the EVM to revert all changes made to the state.
 .. The reason for reverting is that there is no safe way to continue execution, because an expected effect did not occur.
 .. Because we want to keep the atomicity of transactions, the safest action is to revert all changes and make the whole transaction (or at least call) without effect.
@@ -966,7 +964,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 .. In case there was no error, these variables are assigned and the contract's execution continues inside the first success block.
 .. If the end of the success block is reached, execution continues after the ``catch`` blocks.
 
-``try`` キーワードの後には、外部関数の呼び出しやコントラクトの作成（ ``new ContractName()`` ）を表す式が続く必要があります。
+``try`` キーワードの後には、外部関数呼び出しやコントラクトの作成（ ``new ContractName()`` ）を表す式が続く必要があります。
 式の内部のエラーは捕捉されず（例えば、内部の関数呼び出しを含む複雑な式の場合）、外部呼び出し自体の内部で起こるリバートのみが捕捉されます。
 続く ``returns`` 部（オプション）では、外部呼び出しが返す型に一致するリターン変数を宣言します。
 エラーがなかった場合、これらの変数が代入され、コントラクトの実行は最初の成功ブロック内で継続されます。

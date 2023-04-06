@@ -63,7 +63,7 @@ Solidity v0.5.0の破壊的変更点
   function calls and in ``abi.encode``. For unpadded encoding, use
   ``abi.encodePacked``.
 
-* ABI エンコーダーは、外部関数呼び出しや ``abi.encode`` で使用される calldata （ ``msg.data``  および外部関数パラメーター）からのバイト配列や文字列を適切にパッドするようになりました。
+* ABIエンコーダーは、外部関数呼び出しや ``abi.encode`` で使用される calldata （ ``msg.data``  および外部関数パラメーター）からのバイト配列や文字列を適切にパッドするようになりました。
   パッドされていないエンコーディングには、 ``abi.encodePacked`` を使用してください。
 
 .. * The ABI decoder reverts in the beginning of functions and in
@@ -528,7 +528,7 @@ Solidity v0.5.0の破壊的変更点
 .. the function will work with ``staticcall``.
 
 オリジナルのコントラクトでは ``constant`` と宣言されていたにもかかわらず、 ``anotherOldFunction`` を ``view`` と宣言していないことに注意してください。
-これは、Solidity v0.5.0から ``view`` 関数の呼び出しに ``staticcall`` が使われるようになったことによります。
+これは、Solidity v0.5.0から ``view`` 関数のコールに ``staticcall`` が使われるようになったことによります。
 v0.5.0以前は ``constant`` キーワードが強制されていなかったため、 ``constant`` と宣言された関数を ``staticcall`` で呼び出しても、 ``constant`` 関数がストレージを変更しようとする可能性があるため、リバートする可能性があります。
 したがって、古いコントラクトのインターフェースを定義する際には、その関数が ``staticcall`` で動作することが絶対的に確認できる場合にのみ、 ``constant`` の代わりに ``view`` を使用する必要があります。
 

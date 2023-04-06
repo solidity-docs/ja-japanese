@@ -207,8 +207,10 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
         }
     }
 
-Assert
-======
+.. Assert
+
+アサート
+========
 
 .. An assertion represents an invariant in your code: a property that must be true
 .. *for all transactions, including all input and storage values*, otherwise there is a bug.
@@ -343,8 +345,8 @@ Assert
        |
     14 |            assert(m > a[i]);
 
-State Properties
-================
+ステートのプロパティ
+====================
 
 .. So far the examples only demonstrated the use of the SMTChecker over pure code,
 .. proving properties about specific operations or algorithms.
@@ -466,8 +468,8 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 なお、上の経路は必ずしも決定論的ではなく、(2, 4)に到達する経路は他にもあるので注意が必要です。
 どの経路を表示するかは、使用するソルバーやそのバージョンによって変わるかもしれませんし、ランダムに表示されるかもしれません。
 
-External Calls and Reentrancy
-=============================
+外部呼び出しとReentrancy
+========================
 
 .. Every external call is treated as a call to unknown code by the SMTChecker.
 .. The reasoning behind that is that even if the code of the called contract is
@@ -559,8 +561,8 @@ External Calls and Reentrancy
 SMTCheckerのオプションとチューニング
 ************************************
 
-Timeout
-=======
+タイムアウト
+============
 
 .. The SMTChecker uses a hardcoded resource limit (``rlimit``) chosen per solver,
 .. which is not precisely related to time. We chose the ``rlimit`` option as the default
@@ -581,8 +583,10 @@ SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティ�
 
 .. _smtchecker_targets:
 
-Verification Targets
-====================
+.. Verification Targets
+
+検証ターゲット
+==============
 
 .. The types of verification targets created by the SMTChecker can also be
 .. customized via the CLI option ``--model-checker-target <targets>`` or the JSON
@@ -724,8 +728,10 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
         "source2.sol": ["contract2", "contract3"]
     }
 
-Trusted External Calls
-======================
+.. Trusted External Calls
+
+信頼した外部呼び出し
+====================
 
 .. By default, the SMTChecker does not assume that compile-time available code is the same as the runtime code for external calls.
 .. Take the following contracts as an example:
@@ -952,8 +958,10 @@ CHCエンジンで安全性が証明された性質については、SMTChecker�
 ユーザーは、CLIオプション ``--model-checker-invariants "contract,reentrancy"`` を使用して、または :ref:`JSON input<compiler-api>` のフィールド ``settings.modelChecker.invariants`` で配列として報告される不変量の型を選択できます。
 デフォルトでは、SMTCheckerはインバリアントを報告しません。
 
-Division and Modulo With Slack Variables
-========================================
+.. Division and Modulo With Slack Variables
+
+スラック変数を使った除算とモジュロ
+==================================
 
 .. Spacer, the default Horn solver used by the SMTChecker, often dislikes division
 .. and modulo operations inside Horn rules. Because of that, by default the
@@ -1316,8 +1324,10 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 関数呼び出しをUFで抽象化することは、決定論的であることが知られている関数に対しては可能であり、純粋な関数に対しても簡単に行うことができます。
 しかし、一般の外部関数では、状態変数に依存する可能性があるため、これを行うことは困難です。
 
-Reference Types and Aliasing
-============================
+.. Reference Types and Aliasing
+
+参照型とエイリアス
+==================
 
 .. Solidity implements aliasing for reference types with the same :ref:`data
 .. location<data-location>`.

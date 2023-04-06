@@ -192,7 +192,7 @@ Solidity v0.6.0の破壊的変更点
 .. Passing the value ``none`` completely removes the hash.
 
 コンパイラは、メタデータファイルの  `IPFS <https://ipfs.io/>`_  ハッシュをデフォルトでバイトコードの最後に追加するようになりました（詳細については、 :doc:`コントラクトメタデータ <metadata>` のドキュメントを参照してください）。
-0.6.0より前のバージョンでは、コンパイラはデフォルトで `Swarm <https://ethersphere.github.io/swarm-home/>`_ ハッシュを付加していましたが、この動作を引き続きサポートするために、新しいコマンドラインオプション ``--metadata-hash`` が導入されました。 
+0.6.0より前のバージョンでは、コンパイラはデフォルトで `Swarm <https://ethersphere.github.io/swarm-home/>`_ ハッシュを付加していましたが、この動作を引き続きサポートするために、新しいコマンドラインオプション ``--metadata-hash`` が導入されました。
 ``--metadata-hash`` コマンドラインオプションの値として ``ipfs`` または ``swarm`` を渡すことで、生成および付加されるハッシュを選択できます。
 ``none`` という値を渡すと、ハッシュが完全に削除されます。
 
@@ -273,7 +273,6 @@ C APIの変更点
 ..   ``override`` to every overriding function. For multiple inheritance, add ``override(A, B, ..)``,
 ..   where you list all contracts that define the overridden function in the parentheses. When
 ..   multiple bases define the same function, the inheriting contract must override all conflicting functions.
-.. 
 
 * オーバーライドしようとするすべての非インタフェース関数に ``virtual`` を追加してください。
   インターフェースの外にある実装のないすべての関数に ``virtual`` を追加してください。

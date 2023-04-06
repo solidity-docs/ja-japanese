@@ -881,7 +881,7 @@ Yulはローカル変数やコントロールフローを管理しているた�
 .. warning::
     .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
-    バージョン0.8.18以降、SolidityとYulの両方で ``selfdestruct`` を使用すると、非推奨であることを警告します、 
+    バージョン0.8.18以降、SolidityとYulの両方で ``selfdestruct`` を使用すると、非推奨であることを警告します。
     というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変化することになるからです。
 
 内部の方言では、追加関数が存在するものもあります。
@@ -1030,7 +1030,7 @@ verbatim
 .. assumes that it modifies all aspects of state and thus can only
 .. do very few optimizations across ``verbatim`` function calls.
 
-オプティマイザはバイトコードを逐語的に分析せず、常に状態のすべての側面を修正することを前提としているため、 ``verbatim`` 関数コール全体ではごくわずかな最適化しかできません。
+オプティマイザはバイトコードを逐語的に分析せず、常に状態のすべての側面を修正することを前提としているため、 ``verbatim`` 関数呼び出し全体ではごくわずかな最適化しかできません。
 
 .. The optimizer treats verbatim bytecode as an opaque block of code.
 .. It will not split it but might move, duplicate

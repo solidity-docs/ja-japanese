@@ -6,7 +6,7 @@
 
 .. The following are called value types because their variables will always be passed by value, i.e. they are always copied when they are used as function arguments or in assignments.
 
-下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます、 
+下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます。
 つまり、関数の引数や代入で使われるときは、常にコピーされます。
 
 .. index:: ! bool, ! true, ! false
@@ -882,7 +882,7 @@ Unicodeリテラル
         }
     }
 
-外部関数型を使用するもう一つの例: 
+外部関数型を使用するもう一つの例:
 
 .. code-block:: solidity
 

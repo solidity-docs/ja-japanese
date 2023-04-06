@@ -124,7 +124,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 .. destruction request. The way this is done is problematic, as
 .. seen in the following example:
 
-上記では、破壊要求を「送金」するために ``Destructible.destroy()`` を呼び出していることに注意してください。
+上記では、破壊要求を「送金」するために ``Destructible.destroy()`` をコールしていることに注意してください。
 この方法は、次の例に見られるように、問題があります。
 
 .. code-block:: solidity

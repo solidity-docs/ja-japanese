@@ -107,7 +107,8 @@ Positive
 
 .. The compiler will ``signextend`` the sign bit, which is 1 for negative and 0 for positive values, overwriting the higher bits:
 
-コンパイラは符号ビットを ``signextend`` する。符号ビットは負の値を1、正の値を0とし、上位ビットを上書きします:
+コンパイラは符号ビットを ``signextend`` します。
+符号ビットは負の値を1、正の値を0とし、上位ビットを上書きします:
 
 Negative
 

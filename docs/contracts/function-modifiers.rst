@@ -115,7 +115,7 @@
 .. Note that the placeholder operator is different from using underscores as leading or trailing characters in variable names, which is a stylistic choice.
 
 関数修飾子では、修飾子が適用された関数をいつ実行させたいかを指定する必要があります。
-プレースホルダステートメント（アンダースコア1文字 ``_`` で示される）は、修飾される関数のボディが挿入されるべき場所を示すために使用されます。
+プレースホルダ文（アンダースコア1文字 ``_`` で示される）は、修飾される関数のボディが挿入されるべき場所を示すために使用されます。
 プレースホルダ演算子は、アンダースコアを変数名の先頭や末尾に使用するのとは異なることに注意してください（これはスタイル上の選択です）。
 
 .. Explicit returns from a modifier or function body only leave the current

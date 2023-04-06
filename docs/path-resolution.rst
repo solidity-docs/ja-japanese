@@ -15,8 +15,10 @@
 .. index:: ! virtual filesystem, ! VFS, ! source unit name
 .. _virtual-filesystem:
 
-Virtual Filesystem
-==================
+.. Virtual Filesystem
+
+バーチャルファイルシステム
+==========================
 
 .. The compiler maintains an internal database (*virtual filesystem* or *VFS* for short) where each source unit is assigned a unique *source unit name* which is an opaque and unstructured identifier.
 .. When you use the :ref:`import statement <import>`, you specify an *import path* that references a source unit name.
@@ -328,7 +330,7 @@ VFSが初期化された後も、インポートコールバックによって�
 例えば、 ``./abc/..//`` では3つのパスセグメントがあります: ``.`` 、 ``abc`` 、 ``..`` 。
 
 .. The compiler resolves the import into a source unit name based on the import path, in the following way:
-.. 
+..
 .. #. We start with the source unit name of the importing source unit.
 .. #. The last path segment with preceding slashes is removed from the resolved name.
 .. #. Then, for every segment in the import path, starting from the leftmost one:

@@ -145,7 +145,7 @@
             }
         }
 
-        // winningProposal()関数を呼び出して、プロポーザルの配列に含まれる当選案のインデックスを取得し、当選案の名前を返します。
+        // winningProposal()関数をコールして、プロポーザルの配列に含まれる当選案のインデックスを取得し、当選案の名前を返します。
         function winnerName() external view
                 returns (bytes32 winnerName_)
         {
@@ -156,6 +156,10 @@
 改良の可能性
 ============
 
-Currently, many transactions are needed to assign the rights to vote to all participants.
-Moreover, if two or more proposals have the same number of votes, ``winningProposal()`` is not able to register a tie.
-Can you think of a way to fix these issues?
+.. Currently, many transactions are needed to assign the rights to vote to all participants.
+.. Moreover, if two or more proposals have the same number of votes, ``winningProposal()`` is not able to register a tie.
+.. Can you think of a way to fix these issues?
+
+現状では、すべての参加者に投票権を割り当てるために多くのトランザクションが必要です。
+また、2つ以上の提案の投票数が同じ場合、 ``winningProposal()`` は同票を登録できません。
+これらの問題を解決する方法を考えてみてください。

@@ -102,7 +102,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
   これは、最初に状態変数を初期化することに起因しています: まず、 ``x`` は0に設定され、 ``y`` を初期化する際に、 ``f()`` は0を返し、 ``y`` も0になります。
   新しいルールでは、 ``y`` は 42 に設定されます。
-  まず ``x`` を 0 に初期化し、次に A のコンストラクタを呼び出して ``x`` を 42 に設定します。
+  まず ``x`` を 0 に初期化し、次に A のコンストラクタをコールして ``x`` を 42 に設定します。
   最後に ``y`` を初期化する際に ``f()`` が 42 を返すので ``y`` は 42 になります。
 
 .. - When storage structs are deleted, every storage slot that contains a member of the struct is set to zero entirely.
@@ -191,7 +191,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
   ..   It is not initialized again for the second ``_;`` evaluation and ``foo()`` does not explicitly assign it either (due to ``active == false``), thus it keeps its first value.
 
   .. - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before each ``_;`` evaluation.
-    
+
   関数 ``C.foo()`` は以下の値を返します:
 
   - 古いコードジェネレータ: 戻り値の変数である ``1`` は、最初の ``_;`` 評価の前に一度だけ ``0`` に初期化され、その後 ``return 1;`` によって上書きされます。

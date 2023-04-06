@@ -259,7 +259,7 @@ EVMのバージョンをターゲットに設定
 
   .. - It is possible to access dynamic data returned from function calls.
 
-  - 関数コールから返された動的データにアクセスすることが可能です。
+  - 関数呼び出しから返された動的データにアクセスすることが可能です。
 
   - ``revert`` のオペコードが導入されたことで、 ``revert()`` がガスを無駄にしないようになりました。
 

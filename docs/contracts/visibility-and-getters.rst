@@ -51,7 +51,7 @@
 .. Furthermore, internal functions can be made inaccessible to derived contracts.
 .. This gives rise to four types of visibility for functions.
 
-Solidityは、実際のEVMメッセージコールを作成する外部関数とそうでない内部関数の2種類の関数コールを知っています。
+Solidityは、実際のEVMメッセージコールを作成する外部関数とそうでない内部関数の2種類の関数呼び出しを知っています。
 さらに、内部関数は派生コントラクトにアクセスできないようにできます。
 このため、関数の可視性には4つのタイプがあります。
 
@@ -98,7 +98,7 @@ Solidityは、実際のEVMメッセージコールを作成する外部関数と
 
 .. In the following example, ``D``, can call ``c.getData()`` to retrieve the value of ``data`` in state storage, but is not able to call ``f``. Contract ``E`` is derived from ``C`` and, thus, can call ``compute``.
 
-次の例では、 ``D`` は ``c.getData()`` を呼び出してステートのストレージ内にある ``data`` の値を取り出すことができますが、 ``f`` を呼び出すことはできません。
+次の例では、 ``D`` は ``c.getData()`` をコールしてステートのストレージ内にある ``data`` の値を取り出すことができますが、 ``f`` を呼び出すことはできません。
 コントラクト ``E`` は ``C`` から派生したものであるため、 ``compute`` を呼び出すことができます。
 
 .. code-block:: solidity
@@ -226,7 +226,7 @@ Solidityは、実際のEVMメッセージコールを作成する外部関数と
 .. Now you can use ``getArray()`` to retrieve the entire array, instead of
 .. ``myArray(i)``, which returns a single element per call.
 
-これで、1回の呼び出しで1つの要素を返す ``myArray(i)`` ではなく、 ``getArray()`` を使って配列全体を取り出すことができます。
+これで、1回のコールで1つの要素を返す ``myArray(i)`` ではなく、 ``getArray()`` を使って配列全体を取り出すことができます。
 
 .. The next example is more complex:
 

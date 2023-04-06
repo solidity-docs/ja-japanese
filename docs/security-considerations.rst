@@ -236,7 +236,9 @@ Etherの送受信
 ``.send()`` はコールスタックが枯渇した場合に例外を発生させず、 ``false`` を返すことに注意してください。
 低レベル関数の ``.call()`` 、 ``.delegatecall()`` 、 ``.staticcall()`` も同じように動作します。
 
-Authorized Proxies
+.. Authorized Proxies
+
+認可されたプロキシ
 ==================
 
 .. If your contract can act as a proxy, i.e. if it can call arbitrary contracts with user-supplied data, then the user can essentially assume the identity of the proxy contract.

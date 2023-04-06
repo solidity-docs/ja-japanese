@@ -13,7 +13,7 @@ Solidityコンパイラは、コンパイルされたコントラクトに関す
 このファイルを使用して、コンパイラのバージョン、使用されたソース、ABI、NatSpecドキュメントを照会し、より安全にコントラクトを操作し、そのソースコードを検証できます。
 
 .. so that you can retrieve the file in an authenticated way without having to resort to a
-.. centralized data provider. 
+.. centralized data provider.
 
 コンパイラはデフォルトで、メタデータファイルのIPFSハッシュを各コントラクトのバイトコードの最後に付加します（詳細は以下を参照）。
 これにより、中央のデータプロバイダに頼ることなく、認証された方法でファイルを取得できます。
@@ -149,14 +149,14 @@ shall match with the one contained in the bytecode.
             }
           }
           "events": {
-             "Transfer(address,address,uint256)": {
-               "details": "Emitted when `value` tokens are moved from one account (`from`) toanother (`to`)."
-               "params": {
-                 "from": "The sender address"
-                 "to": "The receiver address"
-                 "value": "The token amount"
-               }
-             }
+            "Transfer(address,address,uint256)": {
+              "details": "Emitted when `value` tokens are moved from one account (`from`) toanother (`to`)."
+              "params": {
+                "from": "The sender address"
+                "to": "The receiver address"
+                "value": "The token amount"
+              }
+            }
           }
         },
         // 必須: コントラクトのNatSpecユーザードキュメント
@@ -193,9 +193,7 @@ shall match with the one contained in the bytecode.
 バイトコードにおけるメタデータハッシュのエンコーディング
 ========================================================
 
-.. Since the mapping might contain more keys (see below) and the beginning of that
-.. encoding is not easy to find, its length is added in a two-byte big-endian
-.. encoding. 
+.. Since the mapping might contain more keys (see below) and the beginning of that encoding is not easy to find, its length is added in a two-byte big-endian encoding.
 
 将来は、メタデータファイルを検索する他の方法をサポートするかもしれないので、マッピング ``{"ipfs": <IPFS hash>, "solc": <compiler version>}`` は `CBOR <https://tools.ietf.org/html/rfc7049>`_ エンコードされて保存されます。
 マッピングにはさらに多くのキーが含まれている可能性があり（後述）、そのエンコーディングの始まりを見つけるのは容易ではないため、その長さは2バイトのビッグエンディアンのエンコーディングで追加されます。
@@ -216,9 +214,11 @@ shall match with the one contained in the bytecode.
 
 solcのリリースビルドでは、上記のようにバージョンを3バイト（メジャー、マイナー、パッチのバージョン番号を各1バイト）でエンコードしていますが、プレリリースビルドでは、コミットハッシュとビルド日を含む完全なバージョン文字列を使用します。
 
-The commandline flag ``--no-cbor-metadata`` can be used to skip metadata
-from getting appended at the end of the deployed bytecode. Equivalently, the
-boolean field ``settings.metadata.appendCBOR`` in Standard JSON input can be set to false.
+.. The commandline flag ``--no-cbor-metadata`` can be used to skip metadata from getting appended at the end of the deployed bytecode.
+.. Equivalently, the boolean field ``settings.metadata.appendCBOR`` in Standard JSON input can be set to false.
+
+コマンドラインフラグ ``--no-cbor-metadata`` を使用すると、デプロイされたバイトコードの最後に追加されるメタデータをスキップできます。
+同様に、Standard JSON入力のブーリアンフィールド ``settings.metadata.appendCBOR`` をfalseに設定できます。
 
 .. note::
 
@@ -241,10 +241,15 @@ boolean field ``settings.metadata.appendCBOR`` in Standard JSON input can be set
 インターフェースの自動生成とNatSpecの使用方法
 =============================================
 
-The metadata is used in the following way: A component that wants to interact with a contract (e.g. a wallet) retrieves the code of the contract.
-It decodes the CBOR encoded section containing the IPFS/Swarm hash of the metadata file. 
-With that hash, the metadata file is retrieved.
-That file is JSON-decoded into a structure like above.
+.. The metadata is used in the following way: A component that wants to interact with a contract (e.g. a wallet) retrieves the code of the contract.
+.. It decodes the CBOR encoded section containing the IPFS/Swarm hash of the metadata file.
+.. With that hash, the metadata file is retrieved.
+.. That file is JSON-decoded into a structure like above.
+
+メタデータは次のように使用されます: コントラクトと対話したいコンポーネント（例えばウォレット）は、コントラクトのコードを取得します。
+その際、メタデータファイルのIPFS/Swarmハッシュを含むCBORエンコードされたセクションをデコードします。
+そのハッシュで、メタデータファイルを取得します。
+そのファイルはJSONデコードされ、上記のような構造になります。
 
 .. The component can then use the ABI to automatically generate a rudimentary
 .. user interface for the contract.

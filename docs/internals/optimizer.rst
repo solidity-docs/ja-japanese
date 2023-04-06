@@ -11,7 +11,7 @@ Solidityコンパイラは、2つの異なるオプティマイザモジュー�
 オペコードベースのオプティマイザは、オペコードに `簡略化ルール <https://github.com/ethereum/solidity/blob/develop/libevmasm/RuleList.h>`_ を適用します。
 また、同じコードセットを組み合わせたり、使われていないコードを削除したりします。
 
-Yulベースのオプティマイザは、関数の呼び出しをまたいで動作できるのでより強力です。
+Yulベースのオプティマイザは、関数呼び出しをまたいで動作できるのでより強力です。
 例えば、Yulでは任意のジャンプができないため、各関数の副作用を計算できます。
 2つの関数呼び出しを考えてみましょう。
 1つ目はストレージを変更せず、2つ目はストレージを変更します。
@@ -84,7 +84,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 これらのブロックの中で、オプティマイザは命令を解析し、スタックやメモリ、ストレージに対するすべての変更を、命令と他の式へのポインタである引数のリストからなる式として記録します。
 
 .. Additionally, the opcode-based optimizer uses a component called "CommonSubexpressionEliminator" that, amongst other tasks, finds expressions that are always equal (on every input) and combines them into an expression class.
-.. It first tries to find each new expression in a list of already known expressions. 
+.. It first tries to find each new expression in a list of already known expressions.
 .. If no such matches are found, it simplifies the expression according to rules like ``constant + constant = sum_of_constants`` or ``X * 1 = X``.
 .. Since this is
 .. a recursive process, we can also apply the latter rule if the second factor
@@ -245,7 +245,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
 .. In particular, consider the following prototypical example of assembly generated for a
 .. call to an internal Solidity function:
 
-具体的には、Solidityの内部関数を呼び出した際に生成されるアセンブリの典型的な例を以下に示します。
+具体的には、Solidityの内部関数をコールした際に生成されるアセンブリの典型的な例を以下に示します。
 
 .. code-block:: text
 
@@ -293,7 +293,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
       ...body of function f...
       jump      // out
 
-.. In this situation the "PeepholeOptimizer" will remove the return jump. 
+.. In this situation the "PeepholeOptimizer" will remove the return jump.
 .. Ideally, all of this can be done
 .. for all references to ``tag_f`` leaving it unused, s.t. it can be removed, yielding:
 
@@ -315,7 +315,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
 .. the expected number of executions of the contract (the global optimizer parameter "runs").
 
 このようなインライン化は、インライン化しないよりもインライン化した方がコントラクトのライフタイムの中で安くなるというヒューリスティックな提案がある場合に試みられます。
-このヒューリスティックは、関数本体のサイズ、そのタグへの他の参照の数（関数の呼び出し回数に近似）、コントラクトの予想実行回数（グローバルオプティマイザのパラメータ「runs」）に依存します。
+このヒューリスティックは、関数本体のサイズ、そのタグへの他の参照の数（関数のコール回数に近似）、コントラクトの予想実行回数（グローバルオプティマイザのパラメータ「runs」）に依存します。
 
 Yulベースのオプティマイザモジュール
 ===================================
@@ -1042,8 +1042,8 @@ Unused PrunerやRedundant Assign Eliminatorは、このような変数を完全�
 
 .. _expression-simplifier:
 
-Expression Simplifier
-^^^^^^^^^^^^^^^^^^^^^
+ExpressionSimplifier
+^^^^^^^^^^^^^^^^^^^^
 
 .. The Expression Simplifier uses the Dataflow Analyzer and makes use
 .. of a list of equivalence transforms on expressions like ``X + 0 -> X``

@@ -330,7 +330,7 @@ pure関数
 .. Pure functions are able to use the ``revert()`` and ``require()`` functions to revert
 .. potential state changes when an :ref:`error occurs <assert-and-require>`.
 
-Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化を戻すことができます。
+Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化をリバートできます。
 
 .. Reverting a state change is not considered a "state modification", as only changes to the
 .. state made previously in code that did not have the ``view`` or ``pure`` restriction
@@ -708,7 +708,6 @@ fallback関数
 .. Calling ``f(50)`` would create a type error since ``50`` can be implicitly converted both to ``uint8``
 .. and ``uint256`` types. On another hand ``f(256)`` would resolve to ``f(uint256)`` overload as ``256`` cannot be implicitly
 .. converted to ``uint8``.
-.. 
 
 ``f(50)`` を呼び出すと、 ``50`` は暗黙のうちに ``uint8`` 型と ``uint256`` 型の両方に変換できるため、型エラーが発生します。
 一方、 ``f(256)`` は、 ``256`` が暗黙のうちに ``uint8`` に変換できないため、 ``f(uint256)`` のオーバーロードとなります。

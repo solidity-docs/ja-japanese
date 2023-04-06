@@ -2,7 +2,7 @@ Solidity
 ========
 
 Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。
-スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムです。
+スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムのことです。
 
 Solidityは、 Ethereum Virtual Machine (EVM)をターゲットに設計されている `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。
 C++、Python、JavaScriptの影響を受けています。
@@ -14,13 +14,13 @@ Solidityでは、投票、クラウドファンディング、ブラインドオ
 
 コントラクトをデプロイする際には、Solidityの最新のリリースバージョンを使用すべきです。
 例外的なケースを除いて、最新バージョンには `セキュリティフィックス <https://github.com/ethereum/solidity/security/policy#supported-versions>`_ が施されています。
-さらに、破壊的な変更や新機能も定期的に導入されます。
+さらに、破壊的な変更や新機能も定期的に導入されています。
 私たちは現在、 `この速いペースでの変更を示すため <https://semver.org/#spec-item-4>`_ に、0.y.zというバージョン番号を使用しています。
 
 .. warning::
 
-   Solidityは最近バージョン0.8.xをリリースしましたが、多くの変更点があります。
-   必ず :doc:`その完全なリスト <080-breaking-changes>` を読んでください。
+   Solidityは最近バージョン0.8.xをリリースしましたが、変更点が多くあります。
+   必ず :doc:`その詳細なリスト <080-breaking-changes>` を読んでください。
 
 Solidity やこのドキュメントを改善するためのアイデアはいつでも歓迎します。
 詳細は :doc:`コントリビューターガイド <contributing>` を読んでください。
@@ -35,9 +35,9 @@ Solidity やこのドキュメントを改善するためのアイデアはい�
 
 **1. スマートコントラクトの基本を理解する**
 
-スマートコントラクトの概念を初めて知る方には、まず「スマートコントラクト入門」を掘り下げて読むことをお勧めします。
+スマートコントラクトの概念を初めて知る方には、まず「スマートコントラクトの紹介」を掘り下げて読むことをお勧めします。
 
-* :ref:`スマートコントラクトのシンプルな例 <simple-smart-contract>` （Solidityで記述）
+* :ref:`スマートコントラクトのシンプルな例 <simple-smart-contract>` （Solidityで書かれたもの）
 * :ref:`ブロックチェーンの基本 <blockchain-basics>`
 * :ref:`Ethereum Virtual Machine <the-ethereum-virtual-machine>`
 
@@ -122,7 +122,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 .. toctree::
    :maxdepth: 2
-   :caption: コンパイラ 
+   :caption: コンパイラ
 
    using-the-compiler.rst
    analysing-compilation-output.rst
@@ -130,7 +130,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 .. toctree::
    :maxdepth: 2
-   :caption: 内部仕様 
+   :caption: 内部仕様
 
    internals/layout_in_storage.rst
    internals/layout_in_memory.rst

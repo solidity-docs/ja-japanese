@@ -1,9 +1,10 @@
 import glob
 import unicodedata
+import re
 
 def check_terms():
 
-    term_list = [
+    check_list = [
         ("インターフェース", ("インターフェイス",)),
         ("状態変数", ("ステート変数",)),
         ("演算子", ("オペレータ",)),
@@ -40,16 +41,19 @@ def check_terms():
         ("作成者", ("オリジネーター",)),
         ("将来", ("将来的に",)),
         ("``: ", ("`` : ",)),
+        ("\n", (" \n",)),
+        # ("$1コール", ("([^数部])呼び出し",)), # function call = 関数呼び出し, call = コール
         # (": ", (" : ",)),
     ]
 
-    for correct_term, wrong_terms in term_list:
-        for wrong_term in wrong_terms:
+    for correct_term, raw_patterns in check_list:
+        for raw_pattern in raw_patterns:
             for file in glob.glob("./**/*.rst", recursive=True):
                 lines = open(file).readlines()
                 for i, line in enumerate(lines):
-                    if wrong_term in line:
-                        print(f"{file}:{i + 1}  '{wrong_term}' => '{correct_term}'")
+                    pattern = re.compile(raw_pattern)
+                    if pattern.search(line):
+                        print(f"{file}:{i + 1}  '{raw_pattern}' => '{correct_term}'")
 
 
 def check_kuten():
@@ -94,8 +98,9 @@ def check_headers():
             if line_length != next_line_length:
                 print(f"{file}:{i + 1}  Header length mismatch: {line_length} != {next_line_length}")
 
-            if line_length == len(line):
-                print(f"{file}:{i}  Header might be not translated: {line}")
+            # ご検知も多いため適宜ONにする
+            # if line_length == len(line):
+            #     print(f"{file}:{i}  Header might be not translated: {line}")
 
 if __name__ == "__main__":
     check_terms()

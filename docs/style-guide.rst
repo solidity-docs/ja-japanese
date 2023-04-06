@@ -77,7 +77,7 @@ Solidityのソースコードでは、トップレベルの宣言を2つの空�
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -98,7 +98,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -126,7 +126,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -150,7 +150,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -194,11 +194,11 @@ NG:
 3. それぞれの主張は、それぞれのライン上にあるべきものです。
 4. 終端要素である :code:`);` は、それ自体で最終行に配置する必要があります。
 
-関数コール
+関数呼び出し
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -210,7 +210,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -246,7 +246,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -259,7 +259,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -274,7 +274,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -296,7 +296,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -330,7 +330,7 @@ UTF-8またはASCIIのエンコーディングが望ましいです。
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -350,7 +350,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -402,7 +402,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -442,7 +442,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -490,7 +490,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -498,7 +498,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -518,7 +518,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -526,7 +526,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -538,7 +538,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -548,7 +548,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -562,7 +562,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -576,7 +576,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -607,7 +607,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -623,7 +623,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -652,7 +652,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -666,7 +666,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -688,7 +688,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -697,7 +697,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -716,7 +716,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -735,7 +735,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -767,7 +767,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -781,7 +781,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -819,7 +819,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -833,7 +833,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -855,7 +855,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -874,7 +874,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -909,7 +909,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -937,7 +937,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -969,7 +969,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -996,7 +996,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -1023,7 +1023,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -1063,7 +1063,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -1137,7 +1137,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -1148,7 +1148,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -1168,7 +1168,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -1176,7 +1176,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -1193,7 +1193,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -1202,7 +1202,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -1215,7 +1215,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
     :force:
@@ -1227,7 +1227,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
     :force:
@@ -1247,7 +1247,7 @@ NG:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -1257,7 +1257,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 
@@ -1435,7 +1435,7 @@ No:
 
 .. Yes:
 
-OK: 
+OK:
 
 .. code-block:: solidity
 
@@ -1477,7 +1477,7 @@ OK:
 
 .. No:
 
-NG: 
+NG:
 
 .. code-block:: solidity
 

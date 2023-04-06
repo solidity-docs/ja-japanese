@@ -88,7 +88,7 @@
             emit Aborted();
             state = State.Inactive;
             // ここではtransferを直接使っています。
-            // この関数の最後の呼び出しであり、すでに状態を変更しているため、reentrancy-safeになっています。
+            // この関数の最後のコールであり、すでに状態を変更しているため、reentrancy-safeになっています。
             seller.transfer(address(this).balance);
         }
 

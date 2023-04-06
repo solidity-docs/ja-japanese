@@ -43,12 +43,11 @@
 ..     the source mapping assigns an integer identifier of ``-1``. This may happen for
 ..     bytecode sections stemming from compiler-generated inline assembly statements.
 
-.. note :: 
+.. note::
     特定のソースファイルに関連付けられていない命令の場合、ソースマッピングでは ``-1`` という整数の識別子が割り当てられます。
     これは、コンパイラによって生成されたインラインアセンブリ文に由来するバイトコードセクションで発生する可能性があります。
 
-.. The source mappings inside the AST use the following
-.. notation:
+.. The source mappings inside the AST use the following notation:
 
 AST内部のソースマッピングは以下の表記を使用しています。
 
@@ -103,7 +102,6 @@ AST内部のソースマッピングは以下の表記を使用しています�
 .. Important to note is that when the :ref:`verbatim <yul-verbatim>` builtin is used,
 .. the source mappings will be invalid: The builtin is considered a single
 .. instruction instead of potentially multiple.
-.. 
 
 重要なのは、 :ref:`verbatim <yul-verbatim>` ビルトインを使用すると、ソースマッピングが無効になることです。
 ビルドインは複数の命令ではなく、1つの命令とみなされます。

@@ -11,7 +11,7 @@
 **********************
 
 .. The recommended method of sending funds after an effect is using the withdrawal pattern.
-.. Although the most intuitive method of sending Ether, as a result of an effect, is a direct ``transfer`` call, this is not recommended as it introduces a potential security risk. 
+.. Although the most intuitive method of sending Ether, as a result of an effect, is a direct ``transfer`` call, this is not recommended as it introduces a potential security risk.
 .. You may read more about this on the :ref:`security_considerations` page.
 
 エフェクト後の送金方法としては、出金パターンの使用が推奨されます。
@@ -147,10 +147,10 @@
         /// この操作を実行する権限が送信者にありません
         error Unauthorized();
 
-        /// 関数の呼び出しが早すぎます
+        /// 関数呼び出しが早すぎます
         error TooEarly();
 
-        /// 関数コールで送信されるEtherが不足しています
+        /// 関数呼び出しで送信されるEtherが不足しています
         error NotEnoughEther();
 
         // 修飾子は、関数のボディを変更するために使用できます
@@ -230,7 +230,7 @@
 
 コントラクトはしばしばステートマシンとして動作します。
 つまり、異なる動作をする特定の **ステージ** を持っていたり、異なる関数を呼び出すことができるということです。
-関数の呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させる（特にコントラクトが **インタラクション** をモデルとしている場合）。
+関数呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させます（特にコントラクトが **インタラクション** をモデルとしている場合）。
 また、 **ある時点** で自動的に到達するステージもあるのが一般的です。
 
 .. An example for this is a blind auction contract which starts in the stage "accepting blinded bids", then transitions to "revealing bids" which is ended by "determine auction outcome".
@@ -258,7 +258,7 @@
 
 .. note::
 
-    **修飾子の順序に関して**: 
+    **修飾子の順序に関して**:
     atStageがtimedTransitionsと組み合わされている場合は、新しいステージが考慮されるように、後者の後に言及するようにしてください。
 
 .. Finally, the modifier ``transitionNext`` can be used
@@ -277,7 +277,7 @@
 
 .. note::
 
-    **修飾子は省略可能**: 
+    **修飾子は省略可能**:
     これは、バージョン0.4.0以前のSolidityにのみ適用されます。
     修飾子は、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNext修飾子のコードをスキップできます。
     その場合は、それらの関数から手動でnextStageを呼び出すようにしてください。

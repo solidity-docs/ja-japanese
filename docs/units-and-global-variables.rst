@@ -120,7 +120,7 @@ Etherの単位
 
 .. note::
 
-    コントラクトが、ブロックに含まれるトランザクションのコンテキストではなく、オフチェーンで評価される場合、 ``block.*`` と ``tx.*`` が特定のブロックやトランザクションの値を参照していると仮定すべきではない。
+    コントラクトが、ブロックに含まれるトランザクションのコンテキストではなく、オフチェーンで評価される場合、 ``block.*`` と ``tx.*`` が特定のブロックやトランザクションの値を参照していると仮定すべきではありません。
     これらの値は、コントラクトを実行するEVM実装によって提供され、任意のものとなり得ます。
 
 .. .. note::
@@ -226,7 +226,7 @@ stringのメンバー
 ``assert(bool condition)``
     条件が満たされないとパニックエラーを引き起こし、状態変化が戻ります - 内部エラーに使用されます。
 
-``require(bool condition)`` 
+``require(bool condition)``
     条件が満たされないとリバートします - 入力や外部コンポーネントのエラーに使用されます。
 
 ``require(bool condition, string memory message)``
@@ -265,7 +265,7 @@ stringのメンバー
 ``sha256(bytes memory) returns (bytes32)``
     入力のSHA-256ハッシュを計算します。
 
-``ripemd160(bytes memory) returns (bytes20)`` 
+``ripemd160(bytes memory) returns (bytes20)``
     入力のRIPEMD-160ハッシュを計算します。
 
 .. ``ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)``
@@ -442,7 +442,7 @@ stringのメンバー
     現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了します。
     ``selfdestruct`` はEVMから引き継いだいくつかの特殊性を持っていることに注意してください。
 
-    - 受信側コントラクトのレシーブ関数が実行されない。
+    - 受信側コントラクトのレシーブ関数が実行されません。
 
     - コントラクトが実際に破壊されるのはトランザクション終了時であり、 ``revert`` はその破壊を「リバートする」かもしれません。
 
@@ -451,7 +451,7 @@ stringのメンバー
 .. warning::
     .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
-    バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、非推奨の警告が発生します、 
+    バージョン0.8.18以降、SolidityとYulの両方で ``selfdestruct`` を使用すると、非推奨の警告が発生します。
     というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変わることになるからです。
 
 .. note::
