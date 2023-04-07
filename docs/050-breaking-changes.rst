@@ -16,8 +16,8 @@ Solidity v0.5.0の破壊的変更点
   .. See the :ref:`Interoperability With Older Contracts <interoperability>` section below.
 
   Solidity v0.5.0でコンパイルされたコントラクトは、古いバージョンでコンパイルされたコントラクトやライブラリを再コンパイルや再配置することなく、それらとインターフェースをとることができます。
-  データの場所や可視性と可変性の指定子を含むようにインターフェースを変更すれば十分です。
-  以下の :ref:`Interoperability With Older Contracts <interoperability>` セクションを参照してください。
+  データの場所やビジビリティとミュータビリティの指定子を含むようにインターフェースを変更すれば十分です。
+  以下の :ref:`従来のコントラクトとの相互運用性 <interoperability>` セクションを参照してください。
 
 .. Semantic Only Changes
 
@@ -140,7 +140,7 @@ Solidity v0.5.0の破壊的変更点
   function that does not specify its visibility already.
 
 * 関数の明示的な可視化が必須になりました。
-  すべての関数とコンストラクタに ``public`` を追加し、可視性を指定していないすべてのフォールバック関数やインターフェース関数に ``external`` を追加します。
+  すべての関数とコンストラクタに ``public`` を追加し、ビジビリティを指定していないすべてのフォールバック関数やインターフェース関数に ``external`` を追加します。
 
 .. * Explicit data location for all variables of struct, array or mapping types is
   now mandatory. This is also applied to function parameters and return
@@ -220,7 +220,7 @@ Solidity v0.5.0の破壊的変更点
   ``payable`` or create a new internal function for the program logic that
   uses ``msg.value``.
 
-* 払えない関数で ``msg.value`` を使う（または修飾子で導入する）ことは、セキュリティ機能として認められていません。
+* 払えない関数で ``msg.value`` を使う（またはモディファイアで導入する）ことは、セキュリティ機能として認められていません。
   関数を ``payable`` に変えるか、 ``msg.value`` を使用するプログラムロジックのために新しい内部関数を作成してください。
 
 .. * For clarity reasons, the command line interface now requires ``-`` if the
@@ -426,7 +426,7 @@ Solidity v0.5.0の破壊的変更点
 
 .. * Using ``constant`` as function state mutability modifier is now disallowed.
 
-*  ``constant`` を関数のステートミュータビリティの修飾子として使用できなくなりました。
+*  ``constant`` を関数のステートミュータビリティのモディファイアとして使用できなくなりました。
 
 .. * Boolean expressions cannot use arithmetic operations.
 
@@ -455,7 +455,7 @@ Solidity v0.5.0の破壊的変更点
 
 .. * Functions without implementation cannot use modifiers anymore.
 
-* 実装のない関数では、修飾子が使えなくなりました。
+* 実装のない関数では、モディファイアが使えなくなりました。
 
 .. * Function types with named return values are now disallowed.
 

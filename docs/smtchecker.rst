@@ -536,7 +536,7 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 .. SMTChecker is able to synthesize the behaviour of the externally called code so
 .. that the assertion fails:
 
-関数 ``set`` に ``mutex`` 修飾子を使うことを「忘れた」場合、SMTCheckerは外部から呼び出されたコードの振る舞いを合成し、アサーションが失敗するようにします。
+関数 ``set`` に ``mutex`` モディファイアを使うことを「忘れた」場合、SMTCheckerは外部から呼び出されたコードの振る舞いを合成し、アサーションが失敗するようにします。
 
 .. code-block:: text
 

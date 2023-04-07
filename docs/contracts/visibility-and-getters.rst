@@ -6,14 +6,12 @@
 
 .. _visibility-and-getters:
 
-****************
-可視性とゲッター
-****************
+**********************
+ビジビリティとゲッター
+**********************
 
-.. State Variable Visibility
-
-状態変数の可視性
-================
+状態変数のビジビリティ
+======================
 
 ..     Public state variables differ from internal ones only in that the compiler automatically generates :ref:`getter functions<getter-functions>` for them, which allows other contracts to read their values.
 ..     When used within the same contract, the external access (e.g. ``this.x``) invokes the getter while internal access (e.g. ``x``) gets the variable value directly from storage.
@@ -32,7 +30,7 @@
 
     内部状態変数は、定義されているコントラクト内および派生コントラクトからのみアクセス可能です。
     外部にアクセスすることはできません。
-    これは、状態変数のデフォルトの可視性レベルです。
+    これは、状態変数のデフォルトのビジビリティレベルです。
 
     .. Private state variables are like internal ones but they are not visible in derived contracts.
 
@@ -44,8 +42,8 @@
 
 .. Function Visibility
 
-関数の可視性
-============
+関数のビジビリティ
+==================
 
 .. Solidity knows two kinds of function calls: external ones that do create an actual EVM message call and internal ones that do not.
 .. Furthermore, internal functions can be made inaccessible to derived contracts.
@@ -53,7 +51,7 @@
 
 Solidityは、実際のEVMメッセージコールを作成する外部関数とそうでない内部関数の2種類の関数呼び出しを知っています。
 さらに、内部関数は派生コントラクトにアクセスできないようにできます。
-このため、関数の可視性には4つのタイプがあります。
+このため、関数のビジビリティには4つのタイプがあります。
 
 ``external``
     外部関数はコントラクトインターフェースの一部であり、他のコントラクトやトランザクションを介して呼び出すことができることを意味します。
@@ -83,7 +81,7 @@ Solidityは、実際のEVMメッセージコールを作成する外部関数と
 
 .. The visibility specifier is given after the type for state variables and between parameter list and return parameter list for functions.
 
-可視性指定子は、状態変数の場合は型の後に、関数の場合はパラメータリストとリターンパラメータリストの間に与えられます。
+ビジビリティ指定子は、状態変数の場合は型の後に、関数の場合はパラメータリストとリターンパラメータリストの間に与えられます。
 
 .. code-block:: solidity
 

@@ -190,9 +190,9 @@ Ethereumでは価値の移転はブラインドできないため、誰でも価
         /// 関数 auctionEnd はすでに呼び出されています。
         error AuctionEndAlreadyCalled();
 
-        // 修飾子は、関数への入力を検証するための便利な方法です。
+        // モディファイアは、関数への入力を検証するための便利な方法です。
         // 以下の `onlyBefore` は `bid` に適用されます。
-        // 新しい関数の本体は修飾子の本体で、 `_` が古い関数の本体に置き換わります。
+        // 新しい関数の本体はモディファイアの本体で、 `_` が古い関数の本体に置き換わります。
         modifier onlyBefore(uint time) {
             if (block.timestamp >= time) revert TooLate(time);
             _;

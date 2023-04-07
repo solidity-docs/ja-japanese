@@ -107,12 +107,12 @@ callArgumentList: LParen ((expression (Comma expression)*)? | LBrace (namedArgum
 identifierPath: identifier (Period identifier)*;
 
 /**
- * 修飾子の呼び出し。
- * 修飾子が引数を取らない場合、引数リストは完全にスキップすることができます（開閉括弧を含む）。
+ * モディファイアの呼び出し。
+ * モディファイアが引数を取らない場合、引数リストは完全にスキップすることができます（開閉括弧を含む）。
  */
 modifierInvocation: identifierPath callArgumentList?;
 /**
- * 関数と関数型の可視性。
+ * 関数と関数型のビジビリティ。
  */
 visibility: Internal | External | Private | Public;
 /**
@@ -144,7 +144,7 @@ locals[boolean payableSet = false, boolean visibilitySet = false]
  */
 stateMutability: Pure | View | Payable;
 /**
- * 関数、修飾子、状態変数に使用されるオーバーライド指定子。
+ * 関数、モディファイア、状態変数に使用されるオーバーライド指定子。
  * オーバーライドされる複数のベースコントラクトにあいまいな宣言がある場合、基本コントラクトの完全なリストを指定する必要があります。
  */
 overrideSpecifier: Override (LParen overrides+=identifierPath (Comma overrides+=identifierPath)* RParen)?;
@@ -184,8 +184,8 @@ locals[
  	(Semicolon | body=block);
 
 /**
- * 修飾子の定義。
- * 修飾子の本体ブロック内では、アンダースコアは識別子として使用できませんが、修飾子が適用される関数本体のプレースホルダー文として使用できることに注意してください。
+ * モディファイアの定義。
+ * モディファイアの本体ブロック内では、アンダースコアは識別子として使用できませんが、モディファイアが適用される関数本体のプレースホルダー文として使用できることに注意してください。
  */
 modifierDefinition
 locals[

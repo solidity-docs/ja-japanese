@@ -401,8 +401,8 @@ receive Ether関数
 .. It can be virtual, can override and can have modifiers.
 
 コントラクトは最大で1つの ``receive`` 関数を持つことができ、 ``receive() external payable { ... }`` を使って宣言されます（ ``function`` キーワードなし）。
-この関数は、引数を持つことができず、何も返すことができず、 ``external`` の可視性と ``payable`` の状態変更性を持たなければなりません。
-この関数は仮想的であり、オーバーライドでき、修飾子を持つことができます。
+この関数は、引数を持つことができず、何も返すことができず、 ``external`` のビジビリティと ``payable`` のステートミュータビリティを持たなければなりません。
+この関数は仮想的であり、オーバーライドでき、モディファイアを持つことができます。
 
 .. The receive function is executed on a call to the contract with empty calldata. This is the function that is executed on plain Ether transfers (e.g. via ``.send()`` or ``.transfer()``).
 .. If no such function exists, but a payable :ref:`fallback function <fallback-function> exists, the fallback function will be called on a plain Ether transfer.
@@ -490,8 +490,8 @@ fallback関数
 .. and can have modifiers.
 
 コントラクトは最大で1つの ``fallback`` 関数を持つことができ、 ``fallback () external [payable]`` または ``fallback (bytes calldata input) external [payable] returns (bytes memory output)`` （いずれも ``function`` キーワードなし）を使って宣言されます。
-この関数は ``external`` 可視性を持たなければなりません。
-フォールバック関数は、仮想的であり、オーバーライドでき、修飾子を持つことができます。
+この関数は ``external`` ビジビリティを持たなければなりません。
+フォールバック関数は、仮想的であり、オーバーライドでき、モディファイアを持つことができます。
 
 .. The fallback function is executed on a call to the contract if none of the other
 .. functions match the given function signature, or if no data was supplied at
@@ -557,7 +557,7 @@ fallback関数
         uint x;
         // この関数はこのコントラクトに送られるすべてのメッセージに対して呼び出されます（他の関数は存在しません）。
         // このコントラクトにEtherを送信すると例外が発生します。
-        // なぜなら、fallback関数が `payable` 修飾子を持たないからです。
+        // なぜなら、fallback関数が `payable` モディファイアを持たないからです。
         fallback() external { x = 1; }
     }
 

@@ -31,7 +31,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
         // ...
     }
 
-有効な状態変数の型については :ref:`types` セクションを、可視性についての可能な選択肢については :ref:`visibility-and-getters` を参照してください。
+有効な状態変数の型については :ref:`types` セクションを、ビジビリティについての可能な選択肢については :ref:`visibility-and-getters` を参照してください。
 
 .. _structure-functions:
 
@@ -57,19 +57,19 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
         return x * 2;
     }
 
-:ref:`function-calls` は内部または外部で起こり、他のコントラクトに対して異なるレベルの :ref:`可視性<visibility-and-getters>` を持つことができます。
+:ref:`function-calls` は内部または外部で起こり、他のコントラクトに対して異なるレベルの :ref:`ビジビリティ<visibility-and-getters>` を持つことができます。
 :ref:`関数<functions>` は、それらの間でパラメータと値を渡すために :ref:`パラメータと返り値<function-parameters-return-variables>` を受け入れます。
 
 .. _structure-function-modifiers:
 
-関数修飾子
-==========
+関数モディファイア
+==================
 
-関数修飾子を使うと、宣言的に関数のセマンティクスを変更できます（コントラクトセクションの :ref:`modifiers` を参照）。
+関数モディファイアを使うと、宣言的に関数のセマンティクスを変更できます（コントラクトセクションの :ref:`modifiers` を参照）。
 
-オーバーロード、つまり、同じ修飾子名で異なるパラメータを持つことはできません。
+オーバーロード、つまり、同じモディファイア名で異なるパラメータを持つことはできません。
 
-関数と同様、修飾子も :ref:`overridden <modifier-overriding>` にできます。
+関数と同様、モディファイアも :ref:`overridden <modifier-overriding>` にできます。
 
 .. code-block:: solidity
 
@@ -79,7 +79,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
     contract Purchase {
         address public seller;
 
-        modifier onlySeller() { // 修飾子
+        modifier onlySeller() { // モディファイア
             require(
                 msg.sender == seller,
                 "Only seller can call this."
@@ -87,7 +87,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
             _;
         }
 
-        function abort() public view onlySeller { // 修飾子の使用
+        function abort() public view onlySeller { // モディファイアの使用
             // ...
         }
     }

@@ -474,7 +474,7 @@ FunctionHoister
 
 FunctionHoisterは、すべての関数定義を最上位のブロックの最後に移動させます。
 これは、曖昧さを解消するステージの後に実行される限り、意味的に同等の変換です。
-その理由は、定義を上位のブロックに移動しても、その可視性を低下させることはできず、また、別の関数で定義された変数を参照することもできないからです。
+その理由は、定義を上位のブロックに移動しても、そのビジビリティを低下させることはできず、また、別の関数で定義された変数を参照することもできないからです。
 
 .. The benefit of this stage is that function definitions can be looked up more easily
 .. and functions can be optimized in isolation without having to traverse the AST completely.

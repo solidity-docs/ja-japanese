@@ -90,7 +90,7 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
         function callFeed() public { feed.info{value: 10, gas: 800}(); }
     }
 
-``info`` 関数に修飾子 ``payable`` を使用する必要があります。
+``info`` 関数にモディファイア ``payable`` を使用する必要があります。
 そうしないと、 ``value`` オプションは使用できません。
 
 .. .. warning::
@@ -458,8 +458,8 @@ Solidityのスコーピングは、C99（および他の多くの言語）で広
 .. the body of the function/modifier for a function and modifier parameter and the catch block
 .. for a catch parameter.
 
-パラメータのような変数（関数パラメータ、修飾子パラメータ、キャッチパラメータなど）は、次のコードブロックの中に表示されます。
-関数パラメータと修飾子パラメータの場合は関数/修飾子のボディ、キャッチパラメータの場合はキャッチブロックです。
+パラメータのような変数（関数パラメータ、モディファイアパラメータ、キャッチパラメータなど）は、次のコードブロックの中に表示されます。
+関数パラメータとモディファイアパラメータの場合は関数/モディファイアのボディ、キャッチパラメータの場合はキャッチブロックです。
 
 .. Variables and other items declared outside of a code block, for example functions, contracts,
 .. user-defined types, etc., are visible even before they were declared. This means you can
@@ -749,7 +749,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
 #. コードを含まないコントラクトを対象とした外部関数呼び出しを行った場合。
 
-#. ``payable`` 修飾子のないパブリック関数（コンストラクタ、フォールバック関数を含む）を介してコントラクトがEtherを受け取る場合。
+#. ``payable`` モディファイアのないパブリック関数（コンストラクタ、フォールバック関数を含む）を介してコントラクトがEtherを受け取る場合。
 
 #. コントラクトがパブリックゲッター関数でEtherを受け取る場合。
 

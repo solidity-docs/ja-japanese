@@ -378,7 +378,7 @@ NG:
 
 .. Functions should be grouped according to their visibility and ordered:
 
-関数は可視性に応じてグループ化し、順序立てて配置します。
+関数はビジビリティに応じてグループ化し、順序立てて配置します。
 
 .. - constructor
 .. - receive function (if exists)
@@ -811,11 +811,11 @@ NG:
 .. 4. Override
 .. 5. Custom modifiers
 
-1. 可視性
+1. ビジビリティ
 2. ミュータビリティ
 3. バーチャル
 4. オーバーライド
-5. カスタム修飾子
+5. カスタムモディファイア
 
 .. Yes:
 
@@ -905,7 +905,7 @@ NG:
 .. If a long function declaration has modifiers, then each modifier should be
 .. dropped to its own line.
 
-長い関数宣言に修飾子がある場合は、各修飾子をそれぞれの行に落とす必要があります。
+長い関数宣言にモディファイアがある場合は、各モディファイアをそれぞれの行に落とす必要があります。
 
 .. Yes:
 
@@ -1019,7 +1019,7 @@ NG:
 
 .. For constructor functions on inherited contracts whose bases require arguments, it is recommended to drop the base constructors onto new lines in the same manner as modifiers if the function declaration is long or hard to read.
 
-ベースが引数を必要とする継承されたコントラクトのコンストラクタ関数については、関数宣言が長い場合や読みにくい場合には、修飾子と同じ方法でベースのコンストラクタを新しい行に落とすことをお勧めします。
+ベースが引数を必要とする継承されたコントラクトのコンストラクタ関数については、関数宣言が長い場合や読みにくい場合には、モディファイアと同じ方法でベースのコンストラクタを新しい行に落とすことをお勧めします。
 
 .. Yes:
 
@@ -1289,7 +1289,7 @@ NG:
 2. 状態変数
 3. イベント
 4. エラー
-5. 修飾子
+5. モディファイア
 6. 関数
 
 .. .. note::
@@ -1563,8 +1563,8 @@ mixedCaseを使用してください。
 定数の名前は、すべて大文字で、アンダースコアで単語を区切ってください。
 例: ``MAX_BLOCKS``, ``TOKEN_NAME``, ``TOKEN_TICKER``, ``CONTRACT_VERSION`` 。
 
-修飾子名
-========
+モディファイア名
+================
 
 mixedCaseを使用してください。
 例: ``onlyBy`` 、 ``onlyAfter`` 、 ``onlyDuringThePreSale`` 。
@@ -1600,7 +1600,7 @@ mixedCaseを使用してください。
 .. This convention is suggested for non-external functions and state variables (``private`` or ``internal``). State variables without a specified visibility are ``internal`` by default.
 
 この規約は、外部関数と状態変数（ ``private`` または ``internal`` ）以外では推奨されています。
-可視性の指定がない状態変数は、デフォルトで ``internal`` となります。
+ビジビリティの指定がない状態変数は、デフォルトで ``internal`` となります。
 
 .. When designing a smart contract, the public-facing API (functions that can be called by any account) is an important consideration.
 .. Leading underscores allow you to immediately recognize the intent of such functions, but more importantly, if you change a function from non-external to external (including ``public``) and rename it accordingly, this forces you to review every call site while renaming.

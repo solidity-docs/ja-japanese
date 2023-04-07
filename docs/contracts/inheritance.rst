@@ -106,7 +106,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         }
     }
 
-    // コンストラクタが引数を取る場合、派生コントラクトのコンストラクタでヘッダまたは修飾子を呼び出すスタイルで提供する必要があります(下記参照)。
+    // コンストラクタが引数を取る場合、派生コントラクトのコンストラクタでヘッダまたはモディファイアを呼び出すスタイルで提供する必要があります(下記参照)。
     contract PriceFeed is Owned, Destructible, Named("GoldFeed") {
         function updateInfo(uint newInfo) public {
             if (msg.sender == owner) info = newInfo;
@@ -222,7 +222,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 
 ベース関数は、コントラクトを継承することでオーバーライドでき、 ``virtual`` としてマークされている場合は、その動作を変更できます。
 オーバーライドされた関数は、関数ヘッダーで ``override`` キーワードを使用しなければなりません。
-オーバーライドされた関数は、オーバーライドされた関数の可視性を ``external`` から ``public`` に変更するだけです。
+オーバーライドされた関数は、オーバーライドされた関数のビジビリティを ``external`` から ``public`` に変更するだけです。
 ミュータビリティは、順序に従って、より厳密なものに変更できます。
 ``nonpayable`` は ``view`` と ``pure`` でオーバーライドでき、 ``view`` は ``pure`` でオーバーライドできます。
 ``payable`` は例外で、他のミュータビリティに変更できません。
@@ -320,7 +320,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 
 .. note::
 
-  ``private`` の可視性を持つ関数は ``virtual`` にできません。
+  ``private`` のビジビリティを持つ関数は ``virtual`` にできません。
 
 .. .. note::
 
@@ -373,17 +373,17 @@ superを使うときに呼び出される実際の関数は、型はわかって
 
 .. _modifier-overriding:
 
-修飾子オーバーライド
-====================
+モディファイアのオーバーライド
+==============================
 
 .. Function modifiers can override each other. This works in the same way as
 .. :ref:`function overriding <function-overriding>` (except that there is no overloading for modifiers). The
 .. ``virtual`` keyword must be used on the overridden modifier
 .. and the ``override`` keyword must be used in the overriding modifier:
 
-関数の修飾子はお互いにオーバーライドできます。
-これは、 :ref:`関数オーバーライド <function-overriding>` と同じように動作します（修飾子にオーバーロードがないことを除く）。
-``virtual`` キーワードはオーバーライドする修飾子に使用し、 ``override`` キーワードはオーバーライドする修飾子に使用しなければなりません。
+関数のモディファイアはお互いにオーバーライドできます。
+これは、 :ref:`関数オーバーライド <function-overriding>` と同じように動作します（モディファイアにオーバーロードがないことを除く）。
+``virtual`` キーワードはオーバーライドするモディファイアに使用し、 ``override`` キーワードはオーバーライドするモディファイアに使用しなければなりません。
 
 .. code-block:: solidity
 
@@ -489,7 +489,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
     この構文は非推奨で、バージョン0.5.0ではもう認められていません。
 
 .. warning ::
-    バージョン0.7.0より前のバージョンでは、コンストラクタの可視性を ``internal`` または ``public`` のいずれかに指定する必要がありました。
+    バージョン0.7.0より前のバージョンでは、コンストラクタのビジビリティを ``internal`` または ``public`` のいずれかに指定する必要がありました。
 
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
@@ -519,7 +519,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
         constructor() {}
     }
 
-    // または派生コンストラクタの"修飾子"を介して行われるか、
+    // または派生コンストラクタの"モディファイア"を介して行われるか、
     contract Derived2 is Base {
         constructor(uint y) Base(y * y) {}
     }
@@ -545,10 +545,10 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. Specifying arguments in both places is an error.
 
 1つの方法は、継承リストに直接記載する方法です（ ``is Base(7)`` ）。
-もう1つは、派生したコンストラクタの一部として修飾子を呼び出す方法です（ ``Base(y * y)`` ）。
+もう1つは、派生したコンストラクタの一部としてモディファイアを呼び出す方法です（ ``Base(y * y)`` ）。
 コンストラクタの引数が定数で、コントラクトの動作を定義したり、記述したりする場合は、最初の方法が便利です。
 ベースのコンストラクタの引数が派生コントラクトの引数に依存する場合は、2 番目の方法を使用する必要があります。
-引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。
+引数は、継承リストで指定するか、派生するコンストラクタのモディファイアスタイルで指定する必要があります。
 両方の場所で引数を指定するとエラーになります。
 
 If a derived contract does not specify the arguments to all of its base
@@ -667,8 +667,8 @@ SolidityはPythonに似ていますが、ベースクラスの有向非環状グ
 ====================================
 
 コントラクト内の以下のペアが継承により同じ名前になっている場合はエラーとなります。
-    - 関数と修飾子
+    - 関数とモディファイア
     - 関数とイベント
-    - イベントと修飾子
+    - イベントとモディファイア
 
 例外として、状態変数のゲッターが外部関数をオーバーライドできます。

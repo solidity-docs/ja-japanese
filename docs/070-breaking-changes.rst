@@ -72,8 +72,8 @@ Solidity v0.7.0の破壊的変更点
 ..   At the same time, public state variables are considered ``view`` and even ``pure``
 ..   if they are constants.
 
-* ステートミュータビリティ: 継承の際に、関数の状態変更性を制限できるようになりました。
-  デフォルトの状態変更可能性を持つ関数は、 ``pure`` および ``view`` 関数でオーバーライドでき、 ``view`` 関数は ``pure`` 関数でオーバーライドできます。
+* ステートミュータビリティ: 継承の際に、関数のステートミュータビリティを制限できるようになりました。
+  デフォルトのステートミュータビリティを持つ関数は、 ``pure`` および ``view`` 関数でオーバーライドでき、 ``view`` 関数は ``pure`` 関数でオーバーライドできます。
   同時に、パブリックな状態変数は ``view`` とみなされ、定数であれば ``pure`` ともみなされます。
 
 
@@ -112,9 +112,9 @@ Solidity v0.7.0の破壊的変更点
 ..   To prevent a contract from being created, it can be marked ``abstract``.
 ..   This makes the visibility concept for constructors obsolete.
 
-* コンストラクタには可視性（ ``public``  /  ``internal`` ）は必要なくなりました。
+* コンストラクタにはビジビリティ（ ``public``  /  ``internal`` ）は必要なくなりました。
   コントラクトが作成されないようにするには、 ``abstract`` マークを付けることができます。
-  これにより、コンストラクタの可視性の概念は廃止されました。
+  これにより、コンストラクタのビジビリティの概念は廃止されました。
 
 .. * Type Checker: Disallow ``virtual`` for library functions:
 ..   Since libraries cannot be inherited from, library functions should not be virtual.
