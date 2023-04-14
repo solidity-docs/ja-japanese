@@ -44,7 +44,7 @@ Solidityでは、スマートコントラクトを使ってトークンや、も
 
 スマートコントラクトで乱数を使用することは、ブロックビルダーが不正行為をする可能性があるため、困難です。
 
-Re-Entrancy
+Reentrancy
 ===========
 
 .. Any interaction from a contract (A) with another contract (B) and any transfer of Ether hands over control to that contract (B).
@@ -93,7 +93,12 @@ Etherの送金には常にコードの実行が含まれるため、受信者は
         }
     }
 
+<<<<<<< HEAD
 Re-entrancyを避けるために、以下のようなChecks-Effects-Interactionsパターンを使用できます。
+=======
+To avoid reentrancy, you can use the Checks-Effects-Interactions pattern as
+demonstrated below:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -114,12 +119,19 @@ Re-entrancyを避けるために、以下のようなChecks-Effects-Interactions
 The Checks-Effects-Interactions pattern ensures that all code paths through a contract complete all required checks
 of the supplied parameters before modifying the contract's state (Checks); only then it makes any changes to the state (Effects);
 it may make calls to functions in other contracts *after* all planned state changes have been written to
-storage (Interactions). This is a common foolproof way to prevent *re-entrancy attacks*, where an externally called
+storage (Interactions). This is a common foolproof way to prevent *reentrancy attacks*, where an externally called
 malicious contract is able to double-spend an allowance, double-withdraw a balance, among other things, by using logic that calls back into the
 original contract before it has finalized its transaction.
 
+<<<<<<< HEAD
 .. Note that re-entrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
 .. A called contract could modify the state of another contract you depend on.
+=======
+Note that reentrancy is not only an effect of Ether transfer but of any
+function call on another contract. Furthermore, you also have to take
+multi-contract situations into account. A called contract could modify the
+state of another contract you depend on.
+>>>>>>> english/develop
 
 Re-entrancyは、Ether送金だけでなく、別のコントラクトでのあらゆる関数呼び出しの影響を受けることに注意してください。
 さらに、複数のコントラクトを考慮しなければならない状況もあります。
@@ -468,7 +480,40 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
 
 コンパイラが発行する ``info`` 型のメッセージは危険なものではなく、ユーザにとって有用であるとコンパイラが考える追加の提案やオプション情報を表しています。
 
+<<<<<<< HEAD
 Etherの量を制限する
+=======
+As the second step, if all checks passed, effects to the state variables
+of the current contract should be made. Interaction with other contracts
+should be the very last step in any function.
+
+Early contracts delayed some effects and waited for external function
+calls to return in a non-error state. This is often a serious mistake
+because of the reentrancy problem explained above.
+
+Note that, also, calls to known contracts might in turn cause calls to
+unknown contracts, so it is probably better to just always apply this pattern.
+
+Include a Fail-Safe Mode
+========================
+
+While making your system fully decentralised will remove any intermediary,
+it might be a good idea, especially for new code, to include some kind
+of fail-safe mechanism:
+
+You can add a function in your smart contract that performs some
+self-checks like "Has any Ether leaked?",
+"Is the sum of the tokens equal to the balance of the contract?" or similar things.
+Keep in mind that you cannot use too much gas for that, so help through off-chain
+computations might be needed there.
+
+If the self-check fails, the contract automatically switches into some kind
+of "failsafe" mode, which, for example, disables most of the features, hands over
+control to a fixed and trusted third party or just converts the contract into
+a simple "give me back my money" contract.
+
+Ask for Peer Review
+>>>>>>> english/develop
 ===================
 
 .. Restrict the amount of Ether (or other tokens) that can be stored in a smart
