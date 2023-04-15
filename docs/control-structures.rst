@@ -745,7 +745,13 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 ..    ``payable`` modifier (including the constructor and the fallback function).
 .. #. If your contract receives Ether via a public getter function.
 
+<<<<<<< HEAD
 #. ``x`` が ``false`` に評価されるとき ``require(x)`` を呼び出す。
+=======
+For the following cases, the error data from the external call
+(if provided) is forwarded. This means that it can either cause
+an ``Error`` or a ``Panic`` (or whatever else was given):
+>>>>>>> english/develop
 
 #. ``revert()`` や ``revert("description")`` を使う場合。
 
