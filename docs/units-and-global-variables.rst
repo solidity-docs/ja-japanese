@@ -421,8 +421,9 @@ stringのメンバー
 
     バージョン0.5.0以前では、 ``delegatecall`` と似ているが若干セマンティクスが異なる ``callcode`` というメンバーがありました。
 
-.. index:: this, selfdestruct
+.. index:: this, selfdestruct, super
 
+<<<<<<< HEAD
 コントラクト関連
 ----------------
 
@@ -437,6 +438,16 @@ stringのメンバー
 ..     - the receiving contract's receive function is not executed.
 
 ..     - the contract is only really destroyed at the end of the transaction and ``revert`` s might "undo" the destruction.
+=======
+Contract-related
+----------------
+
+``this`` (current contract's type)
+    The current contract, explicitly convertible to :ref:`address`
+
+``super``
+    A contract one level higher in the inheritance hierarchy
+>>>>>>> english/develop
 
 ``selfdestruct(address payable recipient)``
     現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了します。
