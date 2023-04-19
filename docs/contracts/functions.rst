@@ -1,4 +1,4 @@
-.. index:: ! functions
+.. index:: ! functions, ! function;free
 
 .. _functions:
 
@@ -386,7 +386,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 特殊な関数
 ==========
 
-.. index:: ! receive ether function, function;receive ! receive
+.. index:: ! receive ether function, function;receive, ! receive
 
 .. _receive-ether-function:
 

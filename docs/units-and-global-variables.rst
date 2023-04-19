@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 ********************************
 単位とグローバルで利用可能な変数
 ********************************
+=======
+.. index:: ! denomination
 
-.. index:: wei, finney, szabo, gwei, ether
+**************************************
+Units and Globally Available Variables
+**************************************
+>>>>>>> english/develop
+
+.. index:: ! wei, ! finney, ! szabo, ! gwei, ! ether, ! denomination;ether
 
 Etherの単位
 ===========
@@ -22,7 +30,7 @@ Etherの単位
 
     バージョン0.7.0では、単位 ``finney`` と ``szabo`` が削除されました。
 
-.. index:: time, seconds, minutes, hours, days, weeks, years
+.. index:: ! seconds, ! minutes, ! hours, ! days, ! weeks, ! years, ! denomination;time
 
 時間の単位
 ==========
@@ -56,7 +64,7 @@ Etherの単位
 
     function f(uint start, uint daysAfter) public {
         if (block.timestamp >= start + daysAfter * 1 days) {
-          // ...
+            // ...
         }
     }
 
@@ -421,8 +429,9 @@ stringのメンバー
 
     バージョン0.5.0以前では、 ``delegatecall`` と似ているが若干セマンティクスが異なる ``callcode`` というメンバーがありました。
 
-.. index:: this, selfdestruct
+.. index:: this, selfdestruct, super
 
+<<<<<<< HEAD
 コントラクト関連
 ----------------
 
@@ -437,6 +446,16 @@ stringのメンバー
 ..     - the receiving contract's receive function is not executed.
 
 ..     - the contract is only really destroyed at the end of the transaction and ``revert`` s might "undo" the destruction.
+=======
+Contract-related
+----------------
+
+``this`` (current contract's type)
+    The current contract, explicitly convertible to :ref:`address`
+
+``super``
+    A contract one level higher in the inheritance hierarchy
+>>>>>>> english/develop
 
 ``selfdestruct(address payable recipient)``
     現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了します。
