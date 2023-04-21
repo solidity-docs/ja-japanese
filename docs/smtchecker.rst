@@ -871,7 +871,12 @@ Trusted External Calls
         }
     }
 
+<<<<<<< HEAD
 .. Note that in function ``property_transfer``, the external calls are performed on variable ``t``.
+=======
+Note that in function ``property_transfer``, the external calls are
+performed on variable ``t``.
+>>>>>>> english/develop
 
 関数 ``property_transfer`` では、外部呼び出しは変数 ``t`` に対して行われることに注意してください。
 
@@ -1071,6 +1076,7 @@ SMTソルバーとHornソルバー
 .. <https://spacer.bitbucket.io/>`_ available as a Horn solver, and `Eldarica
 .. <https://github.com/uuverifiers/eldarica>`_ which does both.
 
+<<<<<<< HEAD
 上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。
 BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。
 SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
@@ -1115,6 +1121,11 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
   -  ``soljson.js`` （Solidity 0.6.9 以降）では静的に、つまりコンパイラのJavaScriptバイナリを使用しています。
+=======
+  - if ``solc`` is compiled with it;
+  - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
+  - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
+>>>>>>> english/develop
 
 .. note::
 
