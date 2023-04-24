@@ -266,8 +266,12 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 * ``send``
 
+<<<<<<< HEAD
 ``send`` は、 ``transfer`` の低レベルのカウンターパートです。
 実行に失敗した場合、現在のコントラクトは例外的に停止しませんが、 ``send`` は ``false`` を返します。
+=======
+``send`` is the low-level counterpart of ``transfer``. If the execution fails, the current contract will not stop with an exception, but ``send`` will return ``false``.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -430,7 +434,7 @@ You can query the deployed code for any smart contract. Use ``.code`` to get the
     :ref:`arrays` を参照。
     値型ではありません！
 
-.. index:: address, literal;address
+.. index:: address, ! literal;address
 
 .. _address_literals:
 
@@ -445,7 +449,7 @@ You can query the deployed code for any smart contract. Use ``.code`` to get the
 
     混合ケースのアドレスチェックサムフォーマットは `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ で定義されています。
 
-.. index:: literal, literal;rational
+.. index:: integer, rational number, ! literal;rational
 
 .. _rational_literals:
 
@@ -516,7 +520,7 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
     uint128 a = 1;
     uint128 b = 2.5 + a + 0.5;
 
-.. index:: literal, literal;string, string
+.. index:: ! literal;string, string
 .. _string_literals:
 
 文字列リテラルと文字列型
@@ -566,8 +570,15 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
 改行ではない Unicode の行終端記号（LF、VF、FF、CR、NEL、LS、PS など）は、文字列リテラルを終了するものとみなされます。
 改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
 
+<<<<<<< HEAD
 Unicodeリテラル
 ---------------
+=======
+.. index:: ! literal;unicode
+
+Unicode Literals
+----------------
+>>>>>>> english/develop
 
 通常の文字列リテラルはASCIIのみを含むことができますが、Unicodeリテラル（キーワード ``unicode`` を前に付けたもの）は、有効なUTF-8シーケンスを含むことができます。
 また、Unicodeリテラルは、通常の文字列リテラルと同じエスケープシーケンスにも対応しています。
@@ -576,7 +587,7 @@ Unicodeリテラル
 
     string memory a = unicode"Hello 😃";
 
-.. index:: literal, bytes
+.. index:: ! literal;hexadecimal, bytes
 
 16進数リテラル
 --------------
@@ -588,7 +599,12 @@ Unicodeリテラル
 空白で区切られた複数の16進数リテラルは、1つのリテラルに連結されます。
 ``hex"00112233" hex"44556677"`` は ``hex"0011223344556677"`` と同じです。
 
+<<<<<<< HEAD
 16進数リテラルは、 :ref:`文字列リテラル<string_literals>` と同じように動作し、同じような変換の制限があります。
+=======
+Hexadecimal literals in some ways behave like :ref:`string literals <string_literals>` but are not
+implicitly convertible to the ``string`` type.
+>>>>>>> english/develop
 
 .. index:: enum
 
