@@ -489,6 +489,11 @@ CMakeオプション
 
 SMTソルバー
 -----------
+<<<<<<< HEAD
+=======
+Solidity can be built against SMT solvers and will do so by default if
+they are found in the system. Each solver can be disabled by a ``cmake`` option.
+>>>>>>> english/develop
 
 SolidityはSMTソルバーに対してビルドでき、システムで見つかった場合、デフォルトでそうします。
 それぞれのソルバーは `cmake` オプションで無効にできます。
