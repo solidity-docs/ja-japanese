@@ -15,12 +15,21 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 * 新しい言語のドキュメントの `翻訳 <https://github.com/solidity-docs>`_ 。
 
+<<<<<<< HEAD
 * 他のユーザーからの `StackExchange <https://ethereum.stackexchange.com>`_ や `Solidity Gitter Chat   <https://gitter.im/ethereum/solidity>`_ での質問への返答。
 
 * `Solidityフォーラム <https://forum.soliditylang.org/>`_ で言語の変更や新機能を提案やフィードバックの提供による言語設計プロセスへの関与。
 
 .. To get started, you can try :ref:`building-from-source` in order to familiarize yourself with the components of Solidity and the build process.
 .. Also, it may be useful to become well-versed at writing smart-contracts in Solidity.
+=======
+If you have issues or pull requests to discuss, or are interested in hearing what
+the team and contributors are working on, you can join our public team call:
+
+- Wednesdays at 3PM CET/CEST.
+
+The call takes place on `Jitsi <https://meet.soliditylang.org/>`_.
+>>>>>>> english/develop
 
 まずは :ref:`building-from-source` を使って、Solidityのコンポーネントやビルドプロセスに慣れてみてください。
 また、Solidityでのスマートコントラクトの書き方を熟知することも有効でしょう。
@@ -99,8 +108,12 @@ Solidityに貢献するための選択肢はたくさんあります。
 最後に、このプロジェクトの `コーディングスタイル <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ を尊重するようにしてください。
 また、CIテストを行っているとはいえ、プルリクエストを提出する前にコードをテストし、ローカルにビルドされることを確認してください。
 
+<<<<<<< HEAD
 .. We highly recommend going through our `review checklist <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ before submitting the pull request.
 .. We thoroughly review every PR and will help you get it right, but there are many common problems that can be easily avoided, making the review much smoother.
+=======
+.. note::
+>>>>>>> english/develop
 
 プルリクエストを提出する前に、私たちの `レビューチェックリスト <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ に目を通すことを強くお勧めします。
 私たちはすべてのPRを徹底的にレビューし、あなたが正しい結果を得られるようサポートしますが、簡単に回避できる多くの一般的な問題があり、レビューがよりスムーズに行えるようになります。
@@ -119,7 +132,11 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 .. For running all compiler tests you may want to optionally install a few dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_, and `libhera <https://github.com/ewasm/hera>`_).
 
+<<<<<<< HEAD
 すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ 、 `libz3 <https://github.com/Z3Prover/z3>`_ 、 `libhera <https://github.com/ewasm/hera>`_ ）をオプションでインストールできます。
+=======
+.. note::
+>>>>>>> english/develop
 
 .. On macOS systems, some of the testing scripts expect GNU coreutils to be installed. 
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
@@ -243,6 +260,12 @@ SMTテストを実行するためには、 ``libz3`` ライブラリがインス
 GDBを使ってデバッグしたい場合は、「通常」とは異なる方法でビルドするようにしてください。
 例えば、 ``build`` フォルダで以下のコマンドを実行します。
 
+<<<<<<< HEAD
+=======
+If you want to debug using GDB, make sure you build differently than the "usual".
+For example, you could run the following command in your ``build`` folder:
+
+>>>>>>> english/develop
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
