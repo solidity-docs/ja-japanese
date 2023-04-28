@@ -1042,12 +1042,18 @@ Unused PrunerやRedundant Assign Eliminatorは、このような変数を完全�
 
 .. _expression-simplifier:
 
-Expression Simplifier
-^^^^^^^^^^^^^^^^^^^^^
+ExpressionSimplifier
+^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 .. The Expression Simplifier uses the Dataflow Analyzer and makes use
 .. of a list of equivalence transforms on expressions like ``X + 0 -> X``
 .. to simplify the code.
+=======
+The ExpressionSimplifier uses the Dataflow Analyzer and makes use
+of a list of equivalence transforms on expressions like ``X + 0 -> X``
+to simplify the code.
+>>>>>>> english/develop
 
 Expression Simplifierは、Dataflow Analyzerを使用し、 ``X + 0 -> X`` のような式に対する等価変換のリストを利用してコードを単純化します。
 
