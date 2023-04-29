@@ -221,7 +221,7 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-.. index:: ! array;literals, ! inline;arrays
+.. index:: ! literal;array, ! inline;arrays
 
 配列リテラル
 ^^^^^^^^^^^^
