@@ -54,7 +54,12 @@
 
         function withdraw() public {
             uint amount = pendingWithdrawals[msg.sender];
+<<<<<<< HEAD
             // Reentrancy攻撃を防ぐため、送金前にpendingしている返金の額をゼロにすることを忘れないでください
+=======
+            // Remember to zero the pending refund before
+            // sending to prevent reentrancy attacks
+>>>>>>> english/develop
             pendingWithdrawals[msg.sender] = 0;
             payable(msg.sender).transfer(amount);
         }
