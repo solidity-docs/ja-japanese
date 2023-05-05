@@ -127,7 +127,7 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 オーバーフロー
 ==============
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -183,7 +183,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 
 オーバーフローのケースをフィルタリングする ``require`` 文を追加すると、SMTCheckerはオーバーフローに到達しないことを（警告を報告しないことで）証明します。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -227,7 +227,7 @@ Assert
 ``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。
 この性質と関数の定義を使って、どんな結果が出るか試してみてください。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -252,7 +252,7 @@ Assert
 また、ループの中にアサーションを追加して、より複雑なプロパティを検証することもできます。
 次のコードでは、制限のない数値の配列の最大要素を検索し、検索された要素は配列のすべての要素と同じかそれ以上でなければならないというプロパティをアサートしています。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -304,7 +304,7 @@ Assert
 プロパティを変更したり、配列に制限を加えることで、異なる結果を得ることができます。
 例えば、コードを次のように変更すると
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -366,7 +366,7 @@ State Properties
 ロボットは対角線上に1歩ずつしか移動できず、グリッドの外には出られません。
 このロボットのステートマシンは、以下のスマートコントラクトで表すことができます。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -425,7 +425,7 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 また、SMTCheckerを騙して、到達可能と思われるある位置までのパスを教えてもらうこともできます。
 次のような関数を追加することで、(2, 4)は*not* reachableであるという性質を追加できます。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     function reach_2_4() public view {
         assert(!(x == 2 && y == 4));
@@ -484,7 +484,7 @@ External Calls and Reentrancy
 
 場合によっては、外部から呼び出されたコードが呼び出し元のコントラクトを再入力するなど、何をしても真である状態変数のプロパティを自動的に推論することも可能です。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -871,7 +871,12 @@ Trusted External Calls
         }
     }
 
+<<<<<<< HEAD
 .. Note that in function ``property_transfer``, the external calls are performed on variable ``t``.
+=======
+Note that in function ``property_transfer``, the external calls are
+performed on variable ``t``.
+>>>>>>> english/develop
 
 関数 ``property_transfer`` では、外部呼び出しは変数 ``t`` に対して行われることに注意してください。
 
@@ -1071,6 +1076,7 @@ SMTソルバーとHornソルバー
 .. <https://spacer.bitbucket.io/>`_ available as a Horn solver, and `Eldarica
 .. <https://github.com/uuverifiers/eldarica>`_ which does both.
 
+<<<<<<< HEAD
 上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。
 BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。
 SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
@@ -1115,6 +1121,11 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
   -  ``soljson.js`` （Solidity 0.6.9 以降）では静的に、つまりコンパイラのJavaScriptバイナリを使用しています。
+=======
+  - if ``solc`` is compiled with it;
+  - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
+  - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
+>>>>>>> english/develop
 
 .. note::
 
