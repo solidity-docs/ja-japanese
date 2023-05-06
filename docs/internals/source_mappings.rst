@@ -20,9 +20,16 @@
 .. or for breakpoint handling. This mapping also contains other information,
 .. like the jump type and the modifier depth (see below).
 
+<<<<<<< HEAD
 さらに、コンパイラは、バイトコードから、その命令を生成したソースコードの範囲へのマッピングを生成することもできます。
 これは、バイトコードレベルで動作する静的解析ツールや、デバッガ内でソースコードの現在の位置を表示したり、ブレークポイントを処理する際にも重要です。
 このマッピングには、ジャンプタイプや修飾子の深さなど、他の情報も含まれています（後述）。
+=======
+.. note::
+    In the case of instructions that are not associated with any particular source file,
+    the source mapping assigns an integer identifier of ``-1``. This may happen for
+    bytecode sections stemming from compiler-generated inline assembly statements.
+>>>>>>> english/develop
 
 .. Both kinds of source mappings use integer identifiers to refer to source files.
 .. The identifier of a source file is stored in
