@@ -169,6 +169,7 @@
         }
     }
 
+.. index:: ! literal;conversion, literal;rational, literal;hexadecimal number
 .. _types-conversion-literals:
 
 リテラルと初等型間の変換
@@ -195,8 +196,15 @@
 
 .. note::
 
+<<<<<<< HEAD
     バージョン0.8.0以前では、10進数や16進数のリテラルを明示的に整数型に変換できました。
     0.8.0からは、このような明示的な変換は暗黙的な変換と同様に厳格になりました。
+=======
+.. index:: literal;string, literal;hexadecimal
+
+Fixed-Size Byte Arrays
+----------------------
+>>>>>>> english/develop
 
 固定サイズバイト列
 ------------------
@@ -234,8 +242,15 @@
     bytes2 e = "x"; // NG
     bytes2 f = "xyz"; // NG
 
+<<<<<<< HEAD
 アドレス
 --------
+=======
+.. index:: literal;address
+
+Addresses
+---------
+>>>>>>> english/develop
 
 .. As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
 .. test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
