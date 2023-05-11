@@ -134,6 +134,7 @@ Solidity v0.8.0の破壊的変更点
 ..   is at most one change in sign, width or type-category (``int``, ``address``, ``bytesNN``, etc.).
 ..   To perform multiple changes, use multiple conversions.
 
+<<<<<<< HEAD
 ..   Let us use the notation ``T(S)`` to denote the explicit conversion ``T(x)``, where, ``T`` and
 ..   ``S`` are types, and ``x`` is any arbitrary variable of type ``S``. An example of such a
 ..   disallowed conversion would be ``uint16(int8)`` since it changes both width (8 bits to 16 bits)
@@ -317,3 +318,16 @@ Solidity v0.8.0の破壊的変更点
 - ``x**y**z`` を ``(x**y)**z`` に変更してください。
 - ``log0`` 、...、 ``log4`` の代わりにインラインアセンブリを使用してください。
 - 符号なし整数を、その型の最大値から引いて1を加えて否定してください（例: ``type(uint256).max - x + 1`` 、ただし ``x`` はゼロではないことを確認してください）。
+=======
+- If you rely on wrapping arithmetic, surround each operation with ``unchecked { ... }``.
+- Optional: If you use SafeMath or a similar library, change ``x.add(y)`` to ``x + y``, ``x.mul(y)`` to ``x * y`` etc.
+- Add ``pragma abicoder v1;`` if you want to stay with the old ABI coder.
+- Optionally remove ``pragma experimental ABIEncoderV2`` or ``pragma abicoder v2`` since it is redundant.
+- Change ``byte`` to ``bytes1``.
+- Add intermediate explicit type conversions if required.
+- Combine ``c.f{gas: 10000}{value: 1}()`` to ``c.f{gas: 10000, value: 1}()``.
+- Change ``msg.sender.transfer(x)`` to ``payable(msg.sender).transfer(x)`` or use a stored variable of ``address payable`` type.
+- Change ``x**y**z`` to ``(x**y)**z``.
+- Use inline assembly as a replacement for ``log0``, ..., ``log4``.
+- Negate unsigned integers by subtracting them from the maximum value of the type and adding 1 (e.g. ``type(uint256).max - x + 1``, while ensuring that ``x`` is not zero)
+>>>>>>> english/develop
