@@ -225,9 +225,16 @@ AmazonのAWSを使うためには、内部でどのように機能している�
 ある口座から別の口座への振り込みが要求された場合、データベースのトランザクションの性質上、ある口座から金額が差し引かれた場合、必ず別の口座に追加されます。
 何らかの理由で対象となる口座に金額を追加できない場合は、元の口座も変更されません。
 
+<<<<<<< HEAD
 さらに、トランザクションは常に送信者（作成者）によって暗号化されています。
 これにより、データベースの特定の変更に対するアクセスを簡単に保護できます。
 電子通貨の例では、簡単なチェックで、口座の鍵を持っている人だけがその口座からお金を送金できるようになっています。
+=======
+Furthermore, a transaction is always cryptographically signed by the sender (creator).
+This makes it straightforward to guard access to specific modifications of the
+database. In the example of the electronic currency, a simple check ensures that
+only the person holding the keys to the account can transfer some compensation, e.g. Ether, from it.
+>>>>>>> english/develop
 
 .. index:: ! block
 

@@ -15,12 +15,21 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 * 新しい言語のドキュメントの `翻訳 <https://github.com/solidity-docs>`_ 。
 
+<<<<<<< HEAD
 * 他のユーザーからの `StackExchange <https://ethereum.stackexchange.com>`_ や `Solidity Gitter Chat   <https://gitter.im/ethereum/solidity>`_ での質問への返答。
 
 * `Solidityフォーラム <https://forum.soliditylang.org/>`_ で言語の変更や新機能を提案やフィードバックの提供による言語設計プロセスへの関与。
 
 .. To get started, you can try :ref:`building-from-source` in order to familiarize yourself with the components of Solidity and the build process.
 .. Also, it may be useful to become well-versed at writing smart-contracts in Solidity.
+=======
+If you have issues or pull requests to discuss, or are interested in hearing what
+the team and contributors are working on, you can join our public team call:
+
+- Wednesdays at 3PM CET/CEST.
+
+The call takes place on `Jitsi <https://meet.soliditylang.org/>`_.
+>>>>>>> english/develop
 
 まずは :ref:`building-from-source` を使って、Solidityのコンポーネントやビルドプロセスに慣れてみてください。
 また、Solidityでのスマートコントラクトの書き方を熟知することも有効でしょう。
@@ -65,8 +74,14 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 言語設計に関する技術的な議論については、 `Solidity forum <https://forum.soliditylang.org/>`_ への投稿が正しい場所です（ :ref:`solidity_language_design` を参照してください）。
 
+<<<<<<< HEAD
 プルリクエストのワークフロー
 ============================
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
+`libz3 <https://github.com/Z3Prover/z3>`_).
+>>>>>>> english/develop
 
 .. In order to contribute, please fork off of the ``develop`` branch and make your changes there.
 .. Your commit messages should detail *why* you made your change in addition to *what* you did (unless it is a tiny change).
@@ -88,10 +103,15 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 ただし、より大きな変更を行う場合は、まず `Solidity Development Gitter チャンネル <https://gitter.im/ethereum/solidity-dev>`_ （前述のものとは異なり、こちらは言語の使い方ではなく、コンパイラや言語の開発に重点を置いています）に相談してください。
 
+<<<<<<< HEAD
 .. New features and bugfixes should be added to the ``Changelog.md`` file: please follow the style of previous entries, when applicable.
 
 新機能やバグフィックスは、 ``Changelog.md`` ファイルに追加してください。
 該当する場合は、過去のエントリーのスタイルに従ってください。
+=======
+The ``evmone`` library should both end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+>>>>>>> english/develop
 
 .. Finally, please make sure you respect the `coding style <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ for this project.
 .. Also, even though we do CI testing, please test your code and ensure that it builds locally before submitting a pull request.
@@ -99,8 +119,12 @@ Solidityに貢献するための選択肢はたくさんあります。
 最後に、このプロジェクトの `コーディングスタイル <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ を尊重するようにしてください。
 また、CIテストを行っているとはいえ、プルリクエストを提出する前にコードをテストし、ローカルにビルドされることを確認してください。
 
+<<<<<<< HEAD
 .. We highly recommend going through our `review checklist <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ before submitting the pull request.
 .. We thoroughly review every PR and will help you get it right, but there are many common problems that can be easily avoided, making the review much smoother.
+=======
+.. note::
+>>>>>>> english/develop
 
 プルリクエストを提出する前に、私たちの `レビューチェックリスト <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ に目を通すことを強くお勧めします。
 私たちはすべてのPRを徹底的にレビューし、あなたが正しい結果を得られるようサポートしますが、簡単に回避できる多くの一般的な問題があり、レビューがよりスムーズに行えるようになります。
@@ -119,7 +143,11 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 .. For running all compiler tests you may want to optionally install a few dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_, and `libhera <https://github.com/ewasm/hera>`_).
 
+<<<<<<< HEAD
 すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ 、 `libz3 <https://github.com/Z3Prover/z3>`_ 、 `libhera <https://github.com/ewasm/hera>`_ ）をオプションでインストールできます。
+=======
+.. note::
+>>>>>>> english/develop
 
 .. On macOS systems, some of the testing scripts expect GNU coreutils to be installed. 
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
@@ -243,6 +271,12 @@ SMTテストを実行するためには、 ``libz3`` ライブラリがインス
 GDBを使ってデバッグしたい場合は、「通常」とは異なる方法でビルドするようにしてください。
 例えば、 ``build`` フォルダで以下のコマンドを実行します。
 
+<<<<<<< HEAD
+=======
+If you want to debug using GDB, make sure you build differently than the "usual".
+For example, you could run the following command in your ``build`` folder:
+
+>>>>>>> english/develop
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
@@ -572,6 +606,7 @@ Whiskers
 
 次のセクションでは、Solidityへのドキュメント提供に特化したスタイルの推奨事項を紹介します。
 
+<<<<<<< HEAD
 .. English Language
 
 英語
@@ -593,6 +628,14 @@ Whiskers
 ..     While the official Solidity documentation is written in English, there are community contributed :ref:`translations`
 ..     in other languages available. Please refer to the `translation guide <https://github.com/solidity-docs/translation-guide>`_
 ..     for information on how to contribute to the community translations.
+=======
+Use International English, unless using project or brand names. Try to reduce the usage of
+local slang and references, making your language as clear to all readers as possible.
+Below are some references to help:
+
+* `Simplified technical English <https://en.wikipedia.org/wiki/Simplified_Technical_English>`_
+* `International English <https://en.wikipedia.org/wiki/International_English>`_
+>>>>>>> english/develop
 
 .. note::
 
