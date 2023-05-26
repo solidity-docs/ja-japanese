@@ -1042,12 +1042,18 @@ Unused PrunerやRedundant Assign Eliminatorは、このような変数を完全�
 
 .. _expression-simplifier:
 
-Expression Simplifier
-^^^^^^^^^^^^^^^^^^^^^
+ExpressionSimplifier
+^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 .. The Expression Simplifier uses the Dataflow Analyzer and makes use
 .. of a list of equivalence transforms on expressions like ``X + 0 -> X``
 .. to simplify the code.
+=======
+The ExpressionSimplifier uses the Dataflow Analyzer and makes use
+of a list of equivalence transforms on expressions like ``X + 0 -> X``
+to simplify the code.
+>>>>>>> english/develop
 
 Expression Simplifierは、Dataflow Analyzerを使用し、 ``X + 0 -> X`` のような式に対する等価変換のリストを利用してコードを単純化します。
 
@@ -1624,7 +1630,14 @@ SSAReverser
 
 .. This is a tiny step that helps in reversing the effects of the SSA transform if it is combined with the Common Subexpression Eliminator and the Unused Pruner.
 
+<<<<<<< HEAD
 これは、Common Subexpression EliminatorやUnused Prunerと組み合わせることで、SSAトランスフォームの効果を元に戻すのに役立つ小さな一歩です。
+=======
+The SSA form we generate is detrimental to code generation
+because it produces many local variables. It would
+be better to just re-use existing variables with assignments instead of
+fresh variable declarations.
+>>>>>>> english/develop
 
 .. The SSA form we generate is detrimental to code generation on the EVM and
 .. WebAssembly alike because it generates many local variables. It would
@@ -1772,6 +1785,7 @@ ForLoopConditionIntoBodyの変換の逆です。
     ...
     }
 
+<<<<<<< HEAD
 にします。
 
 LiteralRematerialiserは、このステップの前に実行する必要があります。
@@ -1785,3 +1799,6 @@ MainFunction
 一番上のブロックを、入力も出力も持たない特定の名前（"main"）を持つ関数に変更します。
 
 Function Grouperに依存します。
+=======
+The LiteralRematerialiser should be run before this step.
+>>>>>>> english/develop

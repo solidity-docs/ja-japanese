@@ -225,6 +225,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
   .. The function ``preincr_u8(1)`` returns the following values:
 
+<<<<<<< HEAD
   .. - Old code generator: 3 (``1 + 2``) but the return value is unspecified in general
 
   .. - New code generator: 4 (``2 + 2``) but the return value is not guaranteed
@@ -234,6 +235,10 @@ IRベースのコードジェネレーターを導入したのは、コード生
   - 古いコード生成器です: 3 (``1 + 2``)。ただし、一般に戻り値は不特定です。
 
   - 新しいコードジェネレーターです: 4 (``2 + 2``)。ただし、戻り値は保証されません。
+=======
+  - Old code generator: ``3`` (``1 + 2``) but the return value is unspecified in general
+  - New code generator: ``4`` (``2 + 2``) but the return value is not guaranteed
+>>>>>>> english/develop
 
   .. index:: ! evaluation order; function arguments
 
@@ -328,7 +333,11 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
+<<<<<<< HEAD
   .. The function `f()` behaves as follows:
+=======
+  The function ``f()`` behaves as follows:
+>>>>>>> english/develop
 
   .. - Old code generator: runs out of gas while zeroing the array contents after the large memory allocation
 
