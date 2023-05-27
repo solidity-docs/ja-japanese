@@ -484,12 +484,23 @@ superを使うときに呼び出される実際の関数は、型はわかって
 この場合、コントラクトは :ref:`abstract <abstract-contract>` マークを付けなければなりません。
 なぜなら、これらのパラメータは外部から有効な値を割り当てることができず、派生コントラクトのコンストラクタを通してのみ有効だからです。
 
+<<<<<<< HEAD
 .. warning ::
     バージョン0.4.22より前のバージョンでは、コンストラクタはコントラクトと同じ名前の関数として定義されていました。
     この構文は非推奨で、バージョン0.5.0ではもう認められていません。
 
 .. warning ::
     バージョン0.7.0より前のバージョンでは、コンストラクタの可視性を ``internal`` または ``public`` のいずれかに指定する必要がありました。
+=======
+.. warning::
+    Prior to version 0.4.22, constructors were defined as functions with the same name as the contract.
+    This syntax was deprecated and is not allowed anymore in version 0.5.0.
+
+.. warning::
+    Prior to version 0.7.0, you had to specify the visibility of constructors as either
+    ``internal`` or ``public``.
+
+>>>>>>> english/develop
 
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
