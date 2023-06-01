@@ -1,4 +1,4 @@
-.. index:: ! functions
+.. index:: ! functions, ! function;free
 
 .. _functions:
 
@@ -332,6 +332,7 @@ pure関数
 
 Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化を戻すことができます。
 
+<<<<<<< HEAD
 .. Reverting a state change is not considered a "state modification", as only changes to the
 .. state made previously in code that did not have the ``view`` or ``pure`` restriction
 .. are reverted and that code has the option to catch the ``revert`` and not pass it on.
@@ -347,6 +348,9 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 ..   It is not possible to prevent functions from reading the state at the level
 ..   of the EVM, it is only possible to prevent them from writing to the state
 ..   (i.e. only ``view`` can be enforced at the EVM level, ``pure`` can not).
+=======
+This behavior is also in line with the ``STATICCALL`` opcode.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -386,7 +390,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 特殊な関数
 ==========
 
-.. index:: ! receive ether function, function;receive ! receive
+.. index:: ! receive ether function, function;receive, ! receive
 
 .. _receive-ether-function:
 
