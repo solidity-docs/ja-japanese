@@ -41,8 +41,13 @@
 
 .. _data-location-assignment:
 
+<<<<<<< HEAD
 データロケーションと代入の挙動
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=======
+Data location and assignment behavior
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>>>>>> english/develop
 
 データロケーションは、データの永続性だけでなく、代入のセマンティクスにも関係します。
 
@@ -221,7 +226,7 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-.. index:: ! array;literals, ! inline;arrays
+.. index:: ! literal;array, ! inline;arrays
 
 配列リテラル
 ^^^^^^^^^^^^
@@ -536,8 +541,16 @@ However, the second ``x.push()`` switches the bytes array to large layout.
 Now the element that ``x.push()`` referred to is in the data area of the array while the reference still points at its original location, which is now a part of the length field and the assignment will effectively garble the length of ``x``.
 To be safe, only enlarge bytes arrays by at most one element during a single assignment and do not simultaneously index-access the array in the same statement.
 
+<<<<<<< HEAD
 While the above describes the behaviour of dangling storage references in the current version of the compiler, any code with dangling references should be considered to have *undefined behaviour*.
 In particular, this means that any future version of the compiler may change the behaviour of code that involves dangling references.
+=======
+While the above describes the behavior of dangling storage references in the
+current version of the compiler, any code with dangling references should be
+considered to have *undefined behavior*. In particular, this means that
+any future version of the compiler may change the behavior of code that
+involves dangling references.
+>>>>>>> english/develop
 
 Be sure to avoid dangling references in your code!
 
@@ -585,7 +598,11 @@ Be sure to avoid dangling references in your code!
         /// 引数のアドレスの基本的な検証を行った後、クライアントが実装する"setOwner(address)"のフォワードコール
         function forward(bytes calldata payload) external {
             bytes4 sig = bytes4(payload[:4]);
+<<<<<<< HEAD
             // 切り捨て処理のため、bytes4(payload)も同じ処理
+=======
+            // Due to truncating behavior, bytes4(payload) performs identically.
+>>>>>>> english/develop
             // bytes4 sig = bytes4(payload);
             if (sig == bytes4(keccak256("setOwner(address)"))) {
                 address owner = abi.decode(payload[4:], (address));
