@@ -34,8 +34,13 @@
 ..     * `Truffle <https://trufflesuite.com/truffle/>`_
 ..         Ethereum development framework.
 
+<<<<<<< HEAD
 * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
     Ethereum Virtual Machineをターゲットとしたスマートコントラクトのための、Pythonベースの開発およびテストフレームワーク。
+=======
+    * `Dapp <https://dapp.tools/>`_
+        Tool for building, testing and deploying smart contracts from the command-line.
+>>>>>>> english/develop
 
 * `Dapp <https://dapp.tools/>`_
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。

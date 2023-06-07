@@ -15,20 +15,37 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 * 新しい言語のドキュメントの `翻訳 <https://github.com/solidity-docs>`_ 。
 
+<<<<<<< HEAD
 * 他のユーザーからの `StackExchange <https://ethereum.stackexchange.com>`_ や `Solidity Gitter Chat   <https://gitter.im/ethereum/solidity>`_ での質問への返答。
 
 * `Solidityフォーラム <https://forum.soliditylang.org/>`_ で言語の変更や新機能を提案やフィードバックの提供による言語設計プロセスへの関与。
 
 .. To get started, you can try :ref:`building-from-source` in order to familiarize yourself with the components of Solidity and the build process.
 .. Also, it may be useful to become well-versed at writing smart-contracts in Solidity.
+=======
+If you have issues or pull requests to discuss, or are interested in hearing what
+the team and contributors are working on, you can join our public team call:
+
+- Wednesdays at 3PM CET/CEST.
+
+The call takes place on `Jitsi <https://meet.soliditylang.org/>`_.
+>>>>>>> english/develop
 
 まずは :ref:`building-from-source` を使って、Solidityのコンポーネントやビルドプロセスに慣れてみてください。
 また、Solidityでのスマートコントラクトの書き方を熟知することも有効でしょう。
 
 .. Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project — in the issues, pull requests, or Gitter channels — you agree to abide by its terms.
 
+<<<<<<< HEAD
 このプロジェクトは `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 付きで公開されていることにご注意ください。
 イシュー、プルリクエスト、Gitterチャンネルなど、このプロジェクトに参加することで、その条件を守ることに同意したことになります。
+=======
+* Solidity version.
+* Source code (if applicable).
+* Operating system.
+* Steps to reproduce the issue.
+* Actual vs. expected behavior.
+>>>>>>> english/develop
 
 チームコール
 ============
@@ -65,8 +82,14 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 言語設計に関する技術的な議論については、 `Solidity forum <https://forum.soliditylang.org/>`_ への投稿が正しい場所です（ :ref:`solidity_language_design` を参照してください）。
 
+<<<<<<< HEAD
 プルリクエストのワークフロー
 ============================
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
+`libz3 <https://github.com/Z3Prover/z3>`_).
+>>>>>>> english/develop
 
 .. In order to contribute, please fork off of the ``develop`` branch and make your changes there.
 .. Your commit messages should detail *why* you made your change in addition to *what* you did (unless it is a tiny change).
@@ -80,7 +103,14 @@ Solidityに貢献するための選択肢はたくさんあります。
 フォーク後に ``develop`` からの変更を取り込む必要がある場合（たとえば、潜在的なマージコンフリクトを解決するため）、 ``git merge`` の使用を避け、代わりに ``git rebase`` でブランチを作成してください。
 そうすることで、あなたの変更をより簡単に確認できます。
 
+<<<<<<< HEAD
 .. Additionally, if you are writing a new feature, please ensure you add appropriate test cases under ``test/`` (see below).
+=======
+The ``./scripts/tests.sh`` script executes most Solidity tests automatically,
+including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_
+application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command-line tests and
+compilation tests.
+>>>>>>> english/develop
 
 また、新機能を書いている場合は、 ``test/`` の下に適切なテストケースを追加してください（下記を参照してください）。
 
@@ -88,10 +118,15 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 ただし、より大きな変更を行う場合は、まず `Solidity Development Gitter チャンネル <https://gitter.im/ethereum/solidity-dev>`_ （前述のものとは異なり、こちらは言語の使い方ではなく、コンパイラや言語の開発に重点を置いています）に相談してください。
 
+<<<<<<< HEAD
 .. New features and bugfixes should be added to the ``Changelog.md`` file: please follow the style of previous entries, when applicable.
 
 新機能やバグフィックスは、 ``Changelog.md`` ファイルに追加してください。
 該当する場合は、過去のエントリーのスタイルに従ってください。
+=======
+The ``evmone`` library should both end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+>>>>>>> english/develop
 
 .. Finally, please make sure you respect the `coding style <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ for this project.
 .. Also, even though we do CI testing, please test your code and ensure that it builds locally before submitting a pull request.
@@ -99,8 +134,12 @@ Solidityに貢献するための選択肢はたくさんあります。
 最後に、このプロジェクトの `コーディングスタイル <https://github.com/ethereum/solidity/blob/develop/CODING_STYLE.md>`_ を尊重するようにしてください。
 また、CIテストを行っているとはいえ、プルリクエストを提出する前にコードをテストし、ローカルにビルドされることを確認してください。
 
+<<<<<<< HEAD
 .. We highly recommend going through our `review checklist <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ before submitting the pull request.
 .. We thoroughly review every PR and will help you get it right, but there are many common problems that can be easily avoided, making the review much smoother.
+=======
+.. note::
+>>>>>>> english/develop
 
 プルリクエストを提出する前に、私たちの `レビューチェックリスト <https://github.com/ethereum/solidity/blob/develop/ReviewChecklist.md>`_ に目を通すことを強くお勧めします。
 私たちはすべてのPRを徹底的にレビューし、あなたが正しい結果を得られるようサポートしますが、簡単に回避できる多くの一般的な問題があり、レビューがよりスムーズに行えるようになります。
@@ -119,7 +158,11 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 .. For running all compiler tests you may want to optionally install a few dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_, and `libhera <https://github.com/ewasm/hera>`_).
 
+<<<<<<< HEAD
 すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ 、 `libz3 <https://github.com/Z3Prover/z3>`_ 、 `libhera <https://github.com/ewasm/hera>`_ ）をオプションでインストールできます。
+=======
+.. note::
+>>>>>>> english/develop
 
 .. On macOS systems, some of the testing scripts expect GNU coreutils to be installed. 
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
@@ -243,6 +286,12 @@ SMTテストを実行するためには、 ``libz3`` ライブラリがインス
 GDBを使ってデバッグしたい場合は、「通常」とは異なる方法でビルドするようにしてください。
 例えば、 ``build`` フォルダで以下のコマンドを実行します。
 
+<<<<<<< HEAD
+=======
+If you want to debug using GDB, make sure you build differently than the "usual".
+For example, you could run the following command in your ``build`` folder:
+
+>>>>>>> english/develop
 .. code-block:: bash
 
    cmake -DCMAKE_BUILD_TYPE=Debug ..
@@ -338,7 +387,14 @@ CIは、Emscriptenターゲットのコンパイルを必要とする追加の�
 
 .. It offers several options for failing tests:
 
+<<<<<<< HEAD
 テストを失敗させるためのいくつかのオプションがあります。
+=======
+- ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command-line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
+- ``update``: Updates the expectations for contract under test. This updates the annotations by removing unmet expectations and adding missing expectations. The test is then run again.
+- ``skip``: Skips the execution of this particular test.
+- ``quit``: Quits ``isoltest``.
+>>>>>>> english/develop
 
 .. - ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
 
@@ -397,8 +453,65 @@ CIは、Emscriptenターゲットのコンパイルを必要とする追加の�
     継承やクロスコントラクトコールをテストする場合を除き、1つのファイルに複数のコントラクトを入れないでください。
     各ファイルは、新機能の1つの側面をテストする必要があります。
 
+<<<<<<< HEAD
 AFLによるファザーの実行
 =======================
+=======
+Command-line Tests
+------------------
+
+Our suite of end-to-end command-line tests checks the behaviour of the compiler binary as a whole
+in various scenarios.
+These tests are located in `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_,
+one per subdirectory, and can be executed using the ``cmdlineTests.sh`` script.
+
+By default the script runs all available tests.
+You can also provide one or more `file name patterns <https://www.gnu.org/software/bash/manual/bash.html#Filename-Expansion>`_,
+in which case only the tests matching at least one pattern will be executed.
+
+By default the script assumes that a ``solc`` binary is available inside the ``build/`` subdirectory
+inside the working copy.
+If you build the compiler outside of the source tree, you can use the ``SOLIDITY_BUILD_DIR`` environment
+variable to specify a different location for the build directory.
+
+Example:
+
+.. code-block:: bash
+
+    export SOLIDITY_BUILD_DIR=~/solidity/build/
+    test/cmdlineTests.sh "standard_*" "*_yul_*"
+
+The commands above will run tests from directories starting with ``test/cmdlineTests/standard_`` and
+subdirectories of ``test/cmdlineTests/`` that have ``_yul_`` somewhere in the name.
+It will also assume that the file ``solidity/build/solc/solc`` inside your home directory is the
+compiler binary (unless you are on Windows -- then ``solidity/build/solc/Release/solc.exe``).
+
+There are several kinds of command-line tests:
+
+- *Standard JSON test*: contains at least an ``input.json`` file.
+  In general may contain:
+
+    - ``input.json``: input file to be passed to the ``--standard-json`` option on the command line.
+    - ``output.json``: expected Standard JSON output.
+    - ``args``: extra command-line arguments passed to ``solc``.
+
+- *CLI test*: contains at least an ``input.*`` file (other than ``input.json``).
+  In general may contain:
+
+    - ``input.*``: a single input file, whose name will be supplied to ``solc`` on the command line.
+      Usually ``input.sol`` or ``input.yul``.
+    - ``args``: extra command-line arguments passed to ``solc``.
+    - ``stdin``: content to be passed to ``solc`` via standard input.
+    - ``output``: expected content of the standard output.
+    - ``err``: expected content of the standard error output.
+    - ``exit``: expected exit code. If not provided, zero is expected.
+
+- *Script test*: contains a ``test.*`` file.
+  In general may contain:
+
+    - ``test.*``: a single script to run, usually ``test.sh`` or ``test.py``.
+      The script must be executable.
+>>>>>>> english/develop
 
 .. Fuzzing is a technique that runs programs on more or less random inputs to find exceptional execution
 .. states (segmentation faults, exceptions, etc). Modern fuzzers are clever and run a directed search
@@ -492,11 +605,19 @@ AFLパッケージをリポジトリ（afl, afl-clang）からダウンロード
     # extract from documentation:
     path/to/solidity/scripts/isolate_tests.py path/to/solidity/docs
 
+<<<<<<< HEAD
 .. The AFL documentation states that the corpus (the initial input files) should not be
 .. too large. The files themselves should not be larger than 1 kB and there should be
 .. at most one input file per functionality, so better start with a small number of.
 .. There is also a tool called ``afl-cmin`` that can trim input files
 .. that result in similar behaviour of the binary.
+=======
+The AFL documentation states that the corpus (the initial input files) should not be
+too large. The files themselves should not be larger than 1 kB and there should be
+at most one input file per functionality, so better start with a small number of.
+There is also a tool called ``afl-cmin`` that can trim input files
+that result in similar behavior of the binary.
+>>>>>>> english/develop
 
 AFLのドキュメントでは、コーパス（最初の入力ファイル）はあまり大きくしない方が良いとされています。
 ファイル自体の大きさは1kB以下で、1つの機能に対して入力ファイルは多くても1つなので、少ない数から始めた方が良いでしょう。
@@ -572,6 +693,7 @@ Whiskers
 
 次のセクションでは、Solidityへのドキュメント提供に特化したスタイルの推奨事項を紹介します。
 
+<<<<<<< HEAD
 .. English Language
 
 英語
@@ -593,6 +715,14 @@ Whiskers
 ..     While the official Solidity documentation is written in English, there are community contributed :ref:`translations`
 ..     in other languages available. Please refer to the `translation guide <https://github.com/solidity-docs/translation-guide>`_
 ..     for information on how to contribute to the community translations.
+=======
+Use International English, unless using project or brand names. Try to reduce the usage of
+local slang and references, making your language as clear to all readers as possible.
+Below are some references to help:
+
+* `Simplified technical English <https://en.wikipedia.org/wiki/Simplified_Technical_English>`_
+* `International English <https://en.wikipedia.org/wiki/International_English>`_
+>>>>>>> english/develop
 
 .. note::
 
