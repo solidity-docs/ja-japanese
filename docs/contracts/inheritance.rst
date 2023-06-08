@@ -65,7 +65,12 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
     // 派生したコントラクトは、内部関数や状態変数を含む、プライベートでないすべてのメンバにアクセスできます。
     // しかし、これらは `this` を介して外部からアクセスすることはできません。
     contract Destructible is Owned {
+<<<<<<< HEAD
         // キーワード `virtual` は、その関数が派生クラスでその振る舞いを変更できる (「オーバーライド」) ことを意味します。
+=======
+        // The keyword `virtual` means that the function can change
+        // its behavior in derived classes ("overriding").
+>>>>>>> english/develop
         function destroy() virtual public {
             if (msg.sender == owner) selfdestruct(owner);
         }
@@ -112,8 +117,14 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
             if (msg.sender == owner) info = newInfo;
         }
 
+<<<<<<< HEAD
         // ここでは、 `override` のみを指定し、 `virtual` は指定しません。
         // これは、 `PriceFeed` から派生したコントラクトは、もう `destroy` の挙動を変更できないことを意味します。
+=======
+        // Here, we only specify `override` and not `virtual`.
+        // This means that contracts deriving from `PriceFeed`
+        // cannot change the behavior of `destroy` anymore.
+>>>>>>> english/develop
         function destroy() public override(Destructible, Named) { Named.destroy(); }
         function get() public view returns(uint r) { return info; }
 
@@ -306,6 +317,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 
 より正式には、シグネチャのすべてのオーバーライドパスの一部であるベースコントラクトがあり、(1)そのベースが関数を実装しており、現在のコントラクトからベースへのパスでそのシグネチャを持つ関数に言及しているものがないか、(2)そのベースが関数を実装しておらず、現在のコントラクトからベースへのすべてのパスで関数に言及しているものが多くても1つである場合、複数のベースから継承された関数をオーバーライドする必要はありません。
 
+<<<<<<< HEAD
 .. In this sense, an override path for a signature is a path through
 .. the inheritance graph that starts at the contract under consideration
 .. and ends at a contract mentioning a function with that signature
@@ -317,6 +329,10 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. contracts can no longer change the behaviour of that function.
 
 オーバーライドする関数を ``virtual`` としてマークしていない場合、派生コントラクトはもはやその関数の動作を変更できません。
+=======
+If you do not mark a function that overrides as ``virtual``, derived
+contracts can no longer change the behavior of that function.
+>>>>>>> english/develop
 
 .. note::
 
@@ -484,12 +500,23 @@ superを使うときに呼び出される実際の関数は、型はわかって
 この場合、コントラクトは :ref:`abstract <abstract-contract>` マークを付けなければなりません。
 なぜなら、これらのパラメータは外部から有効な値を割り当てることができず、派生コントラクトのコンストラクタを通してのみ有効だからです。
 
+<<<<<<< HEAD
 .. warning ::
     バージョン0.4.22より前のバージョンでは、コンストラクタはコントラクトと同じ名前の関数として定義されていました。
     この構文は非推奨で、バージョン0.5.0ではもう認められていません。
 
 .. warning ::
     バージョン0.7.0より前のバージョンでは、コンストラクタの可視性を ``internal`` または ``public`` のいずれかに指定する必要がありました。
+=======
+.. warning::
+    Prior to version 0.4.22, constructors were defined as functions with the same name as the contract.
+    This syntax was deprecated and is not allowed anymore in version 0.5.0.
+
+.. warning::
+    Prior to version 0.7.0, you had to specify the visibility of constructors as either
+    ``internal`` or ``public``.
+
+>>>>>>> english/develop
 
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
 
@@ -533,6 +560,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
         constructor() Base(10 + 10) {}
     }
 
+<<<<<<< HEAD
 .. One way is directly in the inheritance list (``is Base(7)``).  The other is in
 .. the way a modifier is invoked as part of
 .. the derived constructor (``Base(y * y)``). The first way to
@@ -550,6 +578,18 @@ superを使うときに呼び出される実際の関数は、型はわかって
 ベースのコンストラクタの引数が派生コントラクトの引数に依存する場合は、2 番目の方法を使用する必要があります。
 引数は、継承リストで指定するか、派生するコンストラクタの修飾子スタイルで指定する必要があります。
 両方の場所で引数を指定するとエラーになります。
+=======
+One way is directly in the inheritance list (``is Base(7)``).  The other is in
+the way a modifier is invoked as part of
+the derived constructor (``Base(y * y)``). The first way to
+do it is more convenient if the constructor argument is a
+constant and defines the behavior of the contract or
+describes it. The second way has to be used if the
+constructor arguments of the base depend on those of the
+derived contract. Arguments have to be given either in the
+inheritance list or in modifier-style in the derived constructor.
+Specifying arguments in both places is an error.
+>>>>>>> english/develop
 
 If a derived contract does not specify the arguments to all of its base
 contracts' constructors, it must be declared abstract. In that case, when
