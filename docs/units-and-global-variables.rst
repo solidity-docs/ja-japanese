@@ -1,8 +1,16 @@
+<<<<<<< HEAD
 ********************************
 単位とグローバルで利用可能な変数
 ********************************
+=======
+.. index:: ! denomination
 
-.. index:: wei, finney, szabo, gwei, ether
+**************************************
+Units and Globally Available Variables
+**************************************
+>>>>>>> english/develop
+
+.. index:: ! wei, ! finney, ! szabo, ! gwei, ! ether, ! denomination;ether
 
 Etherの単位
 ===========
@@ -22,7 +30,7 @@ Etherの単位
 
     バージョン0.7.0では、単位 ``finney`` と ``szabo`` が削除されました。
 
-.. index:: time, seconds, minutes, hours, days, weeks, years
+.. index:: ! seconds, ! minutes, ! hours, ! days, ! weeks, ! years, ! denomination;time
 
 時間の単位
 ==========
@@ -56,7 +64,7 @@ Etherの単位
 
     function f(uint start, uint daysAfter) public {
         if (block.timestamp >= start + daysAfter * 1 days) {
-          // ...
+            // ...
         }
     }
 
@@ -138,7 +146,13 @@ Etherの単位
 
 .. note::
 
+<<<<<<< HEAD
     自分が何をしているか分かっていない限り、ランダムネスのソースとして ``block.timestamp`` や ``blockhash`` に頼らないでください。
+=======
+    Both the timestamp and the block hash can be influenced by miners to some degree.
+    Bad actors in the mining community can for example run a casino payout function on a chosen hash
+    and just retry a different hash if they did not receive any compensation, e.g. Ether.
+>>>>>>> english/develop
 
     タイムスタンプもブロックハッシュも、ある程度はマイナーの影響を受ける可能性があります。
     マイニングコミュニティの悪質なアクターは、例えば、選択したハッシュでカジノのペイアウト関数を実行し、お金を受け取れなかった場合は別のハッシュで再試行できます。
@@ -313,12 +327,17 @@ stringのメンバー
     ``ecrecover`` を使用している場合、対応する秘密鍵を知らなくても、有効な署名を別の有効な署名に変えることができることに注意してください。
     Homesteadのハードフォークでは、この問題は _transaction_ signaturesで修正されましたが（ `EIP-2 <https://eips.ethereum.org/EIPS/eip-2#specification>`_ 参照）、ecrecover関数は変更されませんでした。
 
+<<<<<<< HEAD
     これは、署名を一意にする必要がある場合や、アイテムを識別するために使用する場合を除き、通常は問題になりません。
     OpenZeppelinには、この問題なしに ``ecrecover`` のラッパーとして使用できる `ECDSAヘルパーライブラリ <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ があります。
 
 .. .. note::
 
 ..     When running ``sha256``, ``ripemd160`` or ``ecrecover`` on a *private blockchain*, you might encounter Out-of-Gas. This is because these functions are implemented as "precompiled contracts" and only really exist after they receive the first message (although their contract code is hardcoded). Messages to non-existing contracts are more expensive and thus the execution might run into an Out-of-Gas error. A workaround for this problem is to first send Wei (1 for example) to each of the contracts before you use them in your actual contracts. This is not an issue on the main or test net.
+=======
+    This is usually not a problem unless you require signatures to be unique or use them to identify items.
+    OpenZeppelin has an `ECDSA helper library <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
+>>>>>>> english/develop
 
 .. note::
 
@@ -371,6 +390,7 @@ stringのメンバー
     ``.call()`` は、型チェック、関数の存在チェック、引数のパッキングをバイパスするので、他のコントラクトにある関数を実行する際には、可能な限り使用を避けるべきです。
 
 .. warning::
+<<<<<<< HEAD
 
     ``send`` の使用にはいくつかの危険があります。
     コールスタックの深さが1024の場合、送金は失敗し（これは常に呼び出し側で強制できます）、受信者がガス欠（out of gas）になった場合も失敗します。
@@ -387,6 +407,12 @@ stringのメンバー
 ..     The low-level calls which operate on addresses rather than contract instances (i.e. ``.call()``,
 ..     ``.delegatecall()``, ``.staticcall()``, ``.send()`` and ``.transfer()``) **do not** include this
 ..     check, which makes them cheaper in terms of gas but also less safe.
+=======
+    There are some dangers in using ``send``: The transfer fails if the call stack depth is at 1024
+    (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order
+    to make safe Ether transfers, always check the return value of ``send``, use ``transfer`` or even better:
+    Use a pattern where the recipient withdraws the Ether.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -421,8 +447,9 @@ stringのメンバー
 
     バージョン0.5.0以前では、 ``delegatecall`` と似ているが若干セマンティクスが異なる ``callcode`` というメンバーがありました。
 
-.. index:: this, selfdestruct
+.. index:: this, selfdestruct, super
 
+<<<<<<< HEAD
 コントラクト関連
 ----------------
 
@@ -437,6 +464,16 @@ stringのメンバー
 ..     - the receiving contract's receive function is not executed.
 
 ..     - the contract is only really destroyed at the end of the transaction and ``revert`` s might "undo" the destruction.
+=======
+Contract-related
+----------------
+
+``this`` (current contract's type)
+    The current contract, explicitly convertible to :ref:`address`
+
+``super``
+    A contract one level higher in the inheritance hierarchy
+>>>>>>> english/develop
 
 ``selfdestruct(address payable recipient)``
     現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了します。
@@ -449,10 +486,16 @@ stringのメンバー
 さらに、現在のコントラクトのすべての関数は、現在の関数を含めて直接呼び出すことができます。
 
 .. warning::
+<<<<<<< HEAD
     .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
     バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、非推奨の警告が発生します、 
     というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変わることになるからです。
+=======
+    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
+    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior
+    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+>>>>>>> english/develop
 
 .. note::
 
