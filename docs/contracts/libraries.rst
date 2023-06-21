@@ -323,6 +323,5 @@ EVMは、コントラクトが ``CALL`` を使用して呼び出されたかど�
 .. This means that the actual code stored on chain for a library
 .. is different from the code reported by the compiler as
 .. ``deployedBytecode``.
-.. 
 
 つまり、ライブラリのためにチェーンに保存された実際のコードは、コンパイラが ``deployedBytecode`` として報告したコードとは異なるということです。

@@ -33,5 +33,5 @@ JavaScriptの影響はバージョン0.4.0から少なくなりました。
 .. Furthermore, multiple inheritance, C3 linearization, and the ``super`` keyword are taken from Python as well as the general assignment and copy semantics of value and reference types.
 
 もう一つSolidityに影響を与えたのがPythonです。
-Solidityの修飾子は、Pythonのデコレータをモデルにして追加されたもので、機能はより制限されています。
+Solidityのモディファイアは、Pythonのデコレータをモデルにして追加されたもので、機能はより制限されています。
 さらに、多重継承、C3線形化、 ``super`` キーワードは、値や参照型の一般的な代入とコピーのセマンティクスと同様に、Pythonから採用されています。

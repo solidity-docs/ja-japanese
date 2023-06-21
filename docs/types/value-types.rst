@@ -6,7 +6,7 @@
 
 .. The following are called value types because their variables will always be passed by value, i.e. they are always copied when they are used as function arguments or in assignments.
 
-下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます、 
+下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます。
 つまり、関数の引数や代入で使われるときは、常にコピーされます。
 
 .. index:: ! bool, ! true, ! false
@@ -300,7 +300,7 @@ ABIに準拠していないコントラクトとのインターフェースや�
     以前のバージョンのSolidityでは、これらの関数が任意の引数を受け取ることができ、また、 ``bytes4`` 型の第1引数の扱いが異なっていました。
     これらのエッジケースはバージョン0.5.0で削除されました。
 
-``gas`` 修飾子で供給ガスを調整することが可能です。
+``gas`` モディファイアで供給ガスを調整することが可能です。
 
 .. code-block:: solidity
 
@@ -312,7 +312,7 @@ ABIに準拠していないコントラクトとのインターフェースや�
 
     address(nameReg).call{value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
-最後に、これらの修飾子は組み合わせることができます。
+最後に、これらのモディファイアは組み合わせることができます。
 その順番は問題ではありません。
 
 .. code-block:: solidity
@@ -563,7 +563,7 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
     "\n\"\'\\abc\
     def"
 
-改行ではない Unicode の行終端記号（LF、VF、FF、CR、NEL、LS、PS など）は、文字列リテラルを終了するものとみなされます。
+改行ではないUnicodeの行終端記号（LF、VF、FF、CR、NEL、LS、PSなど）は、文字列リテラルを終了するものとみなされます。
 改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
 
 Unicodeリテラル
@@ -732,7 +732,7 @@ Unicodeリテラル
 
 デフォルトでは、関数型は内部的なものなので、 ``internal`` キーワードは省略できます。
 これは関数型にのみ適用されることに注意してください。
-コントラクトで定義された関数については、可視性を明示的に指定する必要があり、デフォルトはありません。
+コントラクトで定義された関数については、ビジビリティを明示的に指定する必要があり、デフォルトはありません。
 
 変換:
 
@@ -882,7 +882,7 @@ Unicodeリテラル
         }
     }
 
-外部関数型を使用するもう一つの例: 
+外部関数型を使用するもう一つの例:
 
 .. code-block:: solidity
 

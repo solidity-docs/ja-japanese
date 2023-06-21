@@ -206,7 +206,6 @@
 
 ..    The ``--asm`` output is not designed to be machine readable. Therefore, there may be breaking
 ..    changes on the output between minor versions of solc.
-.. 
 
 .. note::
 

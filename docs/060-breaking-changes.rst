@@ -48,8 +48,8 @@ Solidity v0.6.0の破壊的変更点
 
 * 関数は、 ``virtual`` キーワードでマークされているか、インターフェースで定義されている場合にのみオーバーライドできるようになりました。
   インターフェースの外で実装されていない関数は、 ``virtual`` とマークされなければなりません。
-  関数や修飾子をオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。
-  複数の並列ベースで定義された関数や修飾子をオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります: ``override(Base1, Base2)`` 。
+  関数やモディファイアをオーバーライドする際には、新しいキーワード ``override`` を使用しなければなりません。
+  複数の並列ベースで定義された関数やモディファイアをオーバーライドする場合、キーワードの後の括弧内にすべてのベースを以下のように記載する必要があります: ``override(Base1, Base2)`` 。
 
 .. * Member-access to ``length`` of arrays is now always read-only, even for storage arrays.
 ..   It is no longer possible to resize storage arrays by assigning a new value to their length. Use ``push()``, ``push(value)`` or ``pop()`` instead, or assign a full array, which will of course overwrite the existing content.
@@ -192,7 +192,7 @@ Solidity v0.6.0の破壊的変更点
 .. Passing the value ``none`` completely removes the hash.
 
 コンパイラは、メタデータファイルの  `IPFS <https://ipfs.io/>`_  ハッシュをデフォルトでバイトコードの最後に追加するようになりました（詳細については、 :doc:`コントラクトメタデータ <metadata>` のドキュメントを参照してください）。
-0.6.0より前のバージョンでは、コンパイラはデフォルトで `Swarm <https://ethersphere.github.io/swarm-home/>`_ ハッシュを付加していましたが、この動作を引き続きサポートするために、新しいコマンドラインオプション ``--metadata-hash`` が導入されました。 
+0.6.0より前のバージョンでは、コンパイラはデフォルトで `Swarm <https://ethersphere.github.io/swarm-home/>`_ ハッシュを付加していましたが、この動作を引き続きサポートするために、新しいコマンドラインオプション ``--metadata-hash`` が導入されました。
 ``--metadata-hash`` コマンドラインオプションの値として ``ipfs`` または ``swarm`` を渡すことで、生成および付加されるハッシュを選択できます。
 ``none`` という値を渡すと、ハッシュが完全に削除されます。
 
@@ -273,7 +273,6 @@ C APIの変更点
 ..   ``override`` to every overriding function. For multiple inheritance, add ``override(A, B, ..)``,
 ..   where you list all contracts that define the overridden function in the parentheses. When
 ..   multiple bases define the same function, the inheriting contract must override all conflicting functions.
-.. 
 
 * オーバーライドしようとするすべての非インタフェース関数に ``virtual`` を追加してください。
   インターフェースの外にある実装のないすべての関数に ``virtual`` を追加してください。

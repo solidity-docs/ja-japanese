@@ -33,7 +33,7 @@
 .. note::
 
     バージョン0.6.9以前では、参照型引数のデータロケーションは、外部関数では ``calldata`` 、パブリック関数では ``memory`` 、内部およびプライベート関数では ``memory`` または ``storage`` に制限されていました。
-    現在では、 ``memory`` と ``calldata`` は、その可視性に関わらず、すべての関数で許可されています。
+    現在では、 ``memory`` と ``calldata`` は、そのビジビリティに関わらず、すべての関数で許可されています。
 
 .. note::
 
@@ -165,7 +165,7 @@ Solidityには文字列操作関数はありませんが、サードパーティ
 .. The function returns a single ``string memory`` array that contains the contents of the arguments without padding.
 .. If you want to use parameters of other types that are not implicitly convertible to ``string``, you need to convert them to ``string`` first.
 
-``string.concat`` を使えば、任意の数の ``string`` の値を連結することができます。
+``string.concat`` を使えば、任意の数の ``string`` の値を連結できます。
 この関数は、引数の内容をパディングせずに格納した単一の ``string memory`` を返します。
 暗黙のうちに ``string`` に変換できない他の型のパラメータを使用したい場合は、まず ``string`` に変換する必要があります。
 
@@ -331,8 +331,8 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
 
 .. note::
 
-    ``push()`` を呼び出してストレージ配列の長さを増加させると、ストレージがゼロ初期化されるため、ガスコストが一定になります。
-    一方、 ``pop()`` を呼び出して長さを減少させると、削除される要素の「サイズ」に依存するコストが発生します。
+    ``push()`` をコールしてストレージ配列の長さを増加させると、ストレージがゼロ初期化されるため、ガスコストが一定になります。
+    一方、 ``pop()`` をコールして長さを減少させると、削除される要素の「サイズ」に依存するコストが発生します。
     その要素が配列の場合は、 :ref:`delete<delete>` を呼び出すのと同様に、削除された要素を明示的にクリアすることが含まれるため、非常にコストがかかります。
 
 .. note::

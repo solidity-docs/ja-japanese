@@ -22,7 +22,7 @@
 
 さらに、コンパイラは、バイトコードから、その命令を生成したソースコードの範囲へのマッピングを生成することもできます。
 これは、バイトコードレベルで動作する静的解析ツールや、デバッガ内でソースコードの現在の位置を表示したり、ブレークポイントを処理する際にも重要です。
-このマッピングには、ジャンプタイプや修飾子の深さなど、他の情報も含まれています（後述）。
+このマッピングには、ジャンプタイプやモディファイアの深さなど、他の情報も含まれています（後述）。
 
 .. Both kinds of source mappings use integer identifiers to refer to source files.
 .. The identifier of a source file is stored in
@@ -34,7 +34,7 @@
 .. obtained via ``output['contracts'][sourceName][contractName]['evm']['bytecode']['generatedSources']``.
 
 どちらのソースマッピングも、ソースファイルの参照には整数の識別子を使用します。
-ソースファイルの識別子は  ``output['sources'][sourceName]['id']`` に格納され、 ``output`` はJSONとして解析された standard-json コンパイラインターフェースの出力です。
+ソースファイルの識別子は  ``output['sources'][sourceName]['id']`` に格納され、 ``output`` はJSONとして解析されたstandard-jsonコンパイラインターフェースの出力です。
 一部のユーティリティルーチンでは、コンパイラーは元の入力の一部ではなく、ソースマッピングから参照される「内部」ソースファイルを生成します。
 これらのソースファイルは、その識別子とともに、 ``output['contracts'][sourceName][contractName]['evm']['bytecode']['generatedSources']`` を通じて入手できます。
 
@@ -43,12 +43,11 @@
 ..     the source mapping assigns an integer identifier of ``-1``. This may happen for
 ..     bytecode sections stemming from compiler-generated inline assembly statements.
 
-.. note :: 
+.. note::
     特定のソースファイルに関連付けられていない命令の場合、ソースマッピングでは ``-1`` という整数の識別子が割り当てられます。
     これは、コンパイラによって生成されたインラインアセンブリ文に由来するバイトコードセクションで発生する可能性があります。
 
-.. The source mappings inside the AST use the following
-.. notation:
+.. The source mappings inside the AST use the following notation:
 
 AST内部のソースマッピングは以下の表記を使用しています。
 
@@ -79,9 +78,9 @@ AST内部のソースマッピングは以下の表記を使用しています�
 つまり、バイトオフセットを使用することはできず、命令オフセットを使用する必要があります（プッシュ命令は1バイトよりも長い）。
 フィールド ``s`` 、 ``l`` 、 ``f`` は上記の通りです。
 ``j`` は ``i`` 、 ``o`` 、 ``-`` のいずれかで、ジャンプ命令が関数に入るのか、関数から戻るのか、ループなどの一部としての通常のジャンプなのかを示します。
-最後のフィールド ``m`` は、「修飾子の深さ」を示す整数です。
-この深さは、修飾子にプレースホルダー文（ ``_`` ）が入力されるたびに増加し、再び入力されると減少します。
-これにより、同じ修飾子が2回使われたり、1つの修飾子に複数のプレースホルダー文が使われたりするようなトリッキーなケースをデバッガーが追跡できます。
+最後のフィールド ``m`` は、「モディファイアの深さ」を示す整数です。
+この深さは、モディファイアにプレースホルダー文（ ``_`` ）が入力されるたびに増加し、再び入力されると減少します。
+これにより、同じモディファイアが2回使われたり、1つのモディファイアに複数のプレースホルダー文が使われたりするようなトリッキーなケースをデバッガーが追跡できます。
 
 .. In order to compress these source mappings especially for bytecode, the
 .. following rules are used:
@@ -103,7 +102,6 @@ AST内部のソースマッピングは以下の表記を使用しています�
 .. Important to note is that when the :ref:`verbatim <yul-verbatim>` builtin is used,
 .. the source mappings will be invalid: The builtin is considered a single
 .. instruction instead of potentially multiple.
-.. 
 
 重要なのは、 :ref:`verbatim <yul-verbatim>` ビルトインを使用すると、ソースマッピングが無効になることです。
 ビルドインは複数の命令ではなく、1つの命令とみなされます。

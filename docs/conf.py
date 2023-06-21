@@ -45,6 +45,7 @@ extensions = [
     'sphinx_a4doc',
     'html_extra_template_renderer',
     'remix_code_links',
+    'sphinx.ext.imgconverter',
 ]
 
 a4_base_path = os.path.dirname(__file__) + '/grammar'
@@ -297,3 +298,8 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+# RTD uses automatically platex instead of pdflatex for Japanese documents.
+# Ref: https://docs.readthedocs.io/en/stable/guides/pdf-non-ascii-languages.html
+latex_engine = "platex"
+latex_use_xindy = False

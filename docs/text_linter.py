@@ -1,13 +1,14 @@
 import glob
 import unicodedata
+import re
 
 def check_terms():
 
-    term_list = [
+    check_list = [
         ("インターフェース", ("インターフェイス",)),
         ("状態変数", ("ステート変数",)),
         ("演算子", ("オペレータ",)),
-        ("修飾子", ("モディファイア",)),
+        ("モディファイア", ("修飾子",)),
         ("代入", ("割り当て",)),
         (" ", ("　",)),
         (":", ("：",)),
@@ -40,16 +41,21 @@ def check_terms():
         ("作成者", ("オリジネーター",)),
         ("将来", ("将来的に",)),
         ("``: ", ("`` : ",)),
+        ("\n", (" \n",)),
+        ("$1アカウント", ("([^行])口座",)),
+        # ("$1$2", ("([a-zA-Z0-9]) ([ぁ-んー])", "([ぁ-んー]) ([a-zA-Z0-9])")),
+        # ("$1コール", ("([^数部])呼び出し",)), # function call = 関数呼び出し, call = コール
         # (": ", (" : ",)),
     ]
 
-    for correct_term, wrong_terms in term_list:
-        for wrong_term in wrong_terms:
+    for correct_term, raw_patterns in check_list:
+        for raw_pattern in raw_patterns:
             for file in glob.glob("./**/*.rst", recursive=True):
                 lines = open(file).readlines()
                 for i, line in enumerate(lines):
-                    if wrong_term in line:
-                        print(f"{file}:{i + 1}  '{wrong_term}' => '{correct_term}'")
+                    pattern = re.compile(raw_pattern)
+                    if pattern.search(line):
+                        print(f"{file}:{i + 1}  '{raw_pattern}' => '{correct_term}'")
 
 
 def check_kuten():
@@ -94,10 +100,38 @@ def check_headers():
             if line_length != next_line_length:
                 print(f"{file}:{i + 1}  Header length mismatch: {line_length} != {next_line_length}")
 
-            if line_length == len(line):
-                print(f"{file}:{i}  Header might be not translated: {line}")
+            # ご検知も多いため適宜ONにする
+            # if line_length == len(line):
+            #     print(f"{file}:{i}  Header might be not translated: {line}")
+
+def detect_untranslated_lines():
+    for file in glob.glob("./**/*.rst", recursive=True):
+        lines = open(file).readlines()
+        ignore_block = False
+        for i, line in enumerate(lines):
+            lstripped_line = line.lstrip()
+
+            if lstripped_line.startswith(".. code-block::") or lstripped_line.startswith(".. toctree::"):
+                ignore_block = True
+                indent = len(line) - len(lstripped_line)
+            elif ignore_block and (line.startswith("  " + " " * indent) or line == "\n"):
+                continue
+            else:
+                ignore_block = False
+
+            # 。、が含まれているか正規表現でチェックする
+            if re.search(r"[ぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠]", line):
+                continue
+            if lstripped_line.startswith(".."):
+                continue
+            if not re.search(r"[a-zA-Z]", line):
+                continue
+            if not re.search(r"[,.]", line):
+                continue
+            print(f"{file}:{i + 1}  Untranslated line: {line[:-1]}")
 
 if __name__ == "__main__":
     check_terms()
     check_kuten()
     check_headers()
+    detect_untranslated_lines()

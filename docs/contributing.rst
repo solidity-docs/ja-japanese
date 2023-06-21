@@ -121,7 +121,7 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ 、 `libz3 <https://github.com/Z3Prover/z3>`_ 、 `libhera <https://github.com/ewasm/hera>`_ ）をオプションでインストールできます。
 
-.. On macOS systems, some of the testing scripts expect GNU coreutils to be installed. 
+.. On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
 
 macOSでは、一部のテストスクリプトでGNU coreutilsがインストールされていることが前提となっています。
@@ -620,8 +620,10 @@ Whiskers
 * Local and State Variable Names
 * Order of Layout
 
-Expand Contractions
--------------------
+.. Expand Contractions
+
+短縮形の展開
+------------
 
 .. Use expanded contractions for words, for example:
 
@@ -670,8 +672,10 @@ Expand Contractions
 
   When invoking the compiler, you can specify how to discover the first element of a path, and also path prefix remappings.
 
-Common Terms
-------------
+.. Common Terms
+
+一般的用語
+----------
 
 .. * "Function parameters" and "return variables", not input and output parameters.
 

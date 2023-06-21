@@ -11,7 +11,7 @@ Solidityコンパイラは、2つの異なるオプティマイザモジュー�
 オペコードベースのオプティマイザは、オペコードに `簡略化ルール <https://github.com/ethereum/solidity/blob/develop/libevmasm/RuleList.h>`_ を適用します。
 また、同じコードセットを組み合わせたり、使われていないコードを削除したりします。
 
-Yulベースのオプティマイザは、関数の呼び出しをまたいで動作できるのでより強力です。
+Yulベースのオプティマイザは、関数呼び出しをまたいで動作できるのでより強力です。
 例えば、Yulでは任意のジャンプができないため、各関数の副作用を計算できます。
 2つの関数呼び出しを考えてみましょう。
 1つ目はストレージを変更せず、2つ目はストレージを変更します。
@@ -84,7 +84,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 これらのブロックの中で、オプティマイザは命令を解析し、スタックやメモリ、ストレージに対するすべての変更を、命令と他の式へのポインタである引数のリストからなる式として記録します。
 
 .. Additionally, the opcode-based optimizer uses a component called "CommonSubexpressionEliminator" that, amongst other tasks, finds expressions that are always equal (on every input) and combines them into an expression class.
-.. It first tries to find each new expression in a list of already known expressions. 
+.. It first tries to find each new expression in a list of already known expressions.
 .. If no such matches are found, it simplifies the expression according to rules like ``constant + constant = sum_of_constants`` or ``X * 1 = X``.
 .. Since this is
 .. a recursive process, we can also apply the latter rule if the second factor
@@ -245,7 +245,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
 .. In particular, consider the following prototypical example of assembly generated for a
 .. call to an internal Solidity function:
 
-具体的には、Solidityの内部関数を呼び出した際に生成されるアセンブリの典型的な例を以下に示します。
+具体的には、Solidityの内部関数をコールした際に生成されるアセンブリの典型的な例を以下に示します。
 
 .. code-block:: text
 
@@ -293,7 +293,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
       ...body of function f...
       jump      // out
 
-.. In this situation the "PeepholeOptimizer" will remove the return jump. 
+.. In this situation the "PeepholeOptimizer" will remove the return jump.
 .. Ideally, all of this can be done
 .. for all references to ``tag_f`` leaving it unused, s.t. it can be removed, yielding:
 
@@ -315,7 +315,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
 .. the expected number of executions of the contract (the global optimizer parameter "runs").
 
 このようなインライン化は、インライン化しないよりもインライン化した方がコントラクトのライフタイムの中で安くなるというヒューリスティックな提案がある場合に試みられます。
-このヒューリスティックは、関数本体のサイズ、そのタグへの他の参照の数（関数の呼び出し回数に近似）、コントラクトの予想実行回数（グローバルオプティマイザのパラメータ「runs」）に依存します。
+このヒューリスティックは、関数本体のサイズ、そのタグへの他の参照の数（関数のコール回数に近似）、コントラクトの予想実行回数（グローバルオプティマイザのパラメータ「runs」）に依存します。
 
 Yulベースのオプティマイザモジュール
 ===================================
@@ -397,13 +397,19 @@ Abbreviation Full name
 ``d``        :ref:`var-decl-initializer`
 ============ ===============================
 
-Some steps depend on properties ensured by ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter``.
-For this reason the Yul optimizer always applies them before applying any steps supplied by the user.
+.. Some steps depend on properties ensured by ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter``.
+.. For this reason the Yul optimizer always applies them before applying any steps supplied by the user.
 
-The ReasoningBasedSimplifier is an optimizer step that is currently not enabled
-in the default set of steps. It uses an SMT solver to simplify arithmetic expressions
-and boolean conditions. It has not received thorough testing or validation yet and can produce
-non-reproducible results, so please use with care!
+いくつかのステップは ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter`` によって確保されるプロパティに依存しています。
+このため、Yulオプティマイザーは、ユーザーが提供したステップを適用する前に、常にそれらを適用します。
+
+.. The ReasoningBasedSimplifier is an optimizer step that is currently not enabled in the default set of steps.
+.. It uses an SMT solver to simplify arithmetic expressions and boolean conditions.
+.. It has not received thorough testing or validation yet and can produce non-reproducible results, so please use with care!
+
+ReasoningBasedSimplifierは、現在、デフォルトのステップセットでは有効になっていないオプティマイザーのステップです。
+SMTソルバーを使用して、算術式とブーリアン条件を簡略化します。
+まだ十分なテストや検証を受けておらず、再現性のない結果が出る可能性があるため、使用には注意が必要です！
 
 最適化の選択
 ------------
@@ -415,25 +421,30 @@ non-reproducible results, so please use with care!
 
     solc --optimize --ir-optimized --yul-optimizations 'dhfoD[xarrscLMcCTU]uljmul:fDnTOc'
 
-The order of steps is significant and affects the quality of the output.
-Moreover, applying a step may uncover new optimization opportunities for others that were already applied,
-so repeating steps is often beneficial.
+.. The order of steps is significant and affects the quality of the output.
+.. Moreover, applying a step may uncover new optimization opportunities for others that were already applied, so repeating steps is often beneficial.
 
-``[...]`` 内のシーケンスは、Yulコードが変化しなくなるか、最大ラウンド数（現在は12）に達するまで、複数回ループして適用されます。
-Brackets (``[]``) may be used multiple times in a sequence, but can not be nested.
+ステップの順番は重要で、アウトプットの品質に影響します。
+さらに、あるステップを適用することで、すでに適用した他のステップの新たな最適化の機会が発見されることもあり、ステップを繰り返すことが有益なことも多い。
 
-The sequence inside ``[...]`` will be applied multiple times in a loop until the Yul code
-remains unchanged or until the maximum number of rounds (currently 12) has been reached.
-Brackets (``[]``) may be used multiple times in a sequence, but can not be nested.
+.. The sequence inside ``[...]`` will be applied multiple times in a loop until the Yul code remains unchanged or until the maximum number of rounds (currently 12) has been reached.
+.. Brackets (``[]``) may be used multiple times in a sequence, but can not be nested.
 
-An important thing to note, is that there are some hardcoded steps that are always run before and after the
-user-supplied sequence, or the default sequence if one was not supplied by the user.
+``[...]`` 内のシーケンスは、Yulコードが変化しないか、最大ラウンド数（現在は12ラウンド）に達するまで、ループで複数回適用されます。
+括弧（ ``[]`` ）は連続して複数回使用することができますが、入れ子にすることはできません。
 
-The cleanup sequence delimiter ``:`` is optional, and is used to supply a custom cleanup sequence
-in order to replace the default one. If omitted, the optimizer will simply apply the default cleanup
-sequence. In addition, the delimiter may be placed at the beginning of the user-supplied sequence,
-which will result in the optimization sequence being empty, whereas conversely, if placed at the end of
-the sequence, will be treated as an empty cleanup sequence.
+.. An important thing to note, is that there are some hardcoded steps that are always run before and after the user-supplied sequence, or the default sequence if one was not supplied by the user.
+
+注意すべき重要な点は、ユーザーから提供されたシーケンス（ユーザーから提供されなかった場合はデフォルトのシーケンス）の前後に常に実行されるハードコードされたステップがいくつかあることです。
+
+.. The cleanup sequence delimiter ``:`` is optional, and is used to supply a custom cleanup sequence in order to replace the default one.
+.. If omitted, the optimizer will simply apply the default cleanup sequence.
+.. In addition, the delimiter may be placed at the beginning of the user-supplied sequence, which will result in the optimization sequence being empty, whereas conversely, if placed at the end of the sequence, will be treated as an empty cleanup sequence.
+
+クリーンアップシーケンスの区切り文字 ``:`` はオプションで、デフォルトのクリーンアップシーケンスを置き換えるために、カスタムクリーンアップシーケンスを指定するために使用します。
+省略された場合、オプティマイザはデフォルトのクリーンアップシーケンスを適用します。
+また、デリミターをユーザーが指定したシーケンスの先頭に置くと、最適化シーケンスは空になり、逆にシーケンスの末尾に置くと、空のクリーンアップシーケンスとして扱われます。
+
 
 前処理
 ------
@@ -474,7 +485,7 @@ FunctionHoister
 
 FunctionHoisterは、すべての関数定義を最上位のブロックの最後に移動させます。
 これは、曖昧さを解消するステージの後に実行される限り、意味的に同等の変換です。
-その理由は、定義を上位のブロックに移動しても、その可視性を低下させることはできず、また、別の関数で定義された変数を参照することもできないからです。
+その理由は、定義を上位のブロックに移動しても、そのビジビリティを低下させることはできず、また、別の関数で定義された変数を参照することもできないからです。
 
 .. The benefit of this stage is that function definitions can be looked up more easily
 .. and functions can be optimized in isolation without having to traverse the AST completely.
@@ -538,7 +549,7 @@ ForLoopConditionIntoBody
 .. This transformation can also be useful when paired with ``LoopInvariantCodeMotion``, since
 .. invariants in the loop-invariant conditions can then be taken outside the loop.
 
-ループ不変条件の不変量をループの外に出すことができるので、この変換は ``LoopInvariantCodeMotion`` と組み合わせても有効です。
+ループ不変条件の不変量をループの外に出すことができるため、この変換は ``LoopInvariantCodeMotion`` と組み合わせても有効です。
 
 .. _for-loop-init-rewriter:
 
@@ -1042,8 +1053,8 @@ Unused PrunerやRedundant Assign Eliminatorは、このような変数を完全�
 
 .. _expression-simplifier:
 
-Expression Simplifier
-^^^^^^^^^^^^^^^^^^^^^
+ExpressionSimplifier
+^^^^^^^^^^^^^^^^^^^^
 
 .. The Expression Simplifier uses the Dataflow Analyzer and makes use
 .. of a list of equivalence transforms on expressions like ``X + 0 -> X``
@@ -1256,7 +1267,7 @@ Common Subexpression Eliminator, because SSA will make sure that the variables
 will not change and the Common Subexpression Eliminator re-uses exactly the same
 variable if the value is known to be the same.
 
-Prerequisites: Disambiguator, ForLoopInitRewriter
+前提条件: Disambiguator, ForLoopInitRewriter
 
 .. _unused-pruner:
 
@@ -1440,12 +1451,9 @@ UnusedStoreEliminator
 ^^^^^^^^^^^^^^^^^^^^^
 
 Optimizer component that removes redundant ``sstore`` and memory store statements.
-In case of an ``sstore``, if all outgoing code paths revert (due to an explicit ``revert()``, ``invalid()``, or infinite recursion) or
-lead to another ``sstore`` for which the optimizer can tell that it will overwrite the first store, the statement will be removed.
-However, if there is a read operation between the initial ``sstore`` and the revert, or the overwriting ``sstore``, the statement
-will not be removed.
-Such read operations include: external calls, user-defined functions with any storage access, and ``sload`` of a slot that cannot be
-proven to differ from the slot written by the initial ``sstore``.
+In case of an ``sstore``, if all outgoing code paths revert (due to an explicit ``revert()``, ``invalid()``, or infinite recursion) or lead to another ``sstore`` for which the optimizer can tell that it will overwrite the first store, the statement will be removed.
+However, if there is a read operation between the initial ``sstore`` and the revert, or the overwriting ``sstore``, the statement will not be removed.
+Such read operations include: external calls, user-defined functions with any storage access, and ``sload`` of a slot that cannot be proven to differ from the slot written by the initial ``sstore``.
 
 For example, the following code
 
@@ -1470,14 +1478,12 @@ will be transformed into the code below after the Unused Store Eliminator step i
         sstore(c, 3)
     }
 
-For memory store operations, things are generally simpler, at least in the outermost yul block as all such
-statements will be removed if they are never read from in any code path.
-At function analysis level, however, the approach is similar to ``sstore``, as we do not know whether the memory location will
-be read once we leave the function's scope, so the statement will be removed only if all code paths lead to a memory overwrite.
+For memory store operations, things are generally simpler, at least in the outermost yul block as all such statements will be removed if they are never read from in any code path.
+At function analysis level, however, the approach is similar to ``sstore``, as we do not know whether the memory location will be read once we leave the function's scope, so the statement will be removed only if all code paths lead to a memory overwrite.
 
 Best run in SSA form.
 
-Prerequisites: Disambiguator, ForLoopInitRewriter.
+前提条件: Disambiguator, ForLoopInitRewriter.
 
 .. _equivalent-function-combiner:
 

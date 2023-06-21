@@ -13,7 +13,7 @@
 グローバル変数
 ==============
 
-- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: 
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``:
   与えたデータを :ref:`ABI <ABI>` デコードします。
   型は第2引数として括弧内に与えられます。
   例 ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
@@ -25,7 +25,7 @@
   与えた引数の :ref:`packed encoding <abi_packed_mode>` を実行します。
   このエンコーディングは曖昧になる可能性があることに注意してください！
 
-- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: 
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``:
   与えた引数を2番目から順に :ref:`ABI <ABI>` エンコードし、与えた4バイトのセレクタを前に付加します。
 
 - ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``:
@@ -36,7 +36,7 @@
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:
   ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` と同等です。
 
-- ``bytes.concat(...) returns (bytes memory)``: 
+- ``bytes.concat(...) returns (bytes memory)``:
   :ref:`可変個の引数を1つのバイト配列に連結します <bytes-concat>` 。
 
 - ``string.concat(...) returns (string memory)``: :ref:`可変個の引数を1つの文字列に連結します <string-concat>` 。
@@ -111,7 +111,7 @@
 
 - ``<address>.codehash`` (``bytes32``):  :ref:`address` のコードハッシュ。
 
-- ``<address payable>.send(uint256 amount) returns (bool)``: 
+- ``<address payable>.send(uint256 amount) returns (bool)``:
   指定された量のWeiを :ref:`address` に送り、失敗すると ``false`` を返します。
 
 - ``<address payable>.transfer(uint256 amount)``:
@@ -131,13 +131,13 @@
 - ``type(T).min`` (``T``):
   整数型 ``T`` で表現可能な最小値、 :ref:`型情報<meta-type>` を参照。
 
-- ``type(T).max`` (``T``): 
+- ``type(T).max`` (``T``):
   整数型 ``T`` で表現可能な最大値、 :ref:`型情報<meta-type>` を参照。
 
 .. index:: visibility, public, private, external, internal
 
-関数の可視性指定子
-==================
+関数のビジビリティ指定子
+========================
 
 .. code-block:: solidity
     :force:
@@ -153,8 +153,8 @@
 
 .. index:: modifiers, pure, view, payable, constant, anonymous, indexed
 
-修飾子
-======
+モディファイア
+==============
 
 - 関数の ``pure``: 状態の変更やアクセスを禁止します。
 - 関数の ``view``: 状態の変更を不可とします。
@@ -163,5 +163,5 @@
 - 状態変数の ``immutable``: コンストラクション時に正確に1つの代入を可能にし、その後は一定です。コードに格納されます。
 - イベントの ``anonymous``: イベントの署名をトピックとして保存しません。
 - イベントパラメータの ``indexed``: パラメータをトピックとして保存します。
-- 関数や修飾子の ``virtual``: 関数や修飾子の動作を派生コントラクトで変更できるようにします。
-- ``override``: この関数、修飾子、パブリックの状態変数が、ベースコントラクト内の関数や修飾子の動作を変更することを示します。
+- 関数やモディファイアの ``virtual``: 関数やモディファイアの動作を派生コントラクトで変更できるようにします。
+- ``override``: この関数、モディファイア、パブリックの状態変数が、ベースコントラクト内の関数やモディファイアの動作を変更することを示します。

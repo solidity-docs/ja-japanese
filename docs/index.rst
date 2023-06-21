@@ -2,7 +2,7 @@ Solidity
 ========
 
 Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。
-スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムです。
+スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムのことです。
 
 Solidityは、 Ethereum Virtual Machine (EVM)をターゲットに設計されている `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。
 C++、Python、JavaScriptの影響を受けています。
@@ -14,15 +14,15 @@ Solidityでは、投票、クラウドファンディング、ブラインドオ
 
 コントラクトをデプロイする際には、Solidityの最新のリリースバージョンを使用すべきです。
 例外的なケースを除いて、最新バージョンには `セキュリティフィックス <https://github.com/ethereum/solidity/security/policy#supported-versions>`_ が施されています。
-さらに、破壊的な変更や新機能も定期的に導入されます。
+さらに、破壊的な変更や新機能も定期的に導入されています。
 私たちは現在、 `この速いペースでの変更を示すため <https://semver.org/#spec-item-4>`_ に、0.y.zというバージョン番号を使用しています。
 
 .. warning::
 
-   Solidityは最近バージョン0.8.xをリリースしましたが、多くの変更点があります。
-   必ず :doc:`その完全なリスト <080-breaking-changes>` を読んでください。
+   Solidityは最近バージョン0.8.xをリリースしましたが、変更点が多くあります。
+   必ず :doc:`その詳細なリスト <080-breaking-changes>` を読んでください。
 
-Solidity やこのドキュメントを改善するためのアイデアはいつでも歓迎します。
+Solidityやこのドキュメントを改善するためのアイデアはいつでも歓迎します。
 詳細は :doc:`コントリビューターガイド <contributing>` を読んでください。
 
 .. Hint::
@@ -35,9 +35,10 @@ Solidity やこのドキュメントを改善するためのアイデアはい�
 
 **1. スマートコントラクトの基本を理解する**
 
-スマートコントラクトの概念を初めて知る方には、まず「スマートコントラクト入門」を掘り下げて読むことをお勧めします。
+スマートコントラクトの概念を初めて知る方には、まず「:doc:`スマートコントラクトの紹介 <introduction-to-smart-contracts>`」を掘り下げて読むことをお勧めします。
+これには次のコンテンツが含まれています。
 
-* :ref:`スマートコントラクトのシンプルな例 <simple-smart-contract>` （Solidityで記述）
+* :ref:`スマートコントラクトのシンプルな例 <simple-smart-contract>` （Solidityで書かれたもの）
 * :ref:`ブロックチェーンの基本 <blockchain-basics>`
 * :ref:`Ethereum Virtual Machine <the-ethereum-virtual-machine>`
 
@@ -47,19 +48,19 @@ Solidity やこのドキュメントを改善するためのアイデアはい�
 
 **3. Solidityコンパイラをインストールする**
 
-Solidity コンパイラをインストールするには様々な方法があります。
-お好みのオプションを選択し、 :ref:`インストールページ <installing-solidity>` に記載されている手順に従ってください。
+Solidityコンパイラをインストールするには様々な方法があります。
+好みのオプションを選択して、 :ref:`インストールページ <installing-solidity>` に記載されている手順に従ってください。
 
 .. hint::
-   `Remix IDE <https://remix.ethereum.org>`_ を使えば、ブラウザ上で直接コード例を試すことができます。
+   `Remix IDE <https://remix.ethereum.org>`_ を使えば、ブラウザ上で直接コードの例を試すことができます。
    RemixはWebブラウザベースのIDEで、Solidityをローカルにインストールすることなく、Solidityスマートコントラクトの作成、デプロイ、管理を行うことができます。
 
 .. warning::
    人間がソフトウェアを書くと、バグが発生することがあります。
    スマートコントラクトを作成する際には、確立されたソフトウェア開発のベストプラクティスに従うべきです。
-   これには、コードレビュー、テスト、監査、およびコレクトネスの証明が含まれます。
+   これには、コードレビュー、テスト、監査、およびコレクトネス（実装が仕様に沿っていること）の証明が含まれます。
    スマートコントラクトのユーザーは、コードの作成者よりもコードを信頼している場合があります。
-   また、ブロックチェーンやスマートコントラクトには、注意すべき独自の問題がありますので、本番のコードに取り組む前に、必ず :ref:`security_considerations` のセクションを読んでください。
+   また、ブロックチェーンやスマートコントラクトには、注意すべき特有の問題があるため、本番のコードに取り組む前に、必ず :ref:`security_considerations` のセクションを読んでください。
 
 **4. さらに学ぶ**
 
@@ -74,24 +75,24 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 このドキュメントは、コミュニティのコントリビューターによって、いくつかの言語に翻訳されています。
 これらの言語は、完成度と最新度が異なります。
-英語版を参考にしてください。
+正確な情報を得たい場合は、英語版を参考にしてください。
 
 左下のフライアウトメニューをクリックし、好みの言語を選択することで言語を切り替えることができます。
 
-* `Chinese <https://docs.soliditylang.org/zh/latest/>`_
-* `French <https://docs.soliditylang.org/fr/latest/>`_
-* `Indonesian <https://github.com/solidity-docs/id-indonesian>`_
-* `Japanese <https://github.com/solidity-docs/ja-japanese>`_
-* `Korean <https://github.com/solidity-docs/ko-korean>`_
-* `Persian <https://github.com/solidity-docs/fa-persian>`_
-* `Russian <https://github.com/solidity-docs/ru-russian>`_
-* `Spanish <https://github.com/solidity-docs/es-spanish>`_
-* `Turkish <https://docs.soliditylang.org/tr/latest/>`_
+* `中国語 <https://docs.soliditylang.org/zh/latest/>`_
+* `フランス語 <https://docs.soliditylang.org/fr/latest/>`_
+* `インドネシア語 <https://github.com/solidity-docs/id-indonesian>`_
+* `日本語 <https://github.com/solidity-docs/ja-japanese>`_
+* `韓国語 <https://github.com/solidity-docs/ko-korean>`_
+* `ペルシア語 <https://github.com/solidity-docs/fa-persian>`_
+* `ロシア語 <https://github.com/solidity-docs/ru-russian>`_
+* `スペイン語 <https://github.com/solidity-docs/es-spanish>`_
+* `トルコ語 <https://docs.soliditylang.org/tr/latest/>`_
 
 .. note::
 
    私たちは、コミュニティの取り組みを効率化するために、GitHubのオーガナイゼーションと翻訳ワークフローをセットアップしました。
-   新しい言語での翻訳を始めたり、コミュニティの翻訳に貢献する方法については、 `solidity-docs org <https://github.com/solidity-docs>`_ にある翻訳ガイドを参照してください。
+   新しい言語での翻訳を始めたり、コミュニティの翻訳に貢献する方法については、 `solidity-docsオーガナイゼーション <https://github.com/solidity-docs>`_ にある翻訳ガイドを参照してください。
 
 コンテンツ
 ==========
@@ -122,7 +123,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 .. toctree::
    :maxdepth: 2
-   :caption: コンパイラ 
+   :caption: コンパイラ
 
    using-the-compiler.rst
    analysing-compilation-output.rst
@@ -130,7 +131,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 .. toctree::
    :maxdepth: 2
-   :caption: 内部仕様 
+   :caption: 内部仕様
 
    internals/layout_in_storage.rst
    internals/layout_in_memory.rst

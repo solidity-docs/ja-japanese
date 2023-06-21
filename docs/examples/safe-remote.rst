@@ -88,13 +88,13 @@
             emit Aborted();
             state = State.Inactive;
             // ここではtransferを直接使っています。
-            // この関数の最後の呼び出しであり、すでに状態を変更しているため、reentrancy-safeになっています。
+            // この関数の最後のコールであり、すでに状態を変更しているため、reentrancy-safeになっています。
             seller.transfer(address(this).balance);
         }
 
         /// 買い手として購入を確認します。
         /// 取引には `2 * value` のEtherが含まれていなければなりません。
-        /// Etherは confirmReceived が呼ばれるまでロックされます。
+        /// EtherはconfirmReceivedが呼ばれるまでロックされます。
         function confirmPurchase()
             external
             inState(State.Created)

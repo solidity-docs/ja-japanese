@@ -11,7 +11,7 @@
 **********************
 
 .. The recommended method of sending funds after an effect is using the withdrawal pattern.
-.. Although the most intuitive method of sending Ether, as a result of an effect, is a direct ``transfer`` call, this is not recommended as it introduces a potential security risk. 
+.. Although the most intuitive method of sending Ether, as a result of an effect, is a direct ``transfer`` call, this is not recommended as it introduces a potential security risk.
 .. You may read more about this on the :ref:`security_considerations` page.
 
 エフェクト後の送金方法としては、出金パターンの使用が推奨されます。
@@ -129,7 +129,7 @@
 
 .. index:: function;modifier
 
-**関数修飾子** を使用することで、これらの制限が非常に読みやすくなります。
+**関数モディファイア** を使用することで、これらの制限が非常に読みやすくなります。
 
 .. code-block:: solidity
     :force:
@@ -147,20 +147,20 @@
         /// この操作を実行する権限が送信者にありません
         error Unauthorized();
 
-        /// 関数の呼び出しが早すぎます
+        /// 関数呼び出しが早すぎます
         error TooEarly();
 
-        /// 関数コールで送信されるEtherが不足しています
+        /// 関数呼び出しで送信されるEtherが不足しています
         error NotEnoughEther();
 
-        // 修飾子は、関数のボディを変更するために使用できます
-        // この修飾子を使用すると、特定のアドレスから関数が呼び出された場合にのみ実行されるチェックが前置されます
+        // モディファイアは、関数のボディを変更するために使用できます
+        // このモディファイアを使用すると、特定のアドレスから関数が呼び出された場合にのみ実行されるチェックが前置されます
         modifier onlyBy(address account)
         {
             if (msg.sender != account)
                 revert Unauthorized();
             // "_;" を忘れないでください！
-            // 修飾子が使用されると、実際の関数ボディに置き換えられます
+            // モディファイアが使用されると、実際の関数ボディに置き換えられます
             _;
         }
 
@@ -188,7 +188,7 @@
             delete owner;
         }
 
-        // この修飾子は、関数呼び出しに関連する一定の料金を要求します
+        // このモディファイアは、関数呼び出しに関連する一定の料金を要求します
         // 呼び出し側が過剰に送金した場合、払い戻されますが、関数ボディの後にのみ払い戻されます
         // これは Solidity バージョン 0.4.0 以前では危険で、`_;` の後の部分をスキップすることが可能でした
         modifier costs(uint amount) {
@@ -230,7 +230,7 @@
 
 コントラクトはしばしばステートマシンとして動作します。
 つまり、異なる動作をする特定の **ステージ** を持っていたり、異なる関数を呼び出すことができるということです。
-関数の呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させる（特にコントラクトが **インタラクション** をモデルとしている場合）。
+関数呼び出しはしばしばステージを終了し、コントラクトを次のステージに移行させます（特にコントラクトが **インタラクション** をモデルとしている場合）。
 また、 **ある時点** で自動的に到達するステージもあるのが一般的です。
 
 .. An example for this is a blind auction contract which starts in the stage "accepting blinded bids", then transitions to "revealing bids" which is ended by "determine auction outcome".
@@ -239,14 +239,14 @@
 
 .. index:: function;modifier
 
-このような場合、関数修飾子を使って状態をモデル化し、コントラクトの間違った使い方を防ぐことができます。
+このような場合、関数モディファイアを使って状態をモデル化し、コントラクトの間違った使い方を防ぐことができます。
 
 例
 ==
 
-次の例では、修飾子 ``atStage`` によって、あるステージでしかその関数を呼び出すことができないようにしています。
+次の例では、モディファイア ``atStage`` によって、あるステージでしかその関数を呼び出すことができないようにしています。
 
-時限式の自動トランジションは修飾子 ``timedTransitions`` で処理されます。
+時限式の自動トランジションはモディファイア ``timedTransitions`` で処理されます。
 
 .. .. note::
 
@@ -258,14 +258,14 @@
 
 .. note::
 
-    **修飾子の順序に関して**: 
+    **モディファイアの順序に関して**:
     atStageがtimedTransitionsと組み合わされている場合は、新しいステージが考慮されるように、後者の後に言及するようにしてください。
 
 .. Finally, the modifier ``transitionNext`` can be used
 .. to automatically go to the next stage when the
 .. function finishes.
 
-最後に、修飾子 ``transitionNext`` を使うと、関数が終了したときに自動的に次のステージに進むことができます。
+最後に、モディファイア ``transitionNext`` を使うと、関数が終了したときに自動的に次のステージに進むことができます。
 
 .. .. note::
 
@@ -277,11 +277,11 @@
 
 .. note::
 
-    **修飾子は省略可能**: 
+    **モディファイアは省略可能**:
     これは、バージョン0.4.0以前のSolidityにのみ適用されます。
-    修飾子は、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNext修飾子のコードをスキップできます。
+    モディファイアは、関数呼び出しを使用せず、単にコードを置き換えることで適用されるため、関数自体がreturnを使用している場合、transitionNextモディファイアのコードをスキップできます。
     その場合は、それらの関数から手動でnextStageを呼び出すようにしてください。
-    バージョン0.4.0からは、修飾子のコードは、関数が明示的にreturnしても実行されます。
+    バージョン0.4.0からは、モディファイアのコードは、関数が明示的にreturnしても実行されます。
 
 .. code-block:: solidity
     :force:
@@ -316,7 +316,7 @@
         }
 
         // 時間指定でトランジションを行います
-        // 必ずこの修飾子を最初に指定してください、そうしないとガードは新しいステージを考慮しません
+        // 必ずこのモディファイアを最初に指定してください、そうしないとガードは新しいステージを考慮しません
         modifier timedTransitions() {
             if (stage == Stages.AcceptingBlindedBids &&
                         block.timestamp >= creationTime + 10 days)
@@ -328,7 +328,7 @@
             _;
         }
 
-        // 修飾子の順序が重要です！
+        // モディファイアの順序が重要です！
         function bid()
             public
             payable
@@ -345,7 +345,7 @@
         {
         }
 
-        // この修飾子は、関数が終わった後、次のステージに移行します
+        // このモディファイアは、関数が終わった後、次のステージに移行します
         modifier transitionNext()
         {
             _;

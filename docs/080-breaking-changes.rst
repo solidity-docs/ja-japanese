@@ -190,7 +190,7 @@ Solidity v0.8.0の破壊的変更点
 
 .. * Function call options can only be given once, i.e. ``c.f{gas: 10000}{value: 1}()`` is invalid and has to be changed to ``c.f{gas: 10000, value: 1}()``.
 
-* 関数コールオプションは一度しか与えることができません。
+* 関数呼び出しのオプションは一度しか与えることができません。
   つまり、 ``c.f{gas: 10000}{value: 1}()`` は無効で、 ``c.f{gas: 10000, value: 1}()`` に変更しなければなりません。
 
 .. * The global functions ``log0``, ``log1``, ``log2``, ``log3`` and ``log4`` have been removed.

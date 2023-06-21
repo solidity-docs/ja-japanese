@@ -16,15 +16,16 @@
 .. 2. if the type of the left operand can be implicitly converted to the type of the right operand, use the type of the right operand,
 .. 3. otherwise, the operation is not allowed.
 
-1. 右オペランドの型が左オペランドの型に暗黙のうちに変換できる場合、左オペランドの型を使用する。
-2. 左オペランドの型が右オペランドの型に暗黙のうちに変換できる場合、右オペランドの型を使用する。
+1. 右オペランドの型が左オペランドの型に暗黙のうちに変換できる場合、左オペランドの型を使用します。
+2. 左オペランドの型が右オペランドの型に暗黙のうちに変換できる場合、右オペランドの型を使用します。
 3. それ以外の場合は、演算ができません。
 
 .. In case one of the operands is a :ref:`literal number <rational_literals>` it is first converted to its "mobile type", which is the smallest type that can hold the value (unsigned types of the same bit-width are considered "smaller" than the signed types).
 .. If both are literal numbers, the operation is computed with effectively unlimited precision in that the expression is evaluated to whatever precision is necessary so that none is lost when the result is used with a non-literal type.
 
 オペランドの一方が :ref:`リテラルの数値 <rational_literals>` の場合、まずその値を保持できる最小の型である「モバイル型」に変換されます（同じビット幅の符号なし型は符号付き型より「小さい」とみなされます）。
-両方がリテラルの数値の場合、演算は事実上無制限の精度で計算されます。つまり、式は必要な限りの精度で評価され、結果がリテラルでない型で使われたときに失われることはありません。
+両方がリテラルの数値の場合、演算は事実上無制限の精度で計算されます。
+つまり、式は必要な限りの精度で評価され、結果がリテラルでない型で使われたときに失われることはありません。
 
 .. The operator's result type is the same as the type the operation is performed in, except for comparison operators where the result is always ``bool``.
 

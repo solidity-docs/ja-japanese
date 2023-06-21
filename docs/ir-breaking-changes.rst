@@ -102,7 +102,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
   これは、最初に状態変数を初期化することに起因しています: まず、 ``x`` は0に設定され、 ``y`` を初期化する際に、 ``f()`` は0を返し、 ``y`` も0になります。
   新しいルールでは、 ``y`` は 42 に設定されます。
-  まず ``x`` を 0 に初期化し、次に A のコンストラクタを呼び出して ``x`` を 42 に設定します。
+  まず ``x`` を 0 に初期化し、次に A のコンストラクタをコールして ``x`` を 42 に設定します。
   最後に ``y`` を初期化する際に ``f()`` が 42 を返すので ``y`` は 42 になります。
 
 .. - When storage structs are deleted, every storage slot that contains a member of the struct is set to zero entirely.
@@ -143,11 +143,11 @@ IRベースのコードジェネレーターを導入したのは、コード生
 ..   The new code generator implements modifiers using actual functions and passes function parameters on.
 ..   This means that multiple evaluations of a function's body will get the same values for the parameters, and the effect on return variables is that they are reset to their default (zero) value for each execution.
 
-- 関数修飾子は、関数のパラメータとリターン変数に関して、若干異なる方法で実装されています。
-  これは特に、プレースホルダー ``_;`` が修飾子の中で複数回評価される場合に影響を及ぼします。
+- 関数モディファイアは、関数のパラメータとリターン変数に関して、若干異なる方法で実装されています。
+  これは特に、プレースホルダー ``_;`` がモディファイアの中で複数回評価される場合に影響を及ぼします。
   古いコードジェネレーターでは、各関数パラメータとリターン変数はスタック上に固定されたスロットを持っています。
   もし ``_;`` が複数回使われたり、ループ内で使われたりして関数が複数回実行されると、関数パラメータの値やリターン変数の値の変化は、関数の次の実行で見えるようになります。
-  新しいコードジェネレータでは、実際の関数を使用して修飾子を実装し、関数パラメータを渡します。
+  新しいコードジェネレータでは、実際の関数を使用してモディファイアを実装し、関数パラメータを渡します。
   つまり、関数本体を複数回評価しても、パラメータは同じ値になり、リターン変数は実行ごとにデフォルト（ゼロ）値にリセットされるという効果があります。
 
   .. code-block:: solidity
@@ -191,7 +191,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
   ..   It is not initialized again for the second ``_;`` evaluation and ``foo()`` does not explicitly assign it either (due to ``active == false``), thus it keeps its first value.
 
   .. - New code generator: ``0`` as all parameters, including return parameters, will be re-initialized before each ``_;`` evaluation.
-    
+
   関数 ``C.foo()`` は以下の値を返します:
 
   - 古いコードジェネレータ: 戻り値の変数である ``1`` は、最初の ``_;`` 評価の前に一度だけ ``0`` に初期化され、その後 ``return 1;`` によって上書きされます。

@@ -159,7 +159,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 .. For external function pointers the address and the function selector can be
 .. accessed using ``x.address`` and ``x.selector``.
 .. The selector consists of four right-aligned bytes.
-.. Both values can be assigned to. 
+.. Both values can be assigned to.
 
 外部関数ポインターの場合、アドレスと関数セレクタは ``x.address`` と ``x.selector`` を使ってアクセスできます。
 セレクタは右揃えの4バイトで構成されています。
@@ -355,27 +355,33 @@ Solidityのメモリ配列の要素は、常に32バイトの倍数を占めて�
 ..     Statically-sized memory arrays do not have a length field, but it might be added later
 ..     to allow better convertibility between statically and dynamically-sized arrays; so,
 ..     do not rely on this.
-.. 
 
 .. warning::
 
     静的サイズのメモリ配列にはlengthフィールドがありませんが、静的サイズの配列と動的サイズの配列の間でより良い変換を可能にするために、後に追加されるかもしれませんので、これに頼らないようにしてください。
 
-Memory Safety
-=============
+.. Memory Safety
 
-Without the use of inline assembly, the compiler can rely on memory to remain in a well-defined
-state at all times. This is especially relevant for :ref:`the new code generation pipeline via Yul IR <ir-breaking-changes>`:
-this code generation path can move local variables from stack to memory to avoid stack-too-deep errors and
-perform additional memory optimizations, if it can rely on certain assumptions about memory use.
+メモリ安全性
+============
 
-While we recommend to always respect Solidity's memory model, inline assembly allows you to use memory
-in an incompatible way. Therefore, moving stack variables to memory and additional memory optimizations are,
-by default, globally disabled in the presence of any inline assembly block that contains a memory operation
-or assigns to Solidity variables in memory.
+.. Without the use of inline assembly, the compiler can rely on memory to remain in a well-defined state at all times.
+.. This is especially relevant for :ref:`the new code generation pipeline via Yul IR <ir-breaking-changes>`:
+.. this code generation path can move local variables from stack to memory to avoid stack-too-deep errors and perform additional memory optimizations, if it can rely on certain assumptions about memory use.
 
-However, you can specifically annotate an assembly block to indicate that it in fact respects Solidity's memory
-model as follows:
+インラインアセンブリを使用しない場合、コンパイラはメモリが常にwell-definedな状態に保たれることに依存できます。
+これは特に :ref:`Yul IRによる新しいコード生成パイプライン <ir-breaking-changes>` に関連しています。
+このコード生成パスは、メモリの使用に関する特定の仮定に依存できる場合、スタックからメモリにローカル変数を移動してStack Too Deepを回避し、追加のメモリの最適化を実行できます。
+
+.. While we recommend to always respect Solidity's memory model, inline assembly allows you to use memory in an incompatible way.
+.. Therefore, moving stack variables to memory and additional memory optimizations are, by default, globally disabled in the presence of any inline assembly block that contains a memory operation or assigns to Solidity variables in memory.
+
+Solidityのメモリモデルを常に尊重することをお勧めしますが、インラインアセンブリでは互換性のない方法でメモリを使用できます。
+したがって、スタック変数のメモリへの移動と追加のメモリ最適化は、デフォルトでは、メモリ操作を含む、またはメモリ内のSolidity変数に代入するインラインアセンブリブロックの存在下でグローバルに無効になっています。
+
+.. However, you can specifically annotate an assembly block to indicate that it in fact respects Solidity's memory model as follows:
+
+ただし、次のようにアセンブリブロックに特別な注釈を付けて、実際にSolidityのメモリモデルを尊重していることを示すことができます:
 
 .. code-block:: solidity
 
@@ -383,20 +389,32 @@ model as follows:
         ...
     }
 
-In particular, a memory-safe assembly block may only access the following memory ranges:
+.. In particular, a memory-safe assembly block may only access the following memory ranges:
 
-- Memory allocated by yourself using a mechanism like the ``allocate`` function described above.
-- Memory allocated by Solidity, e.g. memory within the bounds of a memory array you reference.
-- The scratch space between memory offset 0 and 64 mentioned above.
-- Temporary memory that is located *after* the value of the free memory pointer at the beginning of the assembly block,
-  i.e. memory that is "allocated" at the free memory pointer without updating the free memory pointer.
+特に、メモリセーフなアセンブリブロックは、以下のメモリ範囲にのみアクセスできます:
 
-Furthermore, if the assembly block assigns to Solidity variables in memory, you need to assure that accesses to
-the Solidity variables only access these memory ranges.
+.. - Memory allocated by yourself using a mechanism like the ``allocate`` function described above.
+.. - Memory allocated by Solidity, e.g. memory within the bounds of a memory array you reference.
+.. - The scratch space between memory offset 0 and 64 mentioned above.
+.. - Temporary memory that is located *after* the value of the free memory pointer at the beginning of the assembly block,
+..   i.e. memory that is "allocated" at the free memory pointer without updating the free memory pointer.
 
-Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block
-reverts or terminates. As an example, the following assembly snippet is not memory safe, because the value of
-``returndatasize()`` may exceed the 64 byte scratch space:
+- 上記の ``allocate`` 関数のようなメカニズムを使用して自分で割り当てたメモリ。
+- Solidityによって割り当てられたメモリ（例: 参照するメモリ配列の境界内のメモリ）。
+- 上記のメモリオフセット0と64の間のスクラッチスペース。
+- アセンブリブロックの先頭のフリーメモリポインタの値より *後* に位置する一時的なメモリ。
+  すなわち、フリーメモリポインタを更新することなく、フリーメモリポインタに「割り当て」られたメモリ。
+
+.. Furthermore, if the assembly block assigns to Solidity variables in memory, you need to assure that accesses to the Solidity variables only access these memory ranges.
+
+さらに、アセンブリブロックがメモリ上のSolidity変数に割り当てる場合、Solidity変数へのアクセスがこれらのメモリ範囲にのみアクセスすることを保証する必要があります。
+
+.. Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block reverts or terminates.
+.. As an example, the following assembly snippet is not memory safe, because the value of ``returndatasize()`` may exceed the 64 byte scratch space:
+
+これは主にオプティマイザに関するものなので、アセンブリブロックがリバートしたり終了したりしても、これらの制限に従う必要があります。
+例として、次のアセンブリスニペットはメモリセーフではありません。
+なぜなら ``returndatasize()`` の値は64バイトのスクラッチスペースを超える可能性があるからです:
 
 .. code-block:: solidity
 
@@ -405,8 +423,10 @@ reverts or terminates. As an example, the following assembly snippet is not memo
       revert(0, returndatasize())
     }
 
-On the other hand, the following code *is* memory safe, because memory beyond the location pointed to by the
-free memory pointer can safely be used as temporary scratch space:
+.. On the other hand, the following code *is* memory safe, because memory beyond the location pointed to by the free memory pointer can safely be used as temporary scratch space:
+
+一方、次のコード *は* メモリセーフです。
+なぜなら、フリーメモリポインタが指す位置より先のメモリは、一時的なスクラッチスペースとして安全に使用できるからです。
 
 .. code-block:: solidity
 
@@ -416,10 +436,13 @@ free memory pointer can safely be used as temporary scratch space:
       revert(p, returndatasize())
     }
 
-Note that you do not need to update the free memory pointer if there is no following allocation,
-but you can only use memory starting from the current offset given by the free memory pointer.
+.. Note that you do not need to update the free memory pointer if there is no following allocation, but you can only use memory starting from the current offset given by the free memory pointer.
 
-If the memory operations use a length of zero, it is also fine to just use any offset (not only if it falls into the scratch space):
+次の割り当てがない場合は、フリーメモリポインタを更新する必要はありませんが、フリーメモリポインタが与える現在のオフセットから始まるメモリのみを使用できることに注意してください。
+
+.. If the memory operations use a length of zero, it is also fine to just use any offset (not only if it falls into the scratch space):
+
+メモリ操作で長さ0を使用する場合は、任意のオフセットを使用しても問題ありません（スクラッチスペースに該当する場合のみではありません）:
 
 .. code-block:: solidity
 
@@ -427,8 +450,11 @@ If the memory operations use a length of zero, it is also fine to just use any o
       revert(0, 0)
     }
 
-Note that not only memory operations in inline assembly itself can be memory-unsafe, but also assignments to
-Solidity variables of reference type in memory. For example the following is not memory-safe:
+.. Note that not only memory operations in inline assembly itself can be memory-unsafe, but also assignments to Solidity variables of reference type in memory.
+.. For example the following is not memory-safe:
+
+インラインアセンブリ自体のメモリ操作だけでなく、メモリ上の参照型のSolidity変数への代入もメモリセーフにならないことがあることに注意してください。
+例えば以下のようなものはメモリセーフではありません:
 
 .. code-block:: solidity
 
@@ -438,16 +464,20 @@ Solidity variables of reference type in memory. For example the following is not
     }
     x[0x20] = 0x42;
 
-Inline assembly that neither involves any operations that access memory nor assigns to any Solidity variables
-in memory is automatically considered memory-safe and does not need to be annotated.
+.. Inline assembly that neither involves any operations that access memory nor assigns to any Solidity variables in memory is automatically considered memory-safe and does not need to be annotated.
+
+メモリにアクセスする操作や、メモリ上のSolidity変数への代入を行わないインラインアセンブリは、自動的にメモリセーフとみなされ、アノテーションを付ける必要はありません。
 
 .. warning::
-    It is your responsibility to make sure that the assembly actually satisfies the memory model. If you annotate
-    an assembly block as memory-safe, but violate one of the memory assumptions, this **will** lead to incorrect and
-    undefined behaviour that cannot easily be discovered by testing.
+    .. It is your responsibility to make sure that the assembly actually satisfies the memory model.
+    .. If you annotate an assembly block as memory-safe, but violate one of the memory assumptions, this **will** lead to incorrect and undefined behaviour that cannot easily be discovered by testing.
 
-In case you are developing a library that is meant to be compatible across multiple versions
-of Solidity, you can use a special comment to annotate an assembly block as memory-safe:
+    アセンブリが実際にメモリモデルを満たしているかどうかを確認するのは、あなたの責任です。
+    アセンブリブロックをメモリセーフとアノテーションしても、メモリの前提条件の1つに違反した場合、テストでは容易に発見できない不正確で未定義の動作につながるでしょう。
+
+.. In case you are developing a library that is meant to be compatible across multiple versions of Solidity, you can use a special comment to annotate an assembly block as memory-safe:
+
+Solidityの複数のバージョンで互換性のあるライブラリを開発する場合、特別なコメントを使用してアセンブリブロックをメモリセーフとして注釈できます:
 
 .. code-block:: solidity
 
@@ -456,5 +486,7 @@ of Solidity, you can use a special comment to annotate an assembly block as memo
         ...
     }
 
-Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
-backwards-compatibility with older compiler versions, prefer using the dialect string.
+.. Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with backwards-compatibility with older compiler versions, prefer using the dialect string.
+
+なお、コメントによるアノテーションは、将来のブレーキングリリースで禁止する予定です。
+したがって、古いコンパイラのバージョンとの後方互換性にこだわらない場合は、方言文字列を使用することをお勧めします。

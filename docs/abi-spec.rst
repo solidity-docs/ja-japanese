@@ -24,7 +24,7 @@
 関数セレクタ
 ============
 
-.. The signature is defined as the canonical expression of the basic prototype without data location specifier, i.e. the function name with the parenthesised list of parameter types. 
+.. The signature is defined as the canonical expression of the basic prototype without data location specifier, i.e. the function name with the parenthesised list of parameter types.
 
 関数呼び出しのコールデータの最初の4バイトは、呼び出される関数を指定します。
 これは、関数のシグネチャのKeccak-256ハッシュの最初（左、ビッグエンディアンの高次）の4バイトです。
@@ -77,7 +77,7 @@
 次のような（固定サイズの）配列型が存在します。
 
 - ``<type>[M]``: 与えられた型の ``M`` 個の要素の固定長の配列。
-   ``M >= 0`` 。
+  ``M >= 0`` 。
 
   .. note::
 
@@ -113,7 +113,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 +-------------------------------+-----------------------------------------------------------------------------+
 |:ref:`enum<enums>`             |``uint8``                                                                    |
 +-------------------------------+-----------------------------------------------------------------------------+
-|:ref:`user defined value types |its underlying value type                                                    |
+|:ref:`user defined value types |元となる値型                                                                 |
 |<user-defined-value-types>`    |                                                                             |
 +-------------------------------+-----------------------------------------------------------------------------+
 |:ref:`struct<structs>`         |``tuple``                                                                    |
@@ -363,7 +363,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 動的型の使用法
 ==============
 
-シグネチャが ``f(uint256,uint32[],bytes10,bytes)`` で値が  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` である関数の呼び出しは、以下のようにエンコードされます。
+シグネチャが ``f(uint256,uint32[],bytes10,bytes)`` で値が  ``(0x123, [0x456, 0x789], "1234567890", "Hello, world!")`` である関数呼び出しは、以下のようにエンコードされます。
 
 .. We take the first four bytes of ``keccak("f(uint256,uint32[],bytes10,bytes)")``, i.e. ``0x8be65246``.
 .. Then we encode the head parts of all four arguments. For the static types ``uint256`` and ``bytes10``,
@@ -717,7 +717,7 @@ receive関数とfallback関数には ``inputs`` もありません。
 
 .. note::
 
-    ステートミュータビリティ ``nonpayable`` は、Solidityではステートミュータビリティ修飾子を指定しないことで設定されます。
+    ステートミュータビリティ ``nonpayable`` は、Solidityではステートミュータビリティモディファイアを指定しないことで設定されます。
 
 .. An event description is a JSON object with fairly similar fields:
 
@@ -799,8 +799,7 @@ receive関数とfallback関数には ``inputs`` もありません。
 タプル型のハンドリング
 ----------------------
 
-.. Despite that names are intentionally not part of the ABI encoding they do make a lot of sense to be included
-.. in the JSON to enable displaying it to the end user. 
+.. Despite that names are intentionally not part of the ABI encoding they do make a lot of sense to be included in the JSON to enable displaying it to the end user.
 .. The structure is nested in the following way:
 
 名前は意図的にABIエンコーディングの一部ではありませんが、エンドユーザーに表示するためにJSONに含めることには大きな意味があります。
@@ -997,7 +996,7 @@ Solidityは、 ``abi.encodePacked()`` を通して、非標準のパックモー
 ======================================================
 
 .. Indexed event parameters that are not value types, i.e. arrays and structs are not
-.. stored directly but instead a keccak-256 hash of an encoding is stored. 
+.. stored directly but instead a keccak-256 hash of an encoding is stored.
 
 値型ではないインデックスされたイベントパラメータ（配列や構造体）は、直接保存されず、エンコーディングのkeccak256ハッシュが保存されます。
 このエンコーディングは以下のように定義されています。
