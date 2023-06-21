@@ -412,7 +412,7 @@ Solidityのメモリモデルを常に尊重することをお勧めしますが
 .. Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block reverts or terminates.
 .. As an example, the following assembly snippet is not memory safe, because the value of ``returndatasize()`` may exceed the 64 byte scratch space:
 
-これは主にオプティマイザに関するものなので、アセンブリブロックが元に戻ったり終了したりしても、これらの制限に従う必要があります。
+これは主にオプティマイザに関するものなので、アセンブリブロックがリバートしたり終了したりしても、これらの制限に従う必要があります。
 例として、次のアセンブリスニペットはメモリセーフではありません。
 なぜなら ``returndatasize()`` の値は64バイトのスクラッチスペースを超える可能性があるからです:
 

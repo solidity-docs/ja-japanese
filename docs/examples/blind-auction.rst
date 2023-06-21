@@ -70,7 +70,7 @@
         /// 落札されなかった場合のみ、valueは返金されます。
         function bid() external payable {
             // 引数は必要なく、すべての情報はすでにトランザクションの一部となっています。
-            // キーワード payable は、この関数が Ether を受け取ることができるようにするために必要です。
+            // キーワードpayableは、この関数がEtherを受け取ることができるようにするために必要です。
 
             // 入札期間が終了した場合、コールをリバートします。
             if (block.timestamp > auctionEndTime)

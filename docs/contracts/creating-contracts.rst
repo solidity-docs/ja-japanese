@@ -87,8 +87,8 @@ Ethereumでプログラマティックにコントラクトを作成する方法
             returns (OwnedToken tokenAddress)
         {
             // 新しい `Token` コントラクトを作成し、そのアドレスを返す。
-            // JavaScript 側から見ると、この関数の戻り値の型は `address` です。
-            // これは ABI で利用可能な最も近い型だからです。
+            // JavaScript側から見ると、この関数の戻り値の型は `address` です。
+            // これはABIで利用可能な最も近い型だからです。
             return new OwnedToken(name);
         }
 

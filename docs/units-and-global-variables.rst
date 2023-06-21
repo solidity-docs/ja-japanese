@@ -113,10 +113,8 @@ Etherの単位
 
 .. .. note::
 
-..     When contracts are evaluated off-chain rather than in context of a transaction included in a
-..     block, you should not assume that ``block.*`` and ``tx.*`` refer to values from any specific
-..     block or transaction. These values are provided by the EVM implementation that executes the
-..     contract and can be arbitrary.
+..     When contracts are evaluated off-chain rather than in context of a transaction included in a block, you should not assume that ``block.*`` and ``tx.*`` refer to values from any specific block or transaction.
+..     These values are provided by the EVM implementation that executes the contract and can be arbitrary.
 
 .. note::
 
@@ -125,16 +123,12 @@ Etherの単位
 
 .. .. note::
 
-..     Do not rely on ``block.timestamp`` or ``blockhash`` as a source of randomness,
-..     unless you know what you are doing.
+..     Do not rely on ``block.timestamp`` or ``blockhash`` as a source of randomness, unless you know what you are doing.
 
 ..     Both the timestamp and the block hash can be influenced by miners to some degree.
-..     Bad actors in the mining community can for example run a casino payout function on a chosen hash
-..     and just retry a different hash if they did not receive any money.
+..     Bad actors in the mining community can for example run a casino payout function on a chosen hash and just retry a different hash if they did not receive any money.
 
-..     The current block timestamp must be strictly larger than the timestamp of the last block,
-..     but the only guarantee is that it will be somewhere between the timestamps of two
-..     consecutive blocks in the canonical chain.
+..     The current block timestamp must be strictly larger than the timestamp of the last block, but the only guarantee is that it will be somewhere between the timestamps of two consecutive blocks in the canonical chain.
 
 .. note::
 
@@ -539,4 +533,4 @@ stringのメンバー
 ``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
 ``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
 ``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
-``var``.
+``var`` 。

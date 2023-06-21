@@ -27,7 +27,6 @@
     .. This is the default visibility level for state variables.
 
 ``internal``
-
     内部状態変数は、定義されているコントラクト内および派生コントラクトからのみアクセス可能です。
     外部にアクセスすることはできません。
     これは、状態変数のデフォルトのビジビリティレベルです。

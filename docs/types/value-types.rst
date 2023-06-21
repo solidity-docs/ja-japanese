@@ -563,7 +563,7 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
     "\n\"\'\\abc\
     def"
 
-改行ではない Unicode の行終端記号（LF、VF、FF、CR、NEL、LS、PS など）は、文字列リテラルを終了するものとみなされます。
+改行ではないUnicodeの行終端記号（LF、VF、FF、CR、NEL、LS、PSなど）は、文字列リテラルを終了するものとみなされます。
 改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
 
 Unicodeリテラル

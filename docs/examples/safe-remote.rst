@@ -94,7 +94,7 @@
 
         /// 買い手として購入を確認します。
         /// 取引には `2 * value` のEtherが含まれていなければなりません。
-        /// Etherは confirmReceived が呼ばれるまでロックされます。
+        /// EtherはconfirmReceivedが呼ばれるまでロックされます。
         function confirmPurchase()
             external
             inState(State.Created)

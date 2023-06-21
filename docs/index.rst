@@ -22,7 +22,7 @@ Solidityでは、投票、クラウドファンディング、ブラインドオ
    Solidityは最近バージョン0.8.xをリリースしましたが、変更点が多くあります。
    必ず :doc:`その詳細なリスト <080-breaking-changes>` を読んでください。
 
-Solidity やこのドキュメントを改善するためのアイデアはいつでも歓迎します。
+Solidityやこのドキュメントを改善するためのアイデアはいつでも歓迎します。
 詳細は :doc:`コントリビューターガイド <contributing>` を読んでください。
 
 .. Hint::
@@ -36,6 +36,7 @@ Solidity やこのドキュメントを改善するためのアイデアはい�
 **1. スマートコントラクトの基本を理解する**
 
 スマートコントラクトの概念を初めて知る方には、まず「:doc:`スマートコントラクトの紹介 <introduction-to-smart-contracts>`」を掘り下げて読むことをお勧めします。
+これには次のコンテンツが含まれています。
 
 * :ref:`スマートコントラクトのシンプルな例 <simple-smart-contract>` （Solidityで書かれたもの）
 * :ref:`ブロックチェーンの基本 <blockchain-basics>`
@@ -74,19 +75,19 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 このドキュメントは、コミュニティのコントリビューターによって、いくつかの言語に翻訳されています。
 これらの言語は、完成度と最新度が異なります。
-より正確な情報得たい場合は、英語版を参考にしてください。
+正確な情報を得たい場合は、英語版を参考にしてください。
 
 左下のフライアウトメニューをクリックし、好みの言語を選択することで言語を切り替えることができます。
 
-* `Chinese <https://docs.soliditylang.org/zh/latest/>`_
-* `French <https://docs.soliditylang.org/fr/latest/>`_
-* `Indonesian <https://github.com/solidity-docs/id-indonesian>`_
-* `Japanese <https://github.com/solidity-docs/ja-japanese>`_
-* `Korean <https://github.com/solidity-docs/ko-korean>`_
-* `Persian <https://github.com/solidity-docs/fa-persian>`_
-* `Russian <https://github.com/solidity-docs/ru-russian>`_
-* `Spanish <https://github.com/solidity-docs/es-spanish>`_
-* `Turkish <https://docs.soliditylang.org/tr/latest/>`_
+* `中国語 <https://docs.soliditylang.org/zh/latest/>`_
+* `フランス語 <https://docs.soliditylang.org/fr/latest/>`_
+* `インドネシア語 <https://github.com/solidity-docs/id-indonesian>`_
+* `日本語 <https://github.com/solidity-docs/ja-japanese>`_
+* `韓国語 <https://github.com/solidity-docs/ko-korean>`_
+* `ペルシア語 <https://github.com/solidity-docs/fa-persian>`_
+* `ロシア語 <https://github.com/solidity-docs/ru-russian>`_
+* `スペイン語 <https://github.com/solidity-docs/es-spanish>`_
+* `トルコ語 <https://docs.soliditylang.org/tr/latest/>`_
 
 .. note::
 

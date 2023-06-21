@@ -551,13 +551,13 @@ superを使うときに呼び出される実際の関数は、型はわかって
 引数は、継承リストで指定するか、派生するコンストラクタのモディファイアスタイルで指定する必要があります。
 両方の場所で引数を指定するとエラーになります。
 
-If a derived contract does not specify the arguments to all of its base
-contracts' constructors, it must be declared abstract. In that case, when
-another contract derives from it, that other contract's inheritance list
-or constructor must provide the necessary parameters
-for all base classes that haven't had their parameters specified (otherwise,
-that other contract must be declared abstract as well). For example, in the above
-code snippet, see ``Derived3`` and ``DerivedFromDerived``.
+.. If a derived contract does not specify the arguments to all of its base contracts' constructors, it must be declared abstract.
+.. In that case, when another contract derives from it, that other contract's inheritance list or constructor must provide the necessary parameters for all base classes that haven't had their parameters specified (otherwise, that other contract must be declared abstract as well).
+.. For example, in the above code snippet, see ``Derived3`` and ``DerivedFromDerived``.
+
+派生したコントラクトが、そのベースコントラクトのすべてのコンストラクタの引数を指定しない場合、abstractとして宣言されなければなりません。
+その場合、他のコントラクトがそこから派生するとき、その他のコントラクトの継承リストまたはコンストラクタは、パラメータが指定されていないすべてのベースクラスに対して必要なパラメータを提供しなければなりません（さもなければ、その他のコントラクトも同様に抽象化されなければなりません）。
+例えば、上記のコードスニペットでは、 ``Derived3`` と ``DerivedFromDerived`` を見てください。
 
 .. index:: ! inheritance;multiple, ! linearization, ! C3 linearization
 
@@ -579,7 +579,7 @@ code snippet, see ``Derived3`` and ``DerivedFromDerived``.
 
 多重継承が可能な言語は、いくつかの問題を抱えています。
 ひとつは「 `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_ 」です。
-SolidityはPythonに似ていますが、ベースクラスの有向非環状グラフ（DAG）に特定の順序を強制するために「 `C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_ 」を使用しています。
+SolidityはPythonに似ていますが、ベースクラスの有向非巡回グラフ（Directed Acyclic Graph; DAG）に特定の順序を強制するために「 `C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_ 」を使用しています。
 この結果、単調性という望ましい特性が得られますが、いくつかの継承グラフが使えなくなります。
 特に、 ``is`` 指令でのベースクラスの順序は重要で、「最もベースに近いもの」から「最も派生したもの」の順に直接ベースコントラクトをリストアップする必要があります。
 この順序は、Pythonで使われている順序とは逆であることに注意してください。

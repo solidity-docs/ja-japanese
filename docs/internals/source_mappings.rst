@@ -34,7 +34,7 @@
 .. obtained via ``output['contracts'][sourceName][contractName]['evm']['bytecode']['generatedSources']``.
 
 どちらのソースマッピングも、ソースファイルの参照には整数の識別子を使用します。
-ソースファイルの識別子は  ``output['sources'][sourceName]['id']`` に格納され、 ``output`` はJSONとして解析された standard-json コンパイラインターフェースの出力です。
+ソースファイルの識別子は  ``output['sources'][sourceName]['id']`` に格納され、 ``output`` はJSONとして解析されたstandard-jsonコンパイラインターフェースの出力です。
 一部のユーティリティルーチンでは、コンパイラーは元の入力の一部ではなく、ソースマッピングから参照される「内部」ソースファイルを生成します。
 これらのソースファイルは、その識別子とともに、 ``output['contracts'][sourceName][contractName]['evm']['bytecode']['generatedSources']`` を通じて入手できます。
 
