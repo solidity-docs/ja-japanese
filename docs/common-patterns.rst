@@ -14,9 +14,16 @@
 .. Although the most intuitive method of sending Ether, as a result of an effect, is a direct ``transfer`` call, this is not recommended as it introduces a potential security risk.
 .. You may read more about this on the :ref:`security_considerations` page.
 
+<<<<<<< HEAD
 エフェクト後の送金方法としては、出金パターンの使用が推奨されます。
 エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクトな ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
 これについては、 :ref:`security_considerations` のページで詳しく説明しています。
+=======
+The following is an example of the withdrawal pattern in practice in
+a contract where the goal is to send the most of some compensation, e.g. Ether, to the
+contract in order to become the "richest", inspired by
+`King of the Ether <https://www.kingoftheether.com/>`_.
+>>>>>>> english/develop
 
 .. The following is an example of the withdrawal pattern in practice in a contract where the goal is to send the most money to the contract in order to become the "richest", inspired by `King of the Ether <https://www.kingoftheether.com/>`_.
 
@@ -54,7 +61,12 @@
 
         function withdraw() public {
             uint amount = pendingWithdrawals[msg.sender];
+<<<<<<< HEAD
             // Reentrancy攻撃を防ぐため、送金前にpendingしている返金の額をゼロにすることを忘れないでください
+=======
+            // Remember to zero the pending refund before
+            // sending to prevent reentrancy attacks
+>>>>>>> english/develop
             pendingWithdrawals[msg.sender] = 0;
             payable(msg.sender).transfer(amount);
         }
