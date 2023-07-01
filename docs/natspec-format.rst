@@ -55,7 +55,7 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 
   これは将来変更される可能性があります。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.2 < 0.9.0;

@@ -469,8 +469,14 @@ Solidityのメモリモデルを常に尊重することをお勧めしますが
 メモリにアクセスする操作や、メモリ上のSolidity変数への代入を行わないインラインアセンブリは、自動的にメモリセーフとみなされ、アノテーションを付ける必要はありません。
 
 .. warning::
+<<<<<<< HEAD
     .. It is your responsibility to make sure that the assembly actually satisfies the memory model.
     .. If you annotate an assembly block as memory-safe, but violate one of the memory assumptions, this **will** lead to incorrect and undefined behaviour that cannot easily be discovered by testing.
+=======
+    It is your responsibility to make sure that the assembly actually satisfies the memory model. If you annotate
+    an assembly block as memory-safe, but violate one of the memory assumptions, this **will** lead to incorrect and
+    undefined behavior that cannot easily be discovered by testing.
+>>>>>>> english/develop
 
     アセンブリが実際にメモリモデルを満たしているかどうかを確認するのは、あなたの責任です。
     アセンブリブロックをメモリセーフとアノテーションしても、メモリの前提条件の1つに違反した場合、テストでは容易に発見できない不正確で未定義の動作につながるでしょう。
@@ -486,7 +492,12 @@ Solidityの複数のバージョンで互換性のあるライブラリを開発
         ...
     }
 
+<<<<<<< HEAD
 .. Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with backwards-compatibility with older compiler versions, prefer using the dialect string.
 
 なお、コメントによるアノテーションは、将来のブレーキングリリースで禁止する予定です。
 したがって、古いコンパイラのバージョンとの後方互換性にこだわらない場合は、方言文字列を使用することをお勧めします。
+=======
+Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
+backward-compatibility with older compiler versions, prefer using the dialect string.
+>>>>>>> english/develop
