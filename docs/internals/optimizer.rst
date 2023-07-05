@@ -23,8 +23,9 @@ Yulベースのオプティマイザは、関数呼び出しをまたいで動�
 同様に、 ``solc --strict-assembly --optimize`` はスタンドアローンのYulモードに使用できます。
 
 .. note::
-    The `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_ and the inliner are always
-    enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
+    .. The `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_ and the inliner are always enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
+
+    `peepholeオプティマイザ <https://en.wikipedia.org/wiki/Peephole_optimization>`_ とインライナーはデフォルトで常に有効になっており、 :ref:`Standard JSON <compiler-api>` によってのみオフにできます。
 
 両オプティマイザモジュールとその最適化ステップの詳細は以下の通りです。
 
@@ -1183,7 +1184,7 @@ SSAフォームを破棄します。
 
 SSA形式で、かつデッドコード除去を実行したことがある場合に最適です。
 
-前提条件: Disambiguator
+前提条件: Disambiguator。
 
 .. _conditional-unsimplifier:
 
@@ -1258,16 +1259,16 @@ forループのinitブロックで宣言された変数は、そのスコープ�
 EqualStoreEliminator
 ^^^^^^^^^^^^^^^^^^^^
 
-This steps removes ``mstore(k, v)`` and ``sstore(k, v)`` calls if
-there was a previous call to ``mstore(k, v)`` / ``sstore(k, v)``,
-no other store in between and the values of ``k`` and ``v`` did not change.
+.. This steps removes ``mstore(k, v)`` and ``sstore(k, v)`` calls if there was a previous call to ``mstore(k, v)`` / ``sstore(k, v)``, no other store in between and the values of ``k`` and ``v`` did not change.
 
-This simple step is effective if run after the SSA transform and the
-Common Subexpression Eliminator, because SSA will make sure that the variables
-will not change and the Common Subexpression Eliminator re-uses exactly the same
-variable if the value is known to be the same.
+このステップは、 ``mstore(k, v)`` / ``sstore(k, v)`` の呼び出しが過去にあり、その間に他のストアがなく、 ``k`` と ``v`` の値が変更されていない場合に、 ``mstore(k, v)`` と ``sstore(k, v)`` の呼び出しを削除します。
 
-前提条件: Disambiguator, ForLoopInitRewriter
+.. This simple step is effective if run after the SSA transform and the Common Subexpression Eliminator, because SSA will make sure that the variables will not change and the Common Subexpression Eliminator re-uses exactly the same variable if the value is known to be the same.
+
+この単純なステップは、SSA変換とCommon Subexpression Eliminatorの後に実行すると効果的です。
+SSAは変数が変更されないことを確認し、Common Subexpression Eliminatorは値が同じであることが分かっている場合、まったく同じ変数を再利用するからです。
+
+前提条件: Disambiguator、ForLoopInitRewriter。
 
 .. _unused-pruner:
 
@@ -1359,7 +1360,9 @@ BlockFlattener
 
 LoopInvariantCodeMotion
 ^^^^^^^^^^^^^^^^^^^^^^^
-This optimization moves movable SSA variable declarations outside the loop.
+.. This optimization moves movable SSA variable declarations outside the loop.
+
+この最適化により、移動可能なSSA変数の宣言はループの外側に移動します。
 
 .. Only statements at the top level in a loop's body or post block are considered, i.e variable
 .. declarations inside conditional branches will not be moved out of the loop.
@@ -1403,7 +1406,7 @@ FunctionSpecializer
 他の最適化ステップでは、関数をより単純化できます。
 最適化ステップは、主にインライン化されないような関数に有効です。
 
-前提条件: Disambiguator、FunctionHoister
+前提条件: Disambiguator、FunctionHoister。
 
 .. LiteralRematerialiser is recommended as a prerequisite, even though it's not required for
 .. correctness.
@@ -1450,12 +1453,17 @@ LiteralRematerialiserというステップは正しさのために必要では�
 UnusedStoreEliminator
 ^^^^^^^^^^^^^^^^^^^^^
 
-Optimizer component that removes redundant ``sstore`` and memory store statements.
-In case of an ``sstore``, if all outgoing code paths revert (due to an explicit ``revert()``, ``invalid()``, or infinite recursion) or lead to another ``sstore`` for which the optimizer can tell that it will overwrite the first store, the statement will be removed.
-However, if there is a read operation between the initial ``sstore`` and the revert, or the overwriting ``sstore``, the statement will not be removed.
-Such read operations include: external calls, user-defined functions with any storage access, and ``sload`` of a slot that cannot be proven to differ from the slot written by the initial ``sstore``.
+.. Optimizer component that removes redundant ``sstore`` and memory store statements.
+.. In case of an ``sstore``, if all outgoing code paths revert (due to an explicit ``revert()``, ``invalid()``, or infinite recursion) or lead to another ``sstore`` for which the optimizer can tell that it will overwrite the first store, the statement will be removed.
+.. However, if there is a read operation between the initial ``sstore`` and the revert, or the overwriting ``sstore``, the statement will not be removed.
+.. Such read operations include: external calls, user-defined functions with any storage access, and ``sload`` of a slot that cannot be proven to differ from the slot written by the initial ``sstore``.
 
-For example, the following code
+冗長な ``sstore`` ステートメントやメモリストアステートメントを削除するオプティマイザーコンポーネントです。
+ストア ``sstore`` の場合、（明示的な ``revert()`` 、 ``invalid()`` 、または無限再帰によって）すべての出力コードパスがリバートするか、オプティマイザが最初のストアを上書きすると判断できる別の ``sstore`` につながる場合、ステートメントは削除されます。
+しかし、最初の ``sstore`` とリバート、または上書きされる ``sstore`` の間に読み取り操作がある場合、ステートメントは削除されません。
+このような読み取り操作には、外部呼び出し、ストレージにアクセスするユーザー定義関数、最初の ``sstore`` が書き込んだスロットと異なることを証明できないスロットの ``sload`` が含まれます。
+
+例えば、次のコードは、
 
 .. code-block:: yul
 
@@ -1468,7 +1476,9 @@ For example, the following code
         sstore(c, 3)
     }
 
-will be transformed into the code below after the Unused Store Eliminator step is run
+.. will be transformed into the code below after the Unused Store Eliminator step is run
+
+Unused Store Eliminatorステップが実行されると、以下のコードに変換されます。
 
 .. code-block:: yul
 
@@ -1478,12 +1488,17 @@ will be transformed into the code below after the Unused Store Eliminator step i
         sstore(c, 3)
     }
 
-For memory store operations, things are generally simpler, at least in the outermost yul block as all such statements will be removed if they are never read from in any code path.
-At function analysis level, however, the approach is similar to ``sstore``, as we do not know whether the memory location will be read once we leave the function's scope, so the statement will be removed only if all code paths lead to a memory overwrite.
+.. For memory store operations, things are generally simpler, at least in the outermost yul block as all such statements will be removed if they are never read from in any code path.
+.. At function analysis level, however, the approach is similar to ``sstore``, as we do not know whether the memory location will be read once we leave the function's scope, so the statement will be removed only if all code paths lead to a memory overwrite.
 
-Best run in SSA form.
+メモリストア操作の場合、一般的には、少なくとも一番外側のYulブロックでは、そのようなステートメントは、どのコードパスでも読み込まれることがなければ、すべて削除されるので単純です。
+しかし、関数解析レベルでは、関数のスコープを離れるとメモリロケーションが読み込まれるかどうかわからないので、ステートメントはすべてのコードパスがメモリの上書きにつながる場合にのみ削除されます。
 
-前提条件: Disambiguator, ForLoopInitRewriter.
+.. Best run in SSA form.
+
+SSA形式で最も効果があります。
+
+前提条件: Disambiguator、ForLoopInitRewriter。
 
 .. _equivalent-function-combiner:
 

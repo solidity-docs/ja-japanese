@@ -111,7 +111,8 @@ def detect_untranslated_lines():
         for i, line in enumerate(lines):
             lstripped_line = line.lstrip()
 
-            if lstripped_line.startswith(".. code-block::") or lstripped_line.startswith(".. toctree::"):
+            if lstripped_line.startswith(".. code-block::") \
+                or lstripped_line.startswith(".. toctree::"):
                 ignore_block = True
                 indent = len(line) - len(lstripped_line)
             elif ignore_block and (line.startswith("  " + " " * indent) or line == "\n"):
@@ -123,6 +124,8 @@ def detect_untranslated_lines():
             if re.search(r"[ぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠]", line):
                 continue
             if lstripped_line.startswith(".."):
+                continue
+            if lstripped_line.startswith(":widths:"):
                 continue
             if not re.search(r"[a-zA-Z]", line):
                 continue
