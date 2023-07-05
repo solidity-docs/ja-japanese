@@ -749,7 +749,7 @@ Unicodeリテラル
 .. This means you can override a payable function with a non-payable but not the other way around.
 
 ``payable`` と ``non-payable`` のルールは少しわかりにくいかもしれませんが、要するにある関数が ``payable`` であれば、ゼロのEtherの支払いも受け入れるということなので、 ``non-payable`` でもあるということです。
-一方、 ``non-payable`` 関数は送られてきたEtherを拒否しますので、 ``non-payable`` 関数を ``payable`` 関数に変換できません。
+一方で、 ``non-payable`` 関数は送られてきたEtherを拒否するので、 ``non-payable`` 関数を ``payable`` 関数に変換することはできません。
 明確にするために、etherを拒否することは、etherを拒否しないことよりも制限されます。
 つまり、payableな関数をnon-payableな関数で上書きすることは可能ですが、その逆はできません。
 

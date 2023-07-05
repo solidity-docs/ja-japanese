@@ -356,7 +356,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 .. This is especially complicated since these offsets are different at construction time and after deployment and the values can cross this border via storage.
 .. Because of that, both offsets are encoded at construction time into the same value (into different bytes).
 
-古いコードジェネレータは、内部関数ポインタの値にコードオフセットまたはタグを使用しています。
+古いコードジェネレータは、内部の関数ポインタの値にコードオフセットまたはタグを使用しています。
 特に、これらのオフセットは構築時とデプロイ後では異なり、値はストレージを介してこの境界を越えることができるので、これは複雑です。
 そのため、構築時には両方のオフセットが同じ値に（異なるバイトに）エンコードされます。
 
@@ -368,7 +368,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 .. The ID ``0`` is reserved for uninitialized function pointers which then cause a panic in the dispatch function when called.
 
-ID  ``0`` は、初期化されていない関数ポインタ用に予約されており、このポインタが呼び出されると、ディスパッチ関数でパニックが発生します。
+ID ``0`` は、初期化されていない関数ポインタ用に予約されており、このポインタが呼び出されると、ディスパッチ関数でパニックが発生します。
 
 .. In the old code generator, internal function pointers are initialized with a special function that always causes a panic.
 .. This causes a storage write at construction time for internal function pointers in storage.
