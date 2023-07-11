@@ -186,7 +186,6 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
         function set(uint key, uint value) public {
             data[key] = value;
         }
-
     }
 
 .. Omitted Names in Function Definitions
@@ -394,11 +393,22 @@ Solidityは内部的にタプル型を許可しています。
 ..     copying behaviour.
 
 .. warning::
+<<<<<<< HEAD
+=======
+    Be careful when assigning to multiple variables at the same time when
+    reference types are involved, because it could lead to unexpected
+    copying behavior.
+>>>>>>> english/develop
 
     参照型が含まれる場合に複数の変数に同時に代入すると、予期しないコピー動作になることがあるので注意が必要です。
 
+<<<<<<< HEAD
 配列と構造体の複雑さ
 --------------------
+=======
+The semantics of assignments are more complicated for non-value types like arrays and structs,
+including ``bytes`` and ``string``, see :ref:`Data location and assignment behavior <data-location-assignment>` for details.
+>>>>>>> english/develop
 
 代入のセマンティクスは、 ``bytes`` や ``string`` などの配列や構造体などの非値型ではより複雑になりますが。
 詳細は :ref:`データロケーションと代入の動作<data-location-assignment>` を参照してください。
@@ -544,12 +554,16 @@ C99のスコープルールの特別な例として、以下では、 ``x`` へ�
 
 Solidity 0.8.0以前では、アンダーフローやオーバーフローが発生した場合、算術演算は常にラップするため、追加のチェックを導入するライブラリが広く使用されていました。
 
+<<<<<<< HEAD
 .. Since Solidity 0.8.0, all arithmetic operations revert on over- and underflow by default,
 .. thus making the use of these libraries unnecessary.
 
 Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバーフローとアンダーフローでリバートするため、これらのライブラリを使用する必要はありません。
 
 以前のような動作を得るためには、 ``unchecked`` ブロックを使用できます。
+=======
+To obtain the previous behavior, an ``unchecked`` block can be used:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -743,7 +757,13 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 ..    ``payable`` modifier (including the constructor and the fallback function).
 .. #. If your contract receives Ether via a public getter function.
 
+<<<<<<< HEAD
 #. ``x`` が ``false`` に評価されるとき ``require(x)`` を呼び出す。
+=======
+For the following cases, the error data from the external call
+(if provided) is forwarded. This means that it can either cause
+an ``Error`` or a ``Panic`` (or whatever else was given):
+>>>>>>> english/develop
 
 #. ``revert()`` や ``revert("description")`` を使う場合。
 
@@ -797,7 +817,13 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
             require(msg.value % 2 == 0, "Even value required.");
             uint balanceBeforeTransfer = address(this).balance;
             addr.transfer(msg.value / 2);
+<<<<<<< HEAD
             // transferに失敗すると例外がスローされ、ここにコールバックすることはできないので、半分のお金を送金せず保持する方法はないはずです。
+=======
+            // Since transfer throws an exception on failure and
+            // cannot call back here, there should be no way for us to
+            // still have half of the Ether.
+>>>>>>> english/develop
             assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
             return address(this).balance;
         }
@@ -838,10 +864,15 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
     revert CustomError(arg1, arg2);
 
+<<<<<<< HEAD
 .. For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
 .. and accepts a string:
 
 後方互換性を考慮して、括弧を使用して文字列を受け取る ``revert()`` 関数もあります。
+=======
+For backward-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
+and accepts a string:
+>>>>>>> english/develop
 
     revert();
     revert("description");

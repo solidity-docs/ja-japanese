@@ -8,17 +8,31 @@ Solidity v0.8.0の破壊的変更点
 このセクションでは、Solidityのバージョン0.8.0で導入された主な変更点を紹介します。
 完全なリストは `リリースチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_ を参照してください。
 
+<<<<<<< HEAD
 .. Silent Changes of the Semantics
 
 セマンティクスのサイレントな変更点
 ==================================
+=======
+This section lists changes where existing code changes its behavior without
+the compiler notifying you about it.
+
+* Arithmetic operations revert on underflow and overflow. You can use ``unchecked { ... }`` to use
+  the previous wrapping behavior.
+>>>>>>> english/develop
 
 .. This section lists changes where existing code changes its behaviour without the compiler notifying you about it.
 
 このセクションでは、既存のコードがコンパイラーに通知されることなく動作を変更する変更点を示します。
 
+<<<<<<< HEAD
 .. * Arithmetic operations revert on underflow and overflow.
 ..   You can use ``unchecked { ... }`` to use the previous wrapping behaviour.
+=======
+  You can choose to use the old behavior using ``pragma abicoder v1;``.
+  The pragma ``pragma experimental ABIEncoderV2;`` is still valid, but it is deprecated and has no effect.
+  If you want to be explicit, please use ``pragma abicoder v2;`` instead.
+>>>>>>> english/develop
 
 ..   Checks for overflow are very common, so we made them the default to increase readability of code, even if it comes at a slight increase of gas costs.
 
@@ -50,7 +64,12 @@ Solidity v0.8.0の破壊的変更点
 .. * Exponentiation is right associative, i.e., the expression ``a**b**c`` is parsed as ``a**(b**c)``.
 ..   Before 0.8.0, it was parsed as ``(a**b)**c``.
 
+<<<<<<< HEAD
 ..   This is the common way to parse the exponentiation operator.
+=======
+* There are new restrictions related to explicit conversions of literals. The previous behavior in
+  the following cases was likely ambiguous:
+>>>>>>> english/develop
 
 * つまり、 ``a**b**c`` という式は ``a**(b**c)`` として解析されます。
   0.8.0以前は ``(a**b)**c`` と解析されていました。
@@ -76,9 +95,13 @@ Solidity v0.8.0の破壊的変更点
 * ストレージのバイト配列の長さが正しくエンコードされていないものにアクセスすると、パニックが発生します。
   コントラクトは、ストレージのバイト配列の生の表現を変更するためにインラインアセンブリを使用しない限り、このような状況に陥ることはありません。
 
+<<<<<<< HEAD
 .. * If constants are used in array length expressions, previous versions of Solidity would use arbitrary precision
 ..   in all branches of the evaluation tree. Now, if constant variables are used as intermediate expressions,
 ..   their values will be properly rounded in the same way as when they are used in run-time expressions.
+=======
+  These are low-level functions that were largely unused. Their behavior can be accessed from inline assembly.
+>>>>>>> english/develop
 
 * 定数を配列の長さの式で使用する場合、以前のバージョンのSolidityでは、評価ツリーのすべての分岐で任意の精度を使用していました。
   現在では、定数変数が中間式として使用されている場合、その値はランタイム式で使用されている場合と同様に適切に丸められます。
@@ -134,6 +157,7 @@ Solidity v0.8.0の破壊的変更点
 ..   is at most one change in sign, width or type-category (``int``, ``address``, ``bytesNN``, etc.).
 ..   To perform multiple changes, use multiple conversions.
 
+<<<<<<< HEAD
 ..   Let us use the notation ``T(S)`` to denote the explicit conversion ``T(x)``, where, ``T`` and
 ..   ``S`` are types, and ``x`` is any arbitrary variable of type ``S``. An example of such a
 ..   disallowed conversion would be ``uint16(int8)`` since it changes both width (8 bits to 16 bits)
@@ -317,3 +341,16 @@ Solidity v0.8.0の破壊的変更点
 - ``x**y**z`` を ``(x**y)**z`` に変更してください。
 - ``log0`` 、...、 ``log4`` の代わりにインラインアセンブリを使用してください。
 - 符号なし整数を、その型の最大値から引いて1を加えて否定してください（例: ``type(uint256).max - x + 1`` 、ただし ``x`` はゼロではないことを確認してください）。
+=======
+- If you rely on wrapping arithmetic, surround each operation with ``unchecked { ... }``.
+- Optional: If you use SafeMath or a similar library, change ``x.add(y)`` to ``x + y``, ``x.mul(y)`` to ``x * y`` etc.
+- Add ``pragma abicoder v1;`` if you want to stay with the old ABI coder.
+- Optionally remove ``pragma experimental ABIEncoderV2`` or ``pragma abicoder v2`` since it is redundant.
+- Change ``byte`` to ``bytes1``.
+- Add intermediate explicit type conversions if required.
+- Combine ``c.f{gas: 10000}{value: 1}()`` to ``c.f{gas: 10000, value: 1}()``.
+- Change ``msg.sender.transfer(x)`` to ``payable(msg.sender).transfer(x)`` or use a stored variable of ``address payable`` type.
+- Change ``x**y**z`` to ``(x**y)**z``.
+- Use inline assembly as a replacement for ``log0``, ..., ``log4``.
+- Negate unsigned integers by subtracting them from the maximum value of the type and adding 1 (e.g. ``type(uint256).max - x + 1``, while ensuring that ``x`` is not zero)
+>>>>>>> english/develop

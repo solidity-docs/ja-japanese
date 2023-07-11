@@ -228,9 +228,16 @@ AmazonのAWSを使うためには、内部でどのように機能している�
 あるアカウントから別のアカウントへの送金がリクエストされた場合、データベースのトランザクションの性質上、あるアカウントから金額が差し引かれた場合、必ず別のアカウントに追加されます。
 何らかの理由で対象となるアカウントに金額を追加できない場合は、元のアカウントも変更されません。
 
+<<<<<<< HEAD
 さらに、トランザクションは常に送信者（作成者）によって暗号学的に署名されています。
 これにより、データベースの特定の変更に対するアクセスを簡単に保護できます。
 電子通貨の例では、簡単なチェックで、アカウントの鍵を持っている人だけがそのアカウントからお金を送金できるようになっています。
+=======
+Furthermore, a transaction is always cryptographically signed by the sender (creator).
+This makes it straightforward to guard access to specific modifications of the
+database. In the example of the electronic currency, a simple check ensures that
+only the person holding the keys to the account can transfer some compensation, e.g. Ether, from it.
+>>>>>>> english/develop
 
 .. index:: ! block
 
@@ -451,9 +458,15 @@ create
 理論的にはコントラクトを削除することは良いアイデアのように聞こえますが、削除されたコントラクトに誰かがEtherを送ると、そのEtherは永遠に失われてしまうため、潜在的には危険です。
 
 .. warning::
+<<<<<<< HEAD
     .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
     バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、 ``SELFDESTRUCT`` オペコードがいずれ動作に破壊的変更を受けるため、非推奨の警告が発せられます。
+=======
+    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
+    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior
+    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+>>>>>>> english/develop
 
 .. warning::
     ``selfdestruct`` によってコントラクトが削除されたとしても、それはブロックチェーンの歴史の一部であり、おそらくほとんどのEthereumノードが保持しています。
@@ -472,8 +485,17 @@ create
 プリコンパイル済みコントラクト
 ==============================
 
+<<<<<<< HEAD
 コントラクトのアドレスの中には、特別なものがあります。
 ``1`` から ``8`` までのアドレスには「プリコンパイル済みコントラクト」が含まれており、他のコントラクトと同様に呼び出すことができますが、その動作（およびガス消費量）は、そのアドレスに格納されているEVMコードによって定義されるのではなく（コードが含まれていない）、EVMの実行環境自体に実装されています。
+=======
+There is a small set of contract addresses that are special:
+The address range between ``1`` and (including) ``8`` contains
+"precompiled contracts" that can be called as any other contract
+but their behavior (and their gas consumption) is not defined
+by EVM code stored at that address (they do not contain code)
+but instead is implemented in the EVM execution environment itself.
+>>>>>>> english/develop
 
 EVMと互換性のあるチェーンでは、異なるプリコンパイル済みコントラクトのセットを使用する可能性があります。
 また、将来Ethereumのメインチェーンに新しいプリコンパイル済みコントラクトが追加される可能性もありますが、常に ``1`` から ``0xffff`` （包括的）の範囲内であると考えるのが妥当でしょう。
