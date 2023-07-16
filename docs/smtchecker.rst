@@ -149,10 +149,9 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
         }
     }
 
-<<<<<<< HEAD
 .. The contract above shows an overflow check example.
 .. The SMTChecker does not check underflow and overflow by default for Solidity >=0.8.7,
-.. so we need to use the command line option ``--model-checker-targets "underflow,overflow"``
+.. so we need to use the command-line option ``--model-checker-targets "underflow,overflow"``
 .. or the JSON option ``settings.modelChecker.targets = ["underflow", "overflow"]``.
 .. See :ref:`this section for targets configuration<smtchecker_targets>`.
 .. Here, it reports the following:
@@ -161,14 +160,6 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオーバーフローをチェックしないので、コマンドラインオプション ``--model-checker-targets "underflow,overflow"`` またはJSONオプション ``settings.modelChecker.targets = ["underflow", "overflow"]`` を使用する必要があります。
 :ref:`this section for targets configuration<smtchecker_targets>` を参照してください。
 ここでは、以下のように報告しています。
-=======
-The contract above shows an overflow check example.
-The SMTChecker does not check underflow and overflow by default for Solidity >=0.8.7,
-so we need to use the command-line option ``--model-checker-targets "underflow,overflow"``
-or the JSON option ``settings.modelChecker.targets = ["underflow", "overflow"]``.
-See :ref:`this section for targets configuration<smtchecker_targets>`.
-Here, it reports the following:
->>>>>>> english/develop
 
 .. code-block:: text
 
@@ -538,20 +529,14 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 .. is already "locked", so it would not be possible to change the value of ``x``,
 .. regardless of what the unknown called code does.
 
-<<<<<<< HEAD
 上の例では、ミューテックスフラグを使用して再入を禁止したコントラクトを示しています。
 ソルバーは、 ``unknown.run()`` が呼び出されたとき、コントラクトはすでに「ロック」されているので、未知の呼び出されたコードが何をしようと、 ``x`` の値を変更できないだろうと推測できます。
 
 .. If we "forget" to use the ``mutex`` modifier on function ``set``, the
-.. SMTChecker is able to synthesize the behaviour of the externally called code so
+.. SMTChecker is able to synthesize the behavior of the externally called code so
 .. that the assertion fails:
 
 関数 ``set`` に ``mutex`` モディファイアを使うことを「忘れた」場合、SMTCheckerは外部から呼び出されたコードの振る舞いを合成し、アサーションが失敗するようにします。
-=======
-If we "forget" to use the ``mutex`` modifier on function ``set``, the
-SMTChecker is able to synthesize the behavior of the externally called code so
-that the assertion fails:
->>>>>>> english/develop
 
 .. code-block:: text
 
@@ -892,12 +877,7 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
         }
     }
 
-<<<<<<< HEAD
 .. Note that in function ``property_transfer``, the external calls are performed on variable ``t``.
-=======
-Note that in function ``property_transfer``, the external calls are
-performed on variable ``t``.
->>>>>>> english/develop
 
 関数 ``property_transfer`` では、外部呼び出しは変数 ``t`` に対して行われることに注意してください。
 
@@ -959,7 +939,6 @@ CHCエンジンで安全性が証明された性質については、SMTChecker�
 .. - Contract Invariants: these are properties over the contract's state variables
 ..   that are true before and after every possible transaction that the contract may ever run. For example, ``x >= y``, where ``x`` and ``y`` are a contract's state variables.
 
-<<<<<<< HEAD
 - コントラクト不変量: コントラクトの状態変数に関するプロパティで、コントラクトが実行する可能性のあるすべてのトランザクションの前後で真となるものです。
   例えば、 ``x`` と ``y`` がコントラクトの状態変数である場合、 ``x >= y`` となります。
 
@@ -997,16 +976,6 @@ SMTCheckerで使用されているデフォルトのHornソルバーであるSpa
 そのため、デフォルトではSolidityの除算とモジュロ演算は ``a = b * d + m``  where  ``d = a / b``  and  ``m = a % b`` という制約を用いてエンコードされています。
 しかし、Eldaricaのような他のソルバーは、構文的に正確な演算を好みます。
 コマンドラインフラグ ``--model-checker-div-mod-no-slacks`` とJSONオプション ``settings.modelChecker.divModNoSlacks`` を使って、使用するソルバーの好みに応じてエンコーディングを切り替えることができます。
-=======
-Spacer, the default Horn solver used by the SMTChecker, often dislikes division
-and modulo operations inside Horn rules. Because of that, by default the
-Solidity division and modulo operations are encoded using the constraint
-``a = b * d + m`` where ``d = a / b`` and ``m = a % b``.
-However, other solvers, such as Eldarica, prefer the syntactically precise operations.
-The command-line flag ``--model-checker-div-mod-no-slacks`` and the JSON option
-``settings.modelChecker.divModNoSlacks`` can be used to toggle the encoding
-depending on the used solver preferences.
->>>>>>> english/develop
 
 Natspec Function Abstraction
 ============================
@@ -1110,7 +1079,6 @@ SMTソルバーとHornソルバー
 .. <https://spacer.bitbucket.io/>`_ available as a Horn solver, and `Eldarica
 .. <https://github.com/uuverifiers/eldarica>`_ which does both.
 
-<<<<<<< HEAD
 上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。
 BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。
 SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
@@ -1155,11 +1123,6 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
 
   -  ``soljson.js`` （Solidity 0.6.9 以降）では静的に、つまりコンパイラのJavaScriptバイナリを使用しています。
-=======
-  - if ``solc`` is compiled with it;
-  - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
-  - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
->>>>>>> english/develop
 
 .. note::
 

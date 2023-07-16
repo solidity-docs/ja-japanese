@@ -220,21 +220,15 @@ Solidity v0.5.0の破壊的変更点
   ``payable`` or create a new internal function for the program logic that
   uses ``msg.value``.
 
-<<<<<<< HEAD
 * 払えない関数で ``msg.value`` を使う（またはモディファイアで導入する）ことは、セキュリティ機能として認められていません。
   関数を ``payable`` に変えるか、 ``msg.value`` を使用するプログラムロジックのために新しい内部関数を作成してください。
 
-.. * For clarity reasons, the command line interface now requires ``-`` if the
-=======
-* For clarity reasons, the command-line interface now requires ``-`` if the
->>>>>>> english/develop
-  standard input is used as source.
+.. * For clarity reasons, the command-line interface now requires ``-`` if the standard input is used as source.
 
 * わかりやすくするために、コマンドラインインターフェースでは、標準入力をソースとして使用する場合、 ``-`` を要求するようになりました。
 
 .. Deprecated Elements
 
-<<<<<<< HEAD
 非推奨の要素
 ============
 
@@ -245,38 +239,25 @@ Solidity v0.5.0の破壊的変更点
 このセクションでは、以前の機能や構文を廃止する変更点を紹介します。
 これらの変更点の多くは、実験モードの ``v0.5.0`` ですでに有効になっていることに注意してください。
 
-.. Command Line and JSON Interfaces
+.. Command-Line and JSON Interfaces
 
 コマンドラインインターフェースとJSONインターフェース
 ----------------------------------------------------
 
-.. * The command line option ``--formal`` (used to generate Why3 output for
-=======
-Command-line and JSON Interfaces
---------------------------------
-
-* The command-line option ``--formal`` (used to generate Why3 output for
->>>>>>> english/develop
+.. * The command-line option ``--formal`` (used to generate Why3 output for
   further formal verification) was deprecated and is now removed.  A new
   formal verification module, the SMTChecker, is enabled via ``pragma
   experimental SMTChecker;``.
 
-<<<<<<< HEAD
 * コマンドラインオプションの ``--formal`` （さらなる形式検証のためにWhy3出力を生成するために使用）は非推奨であり、現在は削除されています。
   新しいフォーマル検証モジュールであるSMTCheckerは、 ``pragma experimental SMTChecker;`` を介して有効になります。
 
-.. * The command line option ``--julia`` was renamed to ``--yul`` due to the
+.. * The command-line option ``--julia`` was renamed to ``--yul`` due to the
   renaming of the intermediate language ``Julia`` to ``Yul``.
 
 * 中間言語 ``Julia`` が ``Yul`` に名称変更されたことに伴い、コマンドラインオプション ``--julia`` が ``--yul`` に名称変更されました。
 
-.. * The ``--clone-bin`` and ``--combined-json clone-bin`` command line options
-=======
-* The command-line option ``--julia`` was renamed to ``--yul`` due to the
-  renaming of the intermediate language ``Julia`` to ``Yul``.
-
-* The ``--clone-bin`` and ``--combined-json clone-bin`` command-line options
->>>>>>> english/develop
+.. * The ``--clone-bin`` and ``--combined-json clone-bin`` command-line options
   were removed.
 
 *  ``--clone-bin`` および ``--combined-json clone-bin`` コマンドラインオプションが削除されました。

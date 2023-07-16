@@ -177,14 +177,8 @@ JavaScript APIでの使用方法は以下の通りです。
 イベントを理解するための追加資料
 ================================
 
-<<<<<<< HEAD
 - `JavaScriptドキュメント <https://github.com/web3/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
 
 - `イベントの使用例 <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
 
 - `JSからイベントへのアクセス方法 <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
-=======
-- `JavaScript documentation <https://github.com/web3/web3.js/blob/1.x/docs/web3-eth-contract.rst#events>`_
-- `Example usage of events <https://github.com/ethchange/smart-exchange/blob/master/lib/contracts/SmartExchange.sol>`_
-- `How to access them in js <https://github.com/ethchange/smart-exchange/blob/master/lib/exchange_transactions.js>`_
->>>>>>> english/develop

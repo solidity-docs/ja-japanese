@@ -6,14 +6,8 @@
 関数モディファイア
 ******************
 
-<<<<<<< HEAD
 モディファイアは、宣言的な方法で関数の動作を変更するために使用できます。
 例えば、モディファイアを使って、関数を実行する前に自動的に条件をチェックできます。
-=======
-Modifiers can be used to change the behavior of functions in a declarative way.
-For example,
-you can use a modifier to automatically check a condition prior to executing the function.
->>>>>>> english/develop
 
 モディファイアはコントラクトの継承可能なプロパティであり、派生コントラクトでオーバーライドできますが、 ``virtual`` マークが付いている場合に限ります。
 詳細は、 :ref:`モディファイアのオーバーライド <modifier-overriding>` を参照してください。

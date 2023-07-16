@@ -22,7 +22,7 @@
 ..     * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
 ..         Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
 ..     * `Dapp <https://dapp.tools/>`_
-..         Tool for building, testing and deploying smart contracts from the command line.
+..         Tool for building, testing and deploying smart contracts from the command-line.
 ..     * `Embark <https://framework.embarklabs.io/>`_
 ..         Developer platform for building and deploying decentralized applications.
 ..     * `Foundry <https://github.com/foundry-rs/foundry>`_
@@ -34,13 +34,8 @@
 ..     * `Truffle <https://trufflesuite.com/truffle/>`_
 ..         Ethereum development framework.
 
-<<<<<<< HEAD
 * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
     Ethereum Virtual Machineをターゲットとしたスマートコントラクトのための、Pythonベースの開発およびテストフレームワーク。
-=======
-    * `Dapp <https://dapp.tools/>`_
-        Tool for building, testing and deploying smart contracts from the command-line.
->>>>>>> english/develop
 
 * `Dapp <https://dapp.tools/>`_
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。

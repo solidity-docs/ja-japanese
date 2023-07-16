@@ -144,18 +144,12 @@ Solidityでは、除算はゼロに向かって丸められます。
   ゼロでのモジュロは :ref:`パニックエラー<assert-and-require>` を引き起こします。
   このチェックは ``unchecked { ... }`` で無効にできます。
 
-<<<<<<< HEAD
 指数
 ^^^^
 
 指数計算は、指数が符号なしの型の場合のみ可能です。
 指数計算の結果の型は、常に基底の型と同じです。
 結果を保持するのに十分な大きさであることに注意し、潜在的なアサーションの失敗やラッピングの動作に備えてください。
-=======
-Exponentiation is only available for unsigned types in the exponent. The resulting type
-of an exponentiation is always equal to the type of the base. Please take care that it is
-large enough to hold the result and prepare for potential assertion failures or wrapping behavior.
->>>>>>> english/develop
 
 .. note::
 
@@ -272,24 +266,14 @@ large enough to hold the result and prepare for potential assertion failures or 
 
 * ``send``
 
-<<<<<<< HEAD
 ``send`` は、 ``transfer`` の低レベルのカウンターパートです。
 実行に失敗した場合、現在のコントラクトは例外的に停止しませんが、 ``send`` は ``false`` を返します。
 
 .. warning::
-=======
-``send`` is the low-level counterpart of ``transfer``. If the execution fails, the current contract will not stop with an exception, but ``send`` will return ``false``.
-
-.. warning::
-    There are some dangers in using ``send``: The transfer fails if the call stack depth is at 1024
-    (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order
-    to make safe Ether transfers, always check the return value of ``send``, use ``transfer`` or even better:
-    use a pattern where the recipient withdraws the Ether.
->>>>>>> english/develop
 
     ``send`` の使用にはいくつかの危険性があります。
     コールスタックの深さが1024の場合（これは常に呼び出し側で強制できます）、送金は失敗し、また、受信者がガス欠になった場合も失敗します。
-    したがって、安全なEther送金を行うためには、 ``send`` の戻り値を常にチェックするか、 ``transfer`` を使用するか、あるいはさらに良い方法として、受信者がお金を引き出すパターンを使用してください。
+    したがって、安全なEther送金を行うためには、 ``send`` の戻り値を常にチェックするか、 ``transfer`` を使用するか、あるいはさらに良い方法として、受信者がEtherを引き出すパターンを使用してください。
 
 * ``call``, ``delegatecall``, ``staticcall``
 
@@ -582,15 +566,10 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
 改行ではないUnicodeの行終端記号（LF、VF、FF、CR、NEL、LS、PSなど）は、文字列リテラルを終了するものとみなされます。
 改行が文字列リテラルを終了させるのは、その前に ``\`` がない場合のみです。
 
-<<<<<<< HEAD
-Unicodeリテラル
----------------
-=======
 .. index:: ! literal;unicode
 
-Unicode Literals
-----------------
->>>>>>> english/develop
+Unicodeリテラル
+---------------
 
 通常の文字列リテラルはASCIIのみを含むことができますが、Unicodeリテラル（キーワード ``unicode`` を前に付けたもの）は、有効なUTF-8シーケンスを含むことができます。
 また、Unicodeリテラルは、通常の文字列リテラルと同じエスケープシーケンスにも対応しています。
@@ -611,12 +590,7 @@ Unicode Literals
 空白で区切られた複数の16進数リテラルは、1つのリテラルに連結されます。
 ``hex"00112233" hex"44556677"`` は ``hex"0011223344556677"`` と同じです。
 
-<<<<<<< HEAD
-16進数リテラルは、 :ref:`文字列リテラル<string_literals>` と同じように動作し、同じような変換の制限があります。
-=======
-Hexadecimal literals in some ways behave like :ref:`string literals <string_literals>` but are not
-implicitly convertible to the ``string`` type.
->>>>>>> english/develop
+16進数リテラルはある意味では、 :ref:`文字列リテラル <string_literals>` のように振る舞いますが、暗黙的に ``string`` 型に変換されるわけではありません。
 
 .. index:: enum
 

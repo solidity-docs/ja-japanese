@@ -1,14 +1,8 @@
-<<<<<<< HEAD
+.. index:: ! denomination
+
 ********************************
 単位とグローバルで利用可能な変数
 ********************************
-=======
-.. index:: ! denomination
-
-**************************************
-Units and Globally Available Variables
-**************************************
->>>>>>> english/develop
 
 .. index:: ! wei, ! finney, ! szabo, ! gwei, ! ether, ! denomination;ether
 
@@ -134,22 +128,16 @@ Etherの単位
 ..     Do not rely on ``block.timestamp`` or ``blockhash`` as a source of randomness, unless you know what you are doing.
 
 ..     Both the timestamp and the block hash can be influenced by miners to some degree.
-..     Bad actors in the mining community can for example run a casino payout function on a chosen hash and just retry a different hash if they did not receive any money.
+..     Bad actors in the mining community can for example run a casino payout function on a chosen hash and just retry a different hash if they did not receive any compensation, e.g. Ether.
 
 ..     The current block timestamp must be strictly larger than the timestamp of the last block, but the only guarantee is that it will be somewhere between the timestamps of two consecutive blocks in the canonical chain.
 
 .. note::
 
-<<<<<<< HEAD
     自分が何をしているか分かっていない限り、ランダムネスのソースとして ``block.timestamp`` や ``blockhash`` に頼らないでください。
-=======
-    Both the timestamp and the block hash can be influenced by miners to some degree.
-    Bad actors in the mining community can for example run a casino payout function on a chosen hash
-    and just retry a different hash if they did not receive any compensation, e.g. Ether.
->>>>>>> english/develop
 
     タイムスタンプもブロックハッシュも、ある程度はマイナーの影響を受ける可能性があります。
-    マイニングコミュニティの悪質なアクターは、例えば、選択したハッシュでカジノのペイアウト関数を実行し、お金を受け取れなかった場合は別のハッシュで再試行できます。
+    マイニングコミュニティの悪質なアクターは、例えば、選択したハッシュでカジノのペイアウト関数を実行し、対価（例えばEther）を受け取れなかった場合は別のハッシュで再試行できます。
 
     現在のブロックのタイムスタンプは、最後のブロックのタイムスタンプよりも厳密に大きくなければなりませんが、唯一の保証は、正規のチェーンで連続する2つのブロックのタイムスタンプの間のどこかになるということです。
 
@@ -314,24 +302,19 @@ stringのメンバー
 ..     the ecrecover function remained unchanged.
 
 ..     This is usually not a problem unless you require signatures to be unique or
-..     use them to identify items. OpenZeppelin have a `ECDSA helper library <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
+..     use them to identify items. OpenZeppelin has an `ECDSA helper library <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
 
 .. warning::
 
     ``ecrecover`` を使用している場合、対応する秘密鍵を知らなくても、有効な署名を別の有効な署名に変えることができることに注意してください。
     Homesteadのハードフォークでは、この問題は _transaction_ signaturesで修正されましたが（ `EIP-2 <https://eips.ethereum.org/EIPS/eip-2#specification>`_ 参照）、ecrecover関数は変更されませんでした。
 
-<<<<<<< HEAD
     これは、署名を一意にする必要がある場合や、アイテムを識別するために使用する場合を除き、通常は問題になりません。
     OpenZeppelinには、この問題なしに ``ecrecover`` のラッパーとして使用できる `ECDSAヘルパーライブラリ <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ があります。
 
 .. .. note::
 
 ..     When running ``sha256``, ``ripemd160`` or ``ecrecover`` on a *private blockchain*, you might encounter Out-of-Gas. This is because these functions are implemented as "precompiled contracts" and only really exist after they receive the first message (although their contract code is hardcoded). Messages to non-existing contracts are more expensive and thus the execution might run into an Out-of-Gas error. A workaround for this problem is to first send Wei (1 for example) to each of the contracts before you use them in your actual contracts. This is not an issue on the main or test net.
-=======
-    This is usually not a problem unless you require signatures to be unique or use them to identify items.
-    OpenZeppelin has an `ECDSA helper library <https://docs.openzeppelin.com/contracts/4.x/api/utils#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
->>>>>>> english/develop
 
 .. note::
 
@@ -384,12 +367,11 @@ stringのメンバー
     ``.call()`` は、型チェック、関数の存在チェック、引数のパッキングをバイパスするので、他のコントラクトにある関数を実行する際には、可能な限り使用を避けるべきです。
 
 .. warning::
-<<<<<<< HEAD
 
     ``send`` の使用にはいくつかの危険があります。
     コールスタックの深さが1024の場合、送金は失敗し（これは常に呼び出し側で強制できます）、受信者がガス欠（out of gas）になった場合も失敗します。
     そのため、安全なEther送金を行うためには、 ``send`` の戻り値を常にチェックし、 ``transfer`` を使用するか、あるいはそれ以上の方法をとる必要があります。
-    受信者がお金を引き出すパターンを使いましょう。
+    受信者がEtherを引き出すパターンを使いましょう。
 
 .. .. warning::
 
@@ -401,12 +383,6 @@ stringのメンバー
 ..     The low-level calls which operate on addresses rather than contract instances (i.e. ``.call()``,
 ..     ``.delegatecall()``, ``.staticcall()``, ``.send()`` and ``.transfer()``) **do not** include this
 ..     check, which makes them cheaper in terms of gas but also less safe.
-=======
-    There are some dangers in using ``send``: The transfer fails if the call stack depth is at 1024
-    (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order
-    to make safe Ether transfers, always check the return value of ``send``, use ``transfer`` or even better:
-    Use a pattern where the recipient withdraws the Ether.
->>>>>>> english/develop
 
 .. warning::
 
@@ -443,12 +419,14 @@ stringのメンバー
 
 .. index:: this, selfdestruct, super
 
-<<<<<<< HEAD
 コントラクト関連
 ----------------
 
 ``this`` （現在のコントラクト型）
     現在のコントラクトで、 :ref:`address` に明示的に変換可能なもの
+
+``super``
+    継承階層の1つ上のレベルのコントラクト
 
 .. ``selfdestruct(address payable recipient)``
 ..     Destroy the current contract, sending its funds to the given :ref:`address`
@@ -458,16 +436,6 @@ stringのメンバー
 ..     - the receiving contract's receive function is not executed.
 
 ..     - the contract is only really destroyed at the end of the transaction and ``revert`` s might "undo" the destruction.
-=======
-Contract-related
-----------------
-
-``this`` (current contract's type)
-    The current contract, explicitly convertible to :ref:`address`
-
-``super``
-    A contract one level higher in the inheritance hierarchy
->>>>>>> english/develop
 
 ``selfdestruct(address payable recipient)``
     現在のコントラクトを破棄し、その資金を所定の :ref:`address` に送り、実行を終了します。
@@ -480,16 +448,10 @@ Contract-related
 さらに、現在のコントラクトのすべての関数は、現在の関数を含めて直接呼び出すことができます。
 
 .. warning::
-<<<<<<< HEAD
-    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
     バージョン0.8.18以降、SolidityとYulの両方で ``selfdestruct`` を使用すると、非推奨の警告が発生します。
     というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変わることになるからです。
-=======
-    From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a
-    deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior
-    as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
->>>>>>> english/develop
 
 .. note::
 

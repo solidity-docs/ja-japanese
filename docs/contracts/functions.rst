@@ -332,14 +332,13 @@ pure関数
 
 Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに、 ``revert()`` および ``require()`` 関数を使って潜在的な状態変化をリバートできます。
 
-<<<<<<< HEAD
 .. Reverting a state change is not considered a "state modification", as only changes to the
 .. state made previously in code that did not have the ``view`` or ``pure`` restriction
 .. are reverted and that code has the option to catch the ``revert`` and not pass it on.
 
 ``view`` や ``pure`` の制限を受けていないコードで以前に行われた状態の変更のみがリバートされ、そのコードは ``revert`` をキャッチして渡さないというオプションを持っているため、状態の変更をリバートすることは「状態の修正」とはみなされません。
 
-.. This behaviour is also in line with the ``STATICCALL`` opcode.
+.. This behavior is also in line with the ``STATICCALL`` opcode.
 
 この動作は、 ``STATICCALL`` のオペコードとも一致しています。
 
@@ -348,9 +347,6 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 ..   It is not possible to prevent functions from reading the state at the level
 ..   of the EVM, it is only possible to prevent them from writing to the state
 ..   (i.e. only ``view`` can be enforced at the EVM level, ``pure`` can not).
-=======
-This behavior is also in line with the ``STATICCALL`` opcode.
->>>>>>> english/develop
 
 .. warning::
 

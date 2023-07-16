@@ -14,20 +14,19 @@
 このガイドは、Solidityのコードを書くためのコーディング規約を提供することを目的としています。
 このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化する文書として考えるべきです。
 
-<<<<<<< HEAD
 .. Many projects will implement their own style guides.
 .. In the event of conflicts, project specific style guides take precedence.
 
 多くのプロジェクトでは、独自のスタイルガイドを導入しています。
 矛盾が生じた場合は、プロジェクト独自のスタイルガイドが優先されます。
 
-.. The structure and many of the recommendations within this style guide were taken from python's `pep8 style guide <https://peps.python.org/pep-0008/>`_.
+.. The structure and many of the recommendations within this style guide were taken from Python's `pep8 style guide <https://peps.python.org/pep-0008/>`_.
 
 このスタイルガイドの構造や推奨事項の多くは、Pythonの `pep8スタイルガイド <https://peps.python.org/pep-0008/>`_ から引用されています。
 
 .. The goal of this guide is *not* to be the right way or the best way to write Solidity code.
 .. The goal of this guide is *consistency*.
-.. A quote from python's `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ captures this concept well.
+.. A quote from Python's `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ captures this concept well.
 
 このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法であることではありません。
 このガイドの目的は、 *一貫性* です。
@@ -40,17 +39,7 @@ Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-
 ..     Consistency within a project is more important.
 ..     Consistency within one module or function is most important.
 
-..     But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And don't hesitate to ask!
-=======
-The structure and many of the recommendations within this style guide were
-taken from Python's
-`pep8 style guide <https://peps.python.org/pep-0008/>`_.
-
-The goal of this guide is *not* to be the right way or the best way to write
-Solidity code.  The goal of this guide is *consistency*.  A quote from Python's
-`pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_
-captures this concept well.
->>>>>>> english/develop
+..     But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And do not hesitate to ask!
 
 .. note::
 
@@ -59,15 +48,11 @@ captures this concept well.
     プロジェクト内での一貫性はより重要です。
     一つのモジュールや関数の中での一貫性が最も重要です。
 
-<<<<<<< HEAD
     しかし、最も重要なことは、 **一貫性がないことを自覚すること** です。
     時には、スタイルガイドが適用できないこともあります。
     迷ったときは、自分のベストな判断で行動しましょう。
     他の例を見て、何がベストなのかを判断してください。
     そして、迷わず質問してください！
-=======
-    But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And do not hesitate to ask!
->>>>>>> english/develop
 
 ****************
 コードレイアウト
@@ -571,11 +556,7 @@ NG:
     y            = 2;
     longVariable = 3;
 
-<<<<<<< HEAD
-.. Don't include a whitespace in the receive and fallback functions:
-=======
-Do not include a whitespace in the receive and fallback functions:
->>>>>>> english/develop
+.. Don not include a whitespace in the receive and fallback functions:
 
 受信関数とフォールバック関数に空白を入れてはいけません:
 

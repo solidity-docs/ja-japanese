@@ -698,7 +698,6 @@ JSON
 - ``name``: 関数の名前。
 - ``inputs``: オブジェクトの配列で、それぞれのオブジェクトは次のものを含みます。
 
-<<<<<<< HEAD
   * ``name``: パラメータの名前。
   * ``type``: パラメータの正規の型（詳細は後述）。
   * ``components``: タプル型に使用（詳細は後述）。
@@ -711,9 +710,6 @@ JSON
 
 コンストラクタ、receive関数、fallback関数は ``name`` や ``outputs`` を持ちません。
 receive関数とfallback関数には ``inputs`` もありません。
-=======
-Constructor, receive, and fallback never have ``name`` or ``outputs``. Receive and fallback do not have ``inputs`` either.
->>>>>>> english/develop
 
 .. note::
 

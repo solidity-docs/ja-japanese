@@ -63,19 +63,10 @@
 引数のパッキング
 ----------------
 
-<<<<<<< HEAD
 さて、署名付きメッセージに含めるべき情報がわかったところで、メッセージをまとめ、ハッシュ化し、署名する準備が整いました。
 簡単にするために、データを連結します。
 `ethereumjs-abi <https://github.com/ethereumjs/ethereumjs-abi>`_ ライブラリは、 ``abi.encodePacked`` でエンコードされた引数に適用されるSolidityの ``keccak256`` 関数の動作を模倣した ``soliditySHA3`` という関数を提供しています。
 以下は、 ``ReceiverPays`` の例で適切な署名を作成するJavaScriptの関数です。
-=======
-Now that we have identified what information to include in the signed message,
-we are ready to put the message together, hash it, and sign it. For simplicity,
-we concatenate the data. The `ethereumjs-abi <https://github.com/ethereumjs/ethereumjs-abi>`_
-library provides a function called ``soliditySHA3`` that mimics the behavior of
-Solidity's ``keccak256`` function applied to arguments encoded using ``abi.encodePacked``.
-Here is a JavaScript function that creates the proper signature for the ``ReceiverPays`` example:
->>>>>>> english/develop
 
 .. code-block:: javascript
 

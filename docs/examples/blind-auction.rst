@@ -12,20 +12,11 @@
 シンプルなオープンオークション
 ==============================
 
-<<<<<<< HEAD
 以下のシンプルなオークションコントラクトの一般的な考え方は、入札期間中に誰もが入札を行うことができるというものです。
-入札には、入札者を拘束するためにお金/Etherを送ることがすでに含まれています。
-最高入札額が上がった場合、それまでの最高入札者はお金を返してもらいます。
-入札期間の終了後、受益者がお金を受け取るためには、コントラクトを手動で呼び出さなければなりません。
+入札には、入札者を拘束するために対価（例えばEther）を送ることが含まれています。
+最高入札額が上がった場合、それまでの最高入札者はEtherを返してもらいます。
+入札期間の終了後、受益者がEtherを受け取るためには、コントラクトを手動で呼び出さなければなりません。
 コントラクトは自ら動作することはできません。
-=======
-The general idea of the following simple auction contract is that everyone can
-send their bids during a bidding period. The bids already include sending some compensation,
-e.g. Ether, in order to bind the bidders to their bid. If the highest bid is
-raised, the previous highest bidder gets their Ether back.  After the end of
-the bidding period, the contract has to be called manually for the beneficiary
-to receive their Ether - contracts cannot activate themselves.
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -85,29 +76,13 @@ to receive their Ether - contracts cannot activate themselves.
             if (block.timestamp > auctionEndTime)
                 revert AuctionAlreadyEnded();
 
-<<<<<<< HEAD
-            // 入札額が高くなければ、お金を送り返します（リバート文は、それがお金を受け取ったことを含め、この関数の実行のすべての変更をリバートします）。
-=======
-            // If the bid is not higher, send the
-            // Ether back (the revert statement
-            // will revert all changes in this
-            // function execution including
-            // it having received the Ether).
->>>>>>> english/develop
+            // 入札額が高くなければ、Etherを送り返します（リバート文は、Etherを受け取ったことを含め、この関数の実行のすべての変更をリバートします）。
             if (msg.value <= highestBid)
                 revert BidNotHighEnough(highestBid);
 
             if (highestBid != 0) {
-<<<<<<< HEAD
                 // highestBidder.send(highestBid) を使って単純に送り返すと、信頼できないコントラクトを実行する可能性があり、セキュリティ上のリスクがあります。
-                // 受取人が自分でお金を引き出せるようにするのが安全です。
-=======
-                // Sending back the Ether by simply using
-                // highestBidder.send(highestBid) is a security risk
-                // because it could execute an untrusted contract.
-                // It is always safer to let the recipients
-                // withdraw their Ether themselves.
->>>>>>> english/develop
+                // 受取人が自分でEtherを引き出せるようにするのが安全です。
                 pendingReturns[highestBidder] += highestBid;
             }
             highestBidder = msg.sender;
@@ -170,23 +145,9 @@ to receive their Ether - contracts cannot activate themselves.
 入札期間の終了後、入札者は自分の入札を明らかにしなければなりません。
 入札者は自分の値を暗号化せずに送信し、コントラクトはそのハッシュ値が入札期間中に提供されたものと同じであるかどうかをチェックします。
 
-<<<<<<< HEAD
 もう一つの課題は、いかにしてオークションの **バインディングとブラインド** を同時に行うかということです。
-落札した後にお金を送らないだけで済むようにするには、入札と一緒に送らせるようにするしかありません。
+落札した後にEtherを送らないだけで済むようにするには、入札と一緒に送らせるようにするしかありません。
 Ethereumでは価値の移転はブラインドできないため、誰でも価値を見ることができます。
-=======
-Another challenge is how to make the auction **binding and blind** at the same
-time: The only way to prevent the bidder from just not sending the Ether after
-they won the auction is to make them send it together with the bid. Since value
-transfers cannot be blinded in Ethereum, anyone can see the value.
-
-The following contract solves this problem by accepting any value that is
-larger than the highest bid. Since this can of course only be checked during
-the reveal phase, some bids might be **invalid**, and this is on purpose (it
-even provides an explicit flag to place invalid bids with high-value
-transfers): Bidders can confuse competition by placing several high or low
-invalid bids.
->>>>>>> english/develop
 
 以下のコントラクトでは、最高額の入札よりも大きな値を受け入れることで、この問題を解決しています。
 もちろん、これは公開段階でしかチェックできないため、いくつかの入札は **無効** になるかもしれませんが、これは意図的なものです（高額な送金で無効な入札を行うための明示的なフラグも用意されています）。

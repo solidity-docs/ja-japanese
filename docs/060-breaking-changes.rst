@@ -10,16 +10,10 @@ Solidity v0.6.0の破壊的変更点
 
 .. Changes the Compiler Might not Warn About
 
-<<<<<<< HEAD
 コンパイラが警告しない可能性のある変更点
 ========================================
-=======
-This section lists changes where the behavior of your code might
-change without the compiler telling you about it.
->>>>>>> english/develop
 
-.. This section lists changes where the behaviour of your code might
-.. change without the compiler telling you about it.
+.. This section lists changes where the behavior of your code might change without the compiler telling you about it.
 
 このセクションでは、コンパイラーが教えてくれないのにコードの動作が変更される可能性のある変更点を挙げます。
 
@@ -144,27 +138,16 @@ change without the compiler telling you about it.
 新機能
 ======
 
-<<<<<<< HEAD
 .. This section lists things that were not possible prior to Solidity 0.6.0 or were more difficult to achieve.
-=======
-This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of
-the compiler. These may change the way how you use the compiler on the command-line, how you use its programmable
-interface, or how you analyze the output produced by it.
->>>>>>> english/develop
 
 このセクションでは、Solidity 0.6.0以前では実現できなかったことや、実現が困難だったことを挙げています。
 
-<<<<<<< HEAD
 .. * The :ref:`try/catch statement <try-catch>` allows you to react on failed external calls.
 .. * ``struct`` and ``enum`` types can be declared at file level.
 .. * Array slices can be used for calldata arrays, for example ``abi.decode(msg.data[4:], (uint, uint))`` is a low-level way to decode the function call payload.
 .. * Natspec supports multiple return parameters in developer documentation, enforcing the same naming check as ``@param``.
 .. * Yul and Inline Assembly have a new statement called ``leave`` that exits the current function.
 .. * Conversions from ``address`` to ``address payable`` are now possible via ``payable(x)``, where ``x`` must be of type ``address``.
-=======
-A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
-It is enabled by default, but passing ``--old-reporter`` falls back to the the deprecated old error reporter.
->>>>>>> english/develop
 
 * :ref:`try/catch文 <try-catch>` では、失敗した外部呼び出しに反応できます。
 * ``struct`` および ``enum`` 型は、ファイルレベルで宣言できます。
@@ -173,21 +156,11 @@ It is enabled by default, but passing ``--old-reporter`` falls back to the the d
 * YulとInline Assemblyには、現在の関数を終了させる ``leave`` という新しい文があります。
 * ``address`` から ``address payable`` への変換は ``payable(x)`` を介して可能になりました。
 
-<<<<<<< HEAD
 インターフェースの変更点
 ========================
-=======
-The compiler now appends the `IPFS <https://ipfs.io/>`_ hash of the metadata file to the end of the bytecode by default
-(for details, see documentation on :doc:`contract metadata <metadata>`). Before 0.6.0, the compiler appended the
-`Swarm <https://ethersphere.github.io/swarm-home/>`_ hash by default, and in order to still support this behavior,
-the new command-line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
-appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command-line option.
-Passing the value ``none`` completely removes the hash.
->>>>>>> english/develop
 
-.. This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of
-.. the compiler. These may change the way how you use the compiler on the command line, how you use its programmable
-.. interface, or how you analyze the output produced by it.
+.. This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of the compiler.
+.. These may change the way how you use the compiler on the command-line, how you use its programmable interface, or how you analyze the output produced by it.
 
 このセクションでは、言語そのものとは関係なく、コンパイラーのインターフェースに影響を与える変更点を紹介します。
 これらの変更により、コマンドラインでのコンパイラの使用方法、プログラマブルインターフェースの使用方法、コンパイラが生成した出力の分析方法が変わる可能性があります。
@@ -197,7 +170,7 @@ Passing the value ``none`` completely removes the hash.
 新しいエラーリポーター
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. A new error reporter was introduced, which aims at producing more accessible error messages on the command line.
+.. A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
 .. It is enabled by default, but passing ``--old-reporter`` falls back to the the deprecated old error reporter.
 
 新しいエラーレポーターが導入されました。
@@ -211,9 +184,9 @@ Passing the value ``none`` completely removes the hash.
 
 .. The compiler now appends the `IPFS <https://ipfs.io/>`_ hash of the metadata file to the end of the bytecode by default
 .. (for details, see documentation on :doc:`contract metadata <metadata>`). Before 0.6.0, the compiler appended the
-.. `Swarm <https://ethersphere.github.io/swarm-home/>`_ hash by default, and in order to still support this behaviour,
-.. the new command line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
-.. appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command line option.
+.. `Swarm <https://ethersphere.github.io/swarm-home/>`_ hash by default, and in order to still support this behavior,
+.. the new command-line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
+.. appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command-line option.
 .. Passing the value ``none`` completely removes the hash.
 
 コンパイラは、メタデータファイルの  `IPFS <https://ipfs.io/>`_  ハッシュをデフォルトでバイトコードの最後に追加するようになりました（詳細については、 :doc:`コントラクトメタデータ <metadata>` のドキュメントを参照してください）。

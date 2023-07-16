@@ -11,27 +11,16 @@ Solidity IRベースのCodegenの変更点
 
 .. Either directly from Solidity to EVM opcodes ("old codegen") or through an intermediate representation ("IR") in Yul ("new codegen" or "IR-based codegen").
 
-<<<<<<< HEAD
 Solidityは、2つの異なる方法でEVMバイトコードを生成できます。
 Solidityから直接EVMのオペコードを生成する方法「old codegen」と、Yulの中間表現「IR」を介して生成する方法（「new codegen」または「IR-based codegen」）です。
 
 .. The IR-based code generator was introduced with an aim to not only allow code generation to be more transparent and auditable but also to enable more powerful optimization passes that span across functions.
-=======
-You can enable it on the command-line using ``--via-ir``
-or with the option ``{"viaIR": true}`` in standard-json and we
-encourage everyone to try it out!
-
-For several reasons, there are tiny semantic differences between the old
-and the IR-based code generator, mostly in areas where we would not
-expect people to rely on this behavior anyway.
-This section highlights the main differences between the old and the IR-based codegen.
->>>>>>> english/develop
 
 IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数を跨いだより強力な最適化パスを可能にすることを目的としています。
 
-.. You can enable it on the command line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
+.. You can enable it on the command-line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
 
-コマンドラインで ``--via-ir`` を使って有効にしたり、standard-jsonで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
+コマンドラインで ``--via-ir`` を使って有効にしたり、スタンダードJSONで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
 
 .. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behaviour anyway.
 
@@ -235,21 +224,12 @@ IRベースのコードジェネレーターを導入したのは、コード生
       }
 
   .. The function ``preincr_u8(1)`` returns the following values:
-
-<<<<<<< HEAD
-  .. - Old code generator: 3 (``1 + 2``) but the return value is unspecified in general
-
-  .. - New code generator: 4 (``2 + 2``) but the return value is not guaranteed
+  .. - Old code generator: ``3`` (``1 + 2``) but the return value is unspecified in general
+  .. - New code generator: ``4`` (``2 + 2``) but the return value is not guaranteed
 
   関数 ``preincr_u8(1)`` は、以下の値を返します:
-
-  - 古いコード生成器です: 3 (``1 + 2``)。ただし、一般に戻り値は不特定です。
-
-  - 新しいコードジェネレーターです: 4 (``2 + 2``)。ただし、戻り値は保証されません。
-=======
-  - Old code generator: ``3`` (``1 + 2``) but the return value is unspecified in general
-  - New code generator: ``4`` (``2 + 2``) but the return value is not guaranteed
->>>>>>> english/develop
+  - 古いコード生成器: ``3`` (``1 + 2``)。ただし、一般に戻り値は不定です。
+  - 新しいコードジェネレーター: ``4`` (``2 + 2``)。ただし、戻り値は保証されません。
 
   .. index:: ! evaluation order; function arguments
 
@@ -344,20 +324,12 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-<<<<<<< HEAD
-  .. The function `f()` behaves as follows:
-=======
-  The function ``f()`` behaves as follows:
->>>>>>> english/develop
-
+  .. The function ``f()`` behaves as follows:
   .. - Old code generator: runs out of gas while zeroing the array contents after the large memory allocation
-
   .. - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
 
   関数 ``f()`` は以下のような挙動をします:
-
   - 古いコードジェネレータ: 大きなメモリ割り当ての後、配列の内容をゼロにするときにガス欠になります。
-
   - 新しいコードジェネレータ: フリーメモリポインタのオーバーフローによりリバートします（ガス欠はしない）。
 
 .. Internals

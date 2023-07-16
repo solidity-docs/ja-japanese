@@ -6,7 +6,6 @@
 
 想定通りに動作するソフトウェアを作るのは簡単ですが、想定外の使い方をされないようにチェックするのは非常に困難です。
 
-<<<<<<< HEAD
 Solidityでは、スマートコントラクトを使ってトークンや、もっと価値のあるものを扱うことができるので、セキュリティはさらに重要です。
 加えて、スマートコントラクトの実行はすべて公開されており、ソースコードも公開されることがあります。
 
@@ -22,33 +21,9 @@ Solidityでは、スマートコントラクトを使ってトークンや、も
 このセクションでは、いくつかの落とし穴や一般的なセキュリティ上の推奨事項を挙げていきますが、もちろん完全なものではありません。
 また、スマートコントラクトのコードにバグがない場合でも、コンパイラやプラットフォーム自体にバグがある可能性があることも覚えておいてください。
 コンパイラのセキュリティ関連の既知のバグのリストは :ref:`既知のバグリスト<known_bugs>` に掲載されており、機械でも読めます。
-なお、Solidityコンパイラのコードジェネレータを対象としたバグバウンティプログラムがあります。
-=======
-In Solidity, this is even more important because you can use smart contracts to handle tokens or,
-possibly, even more valuable things.
-Furthermore, every execution of a smart contract happens in public and,
-in addition to that, the source code is often available.
+なお、Solidityコンパイラのコードジェネレータを対象とした `Bug Bounty Program <https://ethereum.org/en/bug-bounty/>`_ があります。
 
-Of course, you always have to consider how much is at stake:
-You can compare a smart contract with a web service that is open to the public
-(and thus, also to malicious actors) and perhaps even open-source.
-If you only store your grocery list on that web service, you might not have to take too much care,
-but if you manage your bank account using that web service, you should be more careful.
-
-This section will list some pitfalls and general security recommendations
-but can, of course, never be complete.
-Also, keep in mind that even if your smart contract code is bug-free,
-the compiler or the platform itself might have a bug.
-A list of some publicly known security-relevant bugs of the compiler can be found
-in the :ref:`list of known bugs<known_bugs>`, which is also machine-readable.
-Note that there is a `Bug Bounty Program <https://ethereum.org/en/bug-bounty/>`_
-that covers the code generator of the Solidity compiler.
-
-As always, with open-source documentation,
-please help us extend this section (especially, some examples would not hurt)!
->>>>>>> english/develop
-
-.. As always, with open source documentation, please help us extend this section (especially, some examples would not hurt)!
+.. As always, with open-source documentation, please help us extend this section (especially, some examples would not hurt)!
 
 いつものように、オープンソースのドキュメントでは、このセクションの拡張にご協力ください（特に、いくつかの例があれば問題ありません）。
 
@@ -65,21 +40,13 @@ please help us extend this section (especially, some examples would not hurt)!
 プライベートの情報とランダム性
 ==============================
 
-<<<<<<< HEAD
 スマートコントラクト上で利用できるものはすべて公開されており、ローカル変数や ``private`` と書かれた状態変数も公開されています。
 
 スマートコントラクトで乱数を使用することは、ブロックビルダーが不正行為をする可能性があるため、困難です。
-=======
-Everything you use in a smart contract is publicly visible,
-even local variables and state variables marked ``private``.
-
-Using random numbers in smart contracts is quite tricky if you do not want block builders to be able to cheat.
->>>>>>> english/develop
 
 Reentrancy
 ==========
 
-<<<<<<< HEAD
 .. Any interaction from a contract (A) with another contract (B) and any transfer of Ether hands over control to that contract (B).
 .. This makes it possible for B to call back into A before this interaction is completed.
 .. To give an example, the following code contains a bug (it is just a snippet and not a complete contract):
@@ -87,12 +54,6 @@ Reentrancy
 コントラクト（A）と別のコントラクト（B）とのインタラクションやEtherの送金は、コントラクト（B）に制御権を渡します。
 これにより、このインタラクションが完了する前に、BがAにコールバックすることが可能になります。
 例として、以下のコードにはバグが含まれています（これは単なるスニペットであり、完全なコントラクトではありません）。
-=======
-Any interaction from a contract (A) with another contract (B)
-and any transfer of Ether hands over control to that contract (B).
-This makes it possible for B to call back into A before this interaction is completed.
-To give an example, the following code contains a bug (it is just a snippet and not a complete contract):
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -110,20 +71,10 @@ To give an example, the following code contains a bug (it is just a snippet and 
         }
     }
 
-<<<<<<< HEAD
 この問題は、 ``send`` にガス制限があるため、それほど深刻ではありませんが、それでも脆弱性があります。
 Etherの送金には常にコードの実行が含まれるため、受信者は ``withdraw`` にコールバックするコントラクトになる可能性があります。
 これにより、複数回の払い戻しが可能となり、基本的にはコントラクト内のすべてのEtherを回収できます。
 特に、以下のコントラクトは、デフォルトで残りのガスをすべて送金する ``call`` を使用しているため、攻撃者は複数回返金できます。
-=======
-The problem is not too serious here because of the limited gas as part of ``send``,
-but it still exposes a weakness:
-Ether transfer can always include code execution,
-so the recipient could be a contract that calls back into ``withdraw``.
-This would let it get multiple refunds and, basically, retrieve all the Ether in the contract.
-In particular, the following contract will allow an attacker to refund multiple times
-as it uses ``call`` which forwards all remaining gas by default:
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -142,11 +93,7 @@ as it uses ``call`` which forwards all remaining gas by default:
         }
     }
 
-<<<<<<< HEAD
 Re-entrancyを避けるために、以下のようなChecks-Effects-Interactionsパターンを使用できます。
-=======
-To avoid reentrancy, you can use the Checks-Effects-Interactions pattern as demonstrated below:
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -164,44 +111,23 @@ To avoid reentrancy, you can use the Checks-Effects-Interactions pattern as demo
         }
     }
 
-The Checks-Effects-Interactions pattern ensures that all code paths through a contract
-complete all required checks of the supplied parameters before modifying the contract's state (Checks);
-only then it makes any changes to the state (Effects);
-it may make calls to functions in other contracts
-*after* all planned state changes have been written to storage (Interactions).
-This is a common foolproof way to prevent *reentrancy attacks*,
-where an externally called malicious contract can double-spend an allowance,
-double-withdraw a balance, among other things,
-by using logic that calls back into the original contract before it has finalized its transaction.
+.. The Checks-Effects-Interactions pattern ensures that all code paths through a contract complete all required checks of the supplied parameters before modifying the contract's state (Checks); only then it makes any changes to the state (Effects); it may make calls to functions in other contracts *after* all planned state changes have been written to storage (Interactions).
+.. This is a common foolproof way to prevent *reentrancy attacks*, where an externally called malicious contract can double-spend an allowance, double-withdraw a balance, among other things, by using logic that calls back into the original contract before it has finalized its transaction.
 
-<<<<<<< HEAD
-.. Note that re-entrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
+Checks-Effects-Interactionsパターンは、コントラクトを通るすべてのコードパスが、コントラクトの状態を変更する前に、供給されたパラメータの必要なチェックをすべて完了することを保証します（Checks）。
+その後、コントラクトはステートに変更を加えます（Effects）。
+計画されたステートの変更がすべてストレージに書き込まれた後、他のコントラクトの関数を呼び出すことができます（Interactions）。
+これは、外部から呼び出された悪意のあるコントラクトが、トランザクションを確定する前に元のコントラクトにコールバックするロジックを使用することで、手当を二重に使ったり、残高を二重に引き出したりすることができる、 *リエントランシー攻撃* を防ぐための一般的なフールプルーフな方法である。
+
+.. Note that reentrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
 .. A called contract could modify the state of another contract you depend on.
-=======
-Note that reentrancy is not only an effect of Ether transfer
-but of any function call on another contract.
-Furthermore, you also have to take multi-contract situations into account.
-A called contract could modify the state of another contract you depend on.
->>>>>>> english/develop
 
-Re-entrancyは、Ether送金だけでなく、別のコントラクトでのあらゆる関数呼び出しの影響を受けることに注意してください。
+Reentrancyは、Ether送金だけでなく、別のコントラクトでのあらゆる関数呼び出しの影響を受けることに注意してください。
 さらに、複数のコントラクトを考慮しなければならない状況もあります。
 呼び出されたコントラクトが、依存している別のコントラクトの状態を変更する可能性があります。
 
-<<<<<<< HEAD
 ガスリミットとループ
 ====================
-=======
-Loops that do not have a fixed number of iterations, for example,
-loops that depend on storage values, have to be used carefully:
-Due to the block gas limit, transactions can only consume a certain amount of gas.
-Either explicitly or just due to normal operation,
-the number of iterations in a loop can grow beyond the block gas limit
-which can cause the complete contract to be stalled at a certain point.
-This may not apply to ``view`` functions that are only executed to read data from the blockchain.
-Still, such functions may be called by other contracts as part of on-chain operations and stall those.
-Please be explicit about such cases in the documentation of your contracts.
->>>>>>> english/develop
 
 .. Loops that do not have a fixed number of iterations, for example, loops that depend on storage values, have to be used carefully:
 .. Due to the block gas limit, transactions can only consume a certain amount of gas.
@@ -210,7 +136,6 @@ Please be explicit about such cases in the documentation of your contracts.
 .. Still, such functions may be called by other contracts as part of on-chain operations and stall those.
 .. Please be explicit about such cases in the documentation of your contracts.
 
-<<<<<<< HEAD
 例えば、ストレージの値に依存するループなど、反復回数が固定されていないループは、慎重に使用する必要があります。
 ブロックガスリミットにより、トランザクションは一定量のガスしか消費できません。
 明示的に、または通常の操作によって、ループの反復回数がブロックガスリミットを超えてしまい、コントラクト全体がある時点で停止してしまうことがあります。
@@ -228,29 +153,6 @@ Etherの送受信
 - コントラクトも「外部アカウント」も、誰かがEtherを送ってくるのを防ぐことは今のところできません。
   コントラクトは、通常の送金に反応して拒否できますが、メッセージコールを作成せずにEtherを移動する方法があります。
   ひとつはコントラクトのアドレスに単純に「マイニング」する方法で、もうひとつは ``selfdestruct(x)`` を使う方法です。
-=======
-- Neither contracts nor "external accounts" are currently able to prevent someone from sending them Ether.
-  Contracts can react on and reject a regular transfer, but there are ways to move Ether without creating a message call.
-  One way is to simply "mine to" the contract address and the second way is using ``selfdestruct(x)``.
-
-- If a contract receives Ether (without a function being called), either the :ref:`receive Ether <receive-ether-function>`
-  or the :ref:`fallback <fallback-function>` function is executed.
-  If it does not have a ``receive`` nor a ``fallback`` function, the Ether will be rejected (by throwing an exception).
-  During the execution of one of these functions, the contract can only rely on the "gas stipend" it is passed (2300 gas)
-  being available to it at that time.
-  This stipend is not enough to modify storage (do not take this for granted though, the stipend might change with future hard forks).
-  To be sure that your contract can receive Ether in that way, check the gas requirements of the receive and fallback functions
-  (for example in the "details" section in Remix).
-
-- There is a way to forward more gas to the receiving contract using ``addr.call{value: x}("")``.
-  This is essentially the same as ``addr.transfer(x)``, only that it forwards all remaining gas
-  and opens up the ability for the recipient to perform more expensive actions
-  (and it returns a failure code instead of automatically propagating the error).
-  This might include calling back into the sending contract or other state changes you might not have thought of.
-  So it allows for great flexibility for honest users but also for malicious actors.
-
-- Use the most precise units to represent the Wei amount as possible, as you lose any that is rounded due to a lack of precision.
->>>>>>> english/develop
 
 .. - If a contract receives Ether (without a function being called), either the :ref:`receive Ether <receive-ether-function>` or the :ref:`fallback <fallback-function>` function is executed.
 ..   If it does not have a receive nor a fallback function, the Ether will be rejected (by throwing an exception).
@@ -259,7 +161,7 @@ Etherの送受信
 ..   To be sure that your contract can receive Ether in that way, check the gas requirements of the receive and fallback functions (for example in the "details" section in Remix).
 
 - コントラクトが（関数が呼ばれずに）Etherを受信すると、 :ref:`receive Ether <receive-ether-function>` または :ref:`fallback <fallback-function>` 関数が実行されます。
-  receive関数もfallback関数も持たない場合、Etherは（例外を投げて）拒否されます。
+  ``receive`` 関数も ``fallback`` 関数も持たない場合、Etherは（例外を投げて）拒否されます。
   これらの関数が実行されている間、コントラクトは、渡された「gas stipend」（2300ガス）がその時点で利用可能であることにのみ依存できます。
   この供給量は、ストレージを変更するのに十分ではありません（将来のハードフォークで供給量が変更される可能性がありますので、これを鵜呑みにしてはいけません）。
   コントラクトがこの方法でEtherを受け取ることができるかどうかを確認するには、receive関数とfallback関数のガス要件を確認してください（例えばRemixの「詳細」セクションに記載されています）。
@@ -272,28 +174,12 @@ Etherの送受信
 ..   into the sending contract or other state changes you might not have thought of.
 ..   So it allows for great flexibility for honest users but also for malicious actors.
 
-<<<<<<< HEAD
 - ``addr.call{value: x}("")`` を使用して、より多くのガスを受信コントラクトに送金する方法があります。
   これは基本的に ``addr.transfer(x)`` と同じですが、残りのガスをすべて送金し、受信側がより高価なアクションを実行できるようにします（また、自動的にエラーを伝播するのではなく、失敗コードを返します）。
   これには、送信側のコントラクトにコールバックすることや、あなたが考えもしなかったような他の状態変化が含まれるかもしれません。
   そのため、誠実なユーザーだけでなく、悪意のあるアクターにも大きな柔軟性を与えることができます。
 
 .. - Use the most precise units to represent the wei amount as possible, as you lose any that is rounded due to a lack of precision.
-=======
-External function calls can fail at any time
-because they exceed the maximum call stack size limit of 1024.
-In such situations, Solidity throws an exception.
-Malicious actors might be able to force the call stack to a high value
-before they interact with your contract.
-Note that, since `Tangerine Whistle <https://eips.ethereum.org/EIPS/eip-608>`_ hardfork,
-the `63/64 rule <https://eips.ethereum.org/EIPS/eip-150>`_ makes call stack depth attack impractical.
-Also note that the call stack and the expression stack are unrelated,
-even though both have a size limit of 1024 stack slots.
-
-Note that ``.send()`` does **not** throw an exception if the call stack is depleted
-but rather returns ``false`` in that case.
-The low-level functions ``.call()``, ``.delegatecall()`` and ``.staticcall()`` behave in the same way.
->>>>>>> english/develop
 
 - weiの量を表す単位は、精度が低いために丸められたものは失われてしまうので、できるだけ正確な単位を使ってください。
 
@@ -356,7 +242,6 @@ The low-level functions ``.call()``, ``.delegatecall()`` and ``.staticcall()`` b
 認可されたプロキシ
 ==================
 
-<<<<<<< HEAD
 .. If your contract can act as a proxy, i.e. if it can call arbitrary contracts with user-supplied data, then the user can essentially assume the identity of the proxy contract.
 .. Even if you have other protective measures in place, it is best to build your contract system such that the proxy does not have any permissions (not even for itself).
 .. If needed, you can accomplish that using a second proxy:
@@ -364,13 +249,6 @@ The low-level functions ``.call()``, ``.delegatecall()`` and ``.staticcall()`` b
 コントラクトがプロキシとして動作できる場合、つまり、ユーザーが提供したデータで任意のコントラクトを呼び出すことができる場合、ユーザーは基本的にプロキシのコントラクトのアイデンティティを仮定できます。
 他の保護手段があったとしても、プロキシが（自分自身のためでさえも）いかなる許可も持たないようにコントラクトシステムを構築することが最善です。
 必要であれば、第二のプロキシを使ってそれを達成できます。
-=======
-If your contract can act as a proxy, i.e. if it can call arbitrary contracts with user-supplied data,
-then the user can essentially assume the identity of the proxy contract.
-Even if you have other protective measures in place, it is best to build your contract system such
-that the proxy does not have any permissions (not even for itself).
-If needed, you can accomplish that using a second proxy:
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -397,13 +275,8 @@ If needed, you can accomplish that using a second proxy:
 tx.origin
 =========
 
-<<<<<<< HEAD
-認証に tx.origin を使用しないでください。
+認証に ``tx.origin`` を使用しないでください。
 以下のようなウォレットコントラクトがあるとします。
-=======
-Never use ``tx.origin`` for authorization.
-Let's say you have a wallet contract like this:
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -448,19 +321,11 @@ Let's say you have a wallet contract like this:
         }
     }
 
-<<<<<<< HEAD
-.. If your wallet had checked ``msg.sender`` for authorization, it would get the address of the attack wallet, instead of the owner address. But by checking ``tx.origin``, it gets the original address that kicked off the transaction, which is still the owner address. The attack wallet instantly drains all your funds.
+.. If your wallet had checked ``msg.sender`` for authorization, it would get the address of the attack wallet, instead of the owner's address. But by checking ``tx.origin``, it gets the original address that kicked off the transaction, which is still the owner's address. The attack wallet instantly drains all your funds.
 
 もしあなたのウォレットが ``msg.sender`` をチェックして承認を得ていたら、所有者のアドレスではなく、攻撃したウォレットのアドレスを得ることになります。
 しかし、 ``tx.origin`` をチェックすると、トランザクションを開始した元のアドレスが取得され、それがオーナーのアドレスとなります。
 攻撃されたウォレットは即座にあなたの資金をすべて使い果たしてしまいます。
-=======
-If your wallet had checked ``msg.sender`` for authorization, it would get the address of the attack wallet,
-instead of the owner's address.
-But by checking ``tx.origin``, it gets the original address that kicked off the transaction,
-which is still the owner's address.
-The attack wallet instantly drains all your funds.
->>>>>>> english/develop
 
 .. _underflow-overflow:
 
@@ -516,7 +381,6 @@ Solidityには、これらのオーバーフローを処理する2つのモー�
 マッピングのクリア
 ==================
 
-<<<<<<< HEAD
 .. The Solidity type ``mapping`` (see :ref:`mapping-types`) is a storage-only key-value data structure that does not keep track of the keys that were assigned a non-zero value.
 .. Because of that, cleaning a mapping without extra information about the written keys is not possible.
 .. If a ``mapping`` is used as the base type of a dynamic storage array, deleting or popping the array will have no effect over the ``mapping`` elements.
@@ -528,16 +392,6 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
 ``mapping`` が動的ストレージ配列の基本型として使用されている場合、配列を削除したりポップしたりしても ``mapping`` の要素には影響しません。
 例えば、動的ストレージ配列のベース型である ``struct`` のメンバーフィールドの型として ``mapping`` が使用されている場合も同様です。
 また、 ``mapping`` を含む構造体や配列の代入においても、 ``mapping`` は無視されます。
-=======
-The Solidity type ``mapping`` (see :ref:`mapping-types`) is a storage-only key-value data structure
-that does not keep track of the keys that were assigned a non-zero value.
-Because of that, cleaning a mapping without extra information about the written keys is not possible.
-If a ``mapping`` is used as the base type of a dynamic storage array,
-deleting or popping the array will have no effect over the ``mapping`` elements.
-The same happens, for example, if a ``mapping`` is used as the type of a member field of a ``struct``
-that is the base type of a dynamic storage array.
-The ``mapping`` is also ignored in assignments of structs or arrays containing a ``mapping``.
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -565,19 +419,10 @@ The ``mapping`` is also ignored in assignments of structs or arrays containing a
         }
     }
 
-<<<<<<< HEAD
 .. Consider the example above and the following sequence of calls: ``allocate(10)``, ``writeMap(4, 128, 256)``.
 .. At this point, calling ``readMap(4, 128)`` returns 256.
-.. If we call ``eraseMaps``, the length of state variable ``array`` is zeroed, but since its ``mapping`` elements cannot be zeroed, their information stays alive in the contract's storage.
+.. If we call ``eraseMaps``, the length of the state variable ``array`` is zeroed, but since its ``mapping`` elements cannot be zeroed, their information stays alive in the contract's storage.
 .. After deleting ``array``, calling ``allocate(5)`` allows us to access ``array[4]`` again, and calling ``readMap(4, 128)`` returns 256 even without another call to ``writeMap``.
-=======
-Consider the example above and the following sequence of calls: ``allocate(10)``, ``writeMap(4, 128, 256)``.
-At this point, calling ``readMap(4, 128)`` returns 256.
-If we call ``eraseMaps``, the length of the state variable ``array`` is zeroed,
-but since its ``mapping`` elements cannot be zeroed, their information stays alive in the contract's storage.
-After deleting ``array``, calling ``allocate(5)`` allows us to access ``array[4]`` again,
-and calling ``readMap(4, 128)`` returns 256 even without another call to ``writeMap``.
->>>>>>> english/develop
 
 上の例で、次のような一連のコールを考えてみましょう: ``allocate(10)``, ``writeMap(4, 128, 256)`` 。
 この時点で、 ``readMap(4, 128)`` を呼び出すと256を返します。
@@ -586,17 +431,7 @@ and calling ``readMap(4, 128)`` returns 256 even without another call to ``write
 
 .. If your ``mapping`` information must be deleted, consider using a library similar to `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_, allowing you to traverse the keys and delete their values in the appropriate ``mapping``.
 
-<<<<<<< HEAD
 ``mapping`` の情報を削除する必要がある場合は、 `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_ と同様のライブラリを使用することを検討し、適切な ``mapping`` でキーをトラバースしてその値を削除できます。
-=======
-- Types that do not occupy the full 32 bytes might contain "dirty higher order bits".
-  This is especially important if you access ``msg.data`` - it poses a malleability risk:
-  You can craft transactions that call a function ``f(uint8 x)``
-  with a raw byte argument of ``0xff000001`` and with ``0x00000001``.
-  Both are fed to the contract and both will look like the number ``1`` as far as ``x`` is concerned,
-  but ``msg.data`` will be different, so if you use ``keccak256(msg.data)`` for anything,
-  you will get different results.
->>>>>>> english/develop
 
 マイナーな内容
 ==============
@@ -606,7 +441,6 @@ and calling ``readMap(4, 128)`` returns 256 even without another call to ``write
 ..   You can craft transactions that call a function ``f(uint8 x)`` with a raw byte argument of ``0xff000001`` and with ``0x00000001``.
 ..   Both are fed to the contract and both will look like the number ``1`` as far as ``x`` is concerned, but ``msg.data`` will be different, so if you use ``keccak256(msg.data)`` for anything, you will get different results.
 
-<<<<<<< HEAD
 - 32バイトを完全に占有しない型には、「ダーティな高次ビット」が含まれている可能性があります。
   これは ``msg.data`` にアクセスする場合に特に重要で、不正改造の危険性があります:
   関数 ``f(uint8 x)`` を生のバイト引数 ``0xff000001`` で呼び出すトランザクションと、 ``0x00000001`` で呼び出すトランザクションを作ることができます。
@@ -618,51 +452,21 @@ and calling ``readMap(4, 128)`` returns 256 even without another call to ``write
 
 警告を真摯に受け止める
 ======================
-=======
-If the compiler warns you about something, you should change it.
-Even if you do not think that this particular warning has security implications,
-there might be another issue buried beneath it.
-Any compiler warning we issue can be silenced by slight changes to the code.
-
-Always use the latest version of the compiler to be notified about all recently introduced warnings.
-
-Messages of type ``info``, issued by the compiler, are not dangerous
-and simply represent extra suggestions and optional information
-that the compiler thinks might be useful to the user.
->>>>>>> english/develop
 
 .. If the compiler warns you about something, you should change it.
 .. Even if you do not think that this particular warning has security implications, there might be another issue buried beneath it.
 .. Any compiler warning we issue can be silenced by slight changes to the code.
 
-<<<<<<< HEAD
 コンパイラが何かを警告したら、それを変更すべきです。
 その警告がセキュリティに影響するとは思わなくても、その下に別の問題が隠れているかもしれません。
 私たちが発するコンパイラの警告は、コードを少し変更するだけで黙らせることができます。
-=======
-Restrict the amount of Ether (or other tokens) that can be stored in a smart contract.
-If your source code, the compiler or the platform has a bug, these funds may be lost.
-If you want to limit your loss, limit the amount of Ether.
->>>>>>> english/develop
 
 .. Always use the latest version of the compiler to be notified about all recently introduced warnings.
 
-<<<<<<< HEAD
 最近導入されたすべての警告について通知を受けるには、常に最新バージョンのコンパイラを使用してください。
-=======
-Keep your contracts small and easily understandable.
-Single out unrelated functionality in other contracts or into libraries.
-General recommendations about the source code quality of course apply:
-Limit the amount of local variables, the length of functions and so on.
-Document your functions so that others can see what your intention was
-and whether it is different than what the code does.
->>>>>>> english/develop
 
-.. Messages of type ``info`` issued by the compiler are not dangerous, and simply
-.. represent extra suggestions and optional information that the compiler thinks
-.. might be useful to the user.
+.. Messages of type ``info``, issued by the compiler, are not dangerous and simply represent extra suggestions and optional information that the compiler thinks might be useful to the user.
 
-<<<<<<< HEAD
 コンパイラが発行する ``info`` 型のメッセージは危険なものではなく、ユーザにとって有用であるとコンパイラが考える追加の提案やオプション情報を表しています。
 
 Etherの量を制限する
@@ -681,7 +485,7 @@ Etherの量を制限する
 
 .. Keep your contracts small and easily understandable.
 .. Single out unrelated functionality in other contracts or into libraries.
-.. General recommendations about source code quality of course apply:
+.. General recommendations about the source code quality of course apply:
 .. Limit the amount of local variables, the length of functions and so on.
 .. Document your functions so that others can see what your intention was and whether it is different than what the code does.
 
@@ -694,11 +498,10 @@ Etherの量を制限する
 Checks-Effects-Interactionsパターンを使う
 =========================================
 
-.. Most functions will first perform some checks (who called the function, are the arguments in range, did they send enough Ether, does the person have tokens, etc.).
-.. These checks should be done first.
+.. Most functions will first perform some checks and they should be done first (who called the function, are the arguments in range, did they send enough Ether, does the person have tokens, etc.).
 
-ほとんどの関数は、最初にいくつかのチェックを行います（誰が関数を呼び出したか、引数は範囲内か、十分な量のEtherを送ったか、相手はトークンを持っているか、など）。
-これらのチェックは最初に行われるべきです。
+ほとんどの関数は最初にいくつかのチェックを行い、それらは最初に行うべきです。
+例えば、誰が関数を呼び出したか、引数は範囲内か、十分なイーサを送ったか、その人はトークンを持っているか、などです。
 
 .. As the second step, if all checks passed, effects to the state variables of the current contract should be made.
 .. Interaction with other contracts should be the very last step in any function.
@@ -707,10 +510,10 @@ Checks-Effects-Interactionsパターンを使う
 他のコントラクトとのやりとりは、どの関数でも最後のステップにすべきです。
 
 .. Early contracts delayed some effects and waited for external function calls to return in a non-error state.
-.. This is often a serious mistake because of the re-entrancy problem explained above.
+.. This is often a serious mistake because of the reentrancy problem explained above.
 
 初期のコントラクトでは、いくつかの効果を遅らせ、外部の関数呼び出しが非エラー状態で戻ってくるのを待っていました。
-これは、上で説明したRe-entrancyの問題のため、しばしば重大な誤りとなります。
+これは、上で説明したReentrancyの問題のため、しばしば重大な誤りとなります。
 
 .. Note that, also, calls to known contracts might in turn cause calls to
 .. unknown contracts, so it is probably better to just always apply this pattern.
@@ -720,9 +523,7 @@ Checks-Effects-Interactionsパターンを使う
 フェイルセーフモードを搭載する
 ==============================
 
-.. While making your system fully decentralised will remove any intermediary,
-.. it might be a good idea, especially for new code, to include some kind
-.. of fail-safe mechanism:
+.. While making your system fully decentralized will remove any intermediary, it might be a good idea, especially for new code, to include some kind of fail-safe mechanism:
 
 システムを完全に非中央集権化することで、仲介者を排除できますが、特に新しいコードには、何らかのフェイルセーフメカニズムを組み込むことが良いかもしれません。
 
@@ -735,13 +536,10 @@ Checks-Effects-Interactionsパターンを使う
 スマートコントラクトの中に、「Etherが漏れていないか」「トークンの合計がコントラクトの残高と同じか」などの自己チェックを行う関数を追加できます。
 そのためには、あまり多くのガスを使うことはできないので、オフチェーンの計算による助けが必要になるかもしれないことを覚えておいてください。
 
-.. If the self-check fails, the contract automatically switches into some kind
-.. of "failsafe" mode, which, for example, disables most of the features, hands over
-.. control to a fixed and trusted third party or just converts the contract into
-.. a simple "give me back my money" contract.
+.. If the self-check fails, the contract automatically switches into some kind of "failsafe" mode, which, for example, disables most of the features, hands over control to a fixed and trusted third party or just converts the contract into a simple "give me back my money" contract.
 
 セルフチェックに失敗すると、コントラクトは自動的にある種の「フェイルセーフ」モードに切り替わります。
-例えば、ほとんどの機能を無効にしたり、固定された信頼できる第三者にコントロールを委ねたり、あるいは単に「お金を返してください」というコントラクトに変更したりします。
+例えば、ほとんどの機能を無効にしたり、固定された信頼できる第三者にコントロールを委ねたり、あるいは単に「Etherを返してください」というコントラクトに変更したりします。
 
 ピアレビューを依頼する
 ======================
@@ -750,41 +548,3 @@ Checks-Effects-Interactionsパターンを使う
 
 多くの人がコードを検証すればするほど、多くの問題が見つかります。
 また、人にコードを見てもらうことで、コードがわかりやすいかどうかのクロスチェックにもなり、これは優れたスマートコントラクトにとって非常に重要な基準です。
-=======
-Most functions will first perform some checks and they should be done first
-(who called the function, are the arguments in range, did they send enough Ether,
-does the person have tokens, etc.).
-
-As the second step, if all checks passed, effects to the state variables of the current contract should be made.
-Interaction with other contracts should be the very last step in any function.
-
-Early contracts delayed some effects and waited for external function calls to return in a non-error state.
-This is often a serious mistake because of the reentrancy problem explained above.
-
-Note that, also, calls to known contracts might in turn cause calls to
-unknown contracts, so it is probably better to just always apply this pattern.
-
-Include a Fail-Safe Mode
-========================
-
-While making your system fully decentralized will remove any intermediary,
-it might be a good idea, especially for new code, to include some kind of fail-safe mechanism:
-
-You can add a function in your smart contract that performs some self-checks like "Has any Ether leaked?",
-"Is the sum of the tokens equal to the balance of the contract?" or similar things.
-Keep in mind that you cannot use too much gas for that,
-so help through off-chain computations might be needed there.
-
-If the self-check fails, the contract automatically switches into some kind of "failsafe" mode,
-which, for example, disables most of the features,
-hands over control to a fixed and trusted third party
-or just converts the contract into a simple "give me back my Ether" contract.
-
-Ask for Peer Review
-===================
-
-The more people examine a piece of code, the more issues are found.
-Asking people to review your code also helps as a cross-check to find out
-whether your code is easy to understand -
-a very important criterion for good smart contracts.
->>>>>>> english/develop

@@ -125,7 +125,6 @@ conditions
    この文字列には比較演算子を含めることができます。
    例えば、 ``">=constantinople"``  は EVM バージョンが  ``constantinople``  以降に設定されている場合にバグが発生することを意味します。
 check
-<<<<<<< HEAD
    このフィールドには、スマートコントラクトにバグが含まれているかどうかを報告するさまざまなチェックが含まれます。
    最初のタイプのチェックは、バグが存在する場合にソースコード（「source-regex」）に対してマッチされるJavaScriptの正規表現です。
    一致しない場合は、バグが存在しない可能性が高いです。
@@ -134,20 +133,6 @@ check
    2番目のタイプのチェックは、SolidityプログラムのコンパクトASTにチェックするパターンです（「ast-compact-json-path」）。
    指定された検索クエリは、 `JsonPath <https://github.com/json-path/JsonPath>`_ の式です。
    SolidityのASTの少なくとも1つのパスがクエリにマッチする場合、バグが存在する可能性が高いです。
-=======
-    This field contains different checks that report whether the smart contract
-    contains the bug or not. The first type of check are JavaScript regular
-    expressions that are to be matched against the source code ("source-regex")
-    if the bug is present.  If there is no match, then the bug is very likely
-    not present. If there is a match, the bug might be present.  For improved
-    accuracy, the checks should be applied to the source code after stripping
-    comments.
-    The second type of check are patterns to be checked on the compact AST of
-    the Solidity program ("ast-compact-json-path"). The specified search query
-    is a `JsonPath <https://github.com/json-path/JsonPath>`_ expression.
-    If at least one path of the Solidity AST matches the query, the bug is
-    likely present.
->>>>>>> english/develop
 
 .. literalinclude:: bugs.json
    :language: js

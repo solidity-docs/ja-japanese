@@ -149,15 +149,9 @@ stateMutability: Pure | View | Payable;
  */
 overrideSpecifier: Override (LParen overrides+=identifierPath (Comma overrides+=identifierPath)* RParen)?;
 /**
-<<<<<<< HEAD
- * コントラクト、ライブラリ、インターフェース関数の定義。
+ * コントラクト関数、ライブラリ関数、インターフェース関数、フリー関数の定義。
  * 関数が定義されているコンテキストによっては、さらなる制約が適用される場合があります。
  * 例えば、インターフェイスの関数は未実装、つまりボディブロックを含んではなりません。
-=======
- * The definition of contract, library, interface or free functions.
- * Depending on the context in which the function is defined, further restrictions may apply,
- * e.g. functions in interfaces have to be unimplemented, i.e. may not contain a body block.
->>>>>>> english/develop
  */
 functionDefinition
 locals[
@@ -180,24 +174,8 @@ locals[
 	(Semicolon | body=block);
 
 /**
-<<<<<<< HEAD
- * フリー関数の定義。
- */
- freeFunctionDefinition:
- 	Function (identifier | Fallback | Receive)
- 	LParen (arguments=parameterList)? RParen
- 	stateMutability?
- 	(Returns LParen returnParameters=parameterList RParen)?
- 	(Semicolon | body=block);
-
-/**
  * モディファイアの定義。
  * モディファイアの本体ブロック内では、アンダースコアは識別子として使用できませんが、モディファイアが適用される関数本体のプレースホルダー文として使用できることに注意してください。
-=======
- * The definition of a modifier.
- * Note that within the body block of a modifier, the underscore cannot be used as identifier,
- * but is used as placeholder statement for the body of a function to which the modifier is applied.
->>>>>>> english/develop
  */
 modifierDefinition
 locals[

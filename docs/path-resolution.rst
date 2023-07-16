@@ -170,17 +170,12 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
 .. #. **Standard input**
 
-..    On the command line it is also possible to provide the source by sending it to compiler's
+..    On the command-line it is also possible to provide the source by sending it to compiler's
 ..    standard input:
 
 #. **Standard input**
 
-<<<<<<< HEAD
    コマンドラインでは、コンパイラの標準入力にソースを送信することも可能です。
-=======
-   On the command-line it is also possible to provide the source by sending it to compiler's
-   standard input:
->>>>>>> english/develop
 
    .. code-block:: bash
 
@@ -334,24 +329,15 @@ VFSが初期化された後も、インポートコールバックによって�
 セパレータとは、フォワードスラッシュや文字列の先頭/末尾のことです。
 例えば、 ``./abc/..//`` では3つのパスセグメントがあります: ``.`` 、 ``abc`` 、 ``..`` 。
 
-<<<<<<< HEAD
 .. The compiler resolves the import into a source unit name based on the import path, in the following way:
 ..
 .. #. We start with the source unit name of the importing source unit.
 .. #. The last path segment with preceding slashes is removed from the resolved name.
 .. #. Then, for every segment in the import path, starting from the leftmost one:
+..
 ..     - If the segment is ``.``, it is skipped.
 ..     - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
 ..     - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
-=======
-#. We start with the source unit name of the importing source unit.
-#. The last path segment with preceding slashes is removed from the resolved name.
-#. Then, for every segment in the import path, starting from the leftmost one:
-
-    - If the segment is ``.``, it is skipped.
-    - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
-    - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
->>>>>>> english/develop
 
 コンパイラは、インポートパスに基づき、次のようにインポートをソースユニット名に解決します:
 
@@ -486,27 +472,16 @@ VFSが初期化された後も、インポートコールバックによって�
 
 .. CLI Path Normalization and Stripping
 
-<<<<<<< HEAD
 CLI Path NormalizationとStripping
 ---------------------------------
-=======
-On the command-line the compiler behaves just as you would expect from any other program:
-it accepts paths in a format native to the platform and relative paths are relative to the current
-working directory.
-The source unit names assigned to files whose paths are specified on the command-line, however,
-should not change just because the project is being compiled on a different platform or because the
-compiler happens to have been invoked from a different directory.
-To achieve this, paths to source files coming from the command-line must be converted to a canonical
-form, and, if possible, made relative to the base path or one of the include paths.
->>>>>>> english/develop
 
-.. On the command line the compiler behaves just as you would expect from any other program:
+.. On the command-line the compiler behaves just as you would expect from any other program:
 .. it accepts paths in a format native to the platform and relative paths are relative to the current
 .. working directory.
-.. The source unit names assigned to files whose paths are specified on the command line, however,
+.. The source unit names assigned to files whose paths are specified on the command-line, however,
 .. should not change just because the project is being compiled on a different platform or because the
 .. compiler happens to have been invoked from a different directory.
-.. To achieve this, paths to source files coming from the command line must be converted to a canonical
+.. To achieve this, paths to source files coming from the command-line must be converted to a canonical
 .. form, and, if possible, made relative to the base path or one of the include paths.
 
 コマンドラインでは、コンパイラは他のプログラムと同じように動作します。
@@ -594,7 +569,7 @@ form, and, if possible, made relative to the base path or one of the include pat
 .. .. note::
 
 ..     Prior to version 0.8.8, CLI path stripping was not performed and the only normalization applied was the conversion of path separators.
-..     When working with older versions of the compiler it is recommended to invoke the compiler from the base path and to only use relative paths on the command line.
+..     When working with older versions of the compiler it is recommended to invoke the compiler from the base path and to only use relative paths on the command-line.
 
 .. note::
 
@@ -607,15 +582,8 @@ form, and, if possible, made relative to the base path or one of the include pat
 
 .. note::
 
-<<<<<<< HEAD
     バージョン 0.8.8 より前の CLI では、パスストリッピングは行われず、適用される正規化はパスセパレータの変換のみでした。
     古いバージョンのコンパイラーを使用する場合は、ベースパスからコンパイラーを起動し、コマンドラインでは相対パスのみを使用することをお勧めします。
-=======
-    Prior to version 0.8.8, CLI path stripping was not performed and the only normalization applied
-    was the conversion of path separators.
-    When working with older versions of the compiler it is recommended to invoke the compiler from
-    the base path and to only use relative paths on the command-line.
->>>>>>> english/develop
 
 .. index:: ! allowed paths, ! --allow-paths, remapping; target
 .. _allowed-paths:
@@ -627,17 +595,9 @@ form, and, if possible, made relative to the base path or one of the include pat
 
 .. As a security measure, the Host Filesystem Loader will refuse to load files from outside of a few locations that are considered safe by default:
 
-<<<<<<< HEAD
 セキュリティ対策として、Host Filesystem Loaderは、デフォルトで安全とされるいくつかの場所以外からのファイルのロードを拒否します。
-=======
-  - The directories containing input files listed on the command-line.
-  - The directories used as :ref:`remapping <import-remapping>` targets.
-    If the target is not a directory (i.e does not end with ``/``, ``/.`` or ``/..``) the directory
-    containing the target is used instead.
-  - Base path and include paths.
->>>>>>> english/develop
 
-..   - The directories containing input files listed on the command line.
+..   - The directories containing input files listed on the command-line.
 ..   - The directories used as :ref:`remapping <import-remapping>` targets.
 ..     If the target is not a directory (i.e does not end with ``/``, ``/.`` or ``/..``) the directory containing the target is used instead.
 
@@ -825,13 +785,9 @@ form, and, if possible, made relative to the base path or one of the include pat
 
 .. This means that all imports in ``module2`` point to the old version but imports in ``module1`` point to the new version.
 
-<<<<<<< HEAD
 つまり、 ``module2`` のインポートはすべて旧バージョンを指しますが、 ``module1`` のインポートは新バージョンを指します。
-=======
-Here are the detailed rules governing the behavior of remappings:
->>>>>>> english/develop
 
-.. Here are the detailed rules governing the behaviour of remappings:
+.. Here are the detailed rules governing the behavior of remappings:
 
 ここでは、リマッピングの動作に関する詳細なルールをご紹介します。
 
