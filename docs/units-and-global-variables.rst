@@ -1,8 +1,10 @@
+.. index:: ! denomination
+
 ********************************
 単位とグローバルで利用可能な変数
 ********************************
 
-.. index:: wei, finney, szabo, gwei, ether
+.. index:: ! wei, ! finney, ! szabo, ! gwei, ! ether, ! denomination;ether
 
 Etherの単位
 ===========
@@ -22,7 +24,7 @@ Etherの単位
 
     バージョン0.7.0では、単位 ``finney`` と ``szabo`` が削除されました。
 
-.. index:: time, seconds, minutes, hours, days, weeks, years
+.. index:: ! seconds, ! minutes, ! hours, ! days, ! weeks, ! years, ! denomination;time
 
 時間の単位
 ==========
@@ -56,7 +58,7 @@ Etherの単位
 
     function f(uint start, uint daysAfter) public {
         if (block.timestamp >= start + daysAfter * 1 days) {
-          // ...
+            // ...
         }
     }
 
@@ -126,7 +128,7 @@ Etherの単位
 ..     Do not rely on ``block.timestamp`` or ``blockhash`` as a source of randomness, unless you know what you are doing.
 
 ..     Both the timestamp and the block hash can be influenced by miners to some degree.
-..     Bad actors in the mining community can for example run a casino payout function on a chosen hash and just retry a different hash if they did not receive any money.
+..     Bad actors in the mining community can for example run a casino payout function on a chosen hash and just retry a different hash if they did not receive any compensation, e.g. Ether.
 
 ..     The current block timestamp must be strictly larger than the timestamp of the last block, but the only guarantee is that it will be somewhere between the timestamps of two consecutive blocks in the canonical chain.
 
@@ -135,7 +137,7 @@ Etherの単位
     自分が何をしているか分かっていない限り、ランダムネスのソースとして ``block.timestamp`` や ``blockhash`` に頼らないでください。
 
     タイムスタンプもブロックハッシュも、ある程度はマイナーの影響を受ける可能性があります。
-    マイニングコミュニティの悪質なアクターは、例えば、選択したハッシュでカジノのペイアウト関数を実行し、お金を受け取れなかった場合は別のハッシュで再試行できます。
+    マイニングコミュニティの悪質なアクターは、例えば、選択したハッシュでカジノのペイアウト関数を実行し、対価（例えばEther）を受け取れなかった場合は別のハッシュで再試行できます。
 
     現在のブロックのタイムスタンプは、最後のブロックのタイムスタンプよりも厳密に大きくなければなりませんが、唯一の保証は、正規のチェーンで連続する2つのブロックのタイムスタンプの間のどこかになるということです。
 
@@ -300,7 +302,7 @@ stringのメンバー
 ..     the ecrecover function remained unchanged.
 
 ..     This is usually not a problem unless you require signatures to be unique or
-..     use them to identify items. OpenZeppelin have a `ECDSA helper library <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
+..     use them to identify items. OpenZeppelin has an `ECDSA helper library <https://docs.openzeppelin.com/contracts/2.x/api/cryptography#ECDSA>`_ that you can use as a wrapper for ``ecrecover`` without this issue.
 
 .. warning::
 
@@ -369,7 +371,7 @@ stringのメンバー
     ``send`` の使用にはいくつかの危険があります。
     コールスタックの深さが1024の場合、送金は失敗し（これは常に呼び出し側で強制できます）、受信者がガス欠（out of gas）になった場合も失敗します。
     そのため、安全なEther送金を行うためには、 ``send`` の戻り値を常にチェックし、 ``transfer`` を使用するか、あるいはそれ以上の方法をとる必要があります。
-    受信者がお金を引き出すパターンを使いましょう。
+    受信者がEtherを引き出すパターンを使いましょう。
 
 .. .. warning::
 
@@ -415,13 +417,16 @@ stringのメンバー
 
     バージョン0.5.0以前では、 ``delegatecall`` と似ているが若干セマンティクスが異なる ``callcode`` というメンバーがありました。
 
-.. index:: this, selfdestruct
+.. index:: this, selfdestruct, super
 
 コントラクト関連
 ----------------
 
 ``this`` （現在のコントラクト型）
     現在のコントラクトで、 :ref:`address` に明示的に変換可能なもの
+
+``super``
+    継承階層の1つ上のレベルのコントラクト
 
 .. ``selfdestruct(address payable recipient)``
 ..     Destroy the current contract, sending its funds to the given :ref:`address`
@@ -443,7 +448,7 @@ stringのメンバー
 さらに、現在のコントラクトのすべての関数は、現在の関数を含めて直接呼び出すことができます。
 
 .. warning::
-    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
     バージョン0.8.18以降、SolidityとYulの両方で ``selfdestruct`` を使用すると、非推奨の警告が発生します。
     というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変わることになるからです。

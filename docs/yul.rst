@@ -148,6 +148,8 @@ Yulは、コード、データ、サブオブジェクトからなる「オブ�
 複数の構文要素は、空白で区切られているだけで、互いに続けることができます。
 つまり、終端の ``;`` や改行は必要ありません。
 
+.. index:: ! literal;in Yul
+
 リテラル
 --------
 
@@ -819,7 +821,7 @@ Yulはローカル変数やコントロールフローを管理しているた�
 +-------------------------+-----+-----+--------------------------------------------------------------------------+
 | invalid()               | `-` | F   | invalid命令で実行を終了。                                                |
 +-------------------------+-----+-----+--------------------------------------------------------------------------+
-| log0(p, s)              | `-` | F   | トピック無しで、データがmem[p...(p+s))のログ。                           |
+| log0(p, s)              | `-` | F   | データがmem[p...(p+s))のログ。                                           |
 +-------------------------+-----+-----+--------------------------------------------------------------------------+
 | log1(p, s, t1)          | `-` | F   | トピックt1、データがmem[p...(p+s))のログ。                               |
 +-------------------------+-----+-----+--------------------------------------------------------------------------+
@@ -865,21 +867,24 @@ Yulはローカル変数やコントロールフローを管理しているた�
     このメモリ領域のどの部分にリターンデータが含まれているかを確認するには、 ``returndatasize`` オペコードを使用する必要があります。
     残りのバイトは、呼び出し前の値を保持します。
 
-.. note::
-    .. The `difficulty()` instruction is disallowed in EVM version >= Paris.
+.. .. note::
+
+    .. The ``difficulty()`` instruction is disallowed in EVM version >= Paris.
     .. With the Paris network upgrade the semantics of the instruction that was previously called ``difficulty`` have been changed and the instruction was renamed to ``prevrandao``.
     .. It can now return arbitrary values in the full 256-bit range, whereas the highest recorded difficulty value within Ethash was ~54 bits.
     .. This change is described in `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_.
     .. Please note that irrelevant to which EVM version is selected in the compiler, the semantics of instructions depend on the final chain of deployment.
 
-    Paris以降のEVMのバージョンでは、 `difficulty()` 命令が禁止されています。
+.. note::
+
+    Paris以降のEVMのバージョンでは、 ``difficulty()`` 命令が禁止されています。
     Parisネットワークのアップグレードにより、以前は ``difficulty`` と呼ばれていた命令のセマンティクスが変更され、その命令は ``prevrandao`` に改名されました。
     この命令は256ビットの全範囲の任意の値を返すことができるようになり、Ethash内で記録された最高難易度の値は54ビットでした。
     この変更は `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ で説明されています。
     コンパイラでどのEVMバージョンが選択されているかとは無関係に、命令のセマンティクスは最終的なデプロイの連鎖に依存することに注意してください。
 
 .. warning::
-    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
     バージョン0.8.18以降、SolidityとYulの両方で ``selfdestruct`` を使用すると、非推奨であることを警告します。
     というのも、 ``SELFDESTRUCT`` オペコードは、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、いずれ動作が大きく変化することになるからです。
@@ -1004,7 +1009,7 @@ verbatim
 .. when using ``verbatim`` together with the optimizer. Even when the
 .. optimizer is switched off, the code generator has to determine
 .. the stack layout, which means that e.g. using ``verbatim`` to modify
-.. the stack height can lead to undefined behaviour.
+.. the stack height can lead to undefined behavior.
 
 ``verbatim`` は、任意のオペコードや、Solidityコンパイラにとって未知のオペコードを生成するために使用できるため、オプティマイザと ``verbatim`` を併用する際には注意が必要です。
 オプティマイザがオフになっていても、コードジェネレーターはスタックレイアウトを決定しなければなりません。
@@ -1013,7 +1018,7 @@ verbatim
 .. The following is a non-exhaustive list of restrictions on
 .. verbatim bytecode that are not checked by
 .. the compiler. Violations of these restrictions can result in
-.. undefined behaviour.
+.. undefined behavior.
 
 以下は、コンパイラではチェックされない逐語的バイトコードの制限事項の非網羅的なリストです。
 これらの制限に違反すると、未定義の動作を引き起こす可能性があります。
@@ -1134,7 +1139,7 @@ Yulオブジェクトの例を以下に示します。
             // ランタイムオブジェクトを返す（現在実行中のコードがコンストラクタのコード）
             size := datasize("Contract1_deployed")
             offset := allocate(size)
-            // これは、Ewasmではメモリからメモリへのコピーに、EVMではコードコピーになる
+            // これは、EVMではコードコピーになる
             datacopy(offset, dataoffset("Contract1_deployed"), size)
             return(offset, size)
         }

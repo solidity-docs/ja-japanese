@@ -20,7 +20,7 @@
 基本的な使い方
 --------------
 
-.. One of the build targets of the Solidity repository is ``solc``, the solidity commandline compiler.
+.. One of the build targets of the Solidity repository is ``solc``, the Solidity commandline compiler.
 .. Using ``solc --help`` provides you with an explanation of all options. The compiler can produce various outputs, ranging from simple binaries and assembly over an abstract syntax tree (parse tree) to estimations of gas usage.
 .. If you only want to compile a single file, you run it as ``solc --bin sourceFile.sol`` and it will print the binary.
 .. If you want to get some of the more advanced output variants of ``solc``, it is probably better to tell it to output everything to separate files using ``solc -o outputDirectory --bin --ast-compact-json --asm sourceFile.sol``.
@@ -75,7 +75,7 @@ Solidityリポジトリのビルドターゲットの1つは、Solidityのコマ
 また、これらのオプションで追加されたパスの部分は、コントラクトのメタデータには表示されません。
 
 .. For security reasons the compiler has :ref:`restrictions on what directories it can access <allowed-paths>`.
-.. Directories of source files specified on the command line and target paths of remappings are automatically allowed to be accessed by the file reader, but everything else is rejected by default.
+.. Directories of source files specified on the command-line and target paths of remappings are automatically allowed to be accessed by the file reader, but everything else is rejected by default.
 .. Additional paths (and their subdirectories) can be allowed via the ``--allow-paths /sample/path,/another/sample/path`` switch.
 .. Everything inside the path specified via ``--base-path`` is always allowed.
 
@@ -179,13 +179,13 @@ Solidityリポジトリのビルドターゲットの1つは、Solidityのコマ
 EVMのバージョンをターゲットに設定
 *********************************
 
-.. When you compile your contract code you can specify the Ethereum virtual machine version to compile for to avoid particular features or behaviours.
+.. When you compile your contract code you can specify the Ethereum virtual machine version to compile for to avoid particular features or behaviors.
 
 コントラクトコードをコンパイルする際に、特定の機能や動作を避けるためにコンパイルするEthereum Virtual Machineのバージョンを指定できます。
 
 .. .. warning::
 
-..    Compiling for the wrong EVM version can result in wrong, strange and failing behaviour.
+..    Compiling for the wrong EVM version can result in wrong, strange and failing behavior.
 ..    Please ensure, especially if running a private chain, that you use matching EVM versions.
 
 .. warning::
@@ -193,7 +193,7 @@ EVMのバージョンをターゲットに設定
   EVMのバージョンを間違えてコンパイルすると、間違った動作、おかしな動作、失敗することがあります。
   特にプライベートチェーンを実行している場合は、一致するEVMバージョンを使用するようにしてください。
 
-.. On the command line, you can select the EVM version as follows:
+.. On the command-line, you can select the EVM version as follows:
 
 コマンドラインでは、以下のようにEVMのバージョンを選択できます。
 
@@ -292,11 +292,15 @@ EVMのバージョンをターゲットに設定
 
   - ブロックのベースフィー（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリでグローバルな ``block.basefee`` または ``basefee()`` を介してアクセスできます。
 
-- ``paris`` （ **デフォルト** ）
+- ``paris`` 
 
   .. - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
 
   - ``prevrandao()``と ``block.prevrandao`` を導入し、現在では非推奨となっている ``block.difficulty`` のセマンティクスを変更し、インラインアセンブリでの ``difficulty()`` を禁止しました（ `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ を参照してください）。
+
+- ``shanghai`` （ **デフォルト** ）
+
+  - ``push0`` の導入により、コードサイズが小さくなり、ガスが節約できるようになった (`EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_ を参照)。
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -333,7 +337,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
 .. code-block:: javascript
 
     {
-      // Required: Source code language. Currently supported are "Solidity" and "Yul".
+      // Required: Source code language. Currently supported are "Solidity", "Yul" and "SolidityAST" (experimental).
       "language": "Solidity",
       // Required
       "sources":
@@ -357,9 +361,17 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             "bzzr://56ab...",
             "ipfs://Qma...",
             "/tmp/path/to/file.sol"
-            // If files are used, their directories should be added to the command line via
+            // If files are used, their directories should be added to the command-line via
             // `--allow-paths <path>`.
           ]
+          // If language is set to "SolidityAST", an AST needs to be supplied under the "ast" key.
+          // Note that importing ASTs is experimental and in particular that:
+          // - importing invalid ASTs can produce undefined results and
+          // - no proper error reporting is available on invalid ASTs.
+          // Furthermore, note that the AST import only consumes the fields of the AST as
+          // produced by the compiler in "stopAfter": "parsing" mode and then re-performs
+          // analysis, so any analysis-based annotations of the AST are ignored upon import.
+          "ast": { ... } // formatted as the json ast requested with the ``ast`` output selection.
         },
         "destructible":
         {
@@ -394,9 +406,9 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             // The peephole optimizer is always on if no details are given,
             // use details to switch it off.
             "peephole": true,
-            // The inliner is always on if no details are given,
-            // use details to switch it off.
-            "inliner": true,
+            // The inliner is always off if no details are given,
+            // use details to switch it on.
+            "inliner": false,
             // The unused jumpdest remover is always on if no details are given,
             // use details to switch it off.
             "jumpdestRemover": true,
@@ -426,7 +438,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
               // optimization-sequence:clean-up-sequence. For more information see
               // "The Optimizer > Selecting Optimizations".
               // This field is optional, and if not provided, the default sequences for both
-              // optimization and clean-up are used. If only one of the options is provivded
+              // optimization and clean-up are used. If only one of the sequences is provided
               // the other will not be run.
               // If only the delimiter ":" is provided then neither the optimization nor the clean-up
               // sequence will be run.
@@ -512,7 +524,9 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         //   userdoc - User documentation (natspec)
         //   metadata - Metadata
         //   ir - Yul intermediate representation of the code before optimization
+        //   irAst - AST of Yul intermediate representation of the code before optimization
         //   irOptimized - Intermediate representation after optimization
+        //   irOptimizedAst - AST of intermediate representation after optimization
         //   storageLayout - Slots, offsets and types of the contract's state variables.
         //   evm.assembly - New assembly format
         //   evm.legacyAssembly - Old-style assembly format in JSON
@@ -526,10 +540,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         //   evm.deployedBytecode.immutableReferences - Map from AST ids to bytecode ranges that reference immutables
         //   evm.methodIdentifiers - The list of function hashes
         //   evm.gasEstimates - Function gas estimates
-        //   ewasm.wast - Ewasm in WebAssembly S-expressions format
-        //   ewasm.wasm - Ewasm in WebAssembly binary format
         //
-        // Note that using a using `evm`, `evm.bytecode`, `ewasm`, etc. will select every
+        // Note that using a using `evm`, `evm.bytecode`, etc. will select every
         // target part of that output. Additionally, `*` can be used as a wildcard to request everything.
         //
         "outputSelection": {
@@ -622,7 +634,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
           // Mandatory: Error type, such as "TypeError", "InternalCompilerError", "Exception", etc.
           // See below for complete list of types.
           "type": "TypeError",
-          // Mandatory: Component where the error originated, such as "general", "ewasm", etc.
+          // Mandatory: Component where the error originated, such as "general" etc.
           "component": "general",
           // Mandatory ("error", "warning" or "info", but please note that this may be extended in the future)
           "severity": "error",
@@ -659,8 +671,14 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             "userdoc": {},
             // Developer documentation (natspec)
             "devdoc": {},
-            // Intermediate representation (string)
+            // Intermediate representation before optimization (string)
             "ir": "",
+            // AST of intermediate representation before optimization
+            "irAst":  {/* ... */},
+            // Intermediate representation after optimization (string)
+            "irOptimized": "",
+            // AST of intermediate representation after optimization
+            "irOptimizedAst": {/* ... */},
             // See the Storage Layout documentation.
             "storageLayout": {"storage": [/* ... */], "types": {/* ... */} },
             // EVM-related outputs
@@ -738,13 +756,6 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
                   "heavyLifting()": "infinite"
                 }
               }
-            },
-            // Ewasm related outputs
-            "ewasm": {
-              // S-expressions format
-              "wast": "",
-              // Binary format (hex string)
-              "wasm": ""
             }
           }
         }
@@ -804,7 +815,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
 
 12. ``FatalError``: 致命的なエラーが正しく処理されていない - これはイシューとして報告すべきです。
 
-.. 13. ``YulException``: Error during Yul Code generation - this should be reported as an issue.
+.. 13. ``YulException``: Error during Yul code generation - this should be reported as an issue.
 
 13. ``YulException``: Yulコード生成時のエラー - これはイシューとして報告すべきです。
 

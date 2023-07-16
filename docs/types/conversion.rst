@@ -58,7 +58,7 @@
 
 .. If the compiler does not allow implicit conversion but you are confident a conversion will work,
 .. an explicit type conversion is sometimes possible. This may
-.. result in unexpected behaviour and allows you to bypass some security
+.. result in unexpected behavior and allows you to bypass some security
 .. features of the compiler, so be sure to test that the
 .. result is what you want and expect!
 
@@ -169,6 +169,7 @@
         }
     }
 
+.. index:: ! literal;conversion, literal;rational, literal;hexadecimal number
 .. _types-conversion-literals:
 
 リテラルと初等型間の変換
@@ -197,6 +198,8 @@
 
     バージョン0.8.0以前では、10進数や16進数のリテラルを明示的に整数型に変換できました。
     0.8.0からは、このような明示的な変換は暗黙的な変換と同様に厳格になりました。
+
+.. index:: literal;string, literal;hexadecimal
 
 固定サイズバイト列
 ------------------
@@ -233,6 +236,8 @@
     bytes2 d = hex"123"; // NG
     bytes2 e = "x"; // NG
     bytes2 f = "xyz"; // NG
+
+.. index:: literal;address
 
 アドレス
 --------

@@ -1,4 +1,4 @@
-.. index:: ! functions
+.. index:: ! functions, ! function;free
 
 .. _functions:
 
@@ -338,7 +338,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 
 ``view`` や ``pure`` の制限を受けていないコードで以前に行われた状態の変更のみがリバートされ、そのコードは ``revert`` をキャッチして渡さないというオプションを持っているため、状態の変更をリバートすることは「状態の修正」とはみなされません。
 
-.. This behaviour is also in line with the ``STATICCALL`` opcode.
+.. This behavior is also in line with the ``STATICCALL`` opcode.
 
 この動作は、 ``STATICCALL`` のオペコードとも一致しています。
 
@@ -386,7 +386,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 特殊な関数
 ==========
 
-.. index:: ! receive ether function, function;receive ! receive
+.. index:: ! receive ether function, function;receive, ! receive
 
 .. _receive-ether-function:
 

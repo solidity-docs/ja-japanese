@@ -33,13 +33,13 @@ Solidityに貢献するための選択肢はたくさんあります。
 チームコール
 ============
 
-.. If you have issues or pull requests to discuss, or are interested in hearing what the team and contributors are working on, you can join our public team calls:
+.. If you have issues or pull requests to discuss, or are interested in hearing what the team and contributors are working on, you can join our public team call:
 
 議論したいイシューやプルリクエストがある場合や、チームやコントリビューターが取り組んでいることを聞きたい場合は、パブリックなチームコールに参加できます。
 
-- 毎週月曜日と水曜日の午後3時（CET/CEST）から。
+- 毎週水曜日の午後3時（CET/CEST）から。
 
-どちらのコールも `Jitsi <https://meet.soliditylang.org/>`_ で行われます。
+コールは `Jitsi <https://meet.soliditylang.org/>`_ で行われます。
 
 イシューの報告方法
 ==================
@@ -119,7 +119,7 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 .. For running all compiler tests you may want to optionally install a few dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_, and `libhera <https://github.com/ewasm/hera>`_).
 
-すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ 、 `libz3 <https://github.com/Z3Prover/z3>`_ 、 `libhera <https://github.com/ewasm/hera>`_ ）をオプションでインストールできます。
+すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_ と `libz3 <https://github.com/Z3Prover/z3>`_ ）をオプションでインストールできます。
 
 .. On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
@@ -136,14 +136,13 @@ Windowsシステムでは、シンボリックリンクを作成する権限を�
 テストの実行
 ------------
 
-.. Solidity includes different types of tests, most of them bundled into the
-.. `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest``.
+.. Solidity includes different types of tests, most of them bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest``.
 .. Running ``build/test/soltest`` or its wrapper ``scripts/soltest.sh`` is sufficient for most changes.
 
 Solidityには様々なタイプのテストがあり、そのほとんどが `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ アプリケーション ``soltest`` にバンドルされています。
 ほとんどの変更には、 ``build/test/soltest`` またはそのラッパー ``scripts/soltest.sh`` を実行すれば十分です。
 
-.. The ``./scripts/tests.sh`` script executes most Solidity tests automatically, including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command line tests and compilation tests.
+.. The ``./scripts/tests.sh`` script executes most Solidity tests automatically, including those bundled into the `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ application ``soltest`` (or its wrapper ``scripts/soltest.sh``), as well as command-line tests and compilation tests.
 
 ``./scripts/tests.sh`` スクリプトは、 `Boost C++ Test Framework <https://www.boost.org/doc/libs/release/libs/test/doc/html/index.html>`_ アプリケーション ``soltest`` （またはそのラッパー ``scripts/soltest.sh`` ）にバンドルされているものや、コマンドラインテスト、コンパイルテストなど、ほとんどのSolidityテストを自動的に実行します。
 
@@ -163,17 +162,7 @@ Solidityには様々なタイプのテストがあり、そのほとんどが `B
 ``evmone`` は主にセマンティックテストとガステストを実行するために必要です。
 インストールされていない場合は、 ``scripts/soltest.sh`` に ``--no-semantic-tests`` フラグを渡すことで、これらのテストをスキップできます。
 
-.. Running Ewasm tests is disabled by default and can be explicitly enabled
-.. via ``./scripts/soltest.sh --ewasm`` and requires `hera <https://github.com/ewasm/hera>`_
-.. to be found by ``soltest``.
-.. The mechanism for locating the ``hera`` library is the same as for ``evmone``, except that the
-.. variable for specifying an explicit location is called ``ETH_HERA``.
-
-Ewasmのテストの実行は、デフォルトでは無効になっており、 ``./scripts/soltest.sh --ewasm`` を介して明示的に有効にでき、 ``soltest`` で `hera <https://github.com/ewasm/hera>`_ を見つけることが必要です。
-``hera`` ライブラリを探す仕組みは、明示的に場所を指定するための変数が ``ETH_HERA`` と呼ばれていることを除けば、 ``evmone`` と同じです。
-
-.. The ``evmone`` and ``hera`` libraries should both end with the file name
-.. extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+.. The ``evmone`` library should both end with the file name extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
 
 ``evmone`` ライブラリと ``hera`` ライブラリは、どちらもファイル名の拡張子が、Linuxでは ``.so`` 、Windowsシステムでは ``.dll`` 、macOSでは ``.dylib`` になるようにしてください。
 
@@ -340,7 +329,7 @@ CIは、Emscriptenターゲットのコンパイルを必要とする追加の�
 
 テストを失敗させるためのいくつかのオプションがあります。
 
-.. - ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
+.. - ``edit``: ``isoltest`` tries to open the contract in an editor so you can adjust it. It either uses the editor given on the command-line (as ``isoltest --editor /path/to/editor``), in the environment variable ``EDITOR`` or just ``/usr/bin/editor`` (in that order).
 
 - ``edit``: ``isoltest`` は、コントラクト内容を調整できるように、エディタでコントラクト内容を開こうとします。
   ``isoltest --editor /path/to/editor`` のようにコマンドラインで指定されたエディタを使用するか、 ``EDITOR`` のように環境変数で指定されたエディタを使用するか、 ``/usr/bin/editor`` だけを使用するか（順不同）。
@@ -396,6 +385,68 @@ CIは、Emscriptenターゲットのコンパイルを必要とする追加の�
     コントラクトファイルの名前には、 ``double_variable_declaration.sol``  など、テストする内容を説明するものを選んでください。
     継承やクロスコントラクトコールをテストする場合を除き、1つのファイルに複数のコントラクトを入れないでください。
     各ファイルは、新機能の1つの側面をテストする必要があります。
+
+コマンドラインテスト
+--------------------
+
+.. Our suite of end-to-end command-line tests checks the behaviour of the compiler binary as a whole in various scenarios.
+.. These tests are located in `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_, one per subdirectory, and can be executed using the ``cmdlineTests.sh`` script.
+
+エンドツーエンドのコマンドラインテストスイートは、様々なシナリオにおけるコンパイラバイナリ全体の動作をチェックします。
+これらのテストは `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_ にサブディレクトリごとに1つずつあり、 ``cmdlineTests.sh`` スクリプトを使って実行できます。
+
+.. By default the script runs all available tests.
+.. You can also provide one or more `file name patterns <https://www.gnu.org/software/bash/manual/bash.html#Filename-Expansion>`_, in which case only the tests matching at least one pattern will be executed.
+.. It is also possible to exclude files matching a specific pattern by prefixing it with ``--exclude``.
+
+デフォルトでは、スクリプトは利用可能なすべてのテストを実行します。
+また、1つ以上の `ファイル名パターン <https://www.gnu.org/software/bash/manual/bash.html#Filename-Expansion>`_ を指定することもでき、その場合は少なくとも1つのパターンにマッチするテストのみが実行されます。
+また、特定のパターンの前に ``--exclude`` をつけることで、そのパターンにマッチするファイルを除外することもできます。
+
+.. By default the script assumes that a ``solc`` binary is available inside the ``build/`` subdirectory inside the working copy.
+.. If you build the compiler outside of the source tree, you can use the ``SOLIDITY_BUILD_DIR`` environment variable to specify a different location for the build directory.
+
+デフォルトでは、スクリプトは ``solc`` バイナリが作業コピーの ``build/`` サブディレクトリにあると仮定します。
+コンパイラをソースツリーの外でビルドする場合は、 ``SOLIDITY_BUILD_DIR`` 環境変数を使ってビルドディレクトリを別の場所に指定できます。
+
+例:
+
+.. code-block:: bash
+
+    export SOLIDITY_BUILD_DIR=~/solidity/build/
+    test/cmdlineTests.sh "standard_*" "*_yul_*" --exclude "standard_yul_*"
+
+.. The commands above will run tests from directories starting with ``test/cmdlineTests/standard_`` and subdirectories of ``test/cmdlineTests/`` that have ``_yul_`` somewhere in the name, but no test whose name starts with ``standard_yul_`` will be executed.
+.. It will also assume that the file ``solidity/build/solc/solc`` inside your home directory is the compiler binary (unless you are on Windows -- then ``solidity/build/solc/Release/solc.exe``).
+
+上記のコマンドは ``test/cmdlineTests/standard_`` で始まるディレクトリと ``test/cmdlineTests/`` のサブディレクトリで、名前のどこかに ``_yul_`` が含まれるテストを実行しますが、名前が ``standard_yul_`` で始まるテストは実行されません。
+また、ホームディレクトリにある ``solidity/build/solc/solc`` ファイルがコンパイラのバイナリであると仮定されます（Windows を使用している場合は、 ``solidity/build/solc/Release/solc.exe`` を使用します）。
+
+コマンドラインテストにはいくつかの種類があります。
+
+- *標準JSONテスト*: 少なくとも ``input.json`` ファイルが含まれます。
+  一般的に含まれているものは以下の通りです。
+
+    - ``input.json``: コマンドラインで ``--standard-json`` オプションに渡す入力ファイル。
+    - ``output.json``: 標準JSON出力ファイル。
+    - ``args``: ``solc`` に渡す追加のコマンドライン引数。
+
+- *CLIテスト*: 少なくとも ``input.*`` ファイルが含まれます（ ``input.json`` 以外）.
+  一般的に含まれているものは以下の通りです。
+
+    - ``input.*``: コマンドラインで ``solc`` に与えられる単一の入力ファイル。
+      通常は ``input.sol`` または ``input.yul`` 。
+    - ``args``: ``solc`` に渡される追加のコマンドライン引数。
+    - ``stdin``: 標準入力から ``solc`` に渡す内容。
+    - ``output``: 期待される標準出力の内容。
+    - ``err``: 期待される標準エラー出力の内容。
+    - ``exit``: 期待される終了コード。省略された場合は0。
+
+- *スクリプトテスト*: ``test.*`` ファイルが含まれます。
+  一般的に含まれているものは以下の通りです。
+
+    - ``test.*``: 単一のスクリプトで、通常は ``test.sh`` または ``test.py`` 。
+      スクリプトは実行可能でなければならない。
 
 AFLによるファザーの実行
 =======================
@@ -496,7 +547,7 @@ AFLパッケージをリポジトリ（afl, afl-clang）からダウンロード
 .. too large. The files themselves should not be larger than 1 kB and there should be
 .. at most one input file per functionality, so better start with a small number of.
 .. There is also a tool called ``afl-cmin`` that can trim input files
-.. that result in similar behaviour of the binary.
+.. that result in similar behavior of the binary.
 
 AFLのドキュメントでは、コーパス（最初の入力ファイル）はあまり大きくしない方が良いとされています。
 ファイル自体の大きさは1kB以下で、1つの機能に対して入力ファイルは多くても1つなので、少ない数から始めた方が良いでしょう。
@@ -577,16 +628,12 @@ Whiskers
 英語
 ----
 
-.. Use English, with British English spelling preferred, unless using project or brand names. Try to reduce the usage of
-.. local slang and references, making your language as clear to all readers as possible. Below are some references to help:
-
-プロジェクト名やブランド名を使用する場合を除き、イギリス英語のスペルを使用してください。
-現地のスラングや参考文献の使用を極力控え、誰が読んでも分かりやすい言葉遣いを心がけてください。
-以下は参考になる文献です。
+プロジェクト名やブランド名を使用する場合を除き、国際英語を使用してください。
+ローカルのスラングや参考文献の使用を極力控え、誰が読んでも分かりやすい言葉遣いを心がけてください。
+以下は参考資料です。
 
 * `Simplified technical English <https://en.wikipedia.org/wiki/Simplified_Technical_English>`_
 * `International English <https://en.wikipedia.org/wiki/International_English>`_
-* `British English spelling <https://web.archive.org/web/20220324094038/https://www.lexico.com/grammar/british-and-spelling>`_
 
 .. .. note::
 

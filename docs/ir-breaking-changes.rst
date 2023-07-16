@@ -18,9 +18,9 @@ Solidityから直接EVMのオペコードを生成する方法「old codegen」�
 
 IRベースのコードジェネレーターを導入したのは、コード生成の透明性や監査性を高めるだけでなく、関数を跨いだより強力な最適化パスを可能にすることを目的としています。
 
-.. You can enable it on the command line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
+.. You can enable it on the command-line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
 
-コマンドラインで ``--via-ir`` を使って有効にしたり、standard-jsonで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
+コマンドラインで ``--via-ir`` を使って有効にしたり、スタンダードJSONで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
 
 .. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behaviour anyway.
 
@@ -224,16 +224,12 @@ IRベースのコードジェネレーターを導入したのは、コード生
       }
 
   .. The function ``preincr_u8(1)`` returns the following values:
-
-  .. - Old code generator: 3 (``1 + 2``) but the return value is unspecified in general
-
-  .. - New code generator: 4 (``2 + 2``) but the return value is not guaranteed
+  .. - Old code generator: ``3`` (``1 + 2``) but the return value is unspecified in general
+  .. - New code generator: ``4`` (``2 + 2``) but the return value is not guaranteed
 
   関数 ``preincr_u8(1)`` は、以下の値を返します:
-
-  - 古いコード生成器です: 3 (``1 + 2``)。ただし、一般に戻り値は不特定です。
-
-  - 新しいコードジェネレーターです: 4 (``2 + 2``)。ただし、戻り値は保証されません。
+  - 古いコード生成器: ``3`` (``1 + 2``)。ただし、一般に戻り値は不定です。
+  - 新しいコードジェネレーター: ``4`` (``2 + 2``)。ただし、戻り値は保証されません。
 
   .. index:: ! evaluation order; function arguments
 
@@ -328,16 +324,12 @@ IRベースのコードジェネレーターを導入したのは、コード生
           }
       }
 
-  .. The function `f()` behaves as follows:
-
+  .. The function ``f()`` behaves as follows:
   .. - Old code generator: runs out of gas while zeroing the array contents after the large memory allocation
-
   .. - New code generator: reverts due to free memory pointer overflow (does not run out of gas)
 
   関数 ``f()`` は以下のような挙動をします:
-
   - 古いコードジェネレータ: 大きなメモリ割り当ての後、配列の内容をゼロにするときにガス欠になります。
-
   - 新しいコードジェネレータ: フリーメモリポインタのオーバーフローによりリバートします（ガス欠はしない）。
 
 .. Internals

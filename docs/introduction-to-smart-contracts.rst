@@ -230,7 +230,7 @@ AmazonのAWSを使うためには、内部でどのように機能している�
 
 さらに、トランザクションは常に送信者（作成者）によって暗号学的に署名されています。
 これにより、データベースの特定の変更に対するアクセスを簡単に保護できます。
-電子通貨の例では、簡単なチェックで、アカウントの鍵を持っている人だけがそのアカウントからお金を送金できるようになっています。
+電子通貨の例では、簡単なチェックで、アカウントの鍵を持っている人だけがそのアカウントからその通貨を送金できるようになっています。
 
 .. index:: ! block
 
@@ -451,7 +451,7 @@ create
 理論的にはコントラクトを削除することは良いアイデアのように聞こえますが、削除されたコントラクトに誰かがEtherを送ると、そのEtherは永遠に失われてしまうため、潜在的には危険です。
 
 .. warning::
-    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behaviour as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
 
     バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、 ``SELFDESTRUCT`` オペコードがいずれ動作に破壊的変更を受けるため、非推奨の警告が発せられます。
 

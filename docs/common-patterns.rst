@@ -18,13 +18,9 @@
 エフェクトの結果としてEtherを送信する最も直感的な方法はダイレクトな ``transfer`` コールですが、これは潜在的なセキュリティリスクがあるため推奨されません。
 これについては、 :ref:`security_considerations` のページで詳しく説明しています。
 
-.. The following is an example of the withdrawal pattern in practice in a contract where the goal is to send the most money to the contract in order to become the "richest", inspired by `King of the Ether <https://www.kingoftheether.com/>`_.
+`King of the Ether <https://www.kingoftheether.com/>`_ をヒントに、「一番のお金持ち」になるために何らかの対価、例えば、Etherを一番多く送ることを目的としたコントラクトにおいて、実際に行われている出金パターンの例を以下に示します。
 
-`King of the Ether <https://www.kingoftheether.com/>`_ をヒントに、「一番のお金持ち」になるために一番多くのお金を送ることを目的としたコントラクトにおいて、実際に行われている出金パターンの例を以下に示します。
-
-.. In the following contract, if you are no longer the richest, you receive the funds of the person who is now the richest.
-
-次のコントラクトでは、自分が一番お金持ちでなくなった場合、今一番お金持ちになった人の資金を受け取ります。
+次のコントラクトでは、自分が一番お金持ちでなくなった場合、新しく一番お金持ちになった人の資金を受け取ります。
 
 .. code-block:: solidity
 

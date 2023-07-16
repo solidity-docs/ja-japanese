@@ -13,12 +13,12 @@ Solidity v0.8.0の破壊的変更点
 セマンティクスのサイレントな変更点
 ==================================
 
-.. This section lists changes where existing code changes its behaviour without the compiler notifying you about it.
+.. This section lists changes where existing code changes its behavior without the compiler notifying you about it.
 
 このセクションでは、既存のコードがコンパイラーに通知されることなく動作を変更する変更点を示します。
 
 .. * Arithmetic operations revert on underflow and overflow.
-..   You can use ``unchecked { ... }`` to use the previous wrapping behaviour.
+..   You can use ``unchecked { ... }`` to use the previous wrapping behavior.
 
 ..   Checks for overflow are very common, so we made them the default to increase readability of code, even if it comes at a slight increase of gas costs.
 
@@ -29,7 +29,7 @@ Solidity v0.8.0の破壊的変更点
 
 .. * ABI coder v2 is activated by default.
 
-..   You can choose to use the old behaviour using ``pragma abicoder v1;``.
+..   You can choose to use the old behavior using ``pragma abicoder v1;``.
 ..   The pragma ``pragma experimental ABIEncoderV2;`` is still valid, but it is deprecated and has no effect.
 ..   If you want to be explicit, please use ``pragma abicoder v2;`` instead.
 
@@ -95,7 +95,7 @@ Solidity v0.8.0の破壊的変更点
 
 このセクションでは、既存のコントラクトのコンパイルができなくなる可能性のある変更点を示します。
 
-.. * There are new restrictions related to explicit conversions of literals. The previous behaviour in
+.. * There are new restrictions related to explicit conversions of literals. The previous behavior in
 ..   the following cases was likely ambiguous:
 
 ..   1. Explicit conversions from negative literals and literals larger than ``type(uint160).max`` to
@@ -195,7 +195,7 @@ Solidity v0.8.0の破壊的変更点
 
 .. * The global functions ``log0``, ``log1``, ``log2``, ``log3`` and ``log4`` have been removed.
 
-..   These are low-level functions that were largely unused. Their behaviour can be accessed from inline assembly.
+..   These are low-level functions that were largely unused. Their behavior can be accessed from inline assembly.
 
 * グローバル関数の ``log0`` 、 ``log1`` 、 ``log2`` 、 ``log3`` 、 ``log4`` が削除されました。
 
@@ -304,7 +304,7 @@ Solidity v0.8.0の破壊的変更点
 .. - Add intermediate explicit type conversions if required.
 .. - Combine ``c.f{gas: 10000}{value: 1}()`` to ``c.f{gas: 10000, value: 1}()``.
 .. - Change ``msg.sender.transfer(x)`` to ``payable(msg.sender).transfer(x)`` or use a stored variable of ``address payable`` type.
-.. - Negate unsigned integers by subtracting them from the maximum value of the type and adding 1 (e.g. ``type(uint256).max - x + 1``, while ensuring that `x` is not zero)
+.. - Negate unsigned integers by subtracting them from the maximum value of the type and adding 1 (e.g. ``type(uint256).max - x + 1``, while ensuring that ``x`` is not zero)
 
 - ラッピング算術（オーバーフローを許容する算術）に頼っている場合は、各演算を ``unchecked { ... }`` で囲んでください。
 - オプション: SafeMathまたは同様のライブラリを使用している場合は、 ``x.add(y)`` を ``x + y`` 、 ``x.mul(y)`` を ``x * y`` などに変更してください。

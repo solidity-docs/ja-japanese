@@ -21,9 +21,9 @@ Solidityでは、スマートコントラクトを使ってトークンや、も
 このセクションでは、いくつかの落とし穴や一般的なセキュリティ上の推奨事項を挙げていきますが、もちろん完全なものではありません。
 また、スマートコントラクトのコードにバグがない場合でも、コンパイラやプラットフォーム自体にバグがある可能性があることも覚えておいてください。
 コンパイラのセキュリティ関連の既知のバグのリストは :ref:`既知のバグリスト<known_bugs>` に掲載されており、機械でも読めます。
-なお、Solidityコンパイラのコードジェネレータを対象としたバグバウンティプログラムがあります。
+なお、Solidityコンパイラのコードジェネレータを対象とした `Bug Bounty Program <https://ethereum.org/en/bug-bounty/>`_ があります。
 
-.. As always, with open source documentation, please help us extend this section (especially, some examples would not hurt)!
+.. As always, with open-source documentation, please help us extend this section (especially, some examples would not hurt)!
 
 いつものように、オープンソースのドキュメントでは、このセクションの拡張にご協力ください（特に、いくつかの例があれば問題ありません）。
 
@@ -44,8 +44,8 @@ Solidityでは、スマートコントラクトを使ってトークンや、も
 
 スマートコントラクトで乱数を使用することは、ブロックビルダーが不正行為をする可能性があるため、困難です。
 
-Re-Entrancy
-===========
+Reentrancy
+==========
 
 .. Any interaction from a contract (A) with another contract (B) and any transfer of Ether hands over control to that contract (B).
 .. This makes it possible for B to call back into A before this interaction is completed.
@@ -111,17 +111,18 @@ Re-entrancyを避けるために、以下のようなChecks-Effects-Interactions
         }
     }
 
-The Checks-Effects-Interactions pattern ensures that all code paths through a contract complete all required checks
-of the supplied parameters before modifying the contract's state (Checks); only then it makes any changes to the state (Effects);
-it may make calls to functions in other contracts *after* all planned state changes have been written to
-storage (Interactions). This is a common foolproof way to prevent *re-entrancy attacks*, where an externally called
-malicious contract is able to double-spend an allowance, double-withdraw a balance, among other things, by using logic that calls back into the
-original contract before it has finalized its transaction.
+.. The Checks-Effects-Interactions pattern ensures that all code paths through a contract complete all required checks of the supplied parameters before modifying the contract's state (Checks); only then it makes any changes to the state (Effects); it may make calls to functions in other contracts *after* all planned state changes have been written to storage (Interactions).
+.. This is a common foolproof way to prevent *reentrancy attacks*, where an externally called malicious contract can double-spend an allowance, double-withdraw a balance, among other things, by using logic that calls back into the original contract before it has finalized its transaction.
 
-.. Note that re-entrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
+Checks-Effects-Interactionsパターンは、コントラクトを通るすべてのコードパスが、コントラクトの状態を変更する前に、供給されたパラメータの必要なチェックをすべて完了することを保証します（Checks）。
+その後、コントラクトはステートに変更を加えます（Effects）。
+計画されたステートの変更がすべてストレージに書き込まれた後、他のコントラクトの関数を呼び出すことができます（Interactions）。
+これは、外部から呼び出された悪意のあるコントラクトが、トランザクションを確定する前に元のコントラクトにコールバックするロジックを使用することで、手当を二重に使ったり、残高を二重に引き出したりすることができる、 *リエントランシー攻撃* を防ぐための一般的なフールプルーフな方法である。
+
+.. Note that reentrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
 .. A called contract could modify the state of another contract you depend on.
 
-Re-entrancyは、Ether送金だけでなく、別のコントラクトでのあらゆる関数呼び出しの影響を受けることに注意してください。
+Reentrancyは、Ether送金だけでなく、別のコントラクトでのあらゆる関数呼び出しの影響を受けることに注意してください。
 さらに、複数のコントラクトを考慮しなければならない状況もあります。
 呼び出されたコントラクトが、依存している別のコントラクトの状態を変更する可能性があります。
 
@@ -160,7 +161,7 @@ Etherの送受信
 ..   To be sure that your contract can receive Ether in that way, check the gas requirements of the receive and fallback functions (for example in the "details" section in Remix).
 
 - コントラクトが（関数が呼ばれずに）Etherを受信すると、 :ref:`receive Ether <receive-ether-function>` または :ref:`fallback <fallback-function>` 関数が実行されます。
-  receive関数もfallback関数も持たない場合、Etherは（例外を投げて）拒否されます。
+  ``receive`` 関数も ``fallback`` 関数も持たない場合、Etherは（例外を投げて）拒否されます。
   これらの関数が実行されている間、コントラクトは、渡された「gas stipend」（2300ガス）がその時点で利用可能であることにのみ依存できます。
   この供給量は、ストレージを変更するのに十分ではありません（将来のハードフォークで供給量が変更される可能性がありますので、これを鵜呑みにしてはいけません）。
   コントラクトがこの方法でEtherを受け取ることができるかどうかを確認するには、receive関数とfallback関数のガス要件を確認してください（例えばRemixの「詳細」セクションに記載されています）。
@@ -274,7 +275,7 @@ Etherの送受信
 tx.origin
 =========
 
-認証に tx.origin を使用しないでください。
+認証に ``tx.origin`` を使用しないでください。
 以下のようなウォレットコントラクトがあるとします。
 
 .. code-block:: solidity
@@ -320,7 +321,7 @@ tx.origin
         }
     }
 
-.. If your wallet had checked ``msg.sender`` for authorization, it would get the address of the attack wallet, instead of the owner address. But by checking ``tx.origin``, it gets the original address that kicked off the transaction, which is still the owner address. The attack wallet instantly drains all your funds.
+.. If your wallet had checked ``msg.sender`` for authorization, it would get the address of the attack wallet, instead of the owner's address. But by checking ``tx.origin``, it gets the original address that kicked off the transaction, which is still the owner's address. The attack wallet instantly drains all your funds.
 
 もしあなたのウォレットが ``msg.sender`` をチェックして承認を得ていたら、所有者のアドレスではなく、攻撃したウォレットのアドレスを得ることになります。
 しかし、 ``tx.origin`` をチェックすると、トランザクションを開始した元のアドレスが取得され、それがオーナーのアドレスとなります。
@@ -420,7 +421,7 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
 
 .. Consider the example above and the following sequence of calls: ``allocate(10)``, ``writeMap(4, 128, 256)``.
 .. At this point, calling ``readMap(4, 128)`` returns 256.
-.. If we call ``eraseMaps``, the length of state variable ``array`` is zeroed, but since its ``mapping`` elements cannot be zeroed, their information stays alive in the contract's storage.
+.. If we call ``eraseMaps``, the length of the state variable ``array`` is zeroed, but since its ``mapping`` elements cannot be zeroed, their information stays alive in the contract's storage.
 .. After deleting ``array``, calling ``allocate(5)`` allows us to access ``array[4]`` again, and calling ``readMap(4, 128)`` returns 256 even without another call to ``writeMap``.
 
 上の例で、次のような一連のコールを考えてみましょう: ``allocate(10)``, ``writeMap(4, 128, 256)`` 。
@@ -464,9 +465,7 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
 
 最近導入されたすべての警告について通知を受けるには、常に最新バージョンのコンパイラを使用してください。
 
-.. Messages of type ``info`` issued by the compiler are not dangerous, and simply
-.. represent extra suggestions and optional information that the compiler thinks
-.. might be useful to the user.
+.. Messages of type ``info``, issued by the compiler, are not dangerous and simply represent extra suggestions and optional information that the compiler thinks might be useful to the user.
 
 コンパイラが発行する ``info`` 型のメッセージは危険なものではなく、ユーザにとって有用であるとコンパイラが考える追加の提案やオプション情報を表しています。
 
@@ -486,7 +485,7 @@ Etherの量を制限する
 
 .. Keep your contracts small and easily understandable.
 .. Single out unrelated functionality in other contracts or into libraries.
-.. General recommendations about source code quality of course apply:
+.. General recommendations about the source code quality of course apply:
 .. Limit the amount of local variables, the length of functions and so on.
 .. Document your functions so that others can see what your intention was and whether it is different than what the code does.
 
@@ -499,11 +498,10 @@ Etherの量を制限する
 Checks-Effects-Interactionsパターンを使う
 =========================================
 
-.. Most functions will first perform some checks (who called the function, are the arguments in range, did they send enough Ether, does the person have tokens, etc.).
-.. These checks should be done first.
+.. Most functions will first perform some checks and they should be done first (who called the function, are the arguments in range, did they send enough Ether, does the person have tokens, etc.).
 
-ほとんどの関数は、最初にいくつかのチェックを行います（誰が関数を呼び出したか、引数は範囲内か、十分な量のEtherを送ったか、相手はトークンを持っているか、など）。
-これらのチェックは最初に行われるべきです。
+ほとんどの関数は最初にいくつかのチェックを行い、それらは最初に行うべきです。
+例えば、誰が関数を呼び出したか、引数は範囲内か、十分なイーサを送ったか、その人はトークンを持っているか、などです。
 
 .. As the second step, if all checks passed, effects to the state variables of the current contract should be made.
 .. Interaction with other contracts should be the very last step in any function.
@@ -512,10 +510,10 @@ Checks-Effects-Interactionsパターンを使う
 他のコントラクトとのやりとりは、どの関数でも最後のステップにすべきです。
 
 .. Early contracts delayed some effects and waited for external function calls to return in a non-error state.
-.. This is often a serious mistake because of the re-entrancy problem explained above.
+.. This is often a serious mistake because of the reentrancy problem explained above.
 
 初期のコントラクトでは、いくつかの効果を遅らせ、外部の関数呼び出しが非エラー状態で戻ってくるのを待っていました。
-これは、上で説明したRe-entrancyの問題のため、しばしば重大な誤りとなります。
+これは、上で説明したReentrancyの問題のため、しばしば重大な誤りとなります。
 
 .. Note that, also, calls to known contracts might in turn cause calls to
 .. unknown contracts, so it is probably better to just always apply this pattern.
@@ -525,9 +523,7 @@ Checks-Effects-Interactionsパターンを使う
 フェイルセーフモードを搭載する
 ==============================
 
-.. While making your system fully decentralised will remove any intermediary,
-.. it might be a good idea, especially for new code, to include some kind
-.. of fail-safe mechanism:
+.. While making your system fully decentralized will remove any intermediary, it might be a good idea, especially for new code, to include some kind of fail-safe mechanism:
 
 システムを完全に非中央集権化することで、仲介者を排除できますが、特に新しいコードには、何らかのフェイルセーフメカニズムを組み込むことが良いかもしれません。
 
@@ -540,13 +536,10 @@ Checks-Effects-Interactionsパターンを使う
 スマートコントラクトの中に、「Etherが漏れていないか」「トークンの合計がコントラクトの残高と同じか」などの自己チェックを行う関数を追加できます。
 そのためには、あまり多くのガスを使うことはできないので、オフチェーンの計算による助けが必要になるかもしれないことを覚えておいてください。
 
-.. If the self-check fails, the contract automatically switches into some kind
-.. of "failsafe" mode, which, for example, disables most of the features, hands over
-.. control to a fixed and trusted third party or just converts the contract into
-.. a simple "give me back my money" contract.
+.. If the self-check fails, the contract automatically switches into some kind of "failsafe" mode, which, for example, disables most of the features, hands over control to a fixed and trusted third party or just converts the contract into a simple "give me back my money" contract.
 
 セルフチェックに失敗すると、コントラクトは自動的にある種の「フェイルセーフ」モードに切り替わります。
-例えば、ほとんどの機能を無効にしたり、固定された信頼できる第三者にコントロールを委ねたり、あるいは単に「お金を返してください」というコントラクトに変更したりします。
+例えば、ほとんどの機能を無効にしたり、固定された信頼できる第三者にコントロールを委ねたり、あるいは単に「Etherを返してください」というコントラクトに変更したりします。
 
 ピアレビューを依頼する
 ======================

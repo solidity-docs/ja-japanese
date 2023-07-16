@@ -9,19 +9,19 @@ Solidityコンパイラのインストール
 バージョニング
 ==============
 
-.. In addition, patch level releases with major release 0 (i.e. 0.x.y) will not contain breaking changes.
+.. In addition, patch-level releases with major release 0 (i.e. 0.x.y) will not contain breaking changes.
 .. That means code that compiles with version 0.x.y can be expected to compile with 0.x.z where z > y.
 
 Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に従っています。
-さらに、メジャーリリース0（つまり0.x.y）のパッチレベルリリースには、破壊的な変更が含まれません。
+さらに、メジャーリリース0（つまり0.x.y）のパッチレベルのリリースには、破壊的な変更が含まれません。
 つまり、バージョン0.x.yでコンパイルされたコードは、0.x.z（z > y）でコンパイルされることが期待できます。
 
-.. In addition to releases, we provide **nightly development builds** with the intention of making it easy for developers to try out upcoming features and provide early feedback.
+.. In addition to releases, we provide **nightly development builds** to make it easy for developers to try out upcoming features and provide early feedback.
 .. Note, however, that while the nightly builds are usually very stable, they contain bleeding-edge code from the development branch and are not guaranteed to be always working.
 .. Despite our best efforts, they might contain undocumented and/or broken changes that will not become a part of an actual release.
 .. They are not meant for production use.
 
-リリースに加え、開発者が簡単に次期機能を試し、早期にフィードバックを提供できるようにすることを意図して、 **nightly development builds** を提供しています。
+リリースに加え、 **nightly development builds** を提供することで、開発者が簡単に次期機能を試し、早期にフィードバックを提供できるようにしています。
 ただし、ナイトリービルドは通常非常に安定していますが、開発ブランチからの最先端のコードを含んでおり、常に動作することを保証するものではないことに注意してください。
 私たちの最善の努力にもかかわらず、文書化されていない、あるいは破壊的変更が含まれている可能性があり、実際のリリースの一部にはなりません。
 また、本番環境での使用は想定していません。
@@ -40,7 +40,7 @@ Remix
 *小規模なコントラクトやSolidityを短期間で習得するにはRemixをお勧めします。*
 
 `Remixにオンラインでアクセスする <https://remix.ethereum.org/>`_ 場合、何もインストールする必要はありません。
-インターネットに接続せずに使用したい場合は、https://github.com/ethereum/remix-live/tree/gh-pages に行き、そのページで説明されている通りに ``.zip`` ファイルをダウンロードしてください。
+インターネットに接続せずに使用したい場合は、https://github.com/ethereum/remix-live/tree/gh-pages#readme に行き、そのページの指示に従ってください。
 Remixは、複数のSolidityバージョンをインストールせずにnightlyビルドをテストするのに便利なオプションでもあります。
 
 このページの他のオプションでは、お使いのコンピュータにコマンドラインのSolidityコンパイラソフトウェアをインストールする方法について説明しています。
@@ -125,19 +125,18 @@ nightlyバージョンは、以下のコマンドでインストールできま�
     sudo apt-get update
     sudo apt-get install solc
 
-.. Furthermore, some Linux distributions provide their own packages.
-.. These packages are not directly maintained by us, but usually kept up-to-date by the respective package maintainers.
-
 さらに、一部のLinuxディストリビューションでは、独自のパッケージが提供されています。
-これらのパッケージは私たちが直接メンテナンスしているわけではありませんが、通常はそれぞれのパッケージメンテナによって最新に保たれています。
+これらのパッケージは私たちが直接メンテナンスしているわけではありませんが、基本的にそれぞれのパッケージメンテナによって最新に保たれています。
 
-.. For example, Arch Linux has packages for the latest development version:
+例えば、Arch Linuxでは、最新の開発版のパッケージがAURパッケージとして用意されています。
+`solidity <https://aur.archlinux.org/packages/solidity>`_ と `solidity-bin <https://aur.archlinux.org/packages/solidity-bin>`_ です。
 
-例えば、Arch Linuxでは、最新の開発版のパッケージが用意されています:
+.. note::
 
-.. code-block:: bash
+    .. Please be aware that `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_ packages are user-produced content and unofficial packages. Exercise caution when using them.
 
-    pacman -S solidity
+    `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_ パッケージはユーザーが作成したコンテンツであり、非公式パッケージです。
+    使用するときは注意してください。
 
 .. There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
 .. It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_.
@@ -209,7 +208,10 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 - コンテンツは https://binaries.soliditylang.org にミラーリングされ、認証やレート制限、gitを使用する必要なく、HTTPSで簡単にダウンロードできます。
 - コンテンツは、正しい `Content-Type` ヘッダと寛大なCORS設定で提供され、ブラウザ上で動作するツールで直接読み込めるようになっています。
 - バイナリは、インストールや解凍の必要がありません（ただし、必要なDLLがバンドルされた古いWindowsビルドは例外です）。
-- 私たちは、高いレベルの後方互換性を確保するよう努めています。一度追加されたファイルは、古い場所でシンボリックリンクやリダイレクトを提供することなく削除または移動されることはありません。また、ファイルはその場で変更されることはなく、常にオリジナルのチェックサムと一致していなければなりません。唯一の例外は、壊れたファイルや使用できないファイルで、そのままにしておくと害になる可能性があるものです。
+- 私たちは、高いレベルの後方互換性を確保するよう努めています。
+  一度追加されたファイルは、古い場所でシンボリックリンクやリダイレクトを提供することなく削除または移動されることはありません。
+  また、ファイルはその場で変更されることはなく、常にオリジナルのチェックサムと一致していなければなりません。
+  唯一の例外は、壊れたファイルや使用できないファイルで、そのままにしておくと害になる可能性があるものです。
 - ファイルは HTTP と HTTPS の両方で提供されます。ファイルリストを安全な方法（git、HTTPS、IPFS、またはローカルにキャッシュ）で取得し、バイナリをダウンロードした後にバイナリのハッシュを検証する限り、バイナリ自体にHTTPSを使用する必要はありません。
 
 同じバイナリは、ほとんどの場合、 `Solidity release page on Github`_ で入手できます。
@@ -315,7 +317,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 .. note::
 
     Solidityのバージョンが0.5.10以前の場合、Boostのバージョン1.70以上に対して正しくリンクできないことがあります。
-    これを回避するには、cmakeコマンドを実行してsolidityを設定する前に、一時的に ``<Boost install path>/lib/cmake/Boost-1.70.0`` の名前を変更することが考えられます。
+    これを回避するには、cmakeコマンドを実行してSolidityを設定する前に、一時的に ``<Boost install path>/lib/cmake/Boost-1.70.0`` の名前を変更することが考えられます。
 
     0.5.10以降、Boost 1.70以上とのリンクは手動での操作なしに動作します。
 
@@ -487,7 +489,7 @@ SMTソルバー
 -----------
 
 SolidityはSMTソルバーに対してビルドでき、システムで見つかった場合、デフォルトでそうします。
-それぞれのソルバーは `cmake` オプションで無効にできます。
+それぞれのソルバーは ``cmake`` オプションで無効にできます。
 
 *注: 場合によっては、ビルドに失敗したときの回避策としても有効です。*
 

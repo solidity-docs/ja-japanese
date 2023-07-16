@@ -13,8 +13,7 @@ Solidity v0.6.0の破壊的変更点
 コンパイラが警告しない可能性のある変更点
 ========================================
 
-.. This section lists changes where the behaviour of your code might
-.. change without the compiler telling you about it.
+.. This section lists changes where the behavior of your code might change without the compiler telling you about it.
 
 このセクションでは、コンパイラーが教えてくれないのにコードの動作が変更される可能性のある変更点を挙げます。
 
@@ -160,9 +159,8 @@ Solidity v0.6.0の破壊的変更点
 インターフェースの変更点
 ========================
 
-.. This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of
-.. the compiler. These may change the way how you use the compiler on the command line, how you use its programmable
-.. interface, or how you analyze the output produced by it.
+.. This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of the compiler.
+.. These may change the way how you use the compiler on the command-line, how you use its programmable interface, or how you analyze the output produced by it.
 
 このセクションでは、言語そのものとは関係なく、コンパイラーのインターフェースに影響を与える変更点を紹介します。
 これらの変更により、コマンドラインでのコンパイラの使用方法、プログラマブルインターフェースの使用方法、コンパイラが生成した出力の分析方法が変わる可能性があります。
@@ -172,7 +170,7 @@ Solidity v0.6.0の破壊的変更点
 新しいエラーリポーター
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. A new error reporter was introduced, which aims at producing more accessible error messages on the command line.
+.. A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
 .. It is enabled by default, but passing ``--old-reporter`` falls back to the the deprecated old error reporter.
 
 新しいエラーレポーターが導入されました。
@@ -186,9 +184,9 @@ Solidity v0.6.0の破壊的変更点
 
 .. The compiler now appends the `IPFS <https://ipfs.io/>`_ hash of the metadata file to the end of the bytecode by default
 .. (for details, see documentation on :doc:`contract metadata <metadata>`). Before 0.6.0, the compiler appended the
-.. `Swarm <https://ethersphere.github.io/swarm-home/>`_ hash by default, and in order to still support this behaviour,
-.. the new command line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
-.. appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command line option.
+.. `Swarm <https://ethersphere.github.io/swarm-home/>`_ hash by default, and in order to still support this behavior,
+.. the new command-line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
+.. appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command-line option.
 .. Passing the value ``none`` completely removes the hash.
 
 コンパイラは、メタデータファイルの  `IPFS <https://ipfs.io/>`_  ハッシュをデフォルトでバイトコードの最後に追加するようになりました（詳細については、 :doc:`コントラクトメタデータ <metadata>` のドキュメントを参照してください）。

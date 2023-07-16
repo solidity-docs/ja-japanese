@@ -15,7 +15,7 @@ sourceUnit: (
 	| contractDefinition
 	| interfaceDefinition
 	| libraryDefinition
-	| freeFunctionDefinition
+	| functionDefinition
 	| constantVariableDeclaration
 	| structDefinition
 	| enumDefinition
@@ -83,7 +83,7 @@ inheritanceSpecifier: name=identifierPath arguments=callArgumentList?;
  */
 contractBodyElement:
 	constructorDefinition
-	| contractFunctionDefinition
+	| functionDefinition
 	| modifierDefinition
 	| fallbackFunctionDefinition
 	| receiveFunctionDefinition
@@ -149,11 +149,11 @@ stateMutability: Pure | View | Payable;
  */
 overrideSpecifier: Override (LParen overrides+=identifierPath (Comma overrides+=identifierPath)* RParen)?;
 /**
- * コントラクト、ライブラリ、インターフェース関数の定義。
+ * コントラクト関数、ライブラリ関数、インターフェース関数、フリー関数の定義。
  * 関数が定義されているコンテキストによっては、さらなる制約が適用される場合があります。
  * 例えば、インターフェイスの関数は未実装、つまりボディブロックを含んではなりません。
  */
-contractFunctionDefinition
+functionDefinition
 locals[
 	boolean visibilitySet = false,
 	boolean mutabilitySet = false,
@@ -172,16 +172,6 @@ locals[
 	 )*
 	(Returns LParen returnParameters=parameterList RParen)?
 	(Semicolon | body=block);
-
-/**
- * フリー関数の定義。
- */
- freeFunctionDefinition:
- 	Function (identifier | Fallback | Receive)
- 	LParen (arguments=parameterList)? RParen
- 	stateMutability?
- 	(Returns LParen returnParameters=parameterList RParen)?
- 	(Semicolon | body=block);
 
 /**
  * モディファイアの定義。
@@ -370,7 +360,7 @@ dataLocation: Memory | Storage | Calldata;
  */
 expression:
 	expression LBrack index=expression? RBrack # IndexAccess
-	| expression LBrack start=expression? Colon end=expression? RBrack # IndexRangeAccess
+	| expression LBrack startIndex=expression? Colon endIndex=expression? RBrack # IndexRangeAccess
 	| expression Period (identifier | Address) # MemberAccess
 	| expression LBrace (namedArgument (Comma namedArgument)*)? RBrace # FunctionCallOptions
 	| expression callArgumentList # FunctionCall
@@ -391,7 +381,7 @@ expression:
 	| expression Or expression # OrOperation
 	|<assoc=right> expression Conditional expression Colon expression # Conditional
 	|<assoc=right> expression assignOp expression # Assignment
-	| New typeName # NewExpression
+	| New typeName # NewExpr
 	| tupleExpression # Tuple
 	| inlineArrayExpression # InlineArray
  	| (

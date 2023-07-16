@@ -127,7 +127,7 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 オーバーフロー
 ==============
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -151,7 +151,7 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
 
 .. The contract above shows an overflow check example.
 .. The SMTChecker does not check underflow and overflow by default for Solidity >=0.8.7,
-.. so we need to use the command line option ``--model-checker-targets "underflow,overflow"``
+.. so we need to use the command-line option ``--model-checker-targets "underflow,overflow"``
 .. or the JSON option ``settings.modelChecker.targets = ["underflow", "overflow"]``.
 .. See :ref:`this section for targets configuration<smtchecker_targets>`.
 .. Here, it reports the following:
@@ -183,7 +183,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 
 オーバーフローのケースをフィルタリングする ``require`` 文を追加すると、SMTCheckerはオーバーフローに到達しないことを（警告を報告しないことで）証明します。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -229,7 +229,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 ``f`` は確かに単調増加なので、SMTCheckerは我々の特性が正しいことを証明します。
 この性質と関数の定義を使って、どんな結果が出るか試してみてください。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -254,7 +254,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 また、ループの中にアサーションを追加して、より複雑なプロパティを検証することもできます。
 次のコードでは、制限のない数値の配列の最大要素を検索し、検索された要素は配列のすべての要素と同じかそれ以上でなければならないというプロパティをアサートしています。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -306,7 +306,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 プロパティを変更したり、配列に制限を加えることで、異なる結果を得ることができます。
 例えば、コードを次のように変更すると
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -368,7 +368,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 ロボットは対角線上に1歩ずつしか移動できず、グリッドの外には出られません。
 このロボットのステートマシンは、以下のスマートコントラクトで表すことができます。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -427,7 +427,7 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 また、SMTCheckerを騙して、到達可能と思われるある位置までのパスを教えてもらうこともできます。
 次のような関数を追加することで、(2, 4)は*not* reachableであるという性質を追加できます。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     function reach_2_4() public view {
         assert(!(x == 2 && y == 4));
@@ -486,7 +486,7 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 
 場合によっては、外部から呼び出されたコードが呼び出し元のコントラクトを再入力するなど、何をしても真である状態変数のプロパティを自動的に推論することも可能です。
 
-.. code-block:: Solidity
+.. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
@@ -533,7 +533,7 @@ SMTCheckerは、ロボットにどんなに多くの命令を与えても、た�
 ソルバーは、 ``unknown.run()`` が呼び出されたとき、コントラクトはすでに「ロック」されているので、未知の呼び出されたコードが何をしようと、 ``x`` の値を変更できないだろうと推測できます。
 
 .. If we "forget" to use the ``mutex`` modifier on function ``set``, the
-.. SMTChecker is able to synthesize the behaviour of the externally called code so
+.. SMTChecker is able to synthesize the behavior of the externally called code so
 .. that the assertion fails:
 
 関数 ``set`` に ``mutex`` モディファイアを使うことを「忘れた」場合、SMTCheckerは外部から呼び出されたコードの振る舞いを合成し、アサーションが失敗するようにします。

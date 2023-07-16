@@ -186,7 +186,6 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
         function set(uint key, uint value) public {
             data[key] = value;
         }
-
     }
 
 .. Omitted Names in Function Definitions
@@ -389,9 +388,7 @@ Solidityは内部的にタプル型を許可しています。
 
 .. .. warning::
 
-..     Be careful when assigning to multiple variables at the same time when
-..     reference types are involved, because it could lead to unexpected
-..     copying behaviour.
+..     Be careful when assigning to multiple variables at the same time when reference types are involved, because it could lead to unexpected copying behavior.
 
 .. warning::
 
@@ -401,7 +398,7 @@ Solidityは内部的にタプル型を許可しています。
 --------------------
 
 代入のセマンティクスは、 ``bytes`` や ``string`` などの配列や構造体などの非値型ではより複雑になりますが。
-詳細は :ref:`データロケーションと代入の動作<data-location-assignment>` を参照してください。
+詳細は :ref:`データロケーションと代入の動作 <data-location-assignment>` を参照してください。
 
 以下の例では、 ``g(x)`` の呼び出しは、メモリ内にストレージの値の独立したコピーを作成するため、 ``x`` に影響を与えません。
 しかし、 ``h(x)`` はコピーではなく参照のみが渡されるため、 ``x`` の変更に成功しています。
@@ -538,14 +535,11 @@ C99のスコープルールの特別な例として、以下では、 ``x`` へ�
 
 オーバーフローまたはアンダーフローとは、制限のない整数に対して算術演算を実行したときに、結果の値が結果の型の範囲外になってしまうことです。
 
-.. Prior to Solidity 0.8.0, arithmetic operations would always wrap in case of
-.. under- or overflow leading to widespread use of libraries that introduce
-.. additional checks.
+.. Prior to Solidity 0.8.0, arithmetic operations would always wrap in case of under- or overflow leading to widespread use of libraries that introduce additional checks.
 
 Solidity 0.8.0以前では、アンダーフローやオーバーフローが発生した場合、算術演算は常にラップするため、追加のチェックを導入するライブラリが広く使用されていました。
 
-.. Since Solidity 0.8.0, all arithmetic operations revert on over- and underflow by default,
-.. thus making the use of these libraries unnecessary.
+.. Since Solidity 0.8.0, all arithmetic operations revert on over- and underflow by default, thus making the use of these libraries unnecessary.
 
 Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバーフローとアンダーフローでリバートするため、これらのライブラリを使用する必要はありません。
 
@@ -581,8 +575,7 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 
     曖昧さを避けるため、 ``unchecked`` ブロック内で ``_;`` を使用できません。
 
-.. The following operators will cause a failing assertion on overflow or underflow
-.. and will wrap without an error if used inside an unchecked block:
+.. The following operators will cause a failing assertion on overflow or underflow and will wrap without an error if used inside an unchecked block:
 
 以下の演算子は、オーバーフローまたはアンダーフロー時にアサーションの失敗を引き起こし、チェックされていないブロック内で使用された場合はエラーなしでラップされます。
 
@@ -597,8 +590,7 @@ Solidity 0.8.0以降、すべての算術演算はデフォルトでオーバー
 .. .. note::
 
 ..    Bitwise operators do not perform overflow or underflow checks.
-..    This is particularly visible when using bitwise shifts (``<<``, ``>>``, ``<<=``, ``>>=``) in
-..    place of integer division and multiplication by a power of 2.
+..    This is particularly visible when using bitwise shifts (``<<``, ``>>``, ``<<=``, ``>>=``) in place of integer division and multiplication by a power of 2.
 ..    For example ``type(uint256).max << 3`` does not revert even though ``type(uint256).max * 8`` would.
 
 .. note::
@@ -753,12 +745,11 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
 #. コントラクトがパブリックゲッター関数でEtherを受け取る場合。
 
-.. For the following cases, the error data from the external call
-.. (if provided) is forwarded. This means that it can either cause
-.. an `Error` or a `Panic` (or whatever else was given):
+.. For the following cases, the error data from the external call (if provided) is forwarded.
+.. This means that it can either cause an ``Error`` or a ``Panic`` (or whatever else was given):
 
 以下のケースでは、外部の呼び出しからのエラーデータ（提供されている場合）が送金されます。
-これは、 `Error` または `Panic` （またはその他の何かが与えられた場合）を引き起こす可能性があることを意味します。
+これは、 ``Error`` または ``Panic`` （またはその他の何かが与えられた場合）を引き起こす可能性があることを意味します。
 
 .. #. If a ``.transfer()`` fails.
 .. #. If you call a function via a message call but it does not finish
@@ -797,7 +788,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
             require(msg.value % 2 == 0, "Even value required.");
             uint balanceBeforeTransfer = address(this).balance;
             addr.transfer(msg.value / 2);
-            // transferに失敗すると例外がスローされ、ここにコールバックすることはできないので、半分のお金を送金せず保持する方法はないはずです。
+            // transferに失敗すると例外がスローされ、ここにコールバックすることはできないので、半分のEtherを送金せず保持する方法はないはずです。
             assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
             return address(this).balance;
         }
@@ -832,14 +823,11 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
 .. The ``revert`` statement takes a custom error as direct argument without parentheses:
 
-..     revert CustomError(arg1, arg2);
-
-``revert`` 文では、カスタムエラーを括弧なしの直接引数として受け取ります。
+``revert`` 文では、カスタムエラーを括弧なしで直接引数として受け取ります。
 
     revert CustomError(arg1, arg2);
 
-.. For backwards-compatibility reasons, there is also the ``revert()`` function, which uses parentheses
-.. and accepts a string:
+.. For backward-compatibility reasons, there is also the ``revert()`` function, which uses parentheses and accepts a string:
 
 後方互換性を考慮して、括弧を使用して文字列を受け取る ``revert()`` 関数もあります。
 

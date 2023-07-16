@@ -57,7 +57,7 @@ Solidityコンパイラをインストールするには様々な方法があり
 
 .. warning::
    人間がソフトウェアを書くと、バグが発生することがあります。
-   スマートコントラクトを作成する際には、確立されたソフトウェア開発のベストプラクティスに従うべきです。
+   そのため、スマートコントラクトを作成する際には、確立されたソフトウェア開発のベストプラクティスに従うべきです。
    これには、コードレビュー、テスト、監査、およびコレクトネス（実装が仕様に沿っていること）の証明が含まれます。
    スマートコントラクトのユーザーは、コードの作成者よりもコードを信頼している場合があります。
    また、ブロックチェーンやスマートコントラクトには、注意すべき特有の問題があるため、本番のコードに取り組む前に、必ず :ref:`security_considerations` のセクションを読んでください。
@@ -104,8 +104,8 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
    :caption: 基本
 
    introduction-to-smart-contracts.rst
-   installing-solidity.rst
    solidity-by-example.rst
+   installing-solidity.rst
 
 .. toctree::
    :maxdepth: 2
@@ -144,21 +144,31 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 .. toctree::
    :maxdepth: 2
-   :caption: その他の資料
+   :caption: アドバイザリーコンテンツ
 
+   security-considerations.rst
+   bugs.rst
    050-breaking-changes.rst
    060-breaking-changes.rst
    070-breaking-changes.rst
    080-breaking-changes.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 補足資料
+
    natspec-format.rst
-   security-considerations.rst
    smtchecker.rst
-   resources.rst
-   path-resolution.rst
    yul.rst
+   path-resolution.rst
+
+.. toctree::
+   :maxdepth: 2
+   :caption: その他の資料
+
    style-guide.rst
    common-patterns.rst
-   bugs.rst
+   resources.rst
    contributing.rst
-   brand-guide.rst
    language-influences.rst
+   brand-guide.rst

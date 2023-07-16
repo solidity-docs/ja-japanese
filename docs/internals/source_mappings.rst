@@ -38,7 +38,7 @@
 一部のユーティリティルーチンでは、コンパイラーは元の入力の一部ではなく、ソースマッピングから参照される「内部」ソースファイルを生成します。
 これらのソースファイルは、その識別子とともに、 ``output['contracts'][sourceName][contractName]['evm']['bytecode']['generatedSources']`` を通じて入手できます。
 
-.. .. note ::
+.. .. note::
 ..     In the case of instructions that are not associated with any particular source file,
 ..     the source mapping assigns an integer identifier of ``-1``. This may happen for
 ..     bytecode sections stemming from compiler-generated inline assembly statements.

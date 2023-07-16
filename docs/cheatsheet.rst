@@ -2,16 +2,17 @@
 チートシート
 ************
 
-.. index:: operator; precedence
+.. index:: operator;precedence
 
 演算子の優先順位
 ================
+
 .. include:: types/operator-precedence-table.rst
 
-.. index:: assert, block, coinbase, difficulty, prevrandao, number, block;number, timestamp, block;timestamp, msg, data, gas, sender, value, gas price, origin, revert, require, keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, this, super, selfdestruct, balance, codehash, send
+.. index:: abi;decode, abi;encode, abi;encodePacked, abi;encodeWithSelector, abi;encodeCall, abi;encodeWithSignature
 
-グローバル変数
-==============
+ABIのエンコード関数とデコード関数
+=================================
 
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``:
   与えたデータを :ref:`ABI <ABI>` デコードします。
@@ -36,10 +37,34 @@
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:
   ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` と同等です。
 
+.. index:: bytes;concat, string;concat
+
+``bytes`` と ``string`` のメンバー
+==================================
+
 - ``bytes.concat(...) returns (bytes memory)``:
   :ref:`可変個の引数を1つのバイト配列に連結します <bytes-concat>` 。
 
 - ``string.concat(...) returns (string memory)``: :ref:`可変個の引数を1つの文字列に連結します <string-concat>` 。
+
+.. index:: address;balance, address;codehash, address;send, address;code, address;transfer
+
+``address`` のメンバー
+======================
+
+- ``<address>.balance`` (``uint256``): :ref:`address` の残高（Wei）
+- ``<address>.code`` (``bytes memory``): :ref:`address` のコード（空にもなり得る）
+- ``<address>.codehash`` (``bytes32``): :ref:`address` のコードハッシュ
+- ``<address payable>.send(uint256 amount) returns (bool)``: 指定した量のWeiを :ref:`address` に送り、失敗したら ``false`` を返します。
+- ``<address payable>.transfer(uint256 amount)``: 指定した量のWeiを :ref:`address` に送り、失敗したらリバートします。
+
+.. index:: blockhash, block, block;basefree, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
+.. index:: gasleft, msg;data, msg;sender, msg;sig, msg;value, tx;gasprice, tx;origin
+
+ブロックとトランザクションのプロパティ
+======================================
+
+- ``blockhash(uint blockNumber) returns (bytes32)``: 指定したブロックのハッシュ。最新の256ブロックに対してのみ動作します。
 
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）。
 
@@ -75,6 +100,11 @@
 
 - ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）。
 
+.. index:: assert, require, revert
+
+バリデーションとアサーション
+============================
+
 - ``assert(bool condition)``: 条件が ``false`` の場合、実行を中止し、ステートの変化をリバートします（内部エラーに使用）。
 
 - ``require(bool condition)``: 条件が ``false`` の場合、実行を中止し、ステートの変化をリバートします（不正な入力や外部コンポーネントのエラーに使用）。
@@ -85,7 +115,10 @@
 
 - ``revert(string memory message)``: 実行を中止し、説明文字列を提供してステートの変化をリバートします。
 
-- ``blockhash(uint blockNumber) returns (bytes32)``: 与えられたブロックのハッシュ - 最新の256ブロックに対してのみ動作します。
+.. index:: cryptography, keccak256, sha256, ripemd160, ecrecover, addmod, mulmod
+
+数学的関数と暗号学的関数
+========================
 
 - ``keccak256(bytes memory) returns (bytes32)``: 入力のKeccak-256ハッシュを計算します。
 
@@ -99,23 +132,21 @@
 
 - ``mulmod(uint x, uint y, uint k) returns (uint)``: 任意の精度で乗算が実行され、 ``2**256`` で切り捨てられない ``(x * y) % k`` を計算します。バージョン0.5.0から ``k != 0`` であることをアサートします。
 
+.. index:: this, super, selfdestruct
+
+コントラクト関連
+================
+
 - ``this`` （現在のコントラクトの型）: 現在のコントラクトで、 ``address`` または ``address payable`` に明示的に変換できるもの。
 
 - ``super``: 継承階層の1つ上の階層のコントラクト。
 
 - ``selfdestruct(address payable recipient)``: 現在のコントラクトを破棄し、その資金を指定されたアドレスに送ります。
 
-- ``<address>.balance`` (``uint256``): :ref:`address` のWei残高。
+.. index:: type;name, type;creationCode, type;runtimeCode, type;interfaceId, type;min, type;max
 
-- ``<address>.code`` (``bytes memory``):  :ref:`address` のコード（空でも良い）。
-
-- ``<address>.codehash`` (``bytes32``):  :ref:`address` のコードハッシュ。
-
-- ``<address payable>.send(uint256 amount) returns (bool)``:
-  指定された量のWeiを :ref:`address` に送り、失敗すると ``false`` を返します。
-
-- ``<address payable>.transfer(uint256 amount)``:
-  指定された量のWeiを :ref:`address` に送り、失敗したら例外を投げます。
+型情報
+======
 
 - ``type(C).name`` (``string``): コントラクトの名前。
 

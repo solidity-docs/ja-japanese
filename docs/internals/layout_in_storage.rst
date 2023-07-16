@@ -314,7 +314,7 @@ JSON出力
 いくつかの型は、上記の4つの情報以外にも追加の情報を持っています。
 マッピングには ``key`` 型と ``value`` 型があり（ここでも型のマッピングのエントリを参照しています）、配列には ``base`` 型があり、構造体には ``members`` 型がトップレベルの ``storage`` 型と同じ形式で記載されています（ :ref:`上記<storage-layout-top-level>` 参照）。
 
-.. note ::
+.. note::
   コントラクトのストレージレイアウトのJSON出力フォーマットはまだ実験的なものと考えられており、Solidityの非破壊的なリリースで変更される可能性があります。
 
 .. The following example shows a contract and its storage layout, containing

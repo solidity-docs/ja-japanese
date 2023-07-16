@@ -221,7 +221,7 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-.. index:: ! array;literals, ! inline;arrays
+.. index:: ! literal;array, ! inline;arrays
 
 配列リテラル
 ^^^^^^^^^^^^
@@ -472,12 +472,20 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         }
     }
 
-The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no longer refers to a valid element of ``s``.
-Since the compiler assumes that unused storage is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage, so the last element of ``s`` after that ``push()`` will have length ``1`` and contain ``0x42`` as its first element.
+.. The write in ``ptr.push(0x42)`` will **not** revert, despite the fact that ``ptr`` no longer refers to a valid element of ``s``.
+.. Since the compiler assumes that unused storage is always zeroed, a subsequent ``s.push()`` will not explicitly write zeroes to storage, so the last element of ``s`` after that ``push()`` will have length ``1`` and contain ``0x42`` as its first element.
 
-Note that Solidity does not allow to declare references to value types in storage.
-These kinds of explicit dangling references are restricted to nested reference types.
-However, dangling references can also occur temporarily when using complex expressions in tuple assignments:
+``ptr.push(0x42)`` の書き込みは、 ``ptr`` がもはや ``s`` の有効な要素を指していないにもかかわらず、 **リバートしません** 。
+コンパイラは、未使用のストレージは常にゼロになると仮定しているので、その後の ``s.push()`` はストレージに明示的にゼロを書き込むことはありません。
+したがって、 ``push()`` の後の ``s`` の最後の要素は、長さが ``1`` で、最初の要素として ``0x42`` を含むことになります。
+
+.. Note that Solidity does not allow to declare references to value types in storage.
+.. These kinds of explicit dangling references are restricted to nested reference types.
+.. However, dangling references can also occur temporarily when using complex expressions in tuple assignments:
+
+Solidityでは、ストレージ内の値型への参照を宣言できないことに注意してください。
+これらの種類の明示的なダングリング参照は、ネストされた参照型に制限されます。
+しかし、タプル代入で複雑な式を使用する場合、ダングリング参照も一時的に発生する可能性があります:
 
 .. code-block:: solidity
 
@@ -512,9 +520,14 @@ However, dangling references can also occur temporarily when using complex expre
         }
     }
 
-It is always safer to only assign to storage once per statement and to avoid complex expressions on the left-hand-side of an assignment.
+.. It is always safer to only assign to storage once per statement and to avoid complex expressions on the left-hand-side of an assignment.
 
-You need to take particular care when dealing with references to elements of ``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short to long layout in storage<bytes-and-string>`.
+ストレージへの代入はステートメントごとに1回だけにして、代入の左辺に複雑な式を書かないようにするのが常に安全です。
+
+.. You need to take particular care when dealing with references to elements of ``bytes`` arrays, since a ``.push()`` on a bytes array may switch :ref:`from short to long layout in storage<bytes-and-string>`.
+
+bytes配列の要素への参照を扱う場合は特に注意が必要です。
+bytes配列に ``.push()`` を行うと、ストレージ内のレイアウトが :ref:`shortからlongに切り替わる <bytes-and-string>` 可能性があるからです。
 
 .. code-block:: solidity
 
@@ -531,15 +544,25 @@ You need to take particular care when dealing with references to elements of ``b
         }
     }
 
-Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of ``x``.
-However, the second ``x.push()`` switches the bytes array to large layout.
-Now the element that ``x.push()`` referred to is in the data area of the array while the reference still points at its original location, which is now a part of the length field and the assignment will effectively garble the length of ``x``.
-To be safe, only enlarge bytes arrays by at most one element during a single assignment and do not simultaneously index-access the array in the same statement.
+.. Here, when the first ``x.push()`` is evaluated, ``x`` is still stored in short layout, thereby ``x.push()`` returns a reference to an element in the first storage slot of ``x``.
+.. However, the second ``x.push()`` switches the bytes array to large layout.
+.. Now the element that ``x.push()`` referred to is in the data area of the array while the reference still points at its original location, which is now a part of the length field and the assignment will effectively garble the length of ``x``.
+.. To be safe, only enlarge bytes arrays by at most one element during a single assignment and do not simultaneously index-access the array in the same statement.
 
-While the above describes the behaviour of dangling storage references in the current version of the compiler, any code with dangling references should be considered to have *undefined behaviour*.
-In particular, this means that any future version of the compiler may change the behaviour of code that involves dangling references.
+ここで、最初の ``x.push()`` が評価されたとき、 ``x`` はまだショートレイアウトで格納されており、 ``x.push()`` は ``x`` の最初の格納スロットの要素への参照を返す。
+しかし、2番目の ``x.push()`` はバイト配列をラージレイアウトに切り替える。
+このとき、 ``x.push()`` が参照していた要素は配列のデータエリアにあるのですが、参照は元の体の元を指しています。
+安全のために、1回の代入でバイト配列を最大1要素だけ大きくし、同じステートメントで同時に配列にインデックスアクセスしないようにしてください。
 
-Be sure to avoid dangling references in your code!
+.. While the above describes the behavior of dangling storage references in the current version of the compiler, any code with dangling references should be considered to have *undefined behavior*.
+.. In particular, this means that any future version of the compiler may change the behavior of code that involves dangling references.
+
+上記は、現在のバージョンのコンパイラにおけるダングリングストレージ参照の動作について説明したものですが、ダングリング参照を含むコードはすべて、 *未定義の動作* を持つと考えるべきです。
+特に、将来のバージョンのコンパイラーは、ダングリング参照を含むコードの動作を変更する可能性があるということです。
+
+.. Be sure to avoid dangling references in your code!
+
+コードの中でダングリング参照を避けるようにしてください！
 
 .. index:: ! array;slice
 
@@ -565,7 +588,6 @@ Be sure to avoid dangling references in your code!
 つまり、どの変数も配列スライスを型として持つことはできず、中間式にのみ存在することになります。
 
 .. note::
-
     現在、配列スライスはcalldata配列に対してのみ実装されています。
 
 配列スライスは、関数のパラメータで渡された二次データをABIデコードするのに便利です。

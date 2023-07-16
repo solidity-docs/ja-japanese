@@ -314,7 +314,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 この意味で、シグネチャのオーバーライドパスとは、対象となるコントラクトから始まり、オーバーライドしないそのシグネチャを持つ関数に言及しているコントラクトで終わる、継承グラフを通るパスのことです。
 
 .. If you do not mark a function that overrides as ``virtual``, derived
-.. contracts can no longer change the behaviour of that function.
+.. contracts can no longer change the behavior of that function.
 
 オーバーライドする関数を ``virtual`` としてマークしていない場合、派生コントラクトはもはやその関数の動作を変更できません。
 
@@ -484,11 +484,11 @@ superを使うときに呼び出される実際の関数は、型はわかって
 この場合、コントラクトは :ref:`abstract <abstract-contract>` マークを付けなければなりません。
 なぜなら、これらのパラメータは外部から有効な値を割り当てることができず、派生コントラクトのコンストラクタを通してのみ有効だからです。
 
-.. warning ::
+.. warning::
     バージョン0.4.22より前のバージョンでは、コンストラクタはコントラクトと同じ名前の関数として定義されていました。
     この構文は非推奨で、バージョン0.5.0ではもう認められていません。
 
-.. warning ::
+.. warning::
     バージョン0.7.0より前のバージョンでは、コンストラクタのビジビリティを ``internal`` または ``public`` のいずれかに指定する必要がありました。
 
 .. index:: ! base;constructor, inheritance list, contract;abstract, abstract contract
@@ -537,7 +537,7 @@ superを使うときに呼び出される実際の関数は、型はわかって
 .. the way a modifier is invoked as part of
 .. the derived constructor (``Base(y * y)``). The first way to
 .. do it is more convenient if the constructor argument is a
-.. constant and defines the behaviour of the contract or
+.. constant and defines the behavior of the contract or
 .. describes it. The second way has to be used if the
 .. constructor arguments of the base depend on those of the
 .. derived contract. Arguments have to be given either in the

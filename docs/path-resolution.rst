@@ -170,7 +170,7 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
 .. #. **Standard input**
 
-..    On the command line it is also possible to provide the source by sending it to compiler's
+..    On the command-line it is also possible to provide the source by sending it to compiler's
 ..    standard input:
 
 #. **Standard input**
@@ -334,6 +334,7 @@ VFSが初期化された後も、インポートコールバックによって�
 .. #. We start with the source unit name of the importing source unit.
 .. #. The last path segment with preceding slashes is removed from the resolved name.
 .. #. Then, for every segment in the import path, starting from the leftmost one:
+..
 ..     - If the segment is ``.``, it is skipped.
 ..     - If the segment is ``..``, the last path segment with preceding slashes is removed from the resolved name.
 ..     - Otherwise, the segment (preceded by a single slash if the resolved name is not empty), is appended to the resolved name.
@@ -474,13 +475,13 @@ VFSが初期化された後も、インポートコールバックによって�
 CLI Path NormalizationとStripping
 ---------------------------------
 
-.. On the command line the compiler behaves just as you would expect from any other program:
+.. On the command-line the compiler behaves just as you would expect from any other program:
 .. it accepts paths in a format native to the platform and relative paths are relative to the current
 .. working directory.
-.. The source unit names assigned to files whose paths are specified on the command line, however,
+.. The source unit names assigned to files whose paths are specified on the command-line, however,
 .. should not change just because the project is being compiled on a different platform or because the
 .. compiler happens to have been invoked from a different directory.
-.. To achieve this, paths to source files coming from the command line must be converted to a canonical
+.. To achieve this, paths to source files coming from the command-line must be converted to a canonical
 .. form, and, if possible, made relative to the base path or one of the include paths.
 
 コマンドラインでは、コンパイラは他のプログラムと同じように動作します。
@@ -568,7 +569,7 @@ CLI Path NormalizationとStripping
 .. .. note::
 
 ..     Prior to version 0.8.8, CLI path stripping was not performed and the only normalization applied was the conversion of path separators.
-..     When working with older versions of the compiler it is recommended to invoke the compiler from the base path and to only use relative paths on the command line.
+..     When working with older versions of the compiler it is recommended to invoke the compiler from the base path and to only use relative paths on the command-line.
 
 .. note::
 
@@ -596,7 +597,7 @@ CLI Path NormalizationとStripping
 
 セキュリティ対策として、Host Filesystem Loaderは、デフォルトで安全とされるいくつかの場所以外からのファイルのロードを拒否します。
 
-..   - The directories containing input files listed on the command line.
+..   - The directories containing input files listed on the command-line.
 ..   - The directories used as :ref:`remapping <import-remapping>` targets.
 ..     If the target is not a directory (i.e does not end with ``/``, ``/.`` or ``/..``) the directory containing the target is used instead.
 
@@ -786,7 +787,7 @@ CLI Path NormalizationとStripping
 
 つまり、 ``module2`` のインポートはすべて旧バージョンを指しますが、 ``module1`` のインポートは新バージョンを指します。
 
-.. Here are the detailed rules governing the behaviour of remappings:
+.. Here are the detailed rules governing the behavior of remappings:
 
 ここでは、リマッピングの動作に関する詳細なルールをご紹介します。
 

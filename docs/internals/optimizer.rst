@@ -23,9 +23,9 @@ Yulベースのオプティマイザは、関数呼び出しをまたいで動�
 同様に、 ``solc --strict-assembly --optimize`` はスタンドアローンのYulモードに使用できます。
 
 .. note::
-    .. The `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_ and the inliner are always enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
+    .. The `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_ is always enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
 
-    `peepholeオプティマイザ <https://en.wikipedia.org/wiki/Peephole_optimization>`_ とインライナーはデフォルトで常に有効になっており、 :ref:`Standard JSON <compiler-api>` によってのみオフにできます。
+    `peepholeオプティマイザ <https://en.wikipedia.org/wiki/Peephole_optimization>`_ はデフォルトで常に有効になっており、 :ref:`Standard JSON <compiler-api>` によってのみオフにできます。
 
 両オプティマイザモジュールとその最適化ステップの詳細は以下の通りです。
 
@@ -387,7 +387,6 @@ Abbreviation Full name
 ``L``        :ref:`load-resolver`
 ``M``        :ref:`loop-invariant-code-motion`
 ``r``        :ref:`redundant-assign-eliminator`
-``R``        :ref:`reasoning-based-simplifier` - highly experimental
 ``m``        :ref:`rematerialiser`
 ``V``        :ref:`SSA-reverser`
 ``a``        :ref:`SSA-transform`
@@ -403,14 +402,6 @@ Abbreviation Full name
 
 いくつかのステップは ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter`` によって確保されるプロパティに依存しています。
 このため、Yulオプティマイザーは、ユーザーが提供したステップを適用する前に、常にそれらを適用します。
-
-.. The ReasoningBasedSimplifier is an optimizer step that is currently not enabled in the default set of steps.
-.. It uses an SMT solver to simplify arithmetic expressions and boolean conditions.
-.. It has not received thorough testing or validation yet and can produce non-reproducible results, so please use with care!
-
-ReasoningBasedSimplifierは、現在、デフォルトのステップセットでは有効になっていないオプティマイザーのステップです。
-SMTソルバーを使用して、算術式とブーリアン条件を簡略化します。
-まだ十分なテストや検証を受けておらず、再現性のない結果が出る可能性があるため、使用には注意が必要です！
 
 最適化の選択
 ------------
@@ -1057,9 +1048,7 @@ Unused PrunerやRedundant Assign Eliminatorは、このような変数を完全�
 ExpressionSimplifier
 ^^^^^^^^^^^^^^^^^^^^
 
-.. The Expression Simplifier uses the Dataflow Analyzer and makes use
-.. of a list of equivalence transforms on expressions like ``X + 0 -> X``
-.. to simplify the code.
+.. The ExpressionSimplifier uses the Dataflow Analyzer and makes use of a list of equivalence transforms on expressions like ``X + 0 -> X`` to simplify the code.
 
 Expression Simplifierは、Dataflow Analyzerを使用し、 ``X + 0 -> X`` のような式に対する等価変換のリストを利用してコードを単純化します。
 
@@ -1103,32 +1092,6 @@ LoadResolver
 コードがSSA形式の場合に最適です。
 
 前提条件: Disambiguator、ForLoopInitRewriter。
-
-.. _reasoning-based-simplifier:
-
-ReasoningBasedSimplifier
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. This optimizer uses SMT solvers to check whether ``if`` conditions are constant.
-
-このオプティマイザはSMTソルバーを用いて、 ``if`` 条件が一定であるかどうかをチェックします。
-
-.. - If ``constraints AND condition`` is UNSAT, the condition is never true and the whole body can be removed.
-.. - If ``constraints AND NOT condition`` is UNSAT, the condition is always true and can be replaced by ``1``.
-
-- ``constraints AND condition`` がUNSATの場合、その条件は決して真ではなく、本体ごと取り外すことができます。
-
-- ``constraints AND NOT condition`` がUNSATの場合、条件は常に真であり、 ``1`` で置き換えることができます。
-
-.. The simplifications above can only be applied if the condition is movable.
-
-上記の簡略化は、条件が可動式の場合にのみ適用できます。
-
-.. It is only effective on the EVM dialect, but safe to use on other dialects.
-
-EVMの方言にのみ効果がありますが、他の方言には安全に使用できます。
-
-前提条件: Disambiguator、SSATransform。
 
 文スケールの単純化
 ------------------
@@ -1647,12 +1610,10 @@ SSAReverser
 
 これは、Common Subexpression EliminatorやUnused Prunerと組み合わせることで、SSAトランスフォームの効果を元に戻すのに役立つ小さな一歩です。
 
-.. The SSA form we generate is detrimental to code generation on the EVM and
-.. WebAssembly alike because it generates many local variables. It would
-.. be better to just re-use existing variables with assignments instead of
-.. fresh variable declarations.
+.. The SSA form we generate is detrimental to code generation because it produces many local variables.
+.. It would be better to just re-use existing variables with assignments instead of fresh variable declarations.
 
-私たちが生成するSSAフォームは、多くのローカル変数を生成するため、EVMやWebAssemblyでのコード生成に悪影響を及ぼします。
+私たちが生成するSSAフォームは、多くのローカル変数を生成するため、コード生成に悪影響を及ぼします。
 新しい変数を宣言する代わりに、既存の変数を代入して再利用する方が良いでしょう。
 
 SSAトランスフォームは、
@@ -1796,13 +1757,3 @@ ForLoopConditionIntoBodyの変換の逆です。
 にします。
 
 LiteralRematerialiserは、このステップの前に実行する必要があります。
-
-WebAssembly特有
----------------
-
-MainFunction
-^^^^^^^^^^^^
-
-一番上のブロックを、入力も出力も持たない特定の名前（"main"）を持つ関数に変更します。
-
-Function Grouperに依存します。
