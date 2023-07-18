@@ -76,9 +76,14 @@ ABIコーダーpragma
 
 ``pragma abicoder v1`` または ``pragma abicoder v2`` を使用すると、ABIエンコーダおよびデコーダの2つの実装を選択できます。
 
+.. Apart from supporting more types, it involves more extensive validation and safety checks, which may result in higher gas costs, but also heightened security.
+.. It is considered non-experimental as of Solidity 0.6.0 and it is enabled by default starting with Solidity 0.8.0.
+.. The old ABI coder can still be selected using ``pragma abicoder v1;``.
+
 新しいABIコーダー（v2）は、任意にネストされた配列や構造体をエンコードおよびデコードできます。
-Apart from supporting more types, it involves more extensive validation and safety checks, which may result in higher gas costs, but also heightened security.
-It is considered non-experimental as of Solidity 0.6.0 and it is enabled by default starting with Solidity 0.8.0. The old ABI coder can still be selected using ``pragma abicoder v1;``.
+より多くの型をサポートするだけでなく、より広範な検証と安全チェックを伴うため、ガスコストが高くなる可能性がありますが、セキュリティも強化されます。
+Solidity 0.6.0の時点では非実験的とみなされ、Solidity 0.8.0からデフォルトで有効になりました。
+古いABIコーダーは ``pragma abicoder v1;`` を使用して選択できます。
 
 新しいエンコーダーがサポートする型のセットは、古いエンコーダーがサポートする型の厳密なスーパーセットです。
 このエンコーダーを使用するコントラクトは、制限なしに使用しないコントラクトと相互作用できます。

@@ -117,7 +117,7 @@ Re-entrancyを避けるために、以下のようなChecks-Effects-Interactions
 Checks-Effects-Interactionsパターンは、コントラクトを通るすべてのコードパスが、コントラクトの状態を変更する前に、供給されたパラメータの必要なチェックをすべて完了することを保証します（Checks）。
 その後、コントラクトはステートに変更を加えます（Effects）。
 計画されたステートの変更がすべてストレージに書き込まれた後、他のコントラクトの関数を呼び出すことができます（Interactions）。
-これは、外部から呼び出された悪意のあるコントラクトが、トランザクションを確定する前に元のコントラクトにコールバックするロジックを使用することで、手当を二重に使ったり、残高を二重に引き出したりすることができる、 *リエントランシー攻撃* を防ぐための一般的なフールプルーフな方法である。
+これは、外部から呼び出された悪意のあるコントラクトが、トランザクションを確定する前に元のコントラクトにコールバックするロジックを使用することで、手当を二重に使ったり、残高を二重に引き出したりできる、 *リエントランシー攻撃* を防ぐための一般的なフールプルーフな方法です。
 
 .. Note that reentrancy is not only an effect of Ether transfer but of any function call on another contract. Furthermore, you also have to take multi-contract situations into account.
 .. A called contract could modify the state of another contract you depend on.

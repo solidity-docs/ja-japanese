@@ -401,7 +401,7 @@ Abbreviation Full name
 .. For this reason the Yul optimizer always applies them before applying any steps supplied by the user.
 
 いくつかのステップは ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter`` によって確保されるプロパティに依存しています。
-このため、Yulオプティマイザーは、ユーザーが提供したステップを適用する前に、常にそれらを適用します。
+このため、Yulオプティマイザは、ユーザーが提供したステップを適用する前に、常にそれらを適用します。
 
 最適化の選択
 ------------
@@ -423,7 +423,7 @@ Abbreviation Full name
 .. Brackets (``[]``) may be used multiple times in a sequence, but can not be nested.
 
 ``[...]`` 内のシーケンスは、Yulコードが変化しないか、最大ラウンド数（現在は12ラウンド）に達するまで、ループで複数回適用されます。
-括弧（ ``[]`` ）は連続して複数回使用することができますが、入れ子にすることはできません。
+括弧（ ``[]`` ）は連続して複数回使用できますが、入れ子にすることはできません。
 
 .. An important thing to note, is that there are some hardcoded steps that are always run before and after the user-supplied sequence, or the default sequence if one was not supplied by the user.
 
@@ -1421,7 +1421,7 @@ UnusedStoreEliminator
 .. However, if there is a read operation between the initial ``sstore`` and the revert, or the overwriting ``sstore``, the statement will not be removed.
 .. Such read operations include: external calls, user-defined functions with any storage access, and ``sload`` of a slot that cannot be proven to differ from the slot written by the initial ``sstore``.
 
-冗長な ``sstore`` ステートメントやメモリストアステートメントを削除するオプティマイザーコンポーネントです。
+冗長な ``sstore`` ステートメントやメモリストアステートメントを削除するオプティマイザコンポーネントです。
 ストア ``sstore`` の場合、（明示的な ``revert()`` 、 ``invalid()`` 、または無限再帰によって）すべての出力コードパスがリバートするか、オプティマイザが最初のストアを上書きすると判断できる別の ``sstore`` につながる場合、ステートメントは削除されます。
 しかし、最初の ``sstore`` とリバート、または上書きされる ``sstore`` の間に読み取り操作がある場合、ステートメントは削除されません。
 このような読み取り操作には、外部呼び出し、ストレージにアクセスするユーザー定義関数、最初の ``sstore`` が書き込んだスロットと異なることを証明できないスロットの ``sload`` が含まれます。

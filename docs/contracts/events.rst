@@ -109,9 +109,9 @@ Solidityのイベントは、EVMのロギング機能の上に抽象化を与え
 イベントのメンバー
 ==================
 
-- ``event.selector``: For non-anonymous events, this is a ``bytes32`` value
-  containing the ``keccak256`` hash of the event signature, as used in the default topic.
+.. - ``event.selector``: For non-anonymous events, this is a ``bytes32`` value containing the ``keccak256`` hash of the event signature, as used in the default topic.
 
+- ``event.selector``: 匿名でないイベントの場合、デフォルトのトピックで使用されるイベントシグネチャの ``keccak256`` ハッシュを含む ``bytes32`` 値
 
 例
 ==

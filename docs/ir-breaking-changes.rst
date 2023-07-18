@@ -22,7 +22,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 コマンドラインで ``--via-ir`` を使って有効にしたり、スタンダードJSONで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
 
-.. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behaviour anyway.
+.. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behavior anyway.
 
 いくつかの理由により、従来のコードジェネレーターとIRベースのコードジェネレーターの間にはわずかなセマンティックな違いがありますが、そのほとんどは、いずれにしても人々がこの動作に頼ることはないだろうと思われる領域です。
 このセクションでは、旧来のコードジェネレーターとIRベースのコードジェネレーターの主な違いを紹介します。
@@ -106,8 +106,8 @@ IRベースのコードジェネレーターを導入したのは、コード生
   最後に ``y`` を初期化する際に ``f()`` が 42 を返すので ``y`` は 42 になります。
 
 .. - When storage structs are deleted, every storage slot that contains a member of the struct is set to zero entirely.
-     Formerly, padding space was left untouched.
-     Consequently, if the padding space within a struct is used to store data (e.g. in the context of a contract upgrade), you have to be aware that ``delete`` will now also clear the added member (while it wouldn't have been cleared in the past).
+..   Formerly, padding space was left untouched.
+..   Consequently, if the padding space within a struct is used to store data (e.g. in the context of a contract upgrade), you have to be aware that ``delete`` will now also clear the added member (while it wouldn't have been cleared in the past).
 
 - ストレージ構造体が削除されると、その構造体のメンバーを含むすべてのストレージスロットが完全にゼロになります。
   以前は、パディングスペースはそのまま残されていました。
@@ -297,10 +297,8 @@ IRベースのコードジェネレーターを導入したのは、コード生
   - 新しいコードジェネレーター: ``aMod = 4`` と ``mMod = 0`` です。
 
 .. - The new code generator imposes a hard limit of ``type(uint64).max`` (``0xffffffffffffffff``) for the free memory pointer.
-     Allocations that would increase its value beyond this limit revert.
-     The old code generator does not have this limit.
-
-..   For example:
+..   Allocations that would increase its value beyond this limit revert.
+..   The old code generator does not have this limit.
 
 - 新しいコードジェネレーターでは、空きメモリポインタの上限が ``type(uint64).max`` (``0xffffffffffff``) に設定されました。
   この制限を越えて値を増やすような割り当ては、リバートされます。

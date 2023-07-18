@@ -216,11 +216,12 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 .. note::
 
+    .. Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+
     ``address`` 型の変数が必要で、その変数にEtherを送ろうと思っているなら、その変数の型を ``address payable`` と宣言して、この要求を見えるようにします。
     また、この区別や変換はできるだけ早い段階で行うようにしてください。
-    The distinction between ``address`` and ``address payable`` was introduced with version 0.5.0.
-    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
-    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+    ``address``と ``address payable``の区別はバージョン0.5.0で導入されました。
+    また、そのバージョンからコントラクトは暗黙的に ``address`` 型に変換できませんが、receiveまたはpayable fallback関数があれば、明示的に ``address`` または ``address payable`` 型に変換できます。
 
 演算子:
 
@@ -236,7 +237,10 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 .. note::
 
-    Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type. See :ref:`Address Literals<address_literals>`.
+    .. Mixed-case hexadecimal numbers conforming to `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ are automatically treated as literals of the ``address`` type.
+
+    `EIP-55 <https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md>`_ に準拠した大文字小文字混在の16進数は自動的に ``address`` 型のリテラルとして扱われます。
+    :ref:`アドレスリテラル <address_literals>` を参照してください。
 
 .. _members-of-addresses:
 
@@ -341,11 +345,17 @@ Byzantiumから ``staticcall`` も使えるようになりました。
     スマートコントラクトのコードでは、状態の読み書きにかかわらず、ハードコードされたガスの値に依存することは、多くの落とし穴があるので避けたほうがよいでしょう。
     また、ガスへのアクセスが将来変わる可能性もあります。
 
-* ``code`` and ``codehash``
+* ``code`` と ``codehash``
 
-You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
-``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
-(as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+.. You can query the deployed code for any smart contract.
+.. Use ``.code`` to get the EVM bytecode as a ``bytes memory``, which might be empty.
+.. Use ``.codehash`` to get the Keccak-256 hash of that code (as a ``bytes32``).
+.. Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+
+スマートコントラクトのデプロイコードをクエリできます。
+``.code`` を使用すると、EVMバイトコードを ``bytes memory`` として取得できます。
+そのコードのkeccak-256ハッシュを取得するには ``.codehash`` を使用します（ ``bytes32`` として）。
+なお、 ``addr.codehash`` は ``keccak256(addr.code)`` を使用するよりもコストが小さいです。
 
 .. note::
 
@@ -457,8 +467,11 @@ You can query the deployed code for any smart contract. Use ``.code`` to get the
 例えば、 ``69`` は69を意味します。
 Solidityには8進数のリテラルは存在せず、先頭のゼロは無効です。
 
-Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
-Examples include ``.1`` and ``1.3`` (but not ``1.``).
+.. Decimal fractional literals are formed by a ``.`` with at least one number after the decimal point.
+.. Examples include ``.1`` and ``1.3`` (but not ``1.``).
+
+10進数の小数リテラルは小数点 ``.`` の後に少なくとも1つの数字で形成されます。
+例としては ``.1`` や ``1.3`` があります（ただし ``1.`` は含まれません）。
 
 ``2e10`` のような科学的表記（指数表記）もサポートされています。
 仮数は小数でも構いませんが、指数は整数でなければなりません。
@@ -479,13 +492,16 @@ Examples include ``.1`` and ``1.3`` (but not ``1.``).
 さらに、 ``.5 * 8`` の結果は整数の ``4`` になります（ただし、その間には非整数が使われています）。
 
 .. warning::
-    While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
+    .. While most operators produce a literal expression when applied to literals, there are certain operators that do not follow this pattern:
 
-    - Ternary operator (``... ? ... : ...``),
-    - Array subscript (``<array>[<index>]``).
+    ほとんどの演算子はリテラルに適用するとリテラル式を生成するが、このパターンに従わない演算子もあります:
 
-    You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256
-    directly, but in fact they are computed within the type ``uint8`` and can overflow.
+    - 三項演算子（ ``... ? ... : ...`` ）
+    - 配列の添字（ ``<array>[<index>]`` ）
+
+    .. You might expect expressions like ``255 + (true ? 1 : 0)`` or ``255 + [1, 2, 3][0]`` to be equivalent to using the literal 256 directly, but in fact they are computed within the type ``uint8`` and can overflow.
+
+    ``255 + (true ? 1 : 0)`` や ``255 + [1, 2, 3][0]`` のような式は、256というリテラルを直接使うのと同じだと思うかもしれませんが、実際には ``uint8`` 型の中で計算されるためオーバーフローする可能性があります。
 
 整数に適用できる演算子は、オペランドが整数であれば、数リテラル式にも適用できます。
 2つのうちいずれかが小数の場合、ビット演算は許可されず、指数が小数の場合、指数演算は許可されません（非有理数になってしまう可能性があるため）。

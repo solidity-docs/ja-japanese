@@ -242,16 +242,25 @@
 アドレス
 --------
 
-.. As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum
-.. test are of ``address`` type. No other literals can be implicitly converted to the ``address`` type.
+.. As described in :ref:`address_literals`, hex literals of the correct size that pass the checksum test are of ``address`` type.
+.. No other literals can be implicitly converted to the ``address`` type.
 
 :ref:`address_literals` で説明したように、チェックサムテストに合格した正しいサイズの16進数リテラルは ``address`` 型となります。
 他のリテラルは暗黙的に ``address`` 型に変換できません。
 
-Explicit conversions to ``address`` are allowed only from ``bytes20`` and ``uint160``.
+.. Explicit conversions to ``address`` are allowed only from ``bytes20`` and ``uint160``.
 
-An ``address a`` can be converted explicitly to ``address payable`` via ``payable(a)``.
+.. An ``address a`` can be converted explicitly to ``address payable`` via ``payable(a)``.
+
+明示的に ``address`` に変換できるのは ``bytes20`` と ``uint160`` だけです。
+
+``address a`` は ``payable(a)`` によって ``address payable`` に明示的に変換できます。
+
+.. .. note::
+..     Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to  ``address`` or ``address payable``.
+..     Starting with in 0.8.0 only conversion from ``uint160`` is allowed.
 
 .. note::
-    Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to  ``address`` or ``address payable``.
-    Starting with in 0.8.0 only conversion from ``uint160`` is allowed.
+
+    バージョン0.8.0以前では、任意の整数型（符号あり、符号なし、サイズは問わない）から ``address`` または ``address payable`` への明示的な変換が可能でした。
+    0.8.0からは ``uint160`` からの変換のみが可能になりました。

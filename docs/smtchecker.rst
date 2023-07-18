@@ -1165,10 +1165,8 @@ SMTCheckerは、抽象化を不完全かつ健全な方法で実装していま�
 バグが報告された場合、それは抽象化によってもたらされた誤検出である可能性があります（知識を消去したり、正確でない型を使用したため）。
 検証対象が安全であると判断された場合、それは確かに安全であり、つまり（SMTCheckerにバグがない限り）偽陰性は存在しないのです。
 
-.. If a target cannot be proven you can try to help the solver by using the tuning
-.. options in the previous section.
-.. If you are sure of a false positive, adding ``require`` statements in the code
-.. with more information may also give some more power to the solver.
+.. If a target cannot be proven you can try to help the solver by using the tuning options in the previous section.
+.. If you are sure of a false positive, adding ``require`` statements in the code with more information may also give some more power to the solver.
 
 ターゲットが証明できない場合は、前のセクションのチューニングオプションを使ってソルバーを助けることができます。
 誤検出が確実な場合は、より多くの情報を含む ``require`` 文をコードに追加することで、ソルバーにさらなる力を与えることもできます。
@@ -1183,7 +1181,7 @@ SMTエンコーディングと型
 SMTCheckerのエンコーディングは可能な限り正確を期しており、Solidityの型や表現を下の表のように最も近い `SMT-LIB <http://smtlib.cs.uiowa.edu/>`_ 表現にマッピングしています。
 
 +-----------------------+--------------------------------+-----------------------------+
-|Solidity type          |SMT sort                        |Theories                     |
+|Solidityの型           |SMT sort                        |Theories                     |
 +=======================+================================+=============================+
 |Boolean                |Bool                            |Bool                         |
 +-----------------------+--------------------------------+-----------------------------+
@@ -1195,7 +1193,7 @@ SMTCheckerのエンコーディングは可能な限り正確を期しており�
 +-----------------------+--------------------------------+-----------------------------+
 |struct                 |Tuple                           |Datatypes                    |
 +-----------------------+--------------------------------+-----------------------------+
-|other types            |Integer                         |LIA                          |
+|他の型                 |Integer                         |LIA                          |
 +-----------------------+--------------------------------+-----------------------------+
 
 .. Types that are not yet supported are abstracted by a single 256-bit unsigned
@@ -1213,29 +1211,25 @@ SMTエンコーディングの内部動作の詳細については、論文 `SMT
 関数呼び出し
 ============
 
-.. In the BMC engine, function calls to the same contract (or base contracts) are
-.. inlined when possible, that is, when their implementation is available.  Calls
-.. to functions in other contracts are not inlined even if their code is
-.. available, since we cannot guarantee that the actual deployed code is the same.
+.. In the BMC engine, function calls to the same contract (or base contracts) are inlined when possible, that is, when their implementation is available.
+.. Calls to functions in other contracts are not inlined even if their code is available, since we cannot guarantee that the actual deployed code is the same.
 
 BMCエンジンでは、同じコントラクト（またはベースコントラクト）の関数呼び出しは、可能な場合、つまりその実装が利用可能な場合にインライン化されます。
 他のコントラクトの関数の呼び出しは、そのコードが利用可能であってもインライン化されません。
 これは、実際にデプロイされたコードが同じであることを保証できないからです。
 
-.. The CHC engine creates nonlinear Horn clauses that use summaries of the called
-.. functions to support internal function calls. External function calls are treated
-.. as calls to unknown code, including potential reentrant calls.
+.. The CHC engine creates nonlinear Horn clauses that use summaries of the called functions to support internal function calls.
+.. External function calls are treated as calls to unknown code, including potential reentrant calls.
 
 CHCエンジンは、内部関数の呼び出しをサポートするために、呼び出された関数のサマリーを使用する非線形Horn句を作成します。
 外部関数呼び出しは、リエントラント呼び出しの可能性も含め、未知のコードへの呼び出しとして扱われます。
 
-.. Complex pure functions are abstracted by an uninterpreted function (UF) over
-.. the arguments.
+.. Complex pure functions are abstracted by an uninterpreted function (UF) over the arguments.
 
 複雑な純関数は、引数上の解釈されない関数（UF）によって抽象化されます。
 
 +-----------------------------------+--------------------------------------+
-|Functions                          |BMC/CHC behavior                      |
+|関数                               |BMC/CHCの挙動                         |
 +===================================+======================================+
 |``assert``                         |Verification target.                  |
 +-----------------------------------+--------------------------------------+
@@ -1277,11 +1271,10 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 |                                   |balance is sufficient.                |
 |                                   |CHC: does not yet perform the check.  |
 +-----------------------------------+--------------------------------------+
-|others                             |Currently unsupported                 |
+|others                             |現在は未サポート                      |
 +-----------------------------------+--------------------------------------+
 
-.. Using abstraction means loss of precise knowledge, but in many cases it does
-.. not mean loss of proving power.
+.. Using abstraction means loss of precise knowledge, but in many cases it does not mean loss of proving power.
 
 抽象化することは、正確な知識を失うことを意味しますが、多くの場合、証明力を失うことを意味しません。
 
@@ -1329,16 +1322,11 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 参照型とエイリアス
 ==================
 
-.. Solidity implements aliasing for reference types with the same :ref:`data
-.. location<data-location>`.
-.. That means one variable may be modified through a reference to the same data
-.. area.
+.. Solidity implements aliasing for reference types with the same :ref:`data location<data-location>`.
+.. That means one variable may be modified through a reference to the same data area.
 .. The SMTChecker does not keep track of which references refer to the same data.
-.. This implies that whenever a local reference or state variable of reference
-.. type is assigned, all knowledge regarding variables of the same type and data
-.. location is erased.
-.. If the type is nested, the knowledge removal also includes all the prefix base
-.. types.
+.. This implies that whenever a local reference or state variable of reference type is assigned, all knowledge regarding variables of the same type and data location is erased.
+.. If the type is nested, the knowledge removal also includes all the prefix base types.
 
 Solidityでは、同じ :ref:`データロケーション<data-location>` を持つ参照型に対してエイリアスを実装しています。
 つまり、ある変数が同じデータ領域への参照を通じて変更される可能性があるということです。
@@ -1390,20 +1378,16 @@ SMTCheckerは、どの参照が同じデータを参照しているかを追跡�
         }
     }
 
-.. After the assignment to ``b[0]``, we need to clear knowledge about ``a`` since
-.. it has the same type (``uint[]``) and data location (memory).  We also need to
-.. clear knowledge about ``c``, since its base type is also a ``uint[]`` located
-.. in memory. This implies that some ``c[i]`` could refer to the same data as
-.. ``b`` or ``a``.
+.. After the assignment to ``b[0]``, we need to clear knowledge about ``a`` since it has the same type (``uint[]``) and data location (memory).
+.. We also need to clear knowledge about ``c``, since its base type is also a ``uint[]`` located in memory.
+.. This implies that some ``c[i]`` could refer to the same data as ``b`` or ``a``.
 
 ``b[0]`` に割り当てられた後、 ``a`` については型（ ``uint[]`` ）とデータの場所（メモリ）が同じであるため、知識を消去する必要があります。
 また、 ``c`` の基本型もメモリ上の ``uint[]`` であるため、 ``c`` に関する知識も消去する必要があります。
 これは、ある ``c[i]`` が ``b`` や ``a`` と同じデータを参照する可能性があることを意味します。
 
-.. Notice that we do not clear knowledge about ``array`` and ``d`` because they
-.. are located in storage, even though they also have type ``uint[]``.  However,
-.. if ``d`` was assigned, we would need to clear knowledge about ``array`` and
-.. vice-versa.
+.. Notice that we do not clear knowledge about ``array`` and ``d`` because they are located in storage, even though they also have type ``uint[]``.
+.. However, if ``d`` was assigned, we would need to clear knowledge about ``array`` and vice-versa.
 
 ``array`` と ``d`` は、型が ``uint[]`` であっても、ストレージに配置されているため、知識を消去しないことに注意してください。
 しかし、もし ``d`` が割り当てられていたら、 ``array`` に関する知識をクリアする必要があり、その逆もまた然りです。
@@ -1411,22 +1395,17 @@ SMTCheckerは、どの参照が同じデータを参照しているかを追跡�
 コントラクト残高
 ================
 
-.. A contract may be deployed with funds sent to it, if ``msg.value`` > 0 in the
-.. deployment transaction.
-.. However, the contract's address may already have funds before deployment,
-.. which are kept by the contract.
-.. Therefore, the SMTChecker assumes that ``address(this).balance >= msg.value``
-.. in the constructor in order to be consistent with the EVM rules.
-.. The contract's balance may also increase without triggering any calls to the
-.. contract, if
+.. A contract may be deployed with funds sent to it, if ``msg.value`` > 0 in the deployment transaction.
+.. However, the contract's address may already have funds before deployment, which are kept by the contract.
+.. Therefore, the SMTChecker assumes that ``address(this).balance >= msg.value`` in the constructor in order to be consistent with the EVM rules.
+.. The contract's balance may also increase without triggering any calls to the contract, if
 
 コントラクトは、デプロイトランザクションにおいて  ``msg.value``  > 0 であれば、資金を送ってデプロイされるかもしれません。
 しかし、コントラクトのアドレスは、デプロイ前にすでに資金を持っている可能性があり、それはコントラクトによって保持されます。
 そのため、SMTCheckerはEVMルールとの整合性を取るために、コンストラクタで ``address(this).balance >= msg.value`` を想定しています。
 また、コントラクトの残高は、以下の場合、コントラクトへの呼び出しをトリガすることなく増加することがあります。
 
-.. - ``selfdestruct`` is executed by another contract with the analyzed contract
-..   as the target of the remaining funds,
+.. - ``selfdestruct`` is executed by another contract with the analyzed contract as the target of the remaining funds,
 
 - ``selfdestruct`` は、分析されたコントラクトを残金の対象として、別のコントラクトで実行されます。
 
@@ -1434,8 +1413,7 @@ SMTCheckerは、どの参照が同じデータを参照しているかを追跡�
 
 - コントラクトは、あるブロックのコインベース（＝ ``block.coinbase`` ）です。
 
-.. To model this properly, the SMTChecker assumes that at every new transaction
-.. the contract's balance may grow by at least ``msg.value``.
+.. To model this properly, the SMTChecker assumes that at every new transaction the contract's balance may grow by at least ``msg.value``.
 
 これを適切にモデル化するために、SMTCheckerは、新しいトランザクションのたびに コントラクトの残高が少なくとも ``msg.value`` だけ増える可能性があると仮定しています。
 
