@@ -17,7 +17,7 @@ Solidityドキュメントの翻訳者のチャットは https://forum.solidityl
 次に、前回の同期PRの最終コミットハッシュから、今回の同期PRの最新コミットハッシュ間の差分を、Solidity本体のリポジトリ（このリポジトリではない）で、`git diff <old commit hash>..<new commit hash>`を実行して表示する。
 コミットハッシュは同期PRの始めに「This is an automatically-generated sync PR to bring this translation repository up to date with the state of the English documentation as of 2023-07-11 (commit b583e9e6).」などと書かれている。
 
-そして、変更された各ファイルごとに、`gid diff`の結果画面で`/<file name>`コマンドで検索して変更点を調べる。`gh pr checkout sync-<version>-<commit hash>`や`gh pr checkout <ID>`を用いて該当PRのブランチ切り替え、コンフリクトや翻訳を行う。
+そして、変更された各ファイルごとに、`gid diff`の結果画面で`/<file name>`コマンドで検索して変更点を調べる。`gh pr checkout sync-<version>-<commit hash>`や`gh pr checkout <ID>`を用いて該当PRのブランチ切り替え、コンフリクトの対処や翻訳を行う。
 
 ### 環境構築の一例
 
