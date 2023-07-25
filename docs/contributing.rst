@@ -446,7 +446,7 @@ CIは、Emscriptenターゲットのコンパイルを必要とする追加の�
   一般的に含まれているものは以下の通りです。
 
     - ``test.*``: 単一のスクリプトで、通常は ``test.sh`` または ``test.py`` 。
-      スクリプトは実行可能でなければならない。
+      スクリプトは実行可能でなければなりません。
 
 AFLによるファザーの実行
 =======================
@@ -709,15 +709,13 @@ Whiskers
 
 例えば、以下はSolidityの側面を指定しているため、受動態になっています。
 
-  Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
+    Functions can be declared ``pure`` in which case they promise not to read from or modify the state.
 
 .. For example, the below is in active voice as it discusses an application of Solidity:
 
-..   When invoking the compiler, you can specify how to discover the first element of a path, and also path prefix remappings.
-
 例えば、以下はSolidityのアプリケーションについて説明しているので、能動態になっています。
 
-  When invoking the compiler, you can specify how to discover the first element of a path, and also path prefix remappings.
+    When invoking the compiler, you can specify how to discover the first element of a path, and also path prefix remappings.
 
 .. Common Terms
 

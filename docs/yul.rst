@@ -1083,15 +1083,15 @@ Yulオブジェクトは、名前の付いたコードおよびデータセク�
 上記の ``Block`` は、前章で説明したYulコード文法の ``Block`` を指します。
 
 .. note::
-    An object with a name that ends in ``_deployed`` is treated as deployed code by the Yul optimizer.
-    The only consequence of this is a different gas cost heuristic in the optimizer.
+    .. An object with a name that ends in ``_deployed`` is treated as deployed code by the Yul optimizer.
+    .. The only consequence of this is a different gas cost heuristic in the optimizer.
+
+    名前が ``_deployed`` で終わるオブジェクトは、Yulオプティマイザによってデプロイされたコードとして扱われます。
+    この唯一の結果は、オプティマイザのガスコストのヒューリスティックが異なるということです。
 
 .. .. note::
 
-..     Data objects or sub-objects whose names contain a ``.`` can be defined
-..     but it is not possible to access them through ``datasize``,
-..     ``dataoffset`` or ``datacopy`` because ``.`` is used as a separator
-..     to access objects inside another object.
+..     Data objects or sub-objects whose names contain a ``.`` can be defined but it is not possible to access them through ``datasize``, ``dataoffset`` or ``datacopy`` because ``.`` is used as a separator to access objects inside another object.
 
 .. note::
 
@@ -1199,8 +1199,9 @@ Solidityモードでは、通常のオプティマイザと一緒にYulオプテ
 最適化ステップシーケンス
 ------------------------
 
-Detailed information regrading the optimization sequence as well a list of abbreviations is
-available in the :ref:`optimizer docs <optimizer-steps>`.
+.. Detailed information regrading the optimization sequence as well a list of abbreviations is available in the :ref:`optimizer docs <optimizer-steps>`.
+
+最適化の順序や略語のリストに関する詳しい情報は :ref:`オプティマイザのドキュメント <optimizer-steps>` にあります。
 
 .. _erc20yul:
 

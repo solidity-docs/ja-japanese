@@ -110,6 +110,7 @@ def detect_untranslated_lines():
         ignore_block = False
         for i, line in enumerate(lines):
             lstripped_line = line.lstrip()
+            removed_code_and_link_line = re.sub(r"`[^`]+`", "", re.sub(r"``[^`]+``", "", line))
 
             if lstripped_line.startswith(".. code-block::") \
                 or lstripped_line.startswith(".. toctree::"):
@@ -120,16 +121,25 @@ def detect_untranslated_lines():
             else:
                 ignore_block = False
 
-            # 。、が含まれているか正規表現でチェックする
-            if re.search(r"[ぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠]", line):
+            if re.search(r"[ぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠、。]", line):
                 continue
-            if lstripped_line.startswith(".."):
+            if lstripped_line.startswith("..") \
+                or lstripped_line.startswith(":widths:") \
+                or lstripped_line.startswith(":only-reachable-from:") \
+                or lstripped_line.startswith("http"):
                 continue
-            if lstripped_line.startswith(":widths:"):
+            if not re.search(r"[a-zA-Z]", removed_code_and_link_line):
                 continue
-            if not re.search(r"[a-zA-Z]", line):
+            if not re.search(r"[,.][\n ]", removed_code_and_link_line):
                 continue
-            if not re.search(r"[,.]", line):
+            if lstripped_line.replace("\n", "") in [
+                "tx.origin",
+                "revert CustomError(arg1, arg2);",
+                "datasize, dataoffset, datacopy",
+                "setimmutable, loadimmutable",
+                "#. **Standard JSON**",
+                "Functions can be declared ``pure`` in which case they promise not to read from or modify the state.",
+                "When invoking the compiler, you can specify how to discover the first element of a path, and also path prefix remappings."]:
                 continue
             print(f"{file}:{i + 1}  Untranslated line: {line[:-1]}")
 

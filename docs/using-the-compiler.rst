@@ -292,7 +292,7 @@ EVMのバージョンをターゲットに設定
 
   - ブロックのベースフィー（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ および `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）は、インラインアセンブリでグローバルな ``block.basefee`` または ``basefee()`` を介してアクセスできます。
 
-- ``paris`` 
+- ``paris``
 
   .. - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
 

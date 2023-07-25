@@ -95,24 +95,16 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 
 .. .. warning::
 
-..   Be careful that ``feed.info{value: 10, gas: 800}`` only locally sets the
-..   ``value`` and amount of ``gas`` sent with the function call, and the
-..   parentheses at the end perform the actual call. So
-..   ``feed.info{value: 10, gas: 800}`` does not call the function and
-..   the ``value`` and ``gas`` settings are lost, only
-..   ``feed.info{value: 10, gas: 800}()`` performs the function call.
+..   Be careful that ``feed.info{value: 10, gas: 800}`` only locally sets the ``value`` and amount of ``gas`` sent with the function call, and the parentheses at the end perform the actual call.
+..   So ``feed.info{value: 10, gas: 800}`` does not call the function and the ``value`` and ``gas`` settings are lost, only ``feed.info{value: 10, gas: 800}()`` performs the function call.
 
 .. warning::
 
   注意すべきなのは、 ``feed.info{value: 10, gas: 800}`` は関数呼び出しで ``value`` と送信される ``gas`` の量をローカルに設定しているだけで、最後の括弧内は実際の呼び出しを実行しているということです。
   そのため、 ``feed.info{value: 10, gas: 800}`` は関数をコールして ``value`` と ``gas`` の設定が失われることはなく、 ``feed.info{value: 10, gas: 800}()`` のみが関数呼び出しを実行します。
 
-.. Due to the fact that the EVM considers a call to a non-existing contract to
-.. always succeed, Solidity uses the ``extcodesize`` opcode to check that
-.. the contract that is about to be called actually exists (it contains code)
-.. and causes an exception if it does not. This check is skipped if the return
-.. data will be decoded after the call and thus the ABI decoder will catch the
-.. case of a non-existing contract.
+.. Due to the fact that the EVM considers a call to a non-existing contract to always succeed, Solidity uses the ``extcodesize`` opcode to check that the contract that is about to be called actually exists (it contains code) and causes an exception if it does not.
+.. This check is skipped if the return data will be decoded after the call and thus the ABI decoder will catch the case of a non-existing contract.
 
 EVMでは、存在しないコントラクトへの呼び出しは常に成功すると考えられているため、Solidityは ``extcodesize`` オペコードを使用して、呼び出されようとしているコントラクトが実際に存在する（コードが含まれている）かどうかをチェックし、存在しない場合は例外を発生させます。
 このチェックは、呼び出し後にリターンデータがデコードされる場合にはスキップされ、存在しないコントラクトのケースをABIデコーダがキャッチします。
@@ -121,10 +113,7 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 .. .. note::
 
-..     Be careful when using high-level calls to
-..     :ref:`precompiled contracts <precompiledContracts>`,
-..     since the compiler considers them non-existing according to the
-..     above logic even though they execute code and can return data.
+..     Be careful when using high-level calls to :ref:`precompiled contracts <precompiledContracts>`, since the compiler considers them non-existing according to the above logic even though they execute code and can return data.
 
 .. note::
 
@@ -156,7 +145,7 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
     しかし、コントラクトの実装は完全に恣意的なものになる可能性があり、危険を伴います。
     さらに、システムの他のコントラクトを呼び出したり、最初の呼び出しが戻る前に呼び出し元のコントラクトに戻ったりする場合にも備えてください。
     つまり、呼び出されたコントラクトは、その関数を介して呼び出したコントラクトの状態変数を変更できるということです。
-    コントラクトがre-entrancyエクスプロイトに対して脆弱でないように、例えば外部関数への呼び出しがコントラクト内の状態変数の変更後に行われるように、関数を記述してください。
+    コントラクトがreentrancyエクスプロイトに対して脆弱でないように、例えば外部関数への呼び出しがコントラクト内の状態変数の変更後に行われるように、関数を記述してください。
 
 .. note::
 
@@ -195,7 +184,7 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 .. The names of parameters and return values in the function declaration can be omitted.
 .. Those items with omitted names will still be present on the stack, but they are inaccessible by name.
-..  An omitted return value name can still return a value to the caller by use of the ``return`` statement.
+.. An omitted return value name can still return a value to the caller by use of the ``return`` statement.
 
 関数宣言のパラメータや戻り値の名前は省略できます。
 名前が省略された項目はスタック上に存在しますが、名前からアクセスすることはできません。
@@ -266,8 +255,7 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 新しいコントラクトが作成される前に、そのアドレスを導き出すことができます。
 さらに、コントラクトを作成している間に他のコントラクトを作成した場合にも、このアドレスに依存できます。
 
-.. The main use-case here is contracts that act as judges for off-chain interactions,
-.. which only need to be created if there is a dispute.
+.. The main use-case here is contracts that act as judges for off-chain interactions, which only need to be created if there is a dispute.
 
 ここでの主なユースケースは、オフチェーンでのやりとりの判断材料となるコントラクトで、紛争が発生した場合にのみ作成する必要があります。
 
@@ -304,13 +292,10 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 .. .. warning::
 
-..     There are some peculiarities in relation to salted creation. A contract can be
-..     re-created at the same address after having been destroyed. Yet, it is possible
-..     for that newly created contract to have a different deployed bytecode even
-..     though the creation bytecode has been the same (which is a requirement because
-..     otherwise the address would change). This is due to the fact that the constructor
-..     can query external state that might have changed between the two creations
-..     and incorporate that into the deployed bytecode before it is stored.
+..     There are some peculiarities in relation to salted creation.
+..     A contract can be re-created at the same address after having been destroyed.
+..     Yet, it is possible for that newly created contract to have a different deployed bytecode even though the creation bytecode has been the same (which is a requirement because otherwise the address would change).
+..     This is due to the fact that the constructor can query external state that might have changed between the two creations and incorporate that into the deployed bytecode before it is stored.
 
 .. warning::
 
@@ -804,8 +789,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 リバートする理由は、期待した効果が発生しなかったために、実行を継続する安全な方法がない場合です。
 トランザクションのアトミック性を維持したいので、最も安全なアクションはすべての変更をリバートし、トランザクション全体（または少なくともコール）を効果なしにすることです。
 
-.. In both cases, the caller can react on such failures using ``try``/``catch``, but
-.. the changes in the callee will always be reverted.
+.. In both cases, the caller can react on such failures using ``try``/``catch``, but the changes in the callee will always be reverted.
 
 どちらの場合も、呼び出し側はそのような失敗に対して ``try`` / ``catch`` を使って反応できますが、呼び出された側の変更は必ずリバートされます。
 
@@ -840,17 +824,14 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 エラーデータは呼び出し側に戻されるので、そこでキャッチできます。
 ``revert()`` を使うとエラーデータなしでリバートしますが、 ``revert("description")`` を使うと ``Error(string)`` エラーが発生します。
 
-.. Using a custom error instance will usually be much cheaper than a string description,
-.. because you can use the name of the error to describe it, which is encoded in only
-.. four bytes. A longer description can be supplied via NatSpec which does not incur
-.. any costs.
+.. Using a custom error instance will usually be much cheaper than a string description, because you can use the name of the error to describe it, which is encoded in only four bytes.
+.. A longer description can be supplied via NatSpec which does not incur any costs.
 
-カスタムエラーのインスタンスを使用すると、通常、文字列による説明よりもはるかに安価になります。
+カスタムエラーのインスタンスを使用すると、通常、文字列による説明よりもはるかにコストが小さくなります。
 これは、わずか4バイトでエンコードされるエラーの名前を使用して説明できるからです。
 より長い記述はNatSpecを介して提供できますが、これには一切のコストがかかりません。
 
-.. The following example shows how to use an error string and a custom error instance
-.. together with ``revert`` and the equivalent ``require``:
+.. The following example shows how to use an error string and a custom error instance together with ``revert`` and the equivalent ``require``:
 
 次の例では、エラー文字列とカスタムエラーインスタンスを、 ``revert`` と同等の ``require`` と一緒に使用しています。
 
@@ -990,23 +971,18 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 将来は、他の型のエラーデータにも対応する予定です。
 文字列 ``Error`` と ``Panic`` は、現在、そのまま解析され、識別子としては扱われません。
 
-.. In order to catch all error cases, you have to have at least the clause
-.. ``catch { ...}`` or the clause ``catch (bytes memory lowLevelData) { ... }``.
+.. In order to catch all error cases, you have to have at least the clause ``catch { ...}`` or the clause ``catch (bytes memory lowLevelData) { ... }``.
 
 すべてのエラーケースをキャッチするためには、少なくとも ``catch { ...}`` 句または ``catch (bytes memory lowLevelData) { ... }`` 句が必要です。
 
-.. The variables declared in the ``returns`` and the ``catch`` clause are only
-.. in scope in the block that follows.
+.. The variables declared in the ``returns`` and the ``catch`` clause are only in scope in the block that follows.
 
 ``returns`` 句と ``catch`` 句で宣言された変数は、それに続くブロックでのみスコープに入ります。
 
 .. .. note::
 
-..     If an error happens during the decoding of the return data
-..     inside a try/catch-statement, this causes an exception in the currently
-..     executing contract and because of that, it is not caught in the catch clause.
-..     If there is an error during decoding of ``catch Error(string memory reason)``
-..     and there is a low-level catch clause, this error is caught there.
+..     If an error happens during the decoding of the return data inside a try/catch-statement, this causes an exception in the currently executing contract and because of that, it is not caught in the catch clause.
+..     If there is an error during decoding of ``catch Error(string memory reason)`` and there is a low-level catch clause, this error is caught there.
 
 .. note::
 
@@ -1027,11 +1003,10 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 
 .. .. note::
 
-..     The reason behind a failed call can be manifold. Do not assume that
-..     the error message is coming directly from the called contract:
-..     The error might have happened deeper down in the call chain and the
-..     called contract just forwarded it. Also, it could be due to an
-..     out-of-gas situation and not a deliberate error condition:
+..     The reason behind a failed call can be manifold.
+..     Do not assume that the error message is coming directly from the called contract:
+..     The error might have happened deeper down in the call chain and the called contract just forwarded it.
+..     Also, it could be due to an out-of-gas situation and not a deliberate error condition:
 ..     The caller always retains at least 1/64th of the gas in a call and thus even if the called contract goes out of gas, the caller still has some gas left.
 
 .. note::

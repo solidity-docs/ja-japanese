@@ -168,34 +168,32 @@ ABIエンコーディングおよびデコーディングの関数
 .. - ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of the given arguments. Note that packed encoding can be ambiguous!
 .. - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: ABI-encodes the given arguments starting from the second and prepends the given four-byte selector
 .. - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+.. - ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the tuple.
+..   Performs a full type-check, ensuring the types match the function signature.
+..   Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
 
-- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABIは与えられたデータをデコードしますが、型は第2引数として括弧内に与えられます。
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: ABIは与えられたデータをデコードしますが、型は第2引数として括弧内に与えます。
   例: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``。
-
 - ``abi.encode(...) returns (bytes memory)``: 与えられた引数をABIエンコードします。
-
 - ``abi.encodePacked(...) returns (bytes memory)``: 与えられた引数の :ref:`packed encoding <abi_packed_mode>` を実行します。
   パックされたエンコーディングは曖昧になる可能性があることに注意してください。
-
 - ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: 与えられた引数を2番目から順にABIエンコードし、与えられた4バイトのセレクタを前に付加します。
-
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` に相当。
-
-- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, (...))``
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ``functionPointer``の呼び出しを、タプルで見つかった引数でABIエンコードします。
+  完全な型チェックを行い、型が関数のシグネチャと一致することを確認します。
+  結果は ``abi.encodeWithSelector(functionPointer.selector, (...))`` に等しいです。
 
 .. .. note::
 
-..     These encoding functions can be used to craft data for external function calls without actually
-..     calling an external function. Furthermore, ``keccak256(abi.encodePacked(a, b))`` is a way
-..     to compute the hash of structured data (although be aware that it is possible to
-..     craft a "hash collision" using different function parameter types).
+..     These encoding functions can be used to craft data for external function calls without actually calling an external function.
+..     Furthermore, ``keccak256(abi.encodePacked(a, b))`` is a way to compute the hash of structured data (although be aware that it is possible to craft a "hash collision" using different function parameter types).
 
 .. note::
 
     これらのエンコーディング関数は、実際に外部関数を呼び出すことなく、外部関数呼び出しのためにデータを細工するために使用できます。
     さらに、 ``keccak256(abi.encodePacked(a, b))`` は構造化されたデータのハッシュを計算する方法でもあります（ただし、異なる関数パラメータタイプを使って「ハッシュの衝突」を工作することが可能なので注意が必要です）。
 
-エンコーディングの詳細については、 :ref:`ABI<ABI>` および :ref:`タイトにパックするエンコーディング<abi_packed_mode>` に関するドキュメントを参照してください。
+エンコーディングの詳細については、 :ref:`ABI <ABI>` および :ref:`タイトにパックするエンコーディング <abi_packed_mode>` に関するドキュメントを参照してください。
 
 .. index:: bytes members
 

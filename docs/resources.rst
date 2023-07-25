@@ -31,8 +31,6 @@
 ..         Ethereum development environment with local Ethereum network, debugging features and plugin ecosystem.
 ..     * `Remix <https://remix.ethereum.org/>`_
 ..         Browser-based IDE with integrated compiler and Solidity runtime environment without server-side components.
-..     * `Truffle <https://trufflesuite.com/truffle/>`_
-..         Ethereum development framework.
 
 * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
     Ethereum Virtual Machineをターゲットとしたスマートコントラクトのための、Pythonベースの開発およびテストフレームワーク。
@@ -89,10 +87,10 @@
     ..         Plugin for the Vim editor providing compile checking.
 
     * `Vim Solidity by Thesis <https://github.com/thesis/vim-solidity/>`_
-        Syntax highlighting for Solidity in Vim.
+        Vim用のSolidityシンタックスハイライト。
 
     * `Vim Solidity by TovarishFin <https://github.com/TovarishFin/vim-solidity>`_
-        Vim syntax file for Solidity.
+        Solidity用のVimシンタックスファイル。
 
     * `Vim Syntastic <https://github.com/vim-syntastic/syntastic>`_
         コンパイルチェックを行うVimエディタ用のプラグイン。
@@ -100,19 +98,19 @@
 * Visual Studio Code (VS Code)
 
     * `Ethereum Remix Visual Studio Code extension <https://marketplace.visualstudio.com/items?itemName=RemixProject.ethereum-remix>`_
-        Ethereum Remix extension pack for VS Code
+        VS Code用のEthereum Remix拡張パック。
 
     * `Solidity Visual Studio Code extension, by Juan Blanco <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
-        Solidity plugin for Microsoft Visual Studio Code that includes syntax highlighting and the Solidity compiler.
+        シンタックスハイライトとSolidityコンパイラを含むMicrosoft Visual Studio Code用のSolidityプラグイン。
 
     * `Solidity Visual Studio Code extension, by Nomic Foundation <https://marketplace.visualstudio.com/items?itemName=NomicFoundation.hardhat-solidity>`_
-        Solidity and Hardhat support by the Hardhat team, including: syntax highlighting, jump to definition, renames, quick fixes and inline solc warnings and errors.
+        HardhatチームによるSolidityとHardhatのサポートで、次の機能を含む: シンタックスハイライト、定義へのジャンプ、リネーム、クイックフィックス、インラインsolcの警告とエラー。
 
     * `Solidity Visual Auditor extension <https://marketplace.visualstudio.com/items?itemName=tintinweb.solidity-visual-auditor>`_
-        Adds security centric syntax and semantic highlighting to Visual Studio Code.
+        Visual Studio Codeにセキュリティのためのシンタックスとセマンティックハイライトを追加。
 
     * `Truffle for VS Code <https://marketplace.visualstudio.com/items?itemName=trufflesuite-csi.truffle-vscode>`_
-        Build, debug and deploy smart contracts on Ethereum and EVM-compatible blockchains.
+        EthereumおよびEVM互換のブロックチェーン上でのスマートコントラクトの構築、デバッグ、デプロイ。
 
 Solidityのツール
 ================
@@ -129,11 +127,8 @@ Solidityのツール
 * `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_
     与えられたABI JSONからSolidityインターフェースソースを生成するツール。
 
-.. * `Doxity <https://github.com/DigixGlobal/doxity>`_
-..     Documentation Generator for Solidity.
-
 * `Doxity <https://github.com/DigixGlobal/doxity>`_
-    Documentation Generator for Solidity.
+    Solidityのためのドキュメントジェネレーター。
 
 .. * `Ethlint <https://github.com/duaraghav8/Ethlint>`_
 ..     Linter to identify and fix style and security issues in Solidity.
@@ -145,7 +140,7 @@ Solidityのツール
 ..     EVM Disassembler that performs static analysis on the bytecode to provide a higher level of abstraction than raw EVM operations.
 
 * `evmdis <https://github.com/Arachnid/evmdis>`_
-    バイトコードに対して静的解析を行い、生のEVM操作よりも高い抽象度を提供するEVM Disassembler。
+    バイトコードに対して静的解析を行い、生のEVM操作よりも高い抽象度を提供するEVM逆アセンブラ。
 
 .. * `EVM Lab <https://github.com/ethereum/evmlab/>`_
 ..     Rich tool package to interact with the EVM. Includes a VM, Etherchain API, and a trace-viewer with gas cost display.
@@ -160,9 +155,6 @@ Solidityのツール
 * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
     EVMデバッガとシンボリック実行エンジン。
 
-.. * `leafleth <https://github.com/clemlak/leafleth>`_
-..     A documentation generator for Solidity smart-contracts.
-
 * `leafleth <https://github.com/clemlak/leafleth>`_
     Solidityスマートコントラクトのためのドキュメント生成ツール。
 
@@ -173,7 +165,7 @@ Solidityのツール
     シンプルなグラフィカルインターフェースを介してSolidityスマートコントラクトを開発、監査、使用するためのツール。
 
 * `Scaffold-ETH <https://github.com/scaffold-eth/scaffold-eth>`_
-    Forkable Ethereum development stack focused on fast product iterations.
+    迅速なプロダクトイテレーションに焦点を当てたフォーク可能なEthereum開発スタック。
 
 .. * `sol2uml <https://www.npmjs.com/package/sol2uml>`_
 ..     Unified Modeling Language (UML) class diagram generator for Solidity contracts.
@@ -191,7 +183,7 @@ Solidityのツール
 ..     A Prettier Plugin for Solidity.
 
 * `Solidity prettier plugin <https://github.com/prettier-solidity/prettier-plugin-solidity>`_
-    A Prettier Plugin for Solidity.
+    SolidityのためのPrettierプラグイン。
 
 .. * `Solidity REPL <https://github.com/raineorshine/solidity-repl>`_
 ..     Try Solidity instantly with a command-line Solidity console.
@@ -212,7 +204,7 @@ Solidityのツール
     スマートコントラクトの検証のためのセキュリティ、スタイルガイド、ベストプラクティスルールを提供するSolidityリンター。
 
 * `Sourcify <https://sourcify.dev/>`_
-    Decentralized automated contract verification service and public repository of contract metadata.
+    非中央集権型の自動コントラクト検証サービスとコントラクトメタデータのパブリックリポジトリ。
 
 .. * `Sūrya <https://github.com/ConsenSys/surya/>`_
 ..     Utility tool for smart contract systems, offering a number of visual outputs and information about the contracts' structure. Also supports querying the function call graph.

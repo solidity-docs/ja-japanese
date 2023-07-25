@@ -12,8 +12,8 @@
 マッピング型は ``mapping(KeyType KeyName? => ValueType ValueName?)`` という構文を使い、マッピング型の変数は ``mapping(KeyType KeyName? => ValueType ValueName?) VariableName`` という構文を使います。
 ``KeyType`` は組み込みの値型、 ``bytes`` 、 ``string`` 、コントラクト型やenum型が使用できます。
 マッピング、構造体、配列型など、その他のユーザー定義型や複雑な型は使用できません。
-``ValueType`` にはマッピング、配列、構造体を含む任意の型を指定することができます。
-``KeyName`` と ``ValueName`` はオプションであり、型以外の任意の有効な識別子を指定することができます（ ``mapping(KeyType => ValueType)`` も同様に機能します）。
+``ValueType`` にはマッピング、配列、構造体を含む任意の型を指定できます。
+``KeyName`` と ``ValueName`` はオプションであり、型以外の任意の有効な識別子を指定できます（ ``mapping(KeyType => ValueType)`` も同様に機能します）。
 
 .. You can think of mappings as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_, which are virtually initialised
 .. such that every possible key exists and is mapped to a value whose
@@ -46,7 +46,7 @@
 .. If ``ValueType`` is a value type or a struct, the getter returns ``ValueType`` with name ``ValueName`` (if specified).
 .. If ``ValueType`` is an array or a mapping, the getter has one parameter for each ``KeyType``, recursively.
 
-マッピング型のステート変数を ``public`` としてマークすると、Solidity はあなたに代わって :ref:`ゲッター <visibility-and-getters>` を作成します。
+マッピング型の状態変数を ``public`` としてマークすると、Solidityはあなたに代わって :ref:`ゲッター <visibility-and-getters>` を作成します。
 ``KeyType`` は ``KeyName`` （指定された場合）という名前のゲッターのパラメータになります。
 もし ``ValueType`` が値型または構造体であれば、ゲッターは ``ValueType`` を ``ValueName`` という名前で返します。
 もし ``ValueType`` が配列またはマッピングの場合、ゲッターは各 ``KeyType`` に対して再帰的に1つのパラメータを持ちます。

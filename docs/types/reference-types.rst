@@ -549,8 +549,8 @@ bytes配列に ``.push()`` を行うと、ストレージ内のレイアウト�
 .. Now the element that ``x.push()`` referred to is in the data area of the array while the reference still points at its original location, which is now a part of the length field and the assignment will effectively garble the length of ``x``.
 .. To be safe, only enlarge bytes arrays by at most one element during a single assignment and do not simultaneously index-access the array in the same statement.
 
-ここで、最初の ``x.push()`` が評価されたとき、 ``x`` はまだショートレイアウトで格納されており、 ``x.push()`` は ``x`` の最初の格納スロットの要素への参照を返す。
-しかし、2番目の ``x.push()`` はバイト配列をラージレイアウトに切り替える。
+ここで、最初の ``x.push()`` が評価されたとき、 ``x`` はまだショートレイアウトで格納されており、 ``x.push()`` は ``x`` の最初の格納スロットの要素への参照を返します。
+しかし、2番目の ``x.push()`` はバイト配列をラージレイアウトに切り替えます。
 このとき、 ``x.push()`` が参照していた要素は配列のデータエリアにあるのですが、参照は元の体の元を指しています。
 安全のために、1回の代入でバイト配列を最大1要素だけ大きくし、同じステートメントで同時に配列にインデックスアクセスしないようにしてください。
 

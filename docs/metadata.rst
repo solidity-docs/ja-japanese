@@ -234,7 +234,7 @@ IPFSの場合、 ``ipfs add`` が返すCIDに含まれるハッシュ（ファ�
 
 将来、メタデータファイルを取り出す他の方法をサポートするかもしれないので、この情報は `CBOR <https://tools.ietf.org/html/rfc7049>`_ エンコードされて格納されます。
 バイトコードの最後の2バイトは、CBORエンコードされた情報の長さを示します。
-この長さを見ることで、バイトコードの関連部分をCBORデコーダでデコードすることができます。
+この長さを見ることで、バイトコードの関連部分をCBORデコーダでデコードできます。
 
 .. Whereas release builds of solc use a 3 byte encoding of the version as shown above (one byte each for major, minor and patch version number), pre-release builds will instead use a complete version string including commit hash and build date.
 
