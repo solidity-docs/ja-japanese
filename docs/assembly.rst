@@ -377,11 +377,11 @@ Solidityのメモリ配列の要素は、常に32バイトの倍数を占めて�
 .. Therefore, moving stack variables to memory and additional memory optimizations are, by default, globally disabled in the presence of any inline assembly block that contains a memory operation or assigns to Solidity variables in memory.
 
 Solidityのメモリモデルを常に尊重することをお勧めしますが、インラインアセンブリでは互換性のない方法でメモリを使用できます。
-したがって、スタック変数のメモリへの移動と追加のメモリ最適化は、デフォルトでは、メモリ操作を含む、またはメモリ内のSolidity変数に代入するインラインアセンブリブロックの存在下でグローバルに無効になっています。
+したがって、スタック変数をメモリに移動する処理やその他のメモリ最適化は、メモリ操作またはメモリにSolidity変数を割り当てる操作を含むインラインアセンブリブロックの存在下でデフォルトでグローバルに無効になっています。
 
 .. However, you can specifically annotate an assembly block to indicate that it in fact respects Solidity's memory model as follows:
 
-ただし、次のようにアセンブリブロックに特別な注釈を付けて、実際にSolidityのメモリモデルを尊重していることを示すことができます:
+ただし、次のようにアセンブリブロックに特別な注釈を付けて、Solidityのメモリモデルを尊重していることを示すことができます:
 
 .. code-block:: solidity
 
@@ -393,28 +393,26 @@ Solidityのメモリモデルを常に尊重することをお勧めしますが
 
 特に、メモリセーフなアセンブリブロックは、以下のメモリ範囲にのみアクセスできます:
 
-.. - Memory allocated by yourself using a mechanism like the ``allocate`` function described above.
 .. - Memory allocated by Solidity, e.g. memory within the bounds of a memory array you reference.
-.. - The scratch space between memory offset 0 and 64 mentioned above.
 .. - Temporary memory that is located *after* the value of the free memory pointer at the beginning of the assembly block,
 ..   i.e. memory that is "allocated" at the free memory pointer without updating the free memory pointer.
 
 - 上記の ``allocate`` 関数のようなメカニズムを使用して自分で割り当てたメモリ。
 - Solidityによって割り当てられたメモリ（例: 参照するメモリ配列の境界内のメモリ）。
-- 上記のメモリオフセット0と64の間のスクラッチスペース。
-- アセンブリブロックの先頭のフリーメモリポインタの値より *後* に位置する一時的なメモリ。
+- 先述したメモリオフセット0と64の間のスクラッチスペース。
+- アセンブリブロックの開始時点のフリーメモリポインタの値より *後* に位置する一時的なメモリ。
   すなわち、フリーメモリポインタを更新することなく、フリーメモリポインタに「割り当て」られたメモリ。
 
 .. Furthermore, if the assembly block assigns to Solidity variables in memory, you need to assure that accesses to the Solidity variables only access these memory ranges.
 
-さらに、アセンブリブロックがメモリ上のSolidity変数に割り当てる場合、Solidity変数へのアクセスがこれらのメモリ範囲にのみアクセスすることを保証する必要があります。
+さらに、アセンブリブロックがメモリ上にSolidity変数を割り当てる場合、Solidity変数へのアクセスがこれらのメモリ範囲にのみアクセスすることを保証する必要があります。
 
 .. Since this is mainly about the optimizer, these restrictions still need to be followed, even if the assembly block reverts or terminates.
 .. As an example, the following assembly snippet is not memory safe, because the value of ``returndatasize()`` may exceed the 64 byte scratch space:
 
 これは主にオプティマイザに関するものなので、アセンブリブロックがリバートしたり終了したりしても、これらの制限に従う必要があります。
 例として、次のアセンブリスニペットはメモリセーフではありません。
-なぜなら ``returndatasize()`` の値は64バイトのスクラッチスペースを超える可能性があるからです:
+なぜなら ``returndatasize()`` の値はスクラッチスペースの範囲である64バイトを超える可能性があるからです:
 
 .. code-block:: solidity
 

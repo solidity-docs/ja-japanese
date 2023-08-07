@@ -21,7 +21,7 @@
 .. When you use the :ref:`import statement <import>`, you specify an *import path* that references a source unit name.
 
 コンパイラは内部データベース（ *virtual filesystem* 、略して *VFS* ）を保持しており、各ソースユニットには不透明で構造化されていない識別子である一意の *ソースユニット名* が割り当てられています。
-:ref:`import文 <import>` を使用する際には、ソースユニット名を参照する *インポートパス* を指定します。
+:ref:`インポート文 <import>` を使用する際には、ソースユニット名を参照する *インポートパス* を指定します。
 
 .. index:: ! import callback, ! Host Filesystem Loader
 .. _import-callback:

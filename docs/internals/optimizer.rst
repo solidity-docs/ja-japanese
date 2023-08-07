@@ -27,7 +27,7 @@ Yulベースのオプティマイザは、関数呼び出しをまたいで動�
 
     `peepholeオプティマイザ <https://en.wikipedia.org/wiki/Peephole_optimization>`_ はデフォルトで常に有効になっており、 :ref:`Standard JSON <compiler-api>` によってのみオフにできます。
 
-両オプティマイザモジュールとその最適化ステップの詳細は以下の通りです。
+オプティマイザモジュールとその最適化ステップの詳細は以下の通りです。
 
 Solidityコードを最適化するメリット
 ==================================
@@ -48,22 +48,16 @@ ASMの出力に関しても、同じあるいは重複するコードブロッ�
 
 .. _optimizer-parameter-runs:
 
-.. Optimizer Parameter Runs
+オプティマイザの実行回数パラメータ
+==================================
 
-実行回数パラメータ
-==================
-
-.. The number of runs (``--optimize-runs``) specifies roughly how often each opcode of the
-.. deployed code will be executed across the life-time of the contract. This means it is a
-.. trade-off parameter between code size (deploy cost) and code execution cost (cost after deployment).
-.. A "runs" parameter of "1" will produce short but expensive code. In contrast, a larger "runs"
-.. parameter will produce longer but more gas efficient code. The maximum value of the parameter
-.. is ``2**32-1``.
+.. The number of runs (``--optimize-runs``) specifies roughly how often each opcode of the deployed code will be executed across the life-time of the contract.
+.. This means it is a trade-off parameter between code size (deploy cost) and code execution cost (cost after deployment).
 
 実行回数（ ``--optimize-runs`` ）は、デプロイされたコードの各オペコードがコントラクトのライフタイム中にどのくらいの頻度で実行されるかを大まかに指定します。
 つまり、コードサイズ（デプロイコスト）とコード実行コスト（デプロイ後のコスト）のトレードオフパラメータとなります。
-runsパラメータが1の場合、短いがコストのかかるコードが生成されます。
-一方、runsパラメータを大きくすると、コードは長くなるがガス効率の良いコードが生成されます。
+実行回数パラメータが1の場合、コードは短いものの実行時にコストのかかるコードが生成されます。
+一方、実行回数パラメータを大きくすると、コードは長いもののガス効率の良いコードが生成されます。
 パラメータの最大値は ``2**32-1`` です。
 
 .. note::
@@ -74,11 +68,8 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 オペコードベースのオプティマイザモジュール
 ==========================================
 
-.. The opcode-based optimizer module operates on assembly code. It splits the
-.. sequence of instructions into basic blocks at ``JUMPs`` and ``JUMPDESTs``.
-.. Inside these blocks, the optimizer analyzes the instructions and records every modification to the stack,
-.. memory, or storage as an expression which consists of an instruction and
-.. a list of arguments which are pointers to other expressions.
+.. It splits the sequence of instructions into basic blocks at ``JUMPs`` and ``JUMPDESTs``.
+.. Inside these blocks, the optimizer analyzes the instructions and records every modification to the stack, memory, or storage as an expression which consists of an instruction and a list of arguments which are pointers to other expressions.
 
 オペコードベースのオプティマイザモジュールは、アセンブリコード上で動作します。
 このモジュールは、一連の命令を ``JUMPs`` と ``JUMPDESTs`` の基本ブロックに分割します。
@@ -87,9 +78,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 .. Additionally, the opcode-based optimizer uses a component called "CommonSubexpressionEliminator" that, amongst other tasks, finds expressions that are always equal (on every input) and combines them into an expression class.
 .. It first tries to find each new expression in a list of already known expressions.
 .. If no such matches are found, it simplifies the expression according to rules like ``constant + constant = sum_of_constants`` or ``X * 1 = X``.
-.. Since this is
-.. a recursive process, we can also apply the latter rule if the second factor
-.. is a more complex expression which we know always evaluates to one.
+.. Since this is a recursive process, we can also apply the latter rule if the second factor is a more complex expression which we know always evaluates to one.
 
 さらに、オペコードベースのオプティマイザでは、「CommonSubexpressionEliminator」というコンポーネントを使用しています。
 他のタスクの中で、（すべての入力に対して）常に等しい式を見つけ出し、それらを式クラスにまとめるというものです。
@@ -97,13 +86,13 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 もしそのような式が見つからなければ、 ``constant + constant = sum_of_constants`` や ``X * 1 = X`` のようなルールに従って式を簡略化します。
 これは再帰的なプロセスであるため、第2因子が常に1と評価されることがわかっているより複雑な式の場合、後者のルールを適用することもできます。
 
-.. Certain optimizer steps symbolically track the storage and memory locations. For example, this
-.. information is used to compute Keccak-256 hashes that can be evaluated during compile time. Consider
-.. the sequence:
+.. Certain optimizer steps symbolically track the storage and memory locations. 
+.. For example, this information is used to compute Keccak-256 hashes that can be evaluated during compile time.
+.. Consider the sequence:
 
 オプティマイザの一部のステップでは、ストレージやメモリの位置をシンボリックに追跡します。
 例えば、この情報は、コンパイル時に評価できるKeccak-256ハッシュの計算に使用されます。
-シーケンスを考えてみましょう。
+次のシーケンスを考えてみましょう。
 
 .. code-block:: none
 
@@ -115,7 +104,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
     MSTORE
     KECCAK256
 
-または、同等のYulとして、
+または、同等の処理をする次のYulコードを考えてみましょう。
 
 .. code-block:: yul
 
@@ -123,19 +112,17 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
     mstore(x, 100)
     let value := keccak256(x, 32)
 
-.. In this case, the optimizer tracks the value at a memory location ``calldataload(0)`` and then
-.. realizes that the Keccak-256 hash can be evaluated at compile time. This only works if there is no
-.. other instruction that modifies memory between the ``mstore`` and ``keccak256``. So if there is an
-.. instruction that writes to memory (or storage), then we need to erase the knowledge of the current
-.. memory (or storage). There is, however, an exception to this erasing, when we can easily see that
-.. the instruction doesn't write to a certain location.
+.. In this case, the optimizer tracks the value at a memory location ``calldataload(0)`` and then realizes that the Keccak-256 hash can be evaluated at compile time.
+.. This only works if there is no other instruction that modifies memory between the ``mstore`` and ``keccak256``.
+.. So if there is an instruction that writes to memory (or storage), then we need to erase the knowledge of the current memory (or storage).
+.. There is, however, an exception to this erasing, when we can easily see that the instruction doesn't write to a certain location.
 
 この場合、オプティマイザはメモリ位置 ``calldataload(0)`` の値を追跡し、コンパイル時にKeccak-256ハッシュを評価できることを認識します。
 これがうまくいくのは、 ``mstore`` と ``keccak256`` の間にメモリを変更する他の命令がない場合です。
 つまり、メモリ（またはストレージ）に書き込む命令があれば、現在のメモリ（またはストレージ）の知識を消去する必要があるのです。
 しかし、この消去には例外があり、その命令がある場所に書き込まれていないことが容易にわかる場合です。
 
-例えば、
+例えば、次のコードです。
 
 .. code-block:: yul
 
@@ -148,10 +135,8 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
     // This Keccak-256 can now be evaluated
     let value := keccak256(x, 32)
 
-.. Therefore, modifications to storage and memory locations, of say location ``l``, must erase
-.. knowledge about storage or memory locations which may be equal to ``l``. More specifically, for
-.. storage, the optimizer has to erase all knowledge of symbolic locations, that may be equal to ``l``
-.. and for memory, the optimizer has to erase all knowledge of symbolic locations that may not be at
+.. Therefore, modifications to storage and memory locations, of say location ``l``, must erase knowledge about storage or memory locations which may be equal to ``l``.
+.. More specifically, for storage, the optimizer has to erase all knowledge of symbolic locations, that may be equal to ``l`` and for memory, the optimizer has to erase all knowledge of symbolic locations that may not be at
 .. least 32 bytes away. If ``m`` denotes an arbitrary location, then this decision on erasure is done
 .. by computing the value ``sub(l, m)``. For storage, if this value evaluates to a literal that is
 .. non-zero, then the knowledge about ``m`` will be kept. For memory, if the value evaluates to a
@@ -165,11 +150,9 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 メモリの場合、この値が ``32`` と ``2**256 - 32`` の間のリテラルと評価されるならば、 ``m`` に関する知識が保持されます。
 それ以外の場合は、 ``m`` に関する知識は消去されます。
 
-.. After this process, we know which expressions have to be on the stack at
-.. the end, and have a list of modifications to memory and storage. This information
-.. is stored together with the basic blocks and is used to link them. Furthermore,
-.. knowledge about the stack, storage and memory configuration is forwarded to
-.. the next block(s).
+.. After this process, we know which expressions have to be on the stack at the end, and have a list of modifications to memory and storage. 
+.. This information is stored together with the basic blocks and is used to link them.
+.. Furthermore, knowledge about the stack, storage and memory configuration is forwarded to the next block(s).
 
 このプロセスを経て、最後にどの式がスタック上になければならないかがわかり、メモリとストレージの修正リストができました。
 これらの情報は基本ブロックと一緒に保存され、ブロックの連結に使用されます。
@@ -186,7 +169,7 @@ runsパラメータが1の場合、短いがコストのかかるコードが生
 すべての ``JUMP`` 命令と ``JUMPI`` 命令のターゲットがわかっていれば、プログラムの完全なコントロールフローグラフを作成できます。
 一つだけわからないターゲットがある場合（ジャンプターゲットは原理的に入力から計算できるため、このようなことが起こりうる）、ブロックの入力状態に関する知識をすべて消去しなければなりません。
 なぜなら、そのブロックは未知の ``JUMP`` のターゲットになりうるからです。
-opcode-based optimizerモジュールは、条件が定数で評価される ``JUMPI`` を見つけた場合、それを無条件ジャンプに変換します。
+オペコードベースのオプティマイザモジュールは、条件が定数で評価される ``JUMPI`` を見つけた場合、それを無条件ジャンプに変換します。
 
 .. As the last step, the code in each block is re-generated. The optimizer creates
 .. a dependency graph from the expressions on the stack at the end of the block,
@@ -201,10 +184,9 @@ opcode-based optimizerモジュールは、条件が定数で評価される ``J
 メモリやストレージの変更を元のコードの順番通りに適用するコードを生成します（必要ないと判断された変更は削除します）。
 最後に、スタック上に必要なすべての値を正しい位置に生成します。
 
-.. These steps are applied to each basic block and the newly generated code
-.. is used as replacement if it is smaller. If a basic block is split at a
-.. ``JUMPI`` and during the analysis, the condition evaluates to a constant,
-.. the ``JUMPI`` is replaced based on the value of the constant. Thus code like
+.. These steps are applied to each basic block and the newly generated code is used as replacement if it is smaller.
+.. If a basic block is split at a ``JUMPI`` and during the analysis, the condition evaluates to a constant, the ``JUMPI`` is replaced based on the value of the constant. 
+.. Thus code like
 
 これらのステップは各基本ブロックに適用され、新しく生成されたコードの方が小さい場合には置き換えとして使用されます。
 基本ブロックが ``JUMPI`` で分割され、解析中にその条件が定数と評価された場合、 ``JUMPI`` は定数の値に基づいて置換されます。
@@ -243,8 +225,7 @@ Solidityのバージョン0.8.2以降、オプティマイザのステップと�
 これは、単純で小さなSolidityやYulの関数のインライン化に相当します。
 特に、シーケンス ``PUSHTAG(tag) JUMP`` は、 ``JUMP`` が関数への「ジャンプ」としてマークされ、 ``tag`` の後ろに、関数からの「ジャンプ」としてマークされた別の ``JUMP`` で終わる基本ブロック（「CommonSubexpressionEliminator」で前述したように）がある場合には、置き換えられる可能性があります。
 
-.. In particular, consider the following prototypical example of assembly generated for a
-.. call to an internal Solidity function:
+.. In particular, consider the following prototypical example of assembly generated for a call to an internal Solidity function:
 
 具体的には、Solidityの内部関数をコールした際に生成されるアセンブリの典型的な例を以下に示します。
 
@@ -417,7 +398,7 @@ Abbreviation Full name
 .. Moreover, applying a step may uncover new optimization opportunities for others that were already applied, so repeating steps is often beneficial.
 
 ステップの順番は重要で、アウトプットの品質に影響します。
-さらに、あるステップを適用することで、すでに適用した他のステップの新たな最適化の機会が発見されることもあり、ステップを繰り返すことが有益なことも多い。
+さらに、あるステップを適用することで、すでに適用した他のステップの新たな最適化の機会が発見されることもあり、ステップを繰り返すことが有益なことも多くあります。
 
 .. The sequence inside ``[...]`` will be applied multiple times in a loop until the Yul code remains unchanged or until the maximum number of rounds (currently 12) has been reached.
 .. Brackets (``[]``) may be used multiple times in a sequence, but can not be nested.
@@ -450,37 +431,34 @@ Abbreviation Full name
 Disambiguator
 ^^^^^^^^^^^^^
 
-.. The disambiguator takes an AST and returns a fresh copy where all identifiers have
-.. unique names in the input AST. This is a prerequisite for all other optimizer stages.
-.. One of the benefits is that identifier lookup does not need to take scopes into account
-.. which simplifies the analysis needed for other steps.
+.. The disambiguator takes an AST and returns a fresh copy where all identifiers have unique names in the input AST.
+.. This is a prerequisite for all other optimizer stages.
+.. One of the benefits is that identifier lookup does not need to take scopes into account which simplifies the analysis needed for other steps.
 
-DisambiguatorはASTを受け取り、すべての識別子が入力ASTの中でユニークな名前を持つ新鮮なコピーを返します。
-これは、他のすべてのオプティマイザのステージの前提条件となります。
-利点としては、識別子の検索にスコープを考慮する必要がないため、他のステップで必要な分析が簡単になることです。
+DisambiguatorはASTを受け取り、すべての識別子が入力ASTの中でユニークな名前を持つようなコピーを新たに作って返します。
+これは、他の全てのオプティマイザのステージの前提条件となります。
+利点は、識別子の検索にスコープを考慮する必要がないため、他のステップで必要な分析が簡単になることです。
 
-.. All subsequent stages have the property that all names stay unique. This means if
-.. a new identifier needs to be introduced, a new unique name is generated.
+.. All subsequent stages have the property that all names stay unique.
+.. This means if a new identifier needs to be introduced, a new unique name is generated.
 
 それ以降のステージでは、すべての名前が一意に保たれるという特性があります。
-つまり、新しい識別子を導入する必要がある場合は、新しい一意の名前が生成されます。
+つまり、新しい識別子を導入する必要がある場合は、新しいユニークな名前が生成されます。
 
 .. _function-hoister:
 
 FunctionHoister
 ^^^^^^^^^^^^^^^
 
-.. The function hoister moves all function definitions to the end of the topmost block. This is
-.. a semantically equivalent transformation as long as it is performed after the
-.. disambiguation stage. The reason is that moving a definition to a higher-level block cannot decrease
-.. its visibility and it is impossible to reference variables defined in a different function.
+.. The function hoister moves all function definitions to the end of the topmost block. 
+.. This is a semantically equivalent transformation as long as it is performed after the disambiguation stage.
+.. The reason is that moving a definition to a higher-level block cannot decrease its visibility and it is impossible to reference variables defined in a different function.
 
 FunctionHoisterは、すべての関数定義を最上位のブロックの最後に移動させます。
 これは、曖昧さを解消するステージの後に実行される限り、意味的に同等の変換です。
 その理由は、定義を上位のブロックに移動しても、そのビジビリティを低下させることはできず、また、別の関数で定義された変数を参照することもできないからです。
 
-.. The benefit of this stage is that function definitions can be looked up more easily
-.. and functions can be optimized in isolation without having to traverse the AST completely.
+.. The benefit of this stage is that function definitions can be looked up more easily and functions can be optimized in isolation without having to traverse the AST completely.
 
 このステージの利点は、関数の定義をより簡単に調べることができ、ASTを完全にトラバースすることなく関数を単独で最適化できることです。
 
@@ -490,11 +468,10 @@ FunctionGrouper
 ^^^^^^^^^^^^^^^
 
 .. The function grouper has to be applied after the disambiguator and the function hoister.
-.. Its effect is that all topmost elements that are not function definitions are moved
-.. into a single block which is the first statement of the root block.
+.. Its effect is that all topmost elements that are not function definitions are moved into a single block which is the first statement of the root block.
 
 FunctionGrouperは、DisambiguatorとFunctionHoisterの後に適用しなければなりません。
-その効果は、関数定義ではないすべての最上位要素が、ルートブロックの最初の文である1つのブロックに移動されることです。
+その効果は、関数定義ではないすべての最上位要素が、ルートブロックの最初の文である単一のブロックに移動されることです。
 
 このステップを経て、プログラムは次のような正規形になります。
 
@@ -502,12 +479,9 @@ FunctionGrouperは、DisambiguatorとFunctionHoisterの後に適用しなけれ�
 
     { I F... }
 
-.. Where ``I`` is a (potentially empty) block that does not contain any function definitions (not even recursively)
-.. and ``F`` is a list of function definitions such that no function contains a function definition.
+.. Where ``I`` is a (potentially empty) block that does not contain any function definitions (not even recursively) and ``F`` is a list of function definitions such that no function contains a function definition.
 
-``I`` は関数定義を（再帰的にも）含まない（空になる可能性のある）ブロックで、 ``F`` は関数定義のリストで、どの関数も関数定義を含まないようになっています。
-
-.. The benefit of this stage is that we always know where the list of function begins.
+``I`` は関数定義を（再帰的にも）含まない（空になる可能性のある）ブロックであり、 ``F`` は関数定義のリストでどの関数も関数定義を含まないようになっています。
 
 このステージの利点は、関数のリストがどこから始まるかを常に把握できることです。
 
@@ -517,8 +491,7 @@ ForLoopConditionIntoBody
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. This transformation moves the loop-iteration condition of a for-loop into loop body.
-.. We need this transformation because :ref:`expression-splitter` will not
-.. apply to iteration condition expressions (the ``C`` in the following example).
+.. We need this transformation because :ref:`expression-splitter` will not apply to iteration condition expressions (the ``C`` in the following example).
 
 この変換は、forループのループ反復条件をループ本体に移動させるものです。
 :ref:`expression-splitter` は反復条件式（以下の例では ``C`` ）には適用されないため、この変換が必要です。
@@ -529,7 +502,7 @@ ForLoopConditionIntoBody
         Body...
     }
 
-は、次の処理に変換されます:
+上記のコードは次の処理に変換されます。
 
 .. code-block:: text
 
@@ -538,8 +511,7 @@ ForLoopConditionIntoBody
         Body...
     }
 
-.. This transformation can also be useful when paired with ``LoopInvariantCodeMotion``, since
-.. invariants in the loop-invariant conditions can then be taken outside the loop.
+.. This transformation can also be useful when paired with ``LoopInvariantCodeMotion``, since invariants in the loop-invariant conditions can then be taken outside the loop.
 
 ループ不変条件の不変量をループの外に出すことができるため、この変換は ``LoopInvariantCodeMotion`` と組み合わせても有効です。
 
@@ -548,8 +520,7 @@ ForLoopConditionIntoBody
 ForLoopInitRewriter
 ^^^^^^^^^^^^^^^^^^^
 
-.. This transformation moves the initialization part of a for-loop to before
-.. the loop:
+.. This transformation moves the initialization part of a for-loop to before the loop:
 
 この変換により、for-loopの初期化部分がループの前に移動します。
 
@@ -559,7 +530,7 @@ ForLoopInitRewriter
         Body...
     }
 
-は、次の処理に変換されます:
+上記のコードは次の処理に変換されます。
 
 .. code-block:: text
 
@@ -568,8 +539,7 @@ ForLoopInitRewriter
         Body...
     }
 
-.. This eases the rest of the optimization process because we can ignore
-.. the complicated scoping rules of the for loop initialisation block.
+.. This eases the rest of the optimization process because we can ignore the complicated scoping rules of the for loop initialization block.
 
 これにより、forループ初期化ブロックの複雑なスコープルールを無視できるため、残りの最適化プロセスが容易になります。
 
@@ -586,18 +556,13 @@ VarDeclInitializer
 疑似SSAトランスフォーム
 -----------------------
 
-.. The purpose of this components is to get the program into a longer form,
-.. so that other components can more easily work with it. The final representation
-.. will be similar to a static-single-assignment (SSA) form, with the difference
-.. that it does not make use of explicit "phi" functions which combines the values
-.. from different branches of control flow because such a feature does not exist
-.. in the Yul language. Instead, when control flow merges, if a variable is re-assigned
-.. in one of the branches, a new SSA variable is declared to hold its current value,
-.. so that the following expressions still only need to reference SSA variables.
+.. The purpose of this components is to get the program into a longer form, so that other components can more easily work with it.
+.. The final representation will be similar to a static-single-assignment (SSA) form, with the difference that it does not make use of explicit "phi" functions which combines the values from different branches of control flow because such a feature does not exist in the Yul language.
+.. Instead, when control flow merges, if a variable is re-assigned in one of the branches, a new SSA variable is declared to hold its current value, so that the following expressions still only need to reference SSA variables.
 
 このコンポーネントの目的は、プログラムをより長い形式にして、他のコンポーネントがより簡単に作業できるようにすることです。
-最終的な表現は、Static-Single-Assignment (SSA)形式に似ていますが、コントロールフローの異なるブランチからの値を結合する明示的な「ファイ」関数を使用しないという違いがあります（そのような機能はYul言語には存在しません）。
-代わりに、コントロールフローがマージされる際に、いずれかのブランチで変数が再代入されると、その現在の値を保持する新しいSSA変数が宣言されるため、以下の式では依然としてSSA変数を参照するだけでよい。
+最終的な表現は、Static-Single-Assignment (SSA)形式に似ていますが、コントロールフローの異なるブランチからの値を結合する明示的な「phi」関数を使用しないという違いがあります（そのような機能はYul言語には存在しません）。
+代わりに、コントロールフローがマージされる際に、いずれかのブランチで変数が再代入されると、その現在の値を保持する新しいSSA変数が宣言されるため、以下の式では依然としてSSA変数を参照するだけでよいです。
 
 変換例は以下の通りです。
 
@@ -613,8 +578,7 @@ VarDeclInitializer
         sstore(a, add(b, 0x20))
     }
 
-.. When all the following transformation steps are applied, the program will look
-.. as follows:
+.. When all the following transformation steps are applied, the program will look as follows:
 
 以下の変換ステップをすべて適用すると、プログラムは以下のようになります。
 
@@ -656,30 +620,22 @@ VarDeclInitializer
 他のすべての変数は、一度定義されるとその値が変わることはありません。
 この特性の利点は、新しいコンテキストでこれらの値が有効である限り、変数を自由に移動させたり、変数への参照を初期値で交換したりできることです（その逆も同様）。
 
-.. Of course, the code here is far from being optimized. To the contrary, it is much
-.. longer. The hope is that this code will be easier to work with and furthermore,
-.. there are optimizer steps that undo these changes and make the code more
-.. compact again at the end.
+.. The hope is that this code will be easier to work with and furthermore, there are optimizer steps that undo these changes and make the code more compact again at the end.
 
-もちろん、ここでのコードは最適化とは程遠いものです。
-それどころか、ずっと長くなっています。
-希望としては、このコードが作業しやすくなり、さらに、これらの変更をリバートし、最後に再びコードをコンパクトにするオプティマイザのステップがあることです。
+もちろん、このコードは最適化されたものとは程遠いです。
+それどころかずっと長くなっています。
+ここで期待することは、このコードが作業しやすくなり、さらに、これらの変更をリバートし、最後に再びコードをコンパクトにするオプティマイザのステップがあることです。
 
 .. _expression-splitter:
 
 ExpressionSplitter
 ^^^^^^^^^^^^^^^^^^
 
-.. The expression splitter turns expressions like ``add(mload(0x123), mul(mload(0x456), 0x20))``
-.. into a sequence of declarations of unique variables that are assigned sub-expressions
-.. of that expression so that each function call has only variables
-.. as arguments.
+.. The expression splitter turns expressions like ``add(mload(0x123), mul(mload(0x456), 0x20))`` into a sequence of declarations of unique variables that are assigned sub-expressions of that expression so that each function call has only variables as arguments.
 
 ExpressionSplitterは、 ``add(mload(0x123), mul(mload(0x456), 0x20))`` のような式を、その式のサブ式に代入られた一意の変数の宣言の列に変え、各関数呼び出しが引数として変数のみを持つようにします。
 
-.. The above would be transformed into
-
-上記は次のように変換されます。
+上記の式は次のように変換されます。
 
 .. code-block:: yul
 
@@ -695,16 +651,13 @@ ExpressionSplitterは、 ``add(mload(0x123), mul(mload(0x456), 0x20))`` のよ�
 
 なお、この変換はオペコードや関数のコールの順番を変えるものではありません。
 
-.. It is not applied to loop iteration-condition, because the loop control flow does not allow
-.. this "outlining" of the inner expressions in all cases. We can sidestep this limitation by applying
-.. :ref:`for-loop-condition-into-body` to move the iteration condition into loop body.
+.. It is not applied to loop iteration-condition, because the loop control flow does not allow this "outlining" of the inner expressions in all cases.
+.. We can sidestep this limitation by applying :ref:`for-loop-condition-into-body` to move the iteration condition into loop body.
 
 これは、ループのコントロールフローが、すべてのケースで内部式の「アウトライン化」を許可していないため、ループの反復条件には適用されません。
 :ref:`for-loop-condition-into-body` を適用して反復条件をループ本体に移動させることで、この制限を回避できます。
 
-.. The final program should be in a form such that (with the exception of loop conditions)
-.. function calls cannot appear nested inside expressions
-.. and all function call arguments have to be variables.
+.. The final program should be in a form such that (with the exception of loop conditions) function calls cannot appear nested inside expressions and all function call arguments have to be variables.
 
 最終的なプログラムは、（ループ条件を除いて）関数呼び出しを式の中に入れ子にすることはできず、関数呼び出しの引数はすべて変数でなければならないという形にしなければなりません。
 
@@ -744,9 +697,7 @@ SSATransform
 
 厳密なセマンティクス:
 
-.. For any variable ``a`` that is assigned to somewhere in the code
-.. (variables that are declared with value and never re-assigned
-.. are not modified) perform the following transforms:
+.. For any variable ``a`` that is assigned to somewhere in the code (variables that are declared with value and never re-assigned are not modified) perform the following transforms:
 
 コードのどこかに代入されている変数 ``a`` （値が宣言されていて再代入されない変数は変更されない）について、以下の変換を行います。
 
@@ -784,8 +735,7 @@ SSATransform
 RedundantAssignEliminator
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. The SSA transform always generates an assignment of the form ``a := a_i``, even though
-.. these might be unnecessary in many cases, like the following example:
+.. The SSA transform always generates an assignment of the form ``a := a_i``, even though these might be unnecessary in many cases, like the following example:
 
 SSAトランスフォームでは、次の例のように多くのケースで不要な場合があっても、常に ``a := a_i`` 形式の割り当てが生成されます。
 
@@ -869,9 +819,7 @@ ASTは、情報収集のステップと実際の削除のステップの2回に�
 相反する値は次のようにして解決されます。
 
 - 「unused」「undecided」 -> 「undecided」
-
 - 「unused」「used」 -> 「used」
-
 - 「undecided」「used」 -> 「used」
 
 .. For for-loops, the condition, body and post-part are visited twice, taking
@@ -1156,7 +1104,7 @@ ConditionalUnsimplifier
 
 .. Reverse of Conditional Simplifier.
 
-Conditional Simplifierの逆。
+Conditional Simplifierの逆です。
 
 .. _control-flow-simplifier:
 
@@ -1185,8 +1133,7 @@ ControlFlowSimplifier
 これらの操作はいずれもデータフローには依存しません。
 StructuralSimplifierは、データフローに依存する同様のタスクを実行します。
 
-.. The ControlFlowSimplifier does record the presence or absence of ``break``
-.. and ``continue`` statements during its traversal.
+.. The ControlFlowSimplifier does record the presence or absence of ``break`` and ``continue`` statements during its traversal.
 
 ControlFlowSimplifierは、トラバーサル中に ``break`` 文と ``continue`` 文の有無を記録します。
 
@@ -1205,13 +1152,11 @@ DeadCodeEliminator
 
 到達不可能なコードとは、ブロック内のコードのうち、leave、return、invalid、break、continue、selfdestruct、revert、または無限に再帰するユーザー定義関数の呼び出しが先行するものを指します。
 
-.. Function definitions are retained as they might be called by earlier
-.. code and thus are considered reachable.
+.. Function definitions are retained as they might be called by earlier code and thus are considered reachable.
 
 関数定義は、以前のコードから呼び出される可能性があるため、到達可能とみなされて保持されます。
 
-.. Because variables declared in a for loop's init block have their scope extended to the loop body,
-.. we require ForLoopInitRewriter to run before this step.
+.. Because variables declared in a for loop's init block have their scope extended to the loop body, we require ForLoopInitRewriter to run before this step.
 
 forループのinitブロックで宣言された変数は、そのスコープがループ本体にまで及ぶため、このステップの前にForLoopInitRewriterを実行する必要があります。
 
@@ -1513,38 +1458,29 @@ ExpressionInliner
 FullInliner
 ^^^^^^^^^^^
 
-.. The Full Inliner replaces certain calls of certain functions
-.. by the function's body. This is not very helpful in most cases, because
-.. it just increases the code size but does not have a benefit. Furthermore,
-.. code is usually very expensive and we would often rather have shorter
-.. code than more efficient code. In same cases, though, inlining a function
-.. can have positive effects on subsequent optimizer steps. This is the case
-.. if one of the function arguments is a constant, for example.
+.. The Full Inliner replaces certain calls of certain functions by the function's body.
+.. This is not very helpful in most cases, because it just increases the code size but does not have a benefit.
+.. Furthermore, code is usually very expensive and we would often rather have shorter code than more efficient code.
+.. In same cases, though, inlining a function can have positive effects on subsequent optimizer steps.
+.. This is the case if one of the function arguments is a constant, for example.
 
-Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体に置き換えています。
-これはコードサイズが大きくなるだけでメリットがないため、ほとんどの場合あまり役に立ちません。
-さらに、コードは通常非常に高価なものであり、効率の良いコードよりも短いコードの方が良い場合が多いのです。
-しかし、同じようなケースでは、関数のインライン化が後続のオプティマイザのステップにプラスの効果をもたらすことがあります。
-例えば、関数の引数の1つが定数の場合がそうです。
+Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体に置き換えます。
+これはコードサイズが大きくなるだけで、ほとんどの場合あまり役に立ちません。
+コードは通常非常に高価なものであり、効率の良いコードよりも短いコードの方が良い場合が多いのです。
+しかし、いくつかのケースでは、関数のインライン化が後続のオプティマイザのステップにプラスの効果をもたらすことがあります。
+例えば、関数の引数の1つが定数の場合です。
 
-.. During inlining, a heuristic is used to tell if the function call
-.. should be inlined or not.
-.. The current heuristic does not inline into "large" functions unless
-.. the called function is tiny. Functions that are only used once
-.. are inlined, as well as medium-sized functions, while function
-.. calls with constant arguments allow slightly larger functions.
+.. During inlining, a heuristic is used to tell if the function call should be inlined or not.
+.. The current heuristic does not inline into "large" functions unless the called function is tiny.
+.. Functions that are only used once are inlined, as well as medium-sized functions, while function calls with constant arguments allow slightly larger functions.
 
 インライン化の際には、関数呼び出しをインライン化すべきかどうかを判断するヒューリスティックな手法が用いられます。
 現在のヒューリスティックでは、呼び出される関数が小さなものでない限り、「大きな」関数にはインライン化されません。
 一度しか使用されない関数はインライン化され、中規模の関数もインライン化されますが、定数の引数を持つ関数呼び出しでは少し大きな関数が使用できます。
 
-.. In the future, we may include a backtracking component
-.. that, instead of inlining a function right away, only specializes it,
-.. which means that a copy of the function is generated where
-.. a certain parameter is always replaced by a constant. After that,
-.. we can run the optimizer on this specialized function. If it
-.. results in heavy gains, the specialized function is kept,
-.. otherwise the original function is used instead.
+.. In the future, we may include a backtracking component that, instead of inlining a function right away, only specializes it, which means that a copy of the function is generated where a certain parameter is always replaced by a constant.
+.. After that, we can run the optimizer on this specialized function.
+.. If it results in heavy gains, the specialized function is kept, otherwise the original function is used instead.
 
 将来は、関数をすぐにインライン化するのではなく、関数を特殊化するバックトラックコンポーネントを組み込むことも考えています。
 その後、この特殊化された関数に対してオプティマイザを実行します。
@@ -1553,10 +1489,8 @@ Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体�
 クリーンアップ
 --------------
 
-.. The cleanup is performed at the end of the optimizer run. It tries
-.. to combine split expressions into deeply nested ones again and also
-.. improves the "compilability" for stack machines by eliminating
-.. variables as much as possible.
+.. The cleanup is performed at the end of the optimizer run.
+.. It tries to combine split expressions into deeply nested ones again and also improves the "compilability" for stack machines by eliminating variables as much as possible.
 
 クリーンアップは、オプティマイザの実行の最後に行われます。
 分割された式を再び深く入れ子にして結合しようとしたり、変数を極力排除してスタックマシンでの「コンパイル性」を向上させたりします。

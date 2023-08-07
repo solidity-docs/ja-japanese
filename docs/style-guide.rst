@@ -8,50 +8,32 @@
 イントロダクション
 ******************
 
-.. This guide is intended to provide coding conventions for writing Solidity code.
-.. This guide should be thought of as an evolving document that will change over time as useful conventions are found and old conventions are rendered obsolete.
-
-このガイドは、Solidityのコードを書くためのコーディング規約を提供することを目的としています。
-このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく進化する文書として考えるべきです。
-
-.. Many projects will implement their own style guides.
-.. In the event of conflicts, project specific style guides take precedence.
+このガイドは、Solidityのコーディング規約を提供することを目的としています。
+このガイドは、有用な規約が発見されたり、古い規約が廃止されたりして、時間とともに変化していく文書として考えるべきです。
 
 多くのプロジェクトでは、独自のスタイルガイドを導入しています。
-矛盾が生じた場合は、プロジェクト独自のスタイルガイドが優先されます。
-
-.. The structure and many of the recommendations within this style guide were taken from Python's `pep8 style guide <https://peps.python.org/pep-0008/>`_.
+コンフリクトが生じた場合は、プロジェクト独自のスタイルガイドが優先されます。
 
 このスタイルガイドの構造や推奨事項の多くは、Pythonの `pep8スタイルガイド <https://peps.python.org/pep-0008/>`_ から引用されています。
 
 .. The goal of this guide is *not* to be the right way or the best way to write Solidity code.
-.. The goal of this guide is *consistency*.
 .. A quote from Python's `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ captures this concept well.
 
 このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法であることではありません。
 このガイドの目的は、 *一貫性* です。
-Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこの概念をよく表しています。
-
-.. .. note::
-
-..     A style guide is about consistency.
-..     Consistency with this style guide is important.
-..     Consistency within a project is more important.
-..     Consistency within one module or function is most important.
-
-..     But most importantly: **know when to be inconsistent** -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best. And do not hesitate to ask!
+Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこのコンセプトをよく表しています。
 
 .. note::
 
-    スタイルガイドとは一貫性のことです。
+    スタイルガイドとは一貫性を保つためのものです。
     このスタイルガイドとの一貫性は重要です。
     プロジェクト内での一貫性はより重要です。
-    一つのモジュールや関数の中での一貫性が最も重要です。
+    そして、最も重要な一貫性は、一つのモジュールや関数の中での一貫性です。
 
-    しかし、最も重要なことは、 **一貫性がないことを自覚すること** です。
-    時には、スタイルガイドが適用できないこともあります。
-    迷ったときは、自分のベストな判断で行動しましょう。
-    他の例を見て、何がベストなのかを判断してください。
+    しかし、一番重要なことは、 **一貫性がないことを自覚すること** です。
+    時には、スタイルガイドをそのまま適用できないこともあります。
+    迷ったときは、自分のベストな判断に従ってください。
+    また、他の例を見て何がベストなのかを判断してください。
     そして、迷わず質問してください！
 
 ****************
@@ -75,8 +57,6 @@ Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-
 
 Solidityのソースコードでは、トップレベルの宣言を2つの空行で囲んでください。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -96,8 +76,6 @@ OK:
         // ...
     }
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -116,15 +94,9 @@ NG:
         // ...
     }
 
-.. Within a contract surround function declarations with a single blank line.
+コントラクト内では、関数の宣言を1つの空行で囲みます。
 
-コントラクト内では、関数宣言を1行の空行で囲みます。
-
-.. Blank lines may be omitted between groups of related one-liners (such as stub functions for an abstract contract)
-
-関連するワンライナーのグループの間では、空白行を省略できます（抽象的なコントラクトのスタブ関数など）。
-
-.. Yes:
+関連する一行のグループにおいては、空行を省略しても良いです（抽象コントラクトの未実装の関数など）。
 
 OK:
 
@@ -147,8 +119,6 @@ OK:
             // ...
         }
     }
-
-.. No:
 
 NG:
 
@@ -176,9 +146,7 @@ NG:
 最大の行の長さ
 ==============
 
-.. Maximum suggested line length is 120 characters.
-
-推奨される行の長さは最大120文字です。
+行の長さは最大120文字であることを推奨しています。
 
 .. Wrapped lines should conform to the following guidelines.
 
@@ -191,12 +159,10 @@ NG:
 
 1. 第1引数は、開始括弧に付けてはいけません。
 2. インデントは1つだけにしてください。
-3. それぞれの主張は、それぞれのライン上にあるべきものです。
-4. 終端要素である :code:`);` は、それ自体で最終行に配置する必要があります。
+3. それぞれの引数は、それぞれの行にあるべきものです。
+4. 終端要素である :code:`);` は、それだけを最後の行に配置する必要があります。
 
 関数呼び出し
-
-.. Yes:
 
 OK:
 
@@ -207,8 +173,6 @@ OK:
         longArgument2,
         longArgument3
     );
-
-.. No:
 
 NG:
 
@@ -240,11 +204,7 @@ NG:
         longArgument2,
         longArgument3);
 
-.. Assignment Statements
-
 代入文
-
-.. Yes:
 
 OK:
 
@@ -257,8 +217,6 @@ OK:
         argument4
     );
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -268,11 +226,7 @@ NG:
                                                                        argument3,
                                                                        argument4);
 
-.. Event Definitions and Event Emitters
-
 イベント定義とイベントエミッタ
-
-.. Yes:
 
 OK:
 
@@ -294,8 +248,6 @@ OK:
         options
     );
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -312,14 +264,10 @@ NG:
                       amount,
                       options);
 
-.. Source File Encoding
-
 ソースファイルのエンコーディング
 ================================
 
-.. UTF-8 or ASCII encoding is preferred.
-
-UTF-8またはASCIIのエンコーディングが望ましいです。
+UTF-8あるいはASCIIのエンコーディングが望ましいです。
 
 インポート
 ==========
@@ -327,8 +275,6 @@ UTF-8またはASCIIのエンコーディングが望ましいです。
 .. Import statements should always be placed at the top of the file.
 
 インポート文は、常にファイルの先頭に配置する必要があります。
-
-.. Yes:
 
 OK:
 
@@ -348,8 +294,6 @@ OK:
         // ...
     }
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -367,8 +311,6 @@ NG:
         // ...
     }
 
-.. Order of Functions
-
 関数の順番
 ==========
 
@@ -380,27 +322,17 @@ NG:
 
 関数はビジビリティに応じてグループ化し、順序立てて配置します。
 
-.. - constructor
-.. - receive function (if exists)
-.. - fallback function (if exists)
-.. - external
-.. - public
-.. - internal
-.. - private
-
-- コンストラクタ
-- 受信関数（ある場合）
-- フォールバック関数（存在する場合）
-- 外部
-- パブリック
-- 内部
-- プライベート
+- ``constructor`` 
+- ``receive`` 関数（ある場合）
+- ``fallback`` 関数（ある場合）
+- ``external`` 関数
+- ``public`` 関数
+- ``internal`` 関数
+- ``private`` 関数
 
 .. Within a grouping, place the ``view`` and ``pure`` functions last.
 
-グループ内では、 ``view`` と ``pure`` の関数を最後に配置します。
-
-.. Yes:
+グループ内では、 ``view`` 関数と ``pure`` 関数を最後に配置します。
 
 OK:
 
@@ -440,8 +372,6 @@ OK:
         // ...
     }
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -474,21 +404,16 @@ NG:
         // ...
     }
 
-.. Whitespace in Expressions
-
 式中の空白文字
 ==============
 
-.. Avoid extraneous whitespace in the following  situations:
+.. Avoid extraneous whitespace in the following situations:
 
-次のような場合は、余計な空白を入れないようにしましょう。
+次の場合は、余計な空白を入れないようにしましょう。
 
 .. Immediately inside parenthesis, brackets or braces, with the exception of single line function declarations.
 
-括弧、大括弧、中括弧のすぐ内側。
-ただし、1行の関数宣言は例外です。
-
-.. Yes:
+括弧、大括弧、中括弧のすぐ内側（ただし、1行の関数の宣言は例外）:
 
 OK:
 
@@ -496,15 +421,11 @@ OK:
 
     spam(ham[1], Coin({name: "ham"}));
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
 
     spam( ham[ 1 ], Coin( { name: "ham" } ) );
-
-.. Exception:
 
 例外:
 
@@ -512,19 +433,13 @@ NG:
 
     function singleLine() public { spam(); }
 
-.. Immediately before a comma, semicolon:
-
-コンマ、セミコロンの直前。
-
-.. Yes:
+コンマとセミコロンの直前:
 
 OK:
 
 .. code-block:: solidity
 
     function spam(uint i, Coin coin) public;
-
-.. No:
 
 NG:
 
@@ -534,9 +449,7 @@ NG:
 
 .. More than one space around an assignment or other operator to align with another:
 
-代入や他の演算子の周りに1つ以上のスペースを設けて整列させます。
-
-.. Yes:
+代入や他の演算子の周りに1つ以上の空白を入れての整列:
 
 OK:
 
@@ -546,8 +459,6 @@ OK:
     y = 2;
     longVariable = 3;
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -556,11 +467,7 @@ NG:
     y            = 2;
     longVariable = 3;
 
-.. Don not include a whitespace in the receive and fallback functions:
-
-受信関数とフォールバック関数に空白を入れてはいけません:
-
-.. Yes:
+レシーブ関数とフォールバック関数に空白を入れてはいけません:
 
 OK:
 
@@ -573,8 +480,6 @@ OK:
     fallback() external {
         ...
     }
-
-.. No:
 
 NG:
 
@@ -605,8 +510,6 @@ NG:
 * 宣言の先頭と同じインデントレベルで独立した行でクローズする
 * 冒頭のブレースの前に半角スペースを入れる
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -620,8 +523,6 @@ OK:
             uint balance;
         }
     }
-
-.. No:
 
 NG:
 
@@ -650,8 +551,6 @@ NG:
 
 また、制御構造 ``if`` 、 ``while`` 、 ``for`` と条件を表す親ブロックの間には半角スペースを入れ、条件を表す親ブロックと開始ブレースの間にも半角スペースを入れる必要があります。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -663,8 +562,6 @@ OK:
     for (...) {
         ...
     }
-
-.. No:
 
 NG:
 
@@ -686,16 +583,12 @@ NG:
 
 本体が1つの文を含む制御構造の場合、文が1行に収まっていれば、中括弧を省略しても問題ありません。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
 
     if (x < 10)
         x += 1;
-
-.. No:
 
 NG:
 
@@ -714,8 +607,6 @@ NG:
 ``else`` または ``else if`` 句を持つ ``if`` ブロックでは、 ``else`` は ``if`` の閉じ括弧と同じ行に配置します。
 これは、他のブロックのような構造のルールに比べて例外的なものです。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -732,8 +623,6 @@ OK:
         x += 1;
     else
         x -= 1;
-
-.. No:
 
 NG:
 
@@ -765,8 +654,6 @@ NG:
 
 冒頭のブレースの前には半角スペースを入れてください。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -778,8 +665,6 @@ OK:
     function increment(uint x) public pure onlyOwner returns (uint) {
         return x + 1;
     }
-
-.. No:
 
 NG:
 
@@ -817,8 +702,6 @@ NG:
 4. オーバーライド
 5. カスタムモディファイア
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -830,8 +713,6 @@ OK:
     function shutdown() public onlyOwner {
         selfdestruct(owner);
     }
-
-.. No:
 
 NG:
 
@@ -853,8 +734,6 @@ NG:
 長い関数宣言の場合は、各引数を関数本体と同じインデントレベルで一行にまとめることをお勧めします。
 閉じ括弧と開き括弧も同様に、関数宣言と同じインデントレベルで一行に置く必要があります。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -871,8 +750,6 @@ OK:
     {
         doSomething();
     }
-
-.. No:
 
 NG:
 
@@ -907,8 +784,6 @@ NG:
 
 長い関数宣言にモディファイアがある場合は、各モディファイアをそれぞれの行に落とす必要があります。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -934,8 +809,6 @@ OK:
     {
         doSomething();
     }
-
-.. No:
 
 NG:
 
@@ -967,8 +840,6 @@ NG:
 
 複数行の出力パラメータやreturn文は、 :ref:`最大の行の長さ <maximum_line_length>` セクションで推奨されている長い行の折り返しと同じスタイルにしてください。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -994,8 +865,6 @@ OK:
         );
     }
 
-.. No:
-
 NG:
 
 .. code-block:: solidity
@@ -1020,8 +889,6 @@ NG:
 .. For constructor functions on inherited contracts whose bases require arguments, it is recommended to drop the base constructors onto new lines in the same manner as modifiers if the function declaration is long or hard to read.
 
 ベースが引数を必要とする継承されたコントラクトのコンストラクタ関数については、関数宣言が長い場合や読みにくい場合には、モディファイアと同じ方法でベースのコンストラクタを新しい行に落とすことをお勧めします。
-
-.. Yes:
 
 OK:
 
@@ -1060,8 +927,6 @@ OK:
             x = param5;
         }
     }
-
-.. No:
 
 NG:
 
@@ -1135,8 +1000,6 @@ NG:
 変数宣言では、キーワード ``mapping`` とその型は空白で区切りません。
 また、ネストした ``mapping`` キーワードとその型は空白で区切りません。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -1145,8 +1008,6 @@ OK:
     mapping(address => bool) registeredAddresses;
     mapping(uint => mapping(bool => Data[])) public data;
     mapping(uint => mapping(uint => s)) data;
-
-.. No:
 
 NG:
 
@@ -1166,15 +1027,11 @@ NG:
 
 配列変数の宣言では、型と括弧の間にスペースを入れてはいけません。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
 
     uint[] x;
-
-.. No:
 
 NG:
 
@@ -1191,16 +1048,12 @@ NG:
 
 * 文字列は、シングルクォートではなくダブルクォートで引用してください。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
 
     str = "foo";
     str = "Hamlet says, 'To be or not to be...'";
-
-.. No:
 
 NG:
 
@@ -1213,8 +1066,6 @@ NG:
 
 * 演算子を左右の半角スペースで囲みます。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -1224,8 +1075,6 @@ OK:
     x = 100 / 10;
     x += 3 + 4;
     x |= y && z;
-
-.. No:
 
 NG:
 
@@ -1245,8 +1094,6 @@ NG:
   これは、複雑な文の可読性を高めるためのものです。
   演算子の両側には、常に同じ量の空白を使用する必要があります。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -1254,8 +1101,6 @@ OK:
     x = 2**3 + 5;
     x = 2*y + 3*z;
     x = (a+b) * (a-b);
-
-.. No:
 
 NG:
 
@@ -1300,7 +1145,7 @@ NG:
 
     イベントや状態変数での使用に近い形で型を宣言した方がわかりやすいかもしれません。
 
-Yes:
+OK:
 
 .. code-block:: solidity
 
@@ -1312,7 +1157,7 @@ Yes:
         function divide(int256 numerator, int256 denominator) public virtual returns (uint256);
     }
 
-No:
+NG:
 
 .. code-block:: solidity
 
@@ -1433,8 +1278,6 @@ No:
 
 以下の例のように、コントラクト名が ``Congress`` 、ライブラリ名が ``Owned`` の場合、関連するファイル名は ``Congress.sol`` と ``Owned.sol`` になります。
 
-.. Yes:
-
 OK:
 
 .. code-block:: solidity
@@ -1474,8 +1317,6 @@ OK:
     contract Congress is Owned, TokenRecipient {
         //...
     }
-
-.. No:
 
 NG:
 

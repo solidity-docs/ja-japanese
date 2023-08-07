@@ -711,7 +711,7 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
 これは、SMTCheckerとソルバーに不必要な負担をかけることになります。
 このようなケースを支援するために、ユーザーはどのコントラクトをデプロイされたものとして分析すべきかを指定できます。
 親コントラクトはもちろんまだ分析されますが、最も派生したコントラクトのコンテキストでのみ分析され、エンコーディングと生成されたクエリの複雑さが軽減されます。
-抽象的なコントラクトはデフォルトではSMTCheckerによって最も派生したものとして分析されないことに注意してください。
+抽象コントラクトはデフォルトではSMTCheckerによって最も派生したものとして分析されないことに注意してください。
 
 .. The chosen contracts can be given via a comma-separated list (whitespace is not
 .. allowed) of <source>:<contract> pairs in the CLI:
