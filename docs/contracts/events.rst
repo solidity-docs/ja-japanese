@@ -83,24 +83,20 @@ Solidityのイベントは、EVMのロギング機能の上に抽象化を与え
 .. is that they are cheaper to deploy and call. It also allows you to declare
 .. four indexed arguments rather than three.
 
-``anonymous`` 指定子でイベントを宣言した場合を除き、イベントの署名のハッシュはトピックの一つです。
+``anonymous`` 指定子でイベントを宣言した場合を除き、イベントのシグネチャのハッシュはトピックの一つです。
 つまり、特定の匿名イベントを名前でフィルタリングできず、コントラクトアドレスでしかフィルタリングできません。
 匿名イベントの利点は、デプロイや呼び出しが安く済むことです。
 また、インデックス付きの引数を3つではなく4つ宣言できます。
 
 .. .. note::
 
-..     Since the transaction log only stores the event data and not the type,
-..     you have to know the type of the event, including which parameter is
-..     indexed and if the event is anonymous in order to correctly interpret
-..     the data.
-..     In particular, it is possible to "fake" the signature of another event
-..     using an anonymous event.
+..     Since the transaction log only stores the event data and not the type, you have to know the type of the event, including which parameter is indexed and if the event is anonymous in order to correctly interpret the data.
+..     In particular, it is possible to "fake" the signature of another event using an anonymous event.
 
 .. note::
 
-    トランザクションログにはイベントデータのみが保存され、型は保存されませんので、データを正しく解釈するためには、どのパラメータがインデックスされているか、イベントが匿名であるかなど、イベントの型を知る必要があります。
-    特に、匿名イベントを使って別のイベントの署名を「偽装」することが可能です。
+    トランザクションログにはイベントデータのみが保存され、型は保存されないので、データを正しく解釈するためには、どのパラメータがインデックスされているか、イベントが匿名であるかなど、イベントの型を知る必要があります。
+    特に、匿名イベントを使って別のイベントのシグネチャを「偽装」することが可能です。
 
 .. index:: ! selector; of an event
 

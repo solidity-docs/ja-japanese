@@ -268,8 +268,7 @@ solcのリリースビルドでは、上記のようにバージョンを3バイ
 そのハッシュで、メタデータファイルを取得します。
 そのファイルはJSONデコードされ、上記のような構造になります。
 
-.. The component can then use the ABI to automatically generate a rudimentary
-.. user interface for the contract.
+.. The component can then use the ABI to automatically generate a rudimentary user interface for the contract.
 
 このコンポーネントは、ABIを使ってコントラクトの初歩的なユーザーインターフェースを自動的に生成できます。
 

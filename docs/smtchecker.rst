@@ -4,17 +4,15 @@
 SMTCheckerと形式検証
 ####################
 
-.. Using formal verification it is possible to perform an automated mathematical proof that your source code fulfills a certain formal specification.
 .. The specification is still formal (just as the source code), but usually much simpler.
 
-形式検証とは、ソースコードがある形式的な仕様を満たしていることを、自動的に数学的に証明することです。
+形式検証は、ソースコードがある形式的な仕様を満たしていることを、自動的に数学的に証明することを可能にします。
 仕様はソースコードと同様に形式的なものですが、通常はよりシンプルなものになります。
 
 .. Note that formal verification itself can only help you understand the difference between what you did (the specification) and how you did it (the actual implementation).
-.. You still need to check whether the specification is what you wanted and that you did not miss any unintended effects of it.
 
 形式検証は、「何をしたか（仕様）」と「どのようにしたか（実際の実装）」の違いを理解するためのものでしかないことに注意してください。
-仕様が望んだものになっているかどうか、意図しない効果を見逃していないかどうかを確認する必要があります。
+仕様が望んだものになっているかどうか、意図しない挙動を見逃していないかどうかをチェックする必要は依然としてあります。
 
 .. Solidity implements a formal verification approach based on `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ and `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ solving.
 .. The SMTChecker module automatically tries to prove that the code satisfies the specification given by ``require`` and ``assert`` statements.
@@ -32,32 +30,16 @@ SMTCheckerがあるプロパティに対して警告を出さない場合、そ�
 
 SMTCheckerがコンパイル時にチェックするその他の検証対象は以下の通りです。
 
-.. - Arithmetic underflow and overflow.
-
-- 算術演算のアンダーフローとオーバーフロー。
-
-.. - Division by zero.
-
-- ゼロによる除算。
-
 .. - Trivial conditions and unreachable code.
 
+- 算術演算のアンダーフローとオーバーフロー。
+- ゼロによる除算。
 - トリビアルな条件と到達不可能なコード。
-
-.. - Popping an empty array.
-
-- 空の配列のポップ。
-
-.. - Out of bounds index access.
-
+- 空の配列に対するポップ。
 - 範囲外のインデックスアクセス。
-
-.. - Insufficient funds for a transfer.
-
 - 送金に必要な資金の不足。
 
-.. All the targets above are automatically checked by default if all engines are
-.. enabled, except underflow and overflow for Solidity >=0.8.7.
+.. All the targets above are automatically checked by default if all engines are enabled, except underflow and overflow for Solidity >=0.8.7.
 
 上記のターゲットは、Solidity >=0.8.7のunderflowとoverflowを除き、すべてのエンジンが有効な場合、デフォルトで自動的にチェックされます。
 
@@ -67,32 +49,29 @@ SMTCheckerが報告する潜在的な警告は次のとおりです。
 
 .. - ``<failing  property> happens here.``. This means that the SMTChecker proved that a certain property fails. A counterexample may be given, however in complex situations it may also not show a counterexample. This result may also be a false positive in certain cases, when the SMT encoding adds abstractions for Solidity code that is either hard or impossible to express.
 
-- ``<failing  property> happens here.`` です。
+- ``<failing  property> happens here``
   これは、SMTCheckerがあるプロパティが失敗することを証明したことを意味します。
   反例が示されることもありますが、複雑な状況では反例が示されないこともあります。
   この結果は、SMTエンコーディングが、表現が困難または不可能なSolidityコードの抽象化を追加する場合、特定のケースでは誤検出となることもあります。
 
 .. - ``<failing property> might happen here``. This means that the solver could not prove either case within the given timeout. Since the result is unknown, the SMTChecker reports the potential failure for soundness. This may be solved by increasing the query timeout, but the problem might also simply be too hard for the engine to solve.
 
-- ``<failing property> might happen here`` です。
+- ``<failing property> might happen here``
   これは、ソルバーが与えられたタイムアウト内にどちらのケースも証明できなかったことを意味します。
   結果は不明なので、SMTCheckerは健全性のために潜在的な失敗を報告します。
   これは、クエリのタイムアウトを増やすことで解決できるかもしれませんが、問題が単にエンジンにとって難しすぎるだけかもしれません。
 
-.. To enable the SMTChecker, you must select :ref:`which engine should run<smtchecker_engines>`,
-.. where the default is no engine. Selecting the engine enables the SMTChecker on all files.
+.. To enable the SMTChecker, you must select :ref:`which engine should run<smtchecker_engines>`, where the default is no engine.
+.. Selecting the engine enables the SMTChecker on all files.
 
-SMTCheckerを有効にするには、デフォルトではエンジンなしとなっている :ref:`which engine should run<smtchecker_engines>` を選択する必要があります。
+SMTCheckerを有効にするには、デフォルトではエンジンなしとなっている :ref:`実行するエンジン<smtchecker_engines>` を選択する必要があります。
 エンジンを選択すると、すべてのファイルでSMTCheckerが有効になります。
 
 .. .. note::
 
-..     Prior to Solidity 0.8.4, the default way to enable the SMTChecker was via
-..     ``pragma experimental SMTChecker;`` and only the contracts containing the
-..     pragma would be analyzed. That pragma has been deprecated, and although it
-..     still enables the SMTChecker for backwards compatibility, it will be removed
-..     in Solidity 0.9.0. Note also that now using the pragma even in a single file
-..     enables the SMTChecker for all files.
+..     Prior to Solidity 0.8.4, the default way to enable the SMTChecker was via ``pragma experimental SMTChecker;`` and only the contracts containing the pragma would be analyzed.
+..     That pragma has been deprecated, and although it still enables the SMTChecker for backwards compatibility, it will be removed in Solidity 0.9.0.
+..     Note also that now using the pragma even in a single file enables the SMTChecker for all files.
 
 .. note::
 
