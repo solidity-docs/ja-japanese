@@ -1212,12 +1212,12 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 +===================================+======================================+
 |``assert``                         |Verification target.                  |
 +-----------------------------------+--------------------------------------+
-|``require``                        |Assumption.                           |
+|``require``                        |仮定                                  |
 +-----------------------------------+--------------------------------------+
-|internal call                      |BMC: Inline function call.            |
+|internalコール                     |BMC: Inline function call.            |
 |                                   |CHC: Function summaries.              |
 +-----------------------------------+--------------------------------------+
-|external call to known code        |BMC: Inline function call or          |
+|既知のコードへのexternalコール     |BMC: Inline function call or          |
 |                                   |erase knowledge about state variables |
 |                                   |and local storage references.         |
 |                                   |CHC: Assume called code is unknown.   |
@@ -1228,7 +1228,7 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 |                                   |Checks whether it is popping an       |
 |                                   |empty array.                          |
 +-----------------------------------+--------------------------------------+
-|ABI functions                      |Abstracted with UF.                   |
+|ABI関数                            |Abstracted with UF.                   |
 +-----------------------------------+--------------------------------------+
 |``addmod``, ``mulmod``             |Supported precisely.                  |
 +-----------------------------------+--------------------------------------+

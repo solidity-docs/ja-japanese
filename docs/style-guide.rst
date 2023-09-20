@@ -1433,14 +1433,14 @@ mixedCaseを使用してください。
 
 .. Underscore Prefix for Non-external Functions and Variables
 
-非外部関数および変数のためのアンダースコア接頭辞
-================================================
+非外部関数と非外部変数のためのアンダースコア接頭辞
+==================================================
 
 * ``_singleLeadingUnderscore``
 
 .. This convention is suggested for non-external functions and state variables (``private`` or ``internal``). State variables without a specified visibility are ``internal`` by default.
 
-この規約は、外部関数と状態変数（ ``private`` または ``internal`` ）以外では推奨されています。
+この規約は、非外部関数と非外部状態変数（つまり ``private`` または ``internal`` ）で推奨されています。
 ビジビリティの指定がない状態変数は、デフォルトで ``internal`` となります。
 
 .. When designing a smart contract, the public-facing API (functions that can be called by any account) is an important consideration.
