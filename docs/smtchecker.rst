@@ -16,9 +16,6 @@ SMTCheckerと形式検証
 
 .. Solidity implements a formal verification approach based on `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ and `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ solving.
 .. The SMTChecker module automatically tries to prove that the code satisfies the specification given by ``require`` and ``assert`` statements.
-.. That is, it considers ``require`` statements as assumptions and tries to prove that the conditions inside ``assert`` statements are always true.
-.. If an assertion failure is found, a counterexample may be given to the user showing how the assertion can be violated.
-.. If no warning is given by the SMTChecker for a property, it means that the property is safe.
 
 Solidityでは、 `SMT (Satisfiability Modulo Theories) <https://en.wikipedia.org/wiki/Satisfiability_modulo_theories>`_ と `Horn <https://en.wikipedia.org/wiki/Horn-satisfiability>`_ の解法に基づいた形式的な検証アプローチを実装しています。
 SMTCheckerモジュールは、 ``require`` 文と ``assert`` 文で与えられた仕様をコードが満たしていることを自動的に証明しようとします。
@@ -47,14 +44,20 @@ SMTCheckerがコンパイル時にチェックするその他の検証対象は�
 
 SMTCheckerが報告する潜在的な警告は次のとおりです。
 
-.. - ``<failing  property> happens here.``. This means that the SMTChecker proved that a certain property fails. A counterexample may be given, however in complex situations it may also not show a counterexample. This result may also be a false positive in certain cases, when the SMT encoding adds abstractions for Solidity code that is either hard or impossible to express.
+.. - ``<failing  property> happens here.``.
+..   This means that the SMTChecker proved that a certain property fails.
+..   A counterexample may be given, however in complex situations it may also not show a counterexample.
+..   This result may also be a false positive in certain cases, when the SMT encoding adds abstractions for Solidity code that is either hard or impossible to express.
 
 - ``<failing  property> happens here``
   これは、SMTCheckerがあるプロパティが失敗することを証明したことを意味します。
   反例が示されることもありますが、複雑な状況では反例が示されないこともあります。
   この結果は、SMTエンコーディングが、表現が困難または不可能なSolidityコードの抽象化を追加する場合、特定のケースでは誤検出となることもあります。
 
-.. - ``<failing property> might happen here``. This means that the solver could not prove either case within the given timeout. Since the result is unknown, the SMTChecker reports the potential failure for soundness. This may be solved by increasing the query timeout, but the problem might also simply be too hard for the engine to solve.
+.. - ``<failing property> might happen here``.
+..   This means that the solver could not prove either case within the given timeout.
+..   Since the result is unknown, the SMTChecker reports the potential failure for soundness.
+..   This may be solved by increasing the query timeout, but the problem might also simply be too hard for the engine to solve.
 
 - ``<failing property> might happen here``
   これは、ソルバーが与えられたタイムアウト内にどちらのケースも証明できなかったことを意味します。
@@ -64,38 +67,28 @@ SMTCheckerが報告する潜在的な警告は次のとおりです。
 .. To enable the SMTChecker, you must select :ref:`which engine should run<smtchecker_engines>`, where the default is no engine.
 .. Selecting the engine enables the SMTChecker on all files.
 
-SMTCheckerを有効にするには、デフォルトではエンジンなしとなっている :ref:`実行するエンジン<smtchecker_engines>` を選択する必要があります。
+SMTCheckerを有効にするには、デフォルトではエンジン無しとなっている :ref:`実行するエンジン<smtchecker_engines>` を選択する必要があります。
 エンジンを選択すると、すべてのファイルでSMTCheckerが有効になります。
-
-.. .. note::
-
-..     Prior to Solidity 0.8.4, the default way to enable the SMTChecker was via ``pragma experimental SMTChecker;`` and only the contracts containing the pragma would be analyzed.
-..     That pragma has been deprecated, and although it still enables the SMTChecker for backwards compatibility, it will be removed in Solidity 0.9.0.
-..     Note also that now using the pragma even in a single file enables the SMTChecker for all files.
 
 .. note::
 
     Solidity 0.8.4以前では、SMTCheckerを有効にするデフォルトの方法は ``pragma experimental SMTChecker;`` を介したもので、プラグマを含むコントラクトのみが分析されました。
-    このプラグマは非推奨となっており、後方互換性のためにSMTCheckerを有効にしていますが、Solidity 0.9.0では削除されます。
+    このプラグマは非推奨となっており、後方互換性のためにSMTCheckerが有効になりますが、Solidity 0.9.0では削除されます。
     また、1つのファイルでもプラグマを使用すると、すべてのファイルでSMTCheckerが有効になることに注意してください。
 
 .. .. note::
 
-..     The lack of warnings for a verification target represents an undisputed
-..     mathematical proof of correctness, assuming no bugs in the SMTChecker and
-..     the underlying solver. Keep in mind that these problems are
-..     *very hard* and sometimes *impossible* to solve automatically in the
-..     general case.  Therefore, several properties might not be solved or might
-..     lead to false positives for large contracts. Every proven property should
-..     be seen as an important achievement. For advanced users, see :ref:`SMTChecker Tuning <smtchecker_options>`
-..     to learn a few options that might help proving more complex
-..     properties.
+..     The lack of warnings for a verification target represents an undisputed mathematical proof of correctness, assuming no bugs in the SMTChecker and the underlying solver.
+..     Keep in mind that these problems are *very hard* and sometimes *impossible* to solve automatically in the general case.
+..     Therefore, several properties might not be solved or might lead to false positives for large contracts.
+..     Every proven property should be seen as an important achievement.
+..     For advanced users, see :ref:`SMTChecker Tuning <smtchecker_options>` to learn a few options that might help proving more complex properties.
 
 .. note::
 
     検証対象に対して警告が出ないということは、SMTCheckerや基盤となるソルバーにバグがないことを前提とした、議論の余地のない正しさの数学的証明を意味します。
     これらの問題は、一般的なケースで自動的に解決することは *非常に難しく* 、時には *不可能* であることに留意してください。
-    したがって、いくつかの特性は解決できないかもしれませんし、大規模なコントラクトでは誤検出につながるかもしれません。
+    したがって、いくつかのプロパティは解決できないかもしれませんし、大規模なコントラクトでは誤検出につながるかもしれません。
     すべての証明されたプロパティは重要な成果であると考えるべきです。
     上級者向けには、 :ref:`SMTChecker Tuning <smtchecker_options>` を参照して、より複雑なプロパティを証明するのに役立ついくつかのオプションを学んでください。
 
@@ -129,16 +122,14 @@ SMTCheckerを有効にするには、デフォルトではエンジンなしと�
     }
 
 .. The contract above shows an overflow check example.
-.. The SMTChecker does not check underflow and overflow by default for Solidity >=0.8.7,
-.. so we need to use the command-line option ``--model-checker-targets "underflow,overflow"``
-.. or the JSON option ``settings.modelChecker.targets = ["underflow", "overflow"]``.
+.. The SMTChecker does not check underflow and overflow by default for Solidity >=0.8.7, so we need to use the command-line option ``--model-checker-targets "underflow,overflow"`` or the JSON option ``settings.modelChecker.targets = ["underflow", "overflow"]``.
 .. See :ref:`this section for targets configuration<smtchecker_targets>`.
 .. Here, it reports the following:
 
 上のコントラクトではオーバーフローチェックの例を示しています。
 SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオーバーフローをチェックしないので、コマンドラインオプション ``--model-checker-targets "underflow,overflow"`` またはJSONオプション ``settings.modelChecker.targets = ["underflow", "overflow"]`` を使用する必要があります。
-:ref:`this section for targets configuration<smtchecker_targets>` を参照してください。
-ここでは、以下のように報告しています。
+:ref:`ターゲット構成のセクション<smtchecker_targets>` を参照してください。
+ここでは、以下のように報告されます。
 
 .. code-block:: text
 
@@ -186,22 +177,17 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
         }
     }
 
-.. Assert
-
 アサート
 ========
 
-.. An assertion represents an invariant in your code: a property that must be true
-.. *for all transactions, including all input and storage values*, otherwise there is a bug.
+.. An assertion represents an invariant in your code: a property that must be true *for all transactions, including all input and storage values*, otherwise there is a bug.
 
-アサーションとは、コードの不変性を表すもので、すべての入力値と保存値を含むすべてのトランザクションに対して*真でなければならないプロパティで、そうでなければバグがあることになります。
+アサーションとは、コードの不変性を表すもので、 *すべての入力値とストレージの値を含むすべてのトランザクションに対して* 真でなければならないプロパティで、そうでなければバグがあることになります。
 
 .. The code below defines a function ``f`` that guarantees no overflow.
-.. Function ``inv`` defines the specification that ``f`` is monotonically increasing:
-.. for every possible pair ``(a, b)``, if ``b > a`` then ``f(b) > f(a)``.
-.. Since ``f`` is indeed monotonically increasing, the SMTChecker proves that our
-.. property is correct. You are encouraged to play with the property and the function
-.. definition to see what results come out!
+.. Function ``inv`` defines the specification that ``f`` is monotonically increasing: for every possible pair ``(a, b)``, if ``b > a`` then ``f(b) > f(a)``.
+.. Since ``f`` is indeed monotonically increasing, the SMTChecker proves that our property is correct.
+.. You are encouraged to play with the property and the function definition to see what results come out!
 
 以下のコードでは、オーバーフローしないことを保証する関数 ``f`` を定義しています。
 関数 ``inv`` は、 ``f`` が単調増加であるという仕様を定義しています: すべての可能なペア ``(a, b)`` に対して、もし ``b > a`` ならば ``f(b) > f(a)`` です。
@@ -307,7 +293,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 
 .. gives us:
 
-が与えてくれます。
+が以下を出力します。
 
 .. code-block:: text
 
