@@ -16,12 +16,9 @@
 
 このスタイルガイドの構造や推奨事項の多くは、Pythonの `pep8スタイルガイド <https://peps.python.org/pep-0008/>`_ から引用されています。
 
-.. The goal of this guide is *not* to be the right way or the best way to write Solidity code.
-.. A quote from Python's `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ captures this concept well.
-
-このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法であることではありません。
+このガイドの目的は、Solidityのコードを書くための正しい方法や最良の方法を提供することではありません。
 このガイドの目的は、 *一貫性* です。
-Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの引用はこのコンセプトをよく表しています。
+Pythonの `pep8 <https://peps.python.org/pep-0008/#a-foolish-consistency-is-the-hobgoblin-of-little-minds>`_ からの以下の引用はこのコンセプトをよく表しています。
 
 .. note::
 
@@ -322,7 +319,7 @@ NG:
 
 関数はビジビリティに応じてグループ化し、順序立てて配置します。
 
-- ``constructor`` 
+- ``constructor``
 - ``receive`` 関数（ある場合）
 - ``fallback`` 関数（ある場合）
 - ``external`` 関数

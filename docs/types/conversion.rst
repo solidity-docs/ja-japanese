@@ -161,10 +161,10 @@
         bytes s = "abcdefgh";
         function f(bytes calldata c, bytes memory m) public view returns (bytes16, bytes3) {
             require(c.length == 16, "");
-            bytes16 b = bytes16(m);  // m の長さが 16 より大きい場合、切り捨てが発生します。
+            bytes16 b = bytes16(m);  // mの長さが16より大きい場合、切り捨てが発生します。
             b = bytes16(s);  // 右詰めしたもので、結果は "abcdefgh\0\0\0\0\0\0\0\0"
-            bytes3 b1 = bytes3(s); //切り捨て、b1は"abc"に等しい。
-            b = bytes16(c[:8]);  // ゼロ埋めされる
+            bytes3 b1 = bytes3(s); //切り捨てられ、b1は"abc"に等しくなります。
+            b = bytes16(c[:8]);  // ゼロ埋めされます。
             return (b, b1);
         }
     }

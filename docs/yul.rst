@@ -8,11 +8,9 @@ Yul
 
 Yul（以前はJULIAやIULIAとも呼ばれていました）は、さまざまなバックエンド用のバイトコードにコンパイルできる中間言語です。
 
-.. Yul is a good target for high-level optimisation stages that can benefit all target platforms equally.
-
-スタンドアローンでも、Solidityで「インラインアセンブリ」としても使えます。
+スタンドアローンでも、Solidityで「インラインアセンブリ」としても、使えます。
 コンパイラは、IRベースのコードジェネレータ（「new codegen」または「IR-based codegen」）において、中間言語としてYulを使用します。
-Yulは、すべてのターゲットプラットフォームに等しく恩恵を与えることができるハイレベルな最適化段階のための良いターゲットです。
+Yulは、すべてのプラットフォームに等しく恩恵を与えることができるプログラム全体の最適化を行えます。
 
 モチベーションとハイレベルな記述
 ================================
@@ -20,12 +18,12 @@ Yulは、すべてのターゲットプラットフォームに等しく恩恵�
 Yulの設計は、次の目標を達成しようと試みています。
 
 1. Yulで書かれたプログラムは、たとえそれがSolidityや他の高級言語のコンパイラで生成されたコードであっても、可読性がなければいけません。
-2. 手動での検査、形式的な検証、最適化に役立つように、コントロールフローは理解しやすいものでなければなりません。
+2. 手動での検査、形式検証、最適化に役立つように、コントロールフローは理解しやすいものでなければなりません。
 3. Yulからバイトコードへの変換は、可能な限り簡単に行う必要があります。
 4. Yulは、プログラム全体の最適化に適しているべきです。
 
 1つ目と2つ目の目標を達成するために、Yulは ``for`` ループ、 ``if`` 文、 ``switch`` 文、関数呼び出しといったハイレベルな要素を提供しています。
-アセンブリプログラムのコントロールフローを適切に表現するためには、これらで十分なはずです。
+アセンブリプログラムのコントロールフローを適切に表現するためには、これらで十分であるはずです。
 したがって、 ``SWAP`` 、 ``DUP`` 、 ``JUMPDEST`` 、 ``JUMP`` 、 ``JUMPI`` の明示的な文は用意されていません。
 なぜなら、最初の2つはデータフローを難読化し、最後の2つはコントロールフローを難読化するからです。
 さらに、 ``mul(add(x, y), 7)`` 形式の関数文は ``7 y x add mul`` のような純粋なオペコード文よりも好まれます。
@@ -156,7 +154,7 @@ Yulは、コード、データ、サブオブジェクトからなる「オブ�
 リテラルとして次のものを使用できます。
 
 - 10進数または16進数表記の整数定数。
-- ASCII文字列（例: ``"abc"`` ）。 ``N`` が16進数である場合、16進数エスケープ ``\xNN`` とUnicodeエスケープ ``\uNNNN`` を含むことができます。
+- ASCII文字列（例: ``"abc"`` ）。 ``N`` を16進数として、16進数エスケープ ``\xNN`` とUnicodeエスケープ ``\uNNNN`` を含むことが可能です。
 - 16進数の文字列（例: ``hex"616263"`` ）。
 
 YulのEVM方言では、リテラルは次のように256ビットのワードを表します。
@@ -867,13 +865,10 @@ Yulはローカル変数やコントロールフローを管理しているた�
     このメモリ領域のどの部分にリターンデータが含まれているかを確認するには、 ``returndatasize`` オペコードを使用する必要があります。
     残りのバイトは、呼び出し前の値を保持します。
 
-.. .. note::
-
-    .. The ``difficulty()`` instruction is disallowed in EVM version >= Paris.
-    .. With the Paris network upgrade the semantics of the instruction that was previously called ``difficulty`` have been changed and the instruction was renamed to ``prevrandao``.
-    .. It can now return arbitrary values in the full 256-bit range, whereas the highest recorded difficulty value within Ethash was ~54 bits.
-    .. This change is described in `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_.
-    .. Please note that irrelevant to which EVM version is selected in the compiler, the semantics of instructions depend on the final chain of deployment.
+.. With the Paris network upgrade the semantics of the instruction that was previously called ``difficulty`` have been changed and the instruction was renamed to ``prevrandao``.
+.. It can now return arbitrary values in the full 256-bit range, whereas the highest recorded difficulty value within Ethash was ~54 bits.
+.. This change is described in `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_.
+.. Please note that irrelevant to which EVM version is selected in the compiler, the semantics of instructions depend on the final chain of deployment.
 
 .. note::
 
@@ -935,14 +930,12 @@ linkersymbol
 
     let a := 0x1234567890123456789012345678901234567890
 
-Solidityリンカーの詳細は :ref:`Using the Commandline Compiler <commandline-compiler>` を参照してください。
+Solidityリンカーの詳細は :ref:`コマンドラインコンパイラの使用 <commandline-compiler>` を参照してください。
 
 memoryguard
 ^^^^^^^^^^^
 
-.. The caller of ``let ptr := memoryguard(size)`` (where ``size`` has to be a literal number)
-.. promises that they only use memory in either the range ``[0, size)`` or the
-.. unbounded range starting at ``ptr``.
+.. The caller of ``let ptr := memoryguard(size)`` (where ``size`` has to be a literal number) promises that they only use memory in either the range ``[0, size)`` or the unbounded range starting at ``ptr``.
 
 この関数はEVM方言のオブジェクトで使用できます。
 ``let ptr := memoryguard(size)`` （ ``size`` はリテラル数）のコール元は、範囲 ``[0, size)`` または ``ptr`` から始まる境界の無い範囲のいずれかのメモリのみを使用することを約束します。
@@ -958,9 +951,7 @@ memoryguard
 Yulオプティマイザは、目的のためにメモリ範囲 ``[size, ptr)`` のみを使用することを約束します。
 オプティマイザがメモリを確保する必要がない場合は、その ``ptr == size`` を保持します。
 
-.. ``memoryguard`` can be called multiple times, but needs to have the same literal as argument
-.. within one Yul subobject. If at least one ``memoryguard`` call is found in a subobject,
-.. the additional optimiser steps will be run on it.
+.. ``memoryguard`` can be called multiple times, but needs to have the same literal as argument within one Yul subobject. If at least one ``memoryguard`` call is found in a subobject, the additional optimiser steps will be run on it.
 
 ``memoryguard`` は複数回呼び出すことができますが、1つのYulサブオブジェクト内で同じリテラルを引数として持つ必要があります。
 サブオブジェクトの中に少なくとも1つの ``memoryguard`` の呼び出しが見つかった場合、追加のオプティマイザのステップが実行されます。
@@ -997,10 +988,7 @@ verbatim
 このコードは、 ``x`` のコピーされた値を消費して、スタックの一番上に結果を生成すると想定されます。
 その後、コンパイラは  ``double``  用のスタックスロットを割り当て、そこに結果を格納するコードを生成します。
 
-.. As with all opcodes, the arguments are arranged on the stack
-.. with the leftmost argument on the top, while the return values
-.. are assumed to be laid out such that the rightmost variable is
-.. at the top of the stack.
+.. As with all opcodes, the arguments are arranged on the stack with the leftmost argument on the top, while the return values are assumed to be laid out such that the rightmost variable is at the top of the stack.
 
 他のオペコードと同様に、引数はスタック上に左端の引数が一番上になるように並べられ、戻り値は右端の変数がスタックの一番上になるように並べられるとされています。
 

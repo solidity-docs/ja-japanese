@@ -322,7 +322,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
     {
       // 必須: Source code language. Currently supported are "Solidity", "Yul" and "SolidityAST" (experimental).
       "language": "Solidity",
-      // 必須 
+      // 必須
       "sources":
       {
         // The keys here are the "global" names of the source files, imports can use other files via remappings (see below).
@@ -361,7 +361,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
           "content": "contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }"
         }
       },
-      // オプション 
+      // オプション
       "settings":
       {
         // オプション: Stop compilation after the given stage. Currently only "parsing" is valid here

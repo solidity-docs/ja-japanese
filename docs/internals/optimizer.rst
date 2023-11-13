@@ -86,7 +86,7 @@ ASMの出力に関しても、同じあるいは重複するコードブロッ�
 もしそのような式が見つからなければ、 ``constant + constant = sum_of_constants`` や ``X * 1 = X`` のようなルールに従って式を簡略化します。
 これは再帰的なプロセスであるため、第2因子が常に1と評価されることがわかっているより複雑な式の場合、後者のルールを適用することもできます。
 
-.. Certain optimizer steps symbolically track the storage and memory locations. 
+.. Certain optimizer steps symbolically track the storage and memory locations.
 .. For example, this information is used to compute Keccak-256 hashes that can be evaluated during compile time.
 .. Consider the sequence:
 
@@ -150,7 +150,7 @@ ASMの出力に関しても、同じあるいは重複するコードブロッ�
 メモリの場合、この値が ``32`` と ``2**256 - 32`` の間のリテラルと評価されるならば、 ``m`` に関する知識が保持されます。
 それ以外の場合は、 ``m`` に関する知識は消去されます。
 
-.. After this process, we know which expressions have to be on the stack at the end, and have a list of modifications to memory and storage. 
+.. After this process, we know which expressions have to be on the stack at the end, and have a list of modifications to memory and storage.
 .. This information is stored together with the basic blocks and is used to link them.
 .. Furthermore, knowledge about the stack, storage and memory configuration is forwarded to the next block(s).
 
@@ -185,7 +185,7 @@ ASMの出力に関しても、同じあるいは重複するコードブロッ�
 最後に、スタック上に必要なすべての値を正しい位置に生成します。
 
 .. These steps are applied to each basic block and the newly generated code is used as replacement if it is smaller.
-.. If a basic block is split at a ``JUMPI`` and during the analysis, the condition evaluates to a constant, the ``JUMPI`` is replaced based on the value of the constant. 
+.. If a basic block is split at a ``JUMPI`` and during the analysis, the condition evaluates to a constant, the ``JUMPI`` is replaced based on the value of the constant.
 .. Thus code like
 
 これらのステップは各基本ブロックに適用され、新しく生成されたコードの方が小さい場合には置き換えとして使用されます。
@@ -450,7 +450,7 @@ DisambiguatorはASTを受け取り、すべての識別子が入力ASTの中で�
 FunctionHoister
 ^^^^^^^^^^^^^^^
 
-.. The function hoister moves all function definitions to the end of the topmost block. 
+.. The function hoister moves all function definitions to the end of the topmost block.
 .. This is a semantically equivalent transformation as long as it is performed after the disambiguation stage.
 .. The reason is that moving a definition to a higher-level block cannot decrease its visibility and it is impossible to reference variables defined in a different function.
 

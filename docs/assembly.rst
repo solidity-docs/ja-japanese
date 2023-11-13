@@ -131,37 +131,23 @@ Solidityのインラインアセンブリに使用される言語は :ref:`Yul <
 外部変数、外部関数、外部ライブラリへのアクセス
 ----------------------------------------------
 
-.. You can access Solidity variables and other identifiers by using their name.
-
-Solidityの変数やその他の識別子は、その名前を使ってアクセスできます。
-
-.. Local variables of value type are directly usable in inline assembly.
-.. They can both be read and assigned to.
+Solidityの変数やその他の識別子は、それら名前を使ってアクセスできます。
 
 値型のローカル変数は、インラインアセンブリで直接使用できます。
 読み込みと代入の両方が可能です。
 
-.. Local variables that refer to memory evaluate to the address of the variable in memory not the value itself.
-.. Such variables can also be assigned to, but note that an assignment will only change the pointer and not the data
-.. and that it is your responsibility to respect Solidity's memory management.
-.. See :ref:`Conventions in Solidity <conventions-in-solidity>`.
-
-メモリを参照するローカル変数は、値そのものではなく、メモリ内の変数のアドレスを評価します。
+メモリを参照するローカル変数は、値そのものではなく、メモリ内の変数のアドレスとして評価されます。
 このような変数は代入することもできますが、代入はポインタを変更するだけでデータを変更するわけではないので、Solidityのメモリ管理を尊重する責任があることに注意してください。
 :ref:`Solidityの慣習 <conventions-in-solidity>` を参照してください。
 
-.. Similarly, local variables that refer to statically-sized calldata arrays or calldata structs evaluate to the address of the variable in calldata, not the value itself.
 .. The variable can also be assigned a new offset, but note that no validation is performed to ensure that the variable will not point beyond ``calldatasize()``.
 
 同様に、静的なサイズのcalldata配列やcalldata構造体を参照するローカル変数は、値そのものではなく、calldata内の変数のアドレスに評価されます。
 変数に新しいオフセットを割り当てることもできますが、変数が ``calldatasize()`` を超えてポイントしないことを保証するための検証は行われないことに注意してください。
 
-.. For external function pointers the address and the function selector can be
-.. accessed using ``x.address`` and ``x.selector``.
-.. The selector consists of four right-aligned bytes.
 .. Both values can be assigned to.
 
-外部関数ポインターの場合、アドレスと関数セレクタは ``x.address`` と ``x.selector`` を使ってアクセスできます。
+外部関数ポインターの場合、アドレスと関数セレクタはそれぞれ ``x.address`` と ``x.selector`` を使ってアクセスできます。
 セレクタは右揃えの4バイトで構成されています。
 どちらの値も代入可能です。
 例えば、以下のようになります。
@@ -182,20 +168,15 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
         }
     }
 
-.. For dynamic calldata arrays, you can access
-.. their calldata offset (in bytes) and length (number of elements) using ``x.offset`` and ``x.length``.
-.. Both expressions can also be assigned to, but as for the static case, no validation will be performed
-.. to ensure that the resulting data area is within the bounds of ``calldatasize()``.
+.. For dynamic calldata arrays, you can access their calldata offset (in bytes) and length (number of elements) using ``x.offset`` and ``x.length``.
+.. Both expressions can also be assigned to, but as for the static case, no validation will be performed to ensure that the resulting data area is within the bounds of ``calldatasize()``.
 
 動的なcalldata配列の場合、 ``x.offset`` と ``x.length`` を使ってcalldataのオフセット（バイト単位）と長さ（要素数）にアクセスできます。
 両方の式は代入することもできますが、静的の場合と同様に、結果として得られるデータ領域が ``calldatasize()`` の範囲内にあるかどうかの検証は行われません。
 
-.. For local storage variables or state variables, a single Yul identifier
-.. is not sufficient, since they do not necessarily occupy a single full storage slot.
-.. Therefore, their "address" is composed of a slot and a byte-offset
-.. inside that slot. To retrieve the slot pointed to by the variable ``x``, you
-.. use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
-.. Using ``x`` itself will result in an error.
+.. For local storage variables or state variables, a single Yul identifier is not sufficient, since they do not necessarily occupy a single full storage slot.
+.. Therefore, their "address" is composed of a slot and a byte-offset inside that slot.
+.. To retrieve the slot pointed to by the variable ``x``, you use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
 
 ローカルストレージ変数や状態変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
 そのため、変数の「アドレス」は、スロットとそのスロット内のバイトオフセットで構成されます。
@@ -204,8 +185,7 @@ Solidityの変数やその他の識別子は、その名前を使ってアクセ
 
 .. You can also assign to the ``.slot`` part of a local storage variable pointer.
 .. For these (structs, arrays or mappings), the ``.offset`` part is always zero.
-.. It is not possible to assign to the ``.slot`` or ``.offset`` part of a state variable,
-.. though.
+.. It is not possible to assign to the ``.slot`` or ``.offset`` part of a state variable, though.
 
 また、ローカルストレージの変数ポインタの ``.slot`` 部に代入することもできます。
 これら（構造体、配列、マッピング）の場合、 ``.offset`` 部は常にゼロです。
