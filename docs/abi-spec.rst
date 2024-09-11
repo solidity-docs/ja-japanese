@@ -298,7 +298,7 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
 
 .. Given the contract:
 
-次のコントラクトを考える:
+次のコントラクトを考えます:
 
 .. code-block:: solidity
     :force:
@@ -803,15 +803,11 @@ receive関数とfallback関数には ``inputs`` もありません。
 .. The structure is nested in the following way:
 
 名前は意図的にABIエンコーディングの一部ではありませんが、エンドユーザーに表示するためにJSONに含めることには大きな意味があります。
-構造は以下のように入れ子になっています。
+構造は以下の方法で入れ子になっています。
 
 .. An object with members ``name``, ``type`` and potentially ``components`` describes a typed variable.
-.. The canonical type is determined until a tuple type is reached and the string description up
-.. to that point is stored in ``type`` prefix with the word ``tuple``, i.e. it will be ``tuple`` followed by
-.. a sequence of ``[]`` and ``[k]`` with
-.. integers ``k``. The components of the tuple are then stored in the member ``components``,
-.. which is of array type and has the same structure as the top-level object except that
-.. ``indexed`` is not allowed there.
+.. The canonical type is determined until a tuple type is reached and the string description up to that point is stored in ``type`` prefix with the word ``tuple``, i.e. it will be ``tuple`` followed by a sequence of ``[]`` and ``[k]`` with integers ``k``.
+.. The components of the tuple are then stored in the member ``components``, which is of array type and has the same structure as the top-level object except that ``indexed`` is not allowed there.
 
 メンバー ``name`` 、 ``type`` 、そして潜在的に ``components`` を持つオブジェクトは、型付けされた変数を記述します。
 タプル型に到達するまでは正規の型が決定され、その時点までの文字列記述は ``tuple`` という単語を前置した ``type`` に格納されます。
