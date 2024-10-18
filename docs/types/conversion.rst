@@ -223,6 +223,7 @@
     bytes4 f = 0; // OK
     bytes4 g = 0x0; // OK
 
+<<<<<<< HEAD
 .. String literals and hex string literals can be implicitly converted to fixed-size byte arrays,
 .. if their number of characters matches the size of the bytes type:
 
@@ -236,6 +237,18 @@
     bytes2 d = hex"123"; // NG
     bytes2 e = "x"; // NG
     bytes2 f = "xyz"; // NG
+=======
+String literals and hex string literals can be implicitly converted to fixed-size byte arrays,
+if their number of characters is less than or equal to the size of the bytes type:
+
+.. code-block:: solidity
+
+    bytes2 a = hex"1234"; // fine
+    bytes2 b = "xy"; // fine
+    bytes2 c = hex"12"; // fine
+    bytes2 e = "x"; // fine
+    bytes2 f = "xyz"; // not allowed
+>>>>>>> english/develop
 
 .. index:: literal;address
 
@@ -261,6 +274,11 @@
 ..     Starting with in 0.8.0 only conversion from ``uint160`` is allowed.
 
 .. note::
+<<<<<<< HEAD
 
     バージョン0.8.0以前では、任意の整数型（符号あり、符号なし、サイズは問わない）から ``address`` または ``address payable`` への明示的な変換が可能でした。
     0.8.0からは ``uint160`` からの変換のみが可能になりました。
+=======
+    Prior to version 0.8.0, it was possible to explicitly convert from any integer type (of any size, signed or unsigned) to  ``address`` or ``address payable``.
+    Starting with 0.8.0 only conversion from ``uint160`` is allowed.
+>>>>>>> english/develop

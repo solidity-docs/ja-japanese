@@ -70,8 +70,9 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
         /// @dev The Alexandr N. Tetearing algorithm could increase precision
         /// @param rings The number of rings from dendrochronological sample
         /// @return Age in years, rounded up for partial years
-        function age(uint256 rings) external virtual pure returns (uint256) {
-            return rings + 1;
+        /// @return Name of the tree
+        function age(uint256 rings) external virtual pure returns (uint256, string memory) {
+            return (rings + 1, "tree");
         }
 
         /// @notice Returns the amount of leaves the tree has.
@@ -88,8 +89,8 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
     }
 
     contract KumquatTree is Tree, Plant {
-        function age(uint256 rings) external override pure returns (uint256) {
-            return rings + 2;
+        function age(uint256 rings) external override pure returns (uint256, string memory) {
+            return (rings + 2, "Kumquat");
         }
 
         /// Return the amount of leaves that this specific kind of tree has
@@ -108,6 +109,7 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 次の表では、各NatSpecタグの目的と使用される場所を説明しています。
 特別なケースとして、タグが使用されていない場合、Solidityのコンパイラは ``///`` または ``/**`` のコメントを ``@notice`` のタグが付いている場合と同じように解釈します。
 
+<<<<<<< HEAD
 ================= ============================================================================================ =============================
 タグ                                                                                                           コンテキスト
 ================= ============================================================================================ =============================
@@ -120,6 +122,20 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 ``@inheritdoc``   ベース関数から不足しているタグを全てコピーする（後ろにコントラクト名をつける必要がある）     function, public state variable
 ``@custom:...``   カスタムタグ、セマンティクスはアプリケーションで定義                                         everywhere
 ================= ============================================================================================ =============================
+=======
+=============== ====================================================================================== =============================
+Tag                                                                                                    Context
+=============== ====================================================================================== =============================
+``@title``      A title that should describe the contract/interface                                    contract, library, interface, struct, enum
+``@author``     The name of the author                                                                 contract, library, interface, struct, enum
+``@notice``     Explain to an end user what this does                                                  contract, library, interface, function, public state variable, event, struct, enum, error
+``@dev``        Explain to a developer any extra details                                               contract, library, interface, function, state variable, event, struct, enum, error
+``@param``      Documents a parameter just like in Doxygen (must be followed by parameter name)        function, event, error
+``@return``     Documents the return variables of a contract's function                                function, public state variable
+``@inheritdoc`` Copies all missing tags from the base function (must be followed by the contract name) function, public state variable
+``@custom:...`` Custom tag, semantics is application-defined                                           everywhere
+=============== ====================================================================================== =============================
+>>>>>>> english/develop
 
 ``(int quotient, int remainder)`` のように関数が複数の値を返す場合は、 ``@param`` 文と同じ形式で複数の ``@return`` 文を使用します。
 
@@ -202,7 +218,12 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
 ユーザードキュメント
 --------------------
 
+<<<<<<< HEAD
 上記のドキュメントでは、以下のようなユーザードキュメントのJSONファイルが出力されます。
+=======
+The above documentation will produce the following user documentation
+JSON file as output for the ``Tree`` contract:
+>>>>>>> english/develop
 
 .. code-block:: json
 
@@ -214,6 +235,10 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
         "age(uint256)" :
         {
           "notice" : "Calculate tree age in years, rounded up, for live trees"
+        }
+        "leaves()" :
+        {
+            "notice" : "Returns the amount of leaves the tree has."
         }
       },
       "notice" : "You can use this contract for only the most basic simulation"
@@ -249,7 +274,14 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
           {
             "rings" : "The number of rings from dendrochronological sample"
           },
-          "return" : "age in years, rounded up for partial years"
+          "returns" : {
+            "_0" : "Age in years, rounded up for partial years",
+            "_1" : "Name of the tree"
+          }
+        },
+        "leaves()" :
+        {
+            "details" : "Returns only a fixed number."
         }
       },
       "title" : "A simulator for trees"

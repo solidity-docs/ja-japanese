@@ -553,6 +553,7 @@ SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティ�
 検証ターゲット
 ==============
 
+<<<<<<< HEAD
 .. The types of verification targets created by the SMTChecker can also be
 .. customized via the CLI option ``--model-checker-target <targets>`` or the JSON
 .. option ``settings.modelChecker.targets=<targets>``.
@@ -560,6 +561,12 @@ SMTCheckerがデフォルトの ``rlimit`` でコントラクトプロパティ�
 .. more verification targets, and an array of one or more targets as strings in
 .. the JSON input.
 .. The keywords that represent the targets are:
+=======
+If there are any proved targets, the SMTChecker issues one warning per engine stating
+how many targets were proved. If the user wishes to see all the specific
+proved targets, the CLI option ``--model-checker-show-proved-safe`` and
+the JSON option ``settings.modelChecker.showProvedSafe = true`` can be used.
+>>>>>>> english/develop
 
 SMTCheckerによって作成される検証ターゲットの種類は、CLIオプション ``--model-checker-target <targets>`` またはJSONオプション ``settings.modelChecker.targets=<targets>`` によってカスタマイズすることもできます。
 CLIの場合、 ``<targets>`` は1つまたは複数の検証ターゲットのスペースなしコンマ区切りのリストで、JSON入力では1つまたは複数のターゲットを文字列として配列します。
@@ -794,10 +801,13 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
 
 以上のことから、 ``address`` 型や ``contract`` 型の特定の変数に対する信頼できる外部呼び出しは、常に同じ呼び出し元の式の型を持つようにします。
 
+<<<<<<< HEAD
 .. It is also helpful to cast the called contract's variable as the type of the most derived type in case of inheritance.
 
 また、継承の場合には、呼び出されたコントラクトの変数を最も派生した型の型としてキャストすることが有効です。
 
+=======
+>>>>>>> english/develop
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
@@ -846,6 +856,7 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
 
 関数 ``property_transfer`` では、外部呼び出しは変数 ``t`` に対して行われることに注意してください。
 
+<<<<<<< HEAD
 .. Another caveat of this mode are calls to state variables of contract type outside the analyzed contract.
 .. In the code below, even though ``B`` deploys ``A``, it is also possible for the address stored in ``B.a`` to be called by anyone outside of ``B`` in between transactions to ``B`` itself.
 .. To reflect the possible changes to ``B.a``, the encoding allows an unbounded number of calls to be made to ``B.a`` externally.
@@ -862,8 +873,11 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
 エンコーディングを論理的に強くすることは、トラステッドモードの拡張であり、現在開発中です。
 もし ``B.a`` が ``address`` 型を持つ場合、エンコーディングは ``B`` へのトランザクションの間にそのストレージが変更されないと仮定します。
 
+=======
+>>>>>>> english/develop
 .. code-block:: solidity
 
+    // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
 
     contract A {
@@ -1034,6 +1048,7 @@ internal関数の呼び出しはサポートされており、external関数の�
 
 CHCエンジンは、BMCよりも証明できる内容がはるかに多く、より多くの計算資源を必要とする可能性があります。
 
+<<<<<<< HEAD
 SMTソルバーとHornソルバー
 =========================
 
@@ -1043,6 +1058,19 @@ SMTソルバーとHornソルバー
 .. which is primarily an SMT solver and makes `Spacer
 .. <https://spacer.bitbucket.io/>`_ available as a Horn solver, and `Eldarica
 .. <https://github.com/uuverifiers/eldarica>`_ which does both.
+=======
+The user can choose which solvers should be used, if available, via the CLI
+option ``--model-checker-solvers {all,cvc5,eld,smtlib2,z3}`` or the JSON option
+``settings.modelChecker.solvers=[smtlib2,z3]``, where:
+
+- ``cvc5`` is used via its binary which must be installed in the system. Only BMC uses ``cvc5``.
+- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
+- ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
+  These can be used together with the compiler's `callback mechanism <https://github.com/ethereum/solc-js>`_ so that
+  any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
+  This can be used by both BMC and CHC depending on which solvers are called.
+- ``z3`` is available
+>>>>>>> english/develop
 
 上記の2つのエンジンは、自動定理証明器を論理的バックエンドとして使用しています。
 BMCはSMTソルバーを使用し、CHCはHornソルバーを使用しています。
@@ -1095,10 +1123,15 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
     .. If you are using z3 >=4.8.16 please use solc>=0.8.14, and conversely, only use older z3 with older solc releases.
     .. We also recommend using the latest z3 release which is what SMTChecker also does.
 
+<<<<<<< HEAD
     z3バージョン4.8.16は、以前のバージョンとのABI互換性を壊し、solc <=0.8.13で使用できません。
     もしz3 >=4.8.16を使用しているならば、solc>=0.8.14を使用してください。
     逆に、古いz3は古いsolcリリースとしか使用できません。
     また、SMTCheckerも最新のz3リリースを使用することをお勧めします。
+=======
+Please note that certain combinations of chosen engine and solver will lead to
+the SMTChecker doing nothing, for example choosing CHC and ``cvc5``.
+>>>>>>> english/develop
 
 .. Since both BMC and CHC use ``z3``, and ``z3`` is available in a greater variety
 .. of environments, including in the browser, most users will almost never need to be
@@ -1227,7 +1260,7 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 |complex)                           |                                      |
 +-----------------------------------+--------------------------------------+
 |external functions without         |BMC: Erase state knowledge and assume |
-|implementation                     |result is nondeterminisc.             |
+|implementation                     |result is nondeterministic.           |
 |                                   |CHC: Nondeterministic summary.        |
 |                                   |Try to infer invariants that hold     |
 |                                   |after the call returns.               |

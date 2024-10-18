@@ -19,7 +19,14 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 状態変数
 ========
 
+<<<<<<< HEAD
 状態変数は、コントラクトストレージに値が永続的に保存される変数です。
+=======
+State variables are variables whose values are either permanently stored in contract
+storage or, alternatively, temporarily stored in transient storage which is cleaned at
+the end of each transaction.
+See :ref:`data locations <locations>` for more details.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -102,11 +109,16 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.4.21 <0.9.0;
+    pragma solidity ^0.8.22;
+
+    event HighestBidIncreased(address bidder, uint amount); // Event
 
     contract SimpleAuction {
+<<<<<<< HEAD
         event HighestBidIncreased(address bidder, uint amount); // イベント
 
+=======
+>>>>>>> english/develop
         function bid() public payable {
             // ...
             emit HighestBidIncreased(msg.sender, msg.value); // イベントのトリガー

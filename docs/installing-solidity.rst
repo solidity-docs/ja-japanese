@@ -73,8 +73,13 @@ npm / Node.js
 Docker
 ======
 
+<<<<<<< HEAD
 SolidityのビルドのDockerイメージは、 ``ethereum`` オーガナイゼーションの ``solc`` イメージを使って利用できます。
 最新のリリースバージョンには ``stable`` タグを、developブランチの不安定な可能性のある変更には ``nightly`` タグを使用してください。
+=======
+Docker images of Solidity builds are available using the ``solc`` image from the ``ethereum`` organization.
+Use the ``stable`` tag for the latest released version, and ``nightly`` for potentially unstable changes in the ``develop`` branch.
+>>>>>>> english/develop
 
 Dockerイメージはコンパイラ実行ファイルを実行するので、すべてのコンパイラ引数を渡すことができます。
 例えば、以下のコマンドは、ステーブル版の ``solc`` イメージ（まだ持っていない場合）を取り出し、 ``--help`` 引数を渡して新しいコンテナで実行します。
@@ -83,14 +88,29 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
 
     docker run ethereum/solc:stable --help
 
+<<<<<<< HEAD
 タグには、0.5.4リリースのように、リリースのビルドバージョンを指定することもできます。
+=======
+You can specify release build versions in the tag. For example:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
-    docker run ethereum/solc:0.5.4 --help
+    docker run ethereum/solc:stable --help
 
+Note
+
+Specific compiler versions are supported as the Docker image tag such as `ethereum/solc:0.8.23`. We will be passing the
+`stable` tag here instead of specific version tag to ensure that users get the latest version by default and avoid the issue of
+an out-of-date version.
+
+<<<<<<< HEAD
 ホストマシンでSolidityのファイルをコンパイルするためにDockerイメージを使用するには、入出力用のローカルフォルダーをマウントし、コンパイルするコントラクトを指定します。
 例えば、以下のようになります。
+=======
+To use the Docker image to compile Solidity files on the host machine, mount a
+local folder for input and output, and specify the contract to compile. For example:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -179,7 +199,12 @@ macOSパッケージ
 
 Solidityの特定のバージョンが必要な場合は、Githubから直接Homebrew式をインストールできます。
 
+<<<<<<< HEAD
 `solidity.rb commits on Github <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_ を見てください。
+=======
+View
+`solidity.rb commits on GitHub <https://github.com/ethereum/homebrew-ethereum/commits/master/solidity.rb>`_.
+>>>>>>> english/develop
 
 欲しいバージョンのコミットハッシュをコピーして、自分のマシンでチェックしてみましょう。
 
@@ -214,10 +239,17 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
   唯一の例外は、壊れたファイルや使用できないファイルで、そのままにしておくと害になる可能性があるものです。
 - ファイルは HTTP と HTTPS の両方で提供されます。ファイルリストを安全な方法（git、HTTPS、IPFS、またはローカルにキャッシュ）で取得し、バイナリをダウンロードした後にバイナリのハッシュを検証する限り、バイナリ自体にHTTPSを使用する必要はありません。
 
+<<<<<<< HEAD
 同じバイナリは、ほとんどの場合、 `Solidity release page on Github`_ で入手できます。
 異なる点は、Githubのリリースページにある古いリリースを一般的には更新しないことです。
 つまり、命名規則が変わっても名前を変えないし、リリース時にサポートされていなかったプラットフォーム用のビルドも追加しません。
 これは ``solc-bin`` でのみ起こります。
+=======
+The same binaries are in most cases available on the `Solidity release page on GitHub`_. The
+difference is that we do not generally update old releases on the GitHub release page. This means
+that we do not rename them if the naming convention changes and we do not add builds for platforms
+that were not supported at the time of release. This only happens in ``solc-bin``.
+>>>>>>> english/develop
 
 ``solc-bin`` リポジトリには、複数のトップレベルのディレクトリがあり、それぞれが1つのプラットフォームを表しています。
 それぞれのディレクトリには、利用可能なバイナリの一覧を示す ``list.json`` ファイルが含まれています。
@@ -233,13 +265,13 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
       "keccak256": "0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3",
       "sha256": "0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2",
       "urls": [
-        "bzzr://16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1",
         "dweb:/ipfs/QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS"
       ]
     }
 
 これは次のことを意味します。
 
+<<<<<<< HEAD
 - 同じディレクトリに  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_  という名前でバイナリが置かれています。   このファイルはシンボリックリンクになっている可能性があるので、git を使ってダウンロードしていない場合やファイルシステムがシンボリックリンクをサポートしていない場合は、自分で解決する必要があります。
 
 - このバイナリは https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js にもミラーされています。   この場合、git は必要ありません。シンボリックリンクは透過的に解決され、ファイルのコピーを提供するか HTTP リダイレクトを返します。
@@ -251,6 +283,23 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 - keccak256ハッシュを ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3`` と比較することで、バイナリの完全性を確認できます。  ハッシュは、 `sha3sum`_ が提供する ``keccak256sum`` ユーティリティーを使ってコマンドラインで計算するか、JavaScriptで `keccak256() function   from ethereumjs-util`_ を使って計算できます。
 
 - また、sha256ハッシュを ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` と比較することで、バイナリの完全性を確認できます。
+=======
+- You can find the binary in the same directory under the name
+  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
+  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
+  git to download it or your file system does not support symlinks.
+- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
+  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
+  of the file or returning a HTTP redirect.
+- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
+  Please, be aware that the order of items in the ``urls`` array is not predetermined or guaranteed and users should not rely on it.
+- You can verify the integrity of the binary by comparing its keccak256 hash to
+  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
+  on the command-line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
+  from ethereumjs-util`_ in JavaScript.
+- You can also verify the integrity of the binary by comparing its sha256 hash to
+  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -273,14 +322,12 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
     私たちがコントロールできない ``ethereum.github.io`` ドメインとは異なり、 ``binaries.soliditylang.org`` は長期的に機能し、同じURL構造を維持することが保証されています。
 
 .. _IPFS: https://ipfs.io
-.. _Swarm: https://swarm-gateways.net/bzz:/swarm.eth
 .. _solc-bin: https://github.com/ethereum/solc-bin/
-.. _Solidity release page on github: https://github.com/ethereum/solidity/releases
+.. _Solidity release page on GitHub: https://github.com/ethereum/solidity/releases
 .. _sha3sum: https://github.com/maandree/sha3sum
 .. _keccak256() function from ethereumjs-util: https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
 .. _WebAssembly builds: https://emscripten.org/docs/compiling/WebAssembly.html
 .. _QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS: https://gateway.ipfs.io/ipfs/QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS
-.. _16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1: https://swarm-gateways.net/bzz:/16c5f09109c793db99fe35f037c6092b061bd39260ee7a677c8a97f18c955ab1/
 
 .. _building-from-source:
 
@@ -290,6 +337,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 前提知識 - 全オペレーティングシステム共通
 -----------------------------------------
 
+<<<<<<< HEAD
 以下は、Solidityのすべてのビルドに依存しています。
 
 +----------------------------------------------------------+-------------------------------------------------------+
@@ -305,8 +353,22 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 +----------------------------------------------------------+-------------------------------------------------------+
 | `cvc4`_ (オプション)                                     | SMTチェッカーと併用する場合。                         |
 +----------------------------------------------------------+-------------------------------------------------------+
+=======
++-----------------------------------+-------------------------------------------------------+
+| Software                          | Notes                                                 |
++===================================+=======================================================+
+| `CMake`_ (version 3.21.3+ on      | Cross-platform build file generator.                  |
+| Windows, 3.13+ otherwise)         |                                                       |
++-----------------------------------+-------------------------------------------------------+
+| `Boost`_ (version 1.77+ on        | C++ libraries.                                        |
+| Windows, 1.67+ otherwise)         |                                                       |
++-----------------------------------+-------------------------------------------------------+
+| `Git`_                            | Command-line tool for retrieving source code.         |
++-----------------------------------+-------------------------------------------------------+
+| `z3`_ (version 4.8.16+, Optional) | For use with SMT checker.                             |
++-----------------------------------+-------------------------------------------------------+
+>>>>>>> english/develop
 
-.. _cvc4: https://cvc4.cs.stanford.edu/web/
 .. _Git: https://git-scm.com/download
 .. _Boost: https://www.boost.org
 .. _CMake: https://cmake.org/download/
@@ -350,11 +412,22 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 -  `Clang <https://clang.llvm.org/>`_ 、バージョン7以上
 -  `MSVC <https://visualstudio.microsoft.com/vs/>`_ 、バージョン2019以上
 
+<<<<<<< HEAD
 前提知識 - macOS
 ----------------
 
 macOSでビルドする場合は、最新版の `Xcodeがインストールされていること <https://developer.apple.com/xcode/download/>`_ を確認してください。
 Xcodeを初めてインストールする場合や、新しいバージョンをインストールしたばかりの場合は、コマンドラインでのビルドを行う前にライセンスに同意する必要があります。
+=======
+For macOS builds, ensure that you have the latest version of
+`Xcode installed <https://developer.apple.com/xcode/resources/>`_.
+This contains the `Clang C++ compiler <https://en.wikipedia.org/wiki/Clang>`_, the
+`Xcode IDE <https://en.wikipedia.org/wiki/Xcode>`_ and other Apple development
+tools that are required for building C++ applications on OS X.
+If you are installing Xcode for the first time, or have just installed a new
+version then you will need to agree to the license before you can do
+command-line builds:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
@@ -375,7 +448,11 @@ SolidityのWindowsビルドには、以下の依存関係をインストール�
 +-----------------------------------+-------------------------------------------------------+
 | `Visual Studio 2019`_  (Optional) | C++コンパイラと開発環境                               |
 +-----------------------------------+-------------------------------------------------------+
+<<<<<<< HEAD
 | `Boost`_ (version 1.77)           | C++ライブラリ                                         |
+=======
+| `Boost`_ (version 1.77+)          | C++ libraries.                                        |
+>>>>>>> english/develop
 +-----------------------------------+-------------------------------------------------------+
 
 すでに1つのIDEを持っていて、コンパイラとライブラリだけが必要な場合は、Visual Studio 2019 Build Toolsをインストールできます。
@@ -419,6 +496,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
     git remote add personal git@github.com:[username]/solidity.git
 
 .. note::
+<<<<<<< HEAD
 
     この方法では、プレリリースビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。
     リリースされたSolidityコンパイラを再構築したい場合は、githubのリリースページにあるソースtarballを使用してください。
@@ -426,6 +504,16 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
     https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     （GitHubで提供されている「ソースコード」ではありません）。
+=======
+    This method will result in a pre-release build leading to e.g. a flag
+    being set in each bytecode produced by such a compiler.
+    If you want to re-build a released Solidity compiler, then
+    please use the source tarball on the GitHub release page:
+
+    https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
+
+    (not the "Source code" provided by GitHub).
+>>>>>>> english/develop
 
 コマンドラインビルド
 --------------------
@@ -485,24 +573,32 @@ CMakeオプション
 
 SMTソルバー
 -----------
+<<<<<<< HEAD
+=======
+Solidity can be built against Z3 SMT solver and will do so by default if
+it is found in the system. Z3 can be disabled by a ``cmake`` option.
+>>>>>>> english/develop
 
 SolidityはSMTソルバーに対してビルドでき、システムで見つかった場合、デフォルトでそうします。
 それぞれのソルバーは ``cmake`` オプションで無効にできます。
 
 *注: 場合によっては、ビルドに失敗したときの回避策としても有効です。*
 
+<<<<<<< HEAD
 ビルドフォルダ内では、デフォルトで有効になっているので、無効にできます。
+=======
+Inside the build folder you can disable Z3, since it is enabled by default:
+>>>>>>> english/develop
 
 .. code-block:: bash
 
-    # disables only Z3 SMT Solver.
+    # disables Z3 SMT Solver.
     cmake .. -DUSE_Z3=OFF
 
-    # disables only CVC4 SMT Solver.
-    cmake .. -DUSE_CVC4=OFF
+.. note::
 
-    # disables both Z3 and CVC4
-    cmake .. -DUSE_CVC4=OFF -DUSE_Z3=OFF
+    Solidity can optionally use other solvers, namely ``cvc5`` and ``Eldarica``,
+    but their presence is checked only at runtime, they are not needed for the build to succeed.
 
 バージョン文字列の詳細
 ======================

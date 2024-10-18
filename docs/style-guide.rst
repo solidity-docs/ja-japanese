@@ -237,7 +237,7 @@ OK:
         bytes32[] options
     );
 
-    LongAndLotsOfArgs(
+    emit LongAndLotsOfArgs(
         sender,
         recipient,
         publicKey,
@@ -255,7 +255,7 @@ NG:
                             uint256 amount,
                             bytes32[] options);
 
-    LongAndLotsOfArgs(sender,
+    emit LongAndLotsOfArgs(sender,
                       recipient,
                       publicKey,
                       amount,
@@ -707,11 +707,16 @@ OK:
         return balanceOf[from];
     }
 
-    function shutdown() public onlyOwner {
-        selfdestruct(owner);
+    function increment(uint x) public pure onlyOwner returns (uint) {
+        return x + 1;
     }
 
+<<<<<<< HEAD
 NG:
+=======
+
+No:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -719,8 +724,8 @@ NG:
         return balanceOf[from];
     }
 
-    function shutdown() onlyOwner public {
-        selfdestruct(owner);
+    function increment(uint x) onlyOwner public pure returns (uint) {
+        return x + 1;
     }
 
 .. For long function declarations, it is recommended to drop each argument onto
@@ -1109,11 +1114,23 @@ NG:
 
 .. Order of Layout
 
+<<<<<<< HEAD
 ****************
 レイアウトの順序
 ****************
 
 .. Layout contract elements in the following order:
+=======
+Contract elements should be laid out in the following order:
+
+1. Pragma statements
+2. Import statements
+3. Events
+4. Errors
+5. Interfaces
+6. Libraries
+7. Contracts
+>>>>>>> english/develop
 
 コントラクトの要素を以下の順序でレイアウトします。
 

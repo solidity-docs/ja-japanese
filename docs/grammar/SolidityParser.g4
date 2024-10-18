@@ -21,6 +21,7 @@ sourceUnit: (
 	| enumDefinition
 	| userDefinedValueTypeDefinition
 	| errorDefinition
+	| eventDefinition
 )* EOF;
 
 //@doc: inline
@@ -246,7 +247,7 @@ structMember: type=typeName name=identifier Semicolon;
 /**
  * enumの定義。ソースユニット、コントラクト、ライブラリ、インターフェースのトップレベルで定義できます。
  */
-enumDefinition:	Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
+enumDefinition: Enum name=identifier LBrace enumValues+=identifier (Comma enumValues+=identifier)* RBrace;
 /**
  * ユーザー定義の値型を定義。ソースユニット、コントラクト、ライブラリ、インターフェースのトップレベルで定義できます。
  */
@@ -257,7 +258,7 @@ userDefinedValueTypeDefinition:
  * 状態変数の宣言。
  */
 stateVariableDeclaration
-locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean overrideSpecifierSet = false]
+locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean overrideSpecifierSet = false, boolean locationSet = false]
 :
 	type=typeName
 	(
@@ -267,6 +268,7 @@ locals [boolean constantnessSet = false, boolean visibilitySet = false, boolean 
 		| {!$constantnessSet}? Constant {$constantnessSet = true;}
 		| {!$overrideSpecifierSet}? overrideSpecifier {$overrideSpecifierSet = true;}
 		| {!$constantnessSet}? Immutable {$constantnessSet = true;}
+		| {!$locationSet}? Transient {$locationSet = true;}
 	)*
 	name=identifier
 	(Assign initialValue=expression)?
@@ -332,7 +334,14 @@ userDefinableOperator:
  * Using directive to attach library functions and free functions to types.
  * Can occur within contracts and libraries and at the file level.
  */
-usingDirective: Using (identifierPath | (LBrace identifierPath (As userDefinableOperator)? (Comma identifierPath (As userDefinableOperator)?)* RBrace)) For (Mul | typeName) Global? Semicolon;
+usingDirective:
+  Using (
+    identifierPath
+    | (LBrace usingAliases (Comma usingAliases)* RBrace)
+  ) For (Mul | typeName) Global? Semicolon;
+
+usingAliases: identifierPath (As userDefinableOperator)?;
+
 /**
  * 型名には、基本型、関数型、マッピング型、ユーザ定義型（コントラクトや構造体など）、配列型があります。
  */
@@ -384,7 +393,7 @@ expression:
 	| New typeName # NewExpr
 	| tupleExpression # Tuple
 	| inlineArrayExpression # InlineArray
- 	| (
+	| (
 		identifier
 		| literal
 		| literalWithSubDenomination
@@ -403,7 +412,7 @@ inlineArrayExpression: LBrack (expression ( Comma expression)* ) RBrack;
 /**
  * 通常の非キーワード識別子以外に、'from' や 'error' などのキーワードも識別子として使用することができます。
  */
-identifier: Identifier | From | Error | Revert | Global;
+identifier: Identifier | From | Error | Revert | Global | Transient;
 
 literal: stringLiteral | numberLiteral | booleanLiteral | hexStringLiteral | unicodeStringLiteral;
 
