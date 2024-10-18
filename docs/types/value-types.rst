@@ -9,6 +9,12 @@
 下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます。
 つまり、関数の引数や代入で使われるときは、常にコピーされます。
 
+Unlike :ref:`reference types <reference-types>`, value type declarations do not
+specify a data location since they are small enough to be stored on the stack.
+The only exception are :ref:`state variables <structure-state-variables>`.
+Those are by default located in storage, but can also be marked as
+:ref:`transient <transient-storage>`, :ref:`constant or immutable <constants>`.
+
 .. index:: ! bool, ! true, ! false
 
 ブーリアン
@@ -357,6 +363,13 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 そのコードのkeccak-256ハッシュを取得するには ``.codehash`` を使用します（ ``bytes32`` として）。
 なお、 ``addr.codehash`` は ``keccak256(addr.code)`` を使用するよりもコストが小さいです。
 
+.. warning::
+    The output of ``addr.codehash`` may be ``0`` if the account associated with ``addr`` is empty or non-existent
+    (i.e., it has no code, zero balance, and zero nonce as defined by `EIP-161 <https://eips.ethereum.org/EIPS/eip-161>`_).
+    If the account has no code but a non-zero balance or nonce, then ``addr.codehash`` will output the Keccak-256 hash of empty data
+    (i.e., ``keccak256("")`` which is equal to ``c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470``), as defined by
+    `EIP-1052 <https://eips.ethereum.org/EIPS/eip-1052>`_.
+
 .. note::
 
     すべてのコントラクトは ``address`` 型に変換できるので、 ``address(this).balance`` を使って現在のコントラクトの残高を照会することが可能です。
@@ -426,6 +439,7 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 
 .. note::
 
+<<<<<<< HEAD
     バージョン0.8.0以前では、 ``byte`` は ``bytes1`` のエイリアスでした。
 
 動的サイズのバイト列
@@ -440,6 +454,8 @@ Byzantiumから ``staticcall`` も使えるようになりました。
     :ref:`arrays` を参照。
     値型ではありません！
 
+=======
+>>>>>>> english/develop
 .. index:: address, ! literal;address
 
 .. _address_literals:
@@ -799,12 +815,24 @@ Unicodeリテラル
     .. The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
     .. Marking the parameters as ``calldata`` only affects the implementation of the external function and is meaningless in a function pointer on the caller's side.
 
+<<<<<<< HEAD
     ``calldata`` パラメータを持つ外部関数は、 ``calldata`` パラメータを持つ外部関数型と互換性がありません。
     代わりに ``memory`` パラメータを持つ対応する型と互換性があります。
     例えば、 ``function (string calldata) external`` 型の値が指すことのできる関数はありませんが、 ``function (string memory) external`` は ``function f(string memory) external {}`` と ``function g(string calldata) external {}`` を指すことができます。
     これは、どちらの場所でも、引数が同じように関数に渡されるからです。
     呼び出し元はcalldataを直接外部関数に渡すことはできず、常に引数をメモリにABIエンコードします。
     パラメータを ``calldata`` としてマークすることは、外部関数の実装にのみ影響し、呼び出し側の関数ポインタでは意味を持ちません。
+=======
+.. warning::
+    Comparison of internal function pointers can have unexpected results in the legacy pipeline with the optimizer enabled,
+    as it can collapse identical functions into one, which will then lead to said function pointers comparing as equal instead of not.
+    Such comparisons are not advised, and will lead to the compiler issuing a warning, until the next breaking release (0.9.0),
+    when the warning will be upgraded to an error, thereby making such comparisons disallowed.
+
+Libraries are excluded because they require a ``delegatecall`` and use :ref:`a different ABI
+convention for their selectors <library-selectors>`.
+Functions declared in interfaces do not have definitions so pointing at them does not make sense either.
+>>>>>>> english/develop
 
 ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。
 インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。

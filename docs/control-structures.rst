@@ -627,11 +627,18 @@ Solidityでは、エラーの処理にステートをリバートする例外を
     低レベル関数の ``call`` 、 ``delegatecall`` 、 ``staticcall`` は、EVMの設計の一環として、呼び出されたアカウントが存在しない場合、最初の戻り値として ``true`` を返します。
     必要に応じて、呼び出す前にアカウントの存在を確認する必要があります。
 
+<<<<<<< HEAD
 .. Exceptions can contain error data that is passed back to the caller
 .. in the form of :ref:`error instances <errors>`.
 .. The built-in errors ``Error(string)`` and ``Panic(uint256)`` are
 .. used by special functions, as explained below. ``Error`` is used for "regular" error conditions
 .. while ``Panic`` is used for errors that should not be present in bug-free code.
+=======
+.. _assert-and-require-statements:
+
+Panic via ``assert`` and Error via ``require``
+----------------------------------------------
+>>>>>>> english/develop
 
 例外にはエラーデータを含めることができ、 :ref:`error instances <errors>` の形で呼び出し側に戻されます。
 組み込みエラーの ``Error(string)`` と ``Panic(uint256)`` は、以下に説明するように特別な関数で使用されます。
@@ -653,6 +660,7 @@ Solidityでは、エラーの処理にステートをリバートする例外を
 .. tools can evaluate your contract to identify the conditions and
 .. function calls which will cause a Panic.
 
+<<<<<<< HEAD
 Assertは、内部エラーのテストや不変性のチェックにのみ使用します。
 適切に機能しているコードは、外部からの不正な入力に対してもパニックを起こさないはずです。
 もしそうなってしまったら、コントラクトにバグがあるので修正する必要があります。
@@ -712,6 +720,22 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
     代わりに ``if (!condition) revert CustomError();`` を仕様してください。
 
 ``Error(string)`` 例外（またはデータのない例外）は、以下のような場合にコンパイラによって生成されます。
+=======
+The ``require`` function provides three overloads:
+
+1. ``require(bool)`` which will revert without any data (not even an error selector).
+2. ``require(bool, string)`` which will revert with an ``Error(string)``.
+3. ``require(bool, error)`` which will revert with the custom, user supplied error provided as the second argument.
+
+.. note::
+    ``require`` arguments are evaluated unconditionally, so take special care to make sure that
+    they are not expressions with unexpected side-effects.
+    For example, in ``require(condition, CustomError(f()));`` and ``require(condition, f());``,
+    function ``f()`` will be called regardless of whether the supplied condition is ``true`` or ``false``.
+
+An ``Error(string)`` exception (or an exception without data) is generated
+by the compiler in the following situations:
+>>>>>>> english/develop
 
 .. #. Calling ``require(x)`` where ``x`` evaluates to ``false``.
 .. #. If you use ``revert()`` or ``revert("description")``.
@@ -724,6 +748,7 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
 #. ``revert()`` や ``revert("description")`` を使う場合。
 
+<<<<<<< HEAD
 #. コードを含まないコントラクトを対象とした外部関数呼び出しを行った場合。
 
 #. ``payable`` モディファイアのないパブリック関数（コンストラクタ、フォールバック関数を含む）を介してコントラクトがEtherを受け取る場合。
@@ -757,6 +782,13 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 ``require`` にはオプションでメッセージ文字列を指定できますが、 ``assert`` には指定できません。
 
 .. note::
+=======
+You can optionally provide a message string or a custom error to ``require``, but not to ``assert``.
+
+.. note::
+    If you do not provide a string or custom error argument to ``require``, it will revert
+    with empty error data, not even including the error selector.
+>>>>>>> english/develop
 
     ``require`` に文字列の引数を与えない場合、エラーセレクタを含めずに空のエラーデータでリバートします。
 

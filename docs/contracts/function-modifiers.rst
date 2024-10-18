@@ -16,7 +16,10 @@
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.1 <0.9.0;
+<<<<<<< HEAD
     // 非推奨のselfdestructを使用するためwarningが出力されます。
+=======
+>>>>>>> english/develop
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -35,6 +38,7 @@
         }
     }
 
+<<<<<<< HEAD
     contract destructible is owned {
         // このコントラクトは `onlyOwner` モディファイアを `owned` から継承し、 `destroy` 関数に適用します。
         // これにより、 `destroy` への呼び出しは、保存されているオーナーによって実行された場合にのみ有効となります。
@@ -43,6 +47,8 @@
         }
     }
 
+=======
+>>>>>>> english/develop
     contract priced {
         // モディファイアは引数を受け取ることができます:
         modifier costs(uint price) {
@@ -52,7 +58,7 @@
         }
     }
 
-    contract Register is priced, destructible {
+    contract Register is priced, owned {
         mapping(address => bool) registeredAddresses;
         uint price;
 
@@ -64,6 +70,9 @@
             registeredAddresses[msg.sender] = true;
         }
 
+        // This contract inherits the `onlyOwner` modifier from
+        // the `owned` contract. As a result, calls to `changePrice` will
+        // only take effect if they are made by the stored owner.
         function changePrice(uint price_) public onlyOwner {
             price = price_;
         }
@@ -129,9 +138,14 @@
 
     Solidityの以前のバージョンでは、モディファイアを持つ関数内の ``return`` 文の動作が異なっていました。
 
+<<<<<<< HEAD
 .. An explicit return from a modifier with ``return;`` does not affect the values returned by the function.
 .. The modifier can, however, choose not to execute the function body at all and in that case the return
 .. variables are set to their :ref:`default values<default-value>` just as if the function had an empty body.
+=======
+The ``_`` symbol can appear in the modifier multiple times. Each occurrence is replaced with
+the function body, and the function returns the return value of the final occurrence.
+>>>>>>> english/develop
 
 ``return;`` を持つモディファイアからの明示的なリターンは、関数が返す値に影響を与えません。
 しかし、モディファイアは、関数本体を全く実行しないことを選択でき、その場合、関数本体が空であった場合と同様に、戻り値の変数は :ref:`デフォルト値<default-value>` に設定されます。

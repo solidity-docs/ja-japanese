@@ -25,10 +25,20 @@
 コールデータは、関数の引数が格納される、変更不可能で永続性のない領域で、ほとんどメモリのように動作します。
 
 .. note::
+<<<<<<< HEAD
 
     できれば、データの場所として ``calldata`` を使うようにしましょう。
     コピーを避けることができますし、データが変更されないようにすることもできます。
     ``calldata`` 型のデータを持つ配列や構造体は、関数から返すことができますが、そのような型を代入することはできません。
+=======
+    ``transient`` is not yet supported as a data location for reference types.
+
+.. note::
+    If you can, try to use ``calldata`` as data location because it will avoid copies and
+    also makes sure that the data cannot be modified. Arrays and structs with ``calldata``
+    data location can also be returned from functions, but it is not possible to
+    allocate such types.
+>>>>>>> english/develop
 
 .. note::
 
@@ -340,9 +350,16 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
     配列の配列を（publicではなく）外部関数で使用するには、ABI coder v2を有効にする必要があります。
 
 .. note::
+<<<<<<< HEAD
 
     Byzantium以前のEVMバージョンでは、関数呼び出しから返される動的配列にアクセスできませんでした。
     動的配列を返す関数を呼び出す場合は、必ずByzantiumモードに設定されたEVMを使用してください。
+=======
+    In EVM versions before Byzantium, it was not possible to access
+    dynamic arrays returned from function calls. If you call functions
+    that return dynamic arrays, make sure to use an EVM that is set to
+    Byzantium mode.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -357,7 +374,11 @@ Solidityのすべての変数と同様に、新しく割り当てられた配列
         // すべての状態変数のデータロケーションはストレージです。
         bool[2][] pairsOfFlags;
 
+<<<<<<< HEAD
         // newPairsはメモリに格納されます - パブリックコントラクト関数の引数として唯一の選択肢です。
+=======
+        // newPairs is stored in memory
+>>>>>>> english/develop
         function setAllFlagPairs(bool[2][] memory newPairs) public {
             // ストレージ配列への代入は、 ``newPairs`` のコピーを実行し、完全な配列 ``pairsOfFlags`` を置き換えます。
             pairsOfFlags = newPairs;

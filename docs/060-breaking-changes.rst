@@ -142,12 +142,17 @@ Solidity v0.6.0の破壊的変更点
 
 このセクションでは、Solidity 0.6.0以前では実現できなかったことや、実現が困難だったことを挙げています。
 
+<<<<<<< HEAD
 .. * The :ref:`try/catch statement <try-catch>` allows you to react on failed external calls.
 .. * ``struct`` and ``enum`` types can be declared at file level.
 .. * Array slices can be used for calldata arrays, for example ``abi.decode(msg.data[4:], (uint, uint))`` is a low-level way to decode the function call payload.
 .. * Natspec supports multiple return parameters in developer documentation, enforcing the same naming check as ``@param``.
 .. * Yul and Inline Assembly have a new statement called ``leave`` that exits the current function.
 .. * Conversions from ``address`` to ``address payable`` are now possible via ``payable(x)``, where ``x`` must be of type ``address``.
+=======
+A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
+It is enabled by default, but passing ``--old-reporter`` falls back to the deprecated old error reporter.
+>>>>>>> english/develop
 
 * :ref:`try/catch文 <try-catch>` では、失敗した外部呼び出しに反応できます。
 * ``struct`` および ``enum`` 型は、ファイルレベルで宣言できます。

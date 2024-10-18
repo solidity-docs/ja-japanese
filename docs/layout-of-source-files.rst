@@ -26,7 +26,12 @@ Solidity は `npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/
 
 もちろん、このコメントを提供することで、各ソースファイルに特定のライセンスヘッダーを記載しなければならないとか、オリジナルの著作権者に言及しなければならないといった、ライセンスに関する他の義務から解放されるわけではありません。
 
+<<<<<<< HEAD
 コメントは、ファイルレベルではファイルのどこにあってもコンパイラに認識されますが、ファイルの先頭に置くことをお勧めします。
+=======
+More information about how to use SPDX license identifiers
+can be found at the `SPDX website <https://spdx.dev/learn/handling-license-info/#how>`_.
+>>>>>>> english/develop
 
 SPDXライセンス識別子の使用方法の詳細は、 `SPDXのWebサイト <https://spdx.org/ids-how>`_ に記載されています。
 

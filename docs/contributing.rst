@@ -19,8 +19,12 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 * `Solidityフォーラム <https://forum.soliditylang.org/>`_ で言語の変更や新機能を提案やフィードバックの提供による言語設計プロセスへの関与。
 
+<<<<<<< HEAD
 .. To get started, you can try :ref:`building-from-source` in order to familiarize yourself with the components of Solidity and the build process.
 .. Also, it may be useful to become well-versed at writing smart-contracts in Solidity.
+=======
+The call takes place on `Jitsi <https://meet.ethereum.org/solidity>`_.
+>>>>>>> english/develop
 
 まずは :ref:`building-from-source` を使って、Solidityのコンポーネントやビルドプロセスに慣れてみてください。
 また、Solidityでのスマートコントラクトの書き方を熟知することも有効でしょう。
@@ -65,8 +69,15 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 言語設計に関する技術的な議論については、 `Solidity forum <https://forum.soliditylang.org/>`_ への投稿が正しい場所です（ :ref:`solidity_language_design` を参照してください）。
 
+<<<<<<< HEAD
 プルリクエストのワークフロー
 ============================
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ethereum/evmone/releases>`_,
+`libz3 <https://github.com/Z3Prover/z3>`_, `Eldarica <https://github.com/uuverifiers/eldarica/>`_,
+`cvc5 <https://github.com/cvc5/cvc5>`).
+>>>>>>> english/develop
 
 .. In order to contribute, please fork off of the ``develop`` branch and make your changes there.
 .. Your commit messages should detail *why* you made your change in addition to *what* you did (unless it is a tiny change).
@@ -88,6 +99,7 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 ただし、より大きな変更を行う場合は、まず `Solidity Development Gitter チャンネル <https://gitter.im/ethereum/solidity-dev>`_ （前述のものとは異なり、こちらは言語の使い方ではなく、コンパイラや言語の開発に重点を置いています）に相談してください。
 
+<<<<<<< HEAD
 .. New features and bugfixes should be added to the ``Changelog.md`` file: please follow the style of previous entries, when applicable.
 
 新機能やバグフィックスは、 ``Changelog.md`` ファイルに追加してください。
@@ -178,6 +190,21 @@ SMTテストを実行するためには、 ``libz3`` ライブラリがインス
 
 ``libz3`` ライブラリがシステムにインストールされていない場合は、 ``./scripts/tests.sh`` を実行する前に ``SMT_FLAGS=--no-smt`` をエクスポートしてSMTテストを無効にするか、 ``./scripts/soltest.sh --no-smt`` を実行する必要があります。
 これらのテストは ``libsolidity/smtCheckerTests`` と ``libsolidity/smtCheckerTestsJSON`` です。
+=======
+The ``evmone`` library should end with the file name
+extension ``.so`` on Linux, ``.dll`` on Windows systems and ``.dylib`` on macOS.
+
+For running SMT tests, the ``libz3`` library must be installed and locatable
+by ``cmake`` during compiler configure stage.
+A few SMT tests use ``Eldarica`` instead of ``Z3``.
+``Eldarica`` is a runtime dependency, its executable (``eld``) must be present in ``PATH`` for the tests to pass.
+However, if ``Eldarica`` is not found, these tests will be automatically skipped.
+
+If the ``libz3`` library is not installed on your system, you should disable the
+SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
+running ``./scripts/soltest.sh --no-smt``.
+These tests are ``libsolidity/smtCheckerTests``.
+>>>>>>> english/develop
 
 .. note::
 
@@ -768,7 +795,13 @@ Solidityフォーラムは、新しい言語機能やその実装のアイデア
 
 .. As soon as proposals get more tangible, their implementation will also be discussed in the `Solidity GitHub repository <https://github.com/ethereum/solidity>`_ in the form of issues.
 
+<<<<<<< HEAD
 提案が具体的になれば、その実現に向けて `SolidityのGitHubリポジトリ <https://github.com/ethereum/solidity>`_ でもイシューという形で議論されます。
+=======
+If you want to know where the team is standing in terms of implementing new features, you can follow the implementation status in the `Solidity GitHub project <https://github.com/orgs/ethereum/projects/17>`_.
+Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
+see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/ethereum/solidity/tree/breaking>`_.
+>>>>>>> english/develop
 
 .. In addition to the forum and issue discussions, we regularly host language design discussion calls in which selected topics, issues or feature implementations are debated in detail.
 .. The invitation to those calls is shared via the forum.

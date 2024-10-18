@@ -81,7 +81,7 @@ Solidityロゴを使用する際は、Solidityロゴのガイドラインを尊�
 Solidityロゴのガイドライン
 ==========================
 
-.. image:: logo.svg
+.. image:: solidity_logo.svg
   :width: 256
 
 .. *(Right click on the logo to download it.)*

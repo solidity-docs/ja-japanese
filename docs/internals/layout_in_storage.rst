@@ -1,5 +1,6 @@
-.. index:: storage, state variable, mapping
+.. index:: storage, state variable, mapping, transient storage
 
+<<<<<<< HEAD
 **********************************
 ストレージ内の状態変数のレイアウト
 **********************************
@@ -10,6 +11,28 @@
 動的なサイズの配列やマッピング（後述）を除き、データはスロット ``0`` に格納された最初の状態変数から順に連続して格納されます。
 各変数には、その型に応じてバイト単位のサイズが決定されます。
 32バイトに満たない複数の連続したアイテムは、以下のルールに従って、可能な限り1つのストレージスロットにまとめられます。
+=======
+**********************************************************
+Layout of State Variables in Storage and Transient Storage
+**********************************************************
+
+.. _storage-inplace-encoding:
+
+.. note::
+    The rules described in this section apply for both storage and transient storage data locations.
+    The layouts are completely independent and don't interfere with each other's variable locations.
+    Thus storage and transient storage state variables can be safely interleaved without any side effects.
+    Only value types are supported for transient storage.
+
+State variables of contracts are stored in storage in a compact way such
+that multiple values sometimes use the same storage slot.
+Except for dynamically-sized arrays and mappings (see below), data is stored
+contiguously item after item starting with the first state variable,
+which is stored in slot ``0``. For each variable,
+a size in bytes is determined according to its type.
+Multiple, contiguous items that need less than 32 bytes are packed into a single
+storage slot if possible, according to the following rules:
+>>>>>>> english/develop
 
 - ストレージスロットの最初のアイテムは、下位にアラインされ格納されます。
 - 値型はそれを格納するのに必要な数のバイトしか使用しません。
@@ -213,10 +236,17 @@ JSON出力
 
 .. _storage-layout-top-level:
 
+<<<<<<< HEAD
 .. The storage layout of a contract can be requested via
 .. the :ref:`standard JSON interface <compiler-api>`.  The output is a JSON object containing two keys,
 .. ``storage`` and ``types``.  The ``storage`` object is an array where each
 .. element has the following form:
+=======
+The storage (or transient storage) layout of a contract can be requested via
+the :ref:`standard JSON interface <compiler-api>`.  The output is a JSON object containing two keys,
+``storage`` and ``types``.  The ``storage`` object is an array where each
+element has the following form:
+>>>>>>> english/develop
 
 コントラクトのストレージレイアウトは、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
 出力されるのは、 ``storage`` と ``types`` の2つのキーを含むJSONオブジェクトです。
@@ -317,15 +347,20 @@ JSON出力
 .. note::
   コントラクトのストレージレイアウトのJSON出力フォーマットはまだ実験的なものと考えられており、Solidityの非破壊的なリリースで変更される可能性があります。
 
+<<<<<<< HEAD
 .. The following example shows a contract and its storage layout, containing
 .. value and reference types, types that are encoded packed, and nested types.
+=======
+The following example shows a contract and both its storage and transient storage layout,
+containing value and reference types, types that are encoded packed, and nested types.
+>>>>>>> english/develop
 
 次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージのレイアウトを示しています。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.4.0 <0.9.0;
+    pragma solidity ^0.8.28;
     contract A {
         struct S {
             uint128 a;
@@ -335,14 +370,21 @@ JSON出力
         }
 
         uint x;
-        uint y;
+        uint transient y;
+        uint w;
+        uint transient z;
+
         S s;
         address addr;
+        address transient taddr;
         mapping(uint => mapping(address => bool)) map;
         uint[] array;
         string s1;
         bytes b1;
     }
+
+Storage Layout
+--------------
 
 .. code-block:: json
 
@@ -357,15 +399,15 @@ JSON出力
           "type": "t_uint256"
         },
         {
-          "astId": 17,
+          "astId": 19,
           "contract": "fileA:A",
-          "label": "y",
+          "label": "w",
           "offset": 0,
           "slot": "1",
           "type": "t_uint256"
         },
         {
-          "astId": 20,
+          "astId": 24,
           "contract": "fileA:A",
           "label": "s",
           "offset": 0,
@@ -373,7 +415,7 @@ JSON出力
           "type": "t_struct(S)13_storage"
         },
         {
-          "astId": 22,
+          "astId": 26,
           "contract": "fileA:A",
           "label": "addr",
           "offset": 0,
@@ -381,7 +423,7 @@ JSON出力
           "type": "t_address"
         },
         {
-          "astId": 28,
+          "astId": 34,
           "contract": "fileA:A",
           "label": "map",
           "offset": 0,
@@ -389,7 +431,7 @@ JSON出力
           "type": "t_mapping(t_uint256,t_mapping(t_address,t_bool))"
         },
         {
-          "astId": 31,
+          "astId": 37,
           "contract": "fileA:A",
           "label": "array",
           "offset": 0,
@@ -397,7 +439,7 @@ JSON出力
           "type": "t_array(t_uint256)dyn_storage"
         },
         {
-          "astId": 33,
+          "astId": 39,
           "contract": "fileA:A",
           "label": "s1",
           "offset": 0,
@@ -405,7 +447,7 @@ JSON出力
           "type": "t_string_storage"
         },
         {
-          "astId": 35,
+          "astId": 41,
           "contract": "fileA:A",
           "label": "b1",
           "offset": 0,
@@ -512,3 +554,51 @@ JSON出力
       }
     }
 
+<<<<<<< HEAD
+=======
+Transient Storage Layout
+------------------------
+
+.. code-block:: json
+
+    {
+      "storage": [
+        {
+          "astId": 17,
+          "contract": "fileA:A",
+          "label": "y",
+          "offset": 0,
+          "slot": "0",
+          "type": "t_uint256"
+        },
+        {
+          "astId": 21,
+          "contract": "fileA:A",
+          "label": "z",
+          "offset": 0,
+          "slot": "1",
+          "type": "t_uint256"
+        },
+        {
+          "astId": 28,
+          "contract": "fileA:A",
+          "label": "taddr",
+          "offset": 0,
+          "slot": "2",
+          "type": "t_address"
+        }
+      ],
+      "types": {
+        "t_address": {
+          "encoding": "inplace",
+          "label": "address",
+          "numberOfBytes": "20"
+        },
+        "t_uint256": {
+          "encoding": "inplace",
+          "label": "uint256",
+          "numberOfBytes": "32"
+        }
+      }
+    }
+>>>>>>> english/develop

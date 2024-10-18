@@ -14,6 +14,7 @@
 ABIのエンコード関数とデコード関数
 =================================
 
+<<<<<<< HEAD
 - ``abi.decode(bytes memory encodedData, (...)) returns (...)``:
   与えたデータを :ref:`ABI <ABI>` デコードします。
   型は第2引数として括弧内に与えられます。
@@ -36,6 +37,20 @@ ABIのエンコード関数とデコード関数
 
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:
   ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` と同等です。
+=======
+- ``abi.decode(bytes memory encodedData, (...)) returns (...)``: :ref:`ABI <ABI>`-decodes
+  the provided data. The types are given in parentheses as second argument.
+  Example: ``(uint a, uint[2] memory b, bytes memory c) = abi.decode(data, (uint, uint[2], bytes))``
+- ``abi.encode(...) returns (bytes memory)``: :ref:`ABI <ABI>`-encodes the given arguments
+- ``abi.encodePacked(...) returns (bytes memory)``: Performs :ref:`packed encoding <abi_packed_mode>` of
+  the given arguments. Note that this encoding can be ambiguous!
+- ``abi.encodeWithSelector(bytes4 selector, ...) returns (bytes memory)``: :ref:`ABI <ABI>`-encodes
+  the given arguments starting from the second and prepends the given four-byte selector
+- ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``: ABI-encodes a call to ``functionPointer`` with the arguments found in the
+  tuple. Performs a full type-check, ensuring the types match the function signature. Result equals ``abi.encodeWithSelector(functionPointer.selector, ...)``
+- ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``: Equivalent
+  to ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)``
+>>>>>>> english/develop
 
 .. index:: bytes;concat, string;concat
 
@@ -52,18 +67,34 @@ ABIのエンコード関数とデコード関数
 ``address`` のメンバー
 ======================
 
+<<<<<<< HEAD
 - ``<address>.balance`` (``uint256``): :ref:`address` の残高（Wei）
 - ``<address>.code`` (``bytes memory``): :ref:`address` のコード（空にもなり得る）
 - ``<address>.codehash`` (``bytes32``): :ref:`address` のコードハッシュ
 - ``<address payable>.send(uint256 amount) returns (bool)``: 指定した量のWeiを :ref:`address` に送り、失敗したら ``false`` を返します。
 - ``<address payable>.transfer(uint256 amount)``: 指定した量のWeiを :ref:`address` に送り、失敗したらリバートします。
+=======
+- ``<address>.balance`` (``uint256``): balance of the :ref:`address` in Wei
+- ``<address>.code`` (``bytes memory``): code at the :ref:`address` (can be empty)
+- ``<address>.codehash`` (``bytes32``): the codehash of the :ref:`address`
+- ``<address>.call(bytes memory) returns (bool, bytes memory)``: issue low-level ``CALL`` with the given payload,
+  returns success condition and return data
+- ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``: issue low-level ``DELEGATECALL`` with the given payload,
+  returns success condition and return data
+- ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: issue low-level ``STATICCALL`` with the given payload,
+  returns success condition and return data
+- ``<address payable>.send(uint256 amount) returns (bool)``: send given amount of Wei to :ref:`address`,
+  returns ``false`` on failure
+- ``<address payable>.transfer(uint256 amount)``: send given amount of Wei to :ref:`address`, throws on failure
+>>>>>>> english/develop
 
-.. index:: blockhash, block, block;basefree, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
+.. index:: blockhash, blobhash, block, block;basefee, block;blobbasefee, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
 .. index:: gasleft, msg;data, msg;sender, msg;sig, msg;value, tx;gasprice, tx;origin
 
 ブロックとトランザクションのプロパティ
 ======================================
 
+<<<<<<< HEAD
 - ``blockhash(uint blockNumber) returns (bytes32)``: 指定したブロックのハッシュ。最新の256ブロックに対してのみ動作します。
 
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）。
@@ -99,6 +130,29 @@ ABIのエンコード関数とデコード関数
 - ``tx.gasprice`` (``uint``): トランザクションのガスプライス。
 
 - ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）。
+=======
+- ``blockhash(uint blockNumber) returns (bytes32)``: hash of the given block - only works for 256 most recent blocks
+- ``blobhash(uint index) returns (bytes32)``: versioned hash of the ``index``-th blob associated with the current transaction.
+  A versioned hash consists of a single byte representing the version (currently ``0x01``), followed by the last 31 bytes
+  of the SHA256 hash of the KZG commitment (`EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+  Returns zero if no blob with the given index exists.
+- ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
+- ``block.blobbasefee`` (``uint``): current block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_)
+- ``block.chainid`` (``uint``): current chain id
+- ``block.coinbase`` (``address payable``): current block miner's address
+- ``block.difficulty`` (``uint``): current block difficulty (``EVM < Paris``). For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` that will be removed in the next breaking release
+- ``block.gaslimit`` (``uint``): current block gaslimit
+- ``block.number`` (``uint``): current block number
+- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``) (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
+- ``block.timestamp`` (``uint``): current block timestamp in seconds since Unix epoch
+- ``gasleft() returns (uint256)``: remaining gas
+- ``msg.data`` (``bytes``): complete calldata
+- ``msg.sender`` (``address``): sender of the message (current call)
+- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
+- ``msg.value`` (``uint``): number of wei sent with the message
+- ``tx.gasprice`` (``uint``): gas price of the transaction
+- ``tx.origin`` (``address``): sender of the transaction (full call chain)
+>>>>>>> english/develop
 
 .. index:: assert, require, revert
 
@@ -137,11 +191,17 @@ ABIのエンコード関数とデコード関数
 コントラクト関連
 ================
 
+<<<<<<< HEAD
 - ``this`` （現在のコントラクトの型）: 現在のコントラクトで、 ``address`` または ``address payable`` に明示的に変換できるもの。
 
 - ``super``: 継承階層の1つ上の階層のコントラクト。
 
 - ``selfdestruct(address payable recipient)``: 現在のコントラクトを破棄し、その資金を指定されたアドレスに送ります。
+=======
+- ``this`` (current contract's type): the current contract, explicitly convertible to ``address`` or ``address payable``
+- ``super``: a contract one level higher in the inheritance hierarchy
+- ``selfdestruct(address payable recipient)``: send all funds to the given address and (only on EVMs before Cancun or when invoked within the transaction creating the contract) destroy the contract.
+>>>>>>> english/develop
 
 .. index:: type;name, type;creationCode, type;runtimeCode, type;interfaceId, type;min, type;max
 
@@ -184,8 +244,25 @@ ABIのエンコード関数とデコード関数
 
 .. index:: modifiers, pure, view, payable, constant, anonymous, indexed
 
+<<<<<<< HEAD
 モディファイア
 ==============
+=======
+Modifiers
+=========
+
+- ``pure`` for functions: Disallows modification or access of state.
+- ``view`` for functions: Disallows modification of state.
+- ``payable`` for functions: Allows them to receive Ether together with a call.
+- ``constant`` for state variables: Disallows assignment (except initialization), does not occupy storage slot.
+- ``immutable`` for state variables: Allows assignment at construction time and is constant when deployed. Is stored in code.
+- ``anonymous`` for events: Does not store event signature as topic.
+- ``indexed`` for event parameters: Stores the parameter as topic.
+- ``virtual`` for functions and modifiers: Allows the function's or modifier's
+  behavior to be changed in derived contracts.
+- ``override``: States that this function, modifier or public state variable changes
+  the behavior of a function or modifier in a base contract.
+>>>>>>> english/develop
 
 - 関数の ``pure``: 状態の変更やアクセスを禁止します。
 - 関数の ``view``: 状態の変更を不可とします。

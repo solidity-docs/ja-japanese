@@ -1,20 +1,36 @@
-.. index:: ! error, revert, ! selector; of an error
+.. index:: ! error, revert, require, ! selector; of an error
 .. _errors:
 
+<<<<<<< HEAD
 ******************
 エラーとリバート文
 ******************
+=======
+*************
+Custom Errors
+*************
+>>>>>>> english/develop
 
 Solidityのエラーは、操作が失敗した理由をユーザーに説明するための、便利でガス効率の良い方法です。
 エラーはコントラクト（インターフェースやライブラリを含む）の内外で定義できます。
 
+<<<<<<< HEAD
 これらは、 :ref:`リバート文<revert-statement>` と一緒に使用する必要があります。
 リバート文は、現在のコールのすべての変更をリバートし、エラーデータをコール側に戻します。
+=======
+They have to be used together with the :ref:`revert statement <revert-statement>`
+or the :ref:`require function <assert-and-require-statements>`.
+In the case of ``revert`` statements, or ``require`` calls where the condition is evaluated to be false,
+all changes in the current call are reverted, and the error data passed back to the caller.
+
+The example below shows custom error usage with the ``revert`` statement in function ``transferWithRevertError``,
+as well as the newer approach with ``require`` in function ``transferWithRequireError``.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity ^0.8.4;
+    pragma solidity ^0.8.27;
 
     /// 送金の残高不足
     /// `required`必要だが、`available`しか利用可能でない
@@ -24,7 +40,7 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 
     contract TestToken {
         mapping(address => uint) balance;
-        function transfer(address to, uint256 amount) public {
+        function transferWithRevertError(address to, uint256 amount) public {
             if (amount > balance[msg.sender])
                 revert InsufficientBalance({
                     available: balance[msg.sender],
@@ -33,12 +49,28 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
             balance[msg.sender] -= amount;
             balance[to] += amount;
         }
+        function transferWithRequireError(address to, uint256 amount) public {
+            require(amount <= balance[msg.sender], InsufficientBalance(balance[msg.sender], amount));
+            balance[msg.sender] -= amount;
+            balance[to] += amount;
+        }
         // ...
     }
 
+<<<<<<< HEAD
 .. Errors cannot be overloaded or overridden but are inherited.
 .. The same error can be defined in multiple places as long as the scopes are distinct.
 .. Instances of errors can only be created using ``revert`` statements.
+=======
+Another important detail to mention when it comes to using ``require`` with custom errors, is that memory
+allocation for the error-based revert reason will only happen in the reverting case, which, along with
+optimization of constants and string literals makes this about as gas-efficient as the
+``if (!condition) revert CustomError(args)`` pattern.
+
+Errors cannot be overloaded or overridden but are inherited.
+The same error can be defined in multiple places as long as the scopes are distinct.
+Instances of errors can only be created using ``revert`` statements, or as the second argument to ``require`` functions.
+>>>>>>> english/develop
 
 エラーはオーバーロードやオーバーライドできませんが、継承されます。
 スコープが異なっている限り、同じエラーを複数の場所で定義できます。
@@ -75,8 +107,14 @@ Solidityのエラーは、操作が失敗した理由をユーザーに説明す
 
 .. note::
 
+<<<<<<< HEAD
     コントラクトが同じ名前の異なるエラーでリバートすることは可能ですし、呼び出し元では区別できない異なる場所で定義されたエラーであっても可能です。
     外部、つまりABIにとっては、エラーの名前だけが重要であり、そのエラーが定義されているコントラクトやファイルは関係ありません。
+=======
+The statement ``require(condition, "description");`` would be equivalent to
+``if (!condition) revert Error("description")`` if you could define ``error Error(string)``.
+Note, however, that ``Error`` is a built-in type and cannot be defined in user-supplied code.
+>>>>>>> english/develop
 
 .. The statement ``require(condition, "description");`` would be equivalent to
 .. ``if (!condition) revert Error("description")`` if you could define

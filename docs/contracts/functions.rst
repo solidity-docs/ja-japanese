@@ -217,6 +217,7 @@ view関数
     つまり、ライブラリ ``view`` 関数には、状態の変更を防ぐランタイムチェックがありません。
     ライブラリのコードは通常、コンパイル時に知られており、静的チェッカーはコンパイル時のチェックを行うため、このことがセキュリティに悪影響を及ぼすことはありません。
 
+<<<<<<< HEAD
 .. The following statements are considered modifying the state:
 
 次のような記述は、状態の修正とみなされます。
@@ -238,6 +239,16 @@ view関数
 #. ``view`` または ``pure`` と表示されていない関数の呼び出し。
 #. 低レベルコールの使用。
 #. 特定のオペコードを含むインラインアセンブリの使用。
+=======
+#. Writing to state variables (storage and transient storage).
+#. :ref:`Emitting events <events>`.
+#. :ref:`Creating other contracts <creating-contracts>`.
+#. Using ``selfdestruct``.
+#. Sending Ether via calls.
+#. Calling any function not marked ``view`` or ``pure``.
+#. Using low-level calls.
+#. Using inline assembly that contains certain opcodes.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -300,6 +311,7 @@ pure関数
     コンパイラのEVMターゲットがByzantium以降（デフォルト）の場合、オペコード ``STATICCALL`` が使用されます。
     これは、状態が読み取られないことを保証するものではありませんが、少なくとも修正されないことを保証するものです。
 
+<<<<<<< HEAD
 .. In addition to the list of state modifying statements explained above, the following are considered reading from the state:
 
 上記で説明したステートの修飾文のリストに加えて、以下のものはステートからの読み取りとみなされます。
@@ -315,6 +327,13 @@ pure関数
 #. ``block`` 、 ``tx`` 、 ``msg`` （ ``msg.sig`` 、 ``msg.data`` を除く）のメンバーのいずれかにアクセスすること。
 #. ``pure`` とマークされていない関数を呼び出すこと。
 #. 特定のオペコードを含むインラインアセンブリの使用。
+=======
+#. Reading from state variables (storage and transient storage).
+#. Accessing ``address(this).balance`` or ``<address>.balance``.
+#. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
+#. Calling any function not marked ``pure``.
+#. Using inline assembly that contains certain opcodes.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -376,10 +395,18 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 ..   at runtime is actually of that type.
 
 .. note::
+<<<<<<< HEAD
 
     バージョン0.4.17以前では、コンパイラは ``pure`` が状態を読んでいないことを強制していませんでした。
     これはコンパイル時の型チェックで、コントラクトの型の間で無効な明示的変換を行うことで回避できます。
     コンパイラはコントラクトの型が状態を変更する操作を行わないことを検証できますが、実行時に呼び出されるコントラクトが実際にその型であることをチェックできないからです。
+=======
+  Prior to version 0.4.17 the compiler did not enforce that ``pure`` is not reading the state.
+  It is a compile-time type check, which can be circumvented by doing invalid explicit conversions
+  between contract types, because the compiler can verify that the type of the contract does
+  not do state-changing operations, but it cannot check that the contract that will be called
+  at runtime is actually of that type.
+>>>>>>> english/develop
 
 .. _special-functions:
 

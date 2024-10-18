@@ -115,6 +115,7 @@ Solidity v0.8.0の破壊的変更点
 * リテラルの明示的な変換に関連する新しい制限があります。
   以下のようなケースでの従来の動作は、曖昧であったと思われます。
 
+<<<<<<< HEAD
   1. 負のリテラルや ``type(uint160).max`` より大きいリテラルから ``address`` への明示的な変換は禁止されています。
   2. リテラルと整数型 ``T`` の間の明示的な変換は、リテラルが ``type(T).min`` と ``type(T).max`` の間にある場合にのみ許されます。
      特に、 ``uint(-1)`` の使用を ``type(uint).max`` に置き換えてください。
@@ -122,6 +123,10 @@ Solidity v0.8.0の破壊的変更点
   4. リテラルと ``address`` 型の間の明示的な変換（例:  ``address(literal)`` ）は、 ``address payable`` の代わりに ``address`` 型を持ちます。
      明示的な変換を使用することで、payableなアドレス型を得ることができます。
      すなわち、 ``payable(literal)`` です。
+=======
+* The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
+  Use the "compact AST" (``--ast-compact-json`` resp. ``AST``) as replacement.
+>>>>>>> english/develop
 
 .. * :ref:`Address literals<address_literals>` have the type ``address`` instead of ``address
 ..   payable``. They can be converted to ``address payable`` by using an explicit conversion, e.g.

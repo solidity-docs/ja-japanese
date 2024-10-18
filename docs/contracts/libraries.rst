@@ -195,6 +195,7 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 
 ライブラリ型を ``address`` 型に変換して、つまり ``address(LibraryName)`` を使ってライブラリのアドレスを取得することが可能です。
 
+<<<<<<< HEAD
 .. As the compiler does not know the address where the library will be deployed, the compiled hex code
 .. will contain placeholders of the form ``__$30bbc0abd4d6364515865950d3e0d10953$__``. The placeholder
 .. is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library
@@ -204,6 +205,17 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 .. them to the compiler when the library is being compiled or by using the linker to update an already
 .. compiled binary. See :ref:`library-linking` for information on how to use the commandline compiler
 .. for linking.
+=======
+As the compiler does not know the address where the library will be deployed, the compiled hex code
+will contain placeholders of the form ``__$30bbc0abd4d6364515865950d3e0d10953$__`` `(format was different <v0.5.0) <https://docs.soliditylang.org/en/v0.4.26/contracts.html#libraries>`_. The placeholder
+is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library
+name, which would be for example ``libraries/bigint.sol:BigInt`` if the library was stored in a file
+called ``bigint.sol`` in a ``libraries/`` directory. Such bytecode is incomplete and should not be
+deployed. Placeholders need to be replaced with actual addresses. You can do that by either passing
+them to the compiler when the library is being compiled or by using the linker to update an already
+compiled binary. See :ref:`library-linking` for information on how to use the commandline compiler
+for linking.
+>>>>>>> english/develop
 
 コンパイラは、ライブラリが配置されるアドレスを知らないため、コンパイルされた16進コードには ``__$30bbc0abd4d6364515865950d3e0d10953$__`` という形式のプレースホルダーが含まれます。
 このプレースホルダーは、完全修飾されたライブラリ名のkeccak256ハッシュの16進エンコーディングの34文字のプレフィックスであり、例えば、ライブラリが ``libraries/`` ディレクトリの ``bigint.sol`` というファイルに格納されている場合は ``libraries/bigint.sol:BigInt`` となります。
