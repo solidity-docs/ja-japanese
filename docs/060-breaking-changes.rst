@@ -142,17 +142,12 @@ Solidity v0.6.0の破壊的変更点
 
 このセクションでは、Solidity 0.6.0以前では実現できなかったことや、実現が困難だったことを挙げています。
 
-<<<<<<< HEAD
 .. * The :ref:`try/catch statement <try-catch>` allows you to react on failed external calls.
 .. * ``struct`` and ``enum`` types can be declared at file level.
 .. * Array slices can be used for calldata arrays, for example ``abi.decode(msg.data[4:], (uint, uint))`` is a low-level way to decode the function call payload.
 .. * Natspec supports multiple return parameters in developer documentation, enforcing the same naming check as ``@param``.
 .. * Yul and Inline Assembly have a new statement called ``leave`` that exits the current function.
 .. * Conversions from ``address`` to ``address payable`` are now possible via ``payable(x)``, where ``x`` must be of type ``address``.
-=======
-A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
-It is enabled by default, but passing ``--old-reporter`` falls back to the deprecated old error reporter.
->>>>>>> english/develop
 
 * :ref:`try/catch文 <try-catch>` では、失敗した外部呼び出しに反応できます。
 * ``struct`` および ``enum`` 型は、ファイルレベルで宣言できます。
@@ -170,17 +165,12 @@ It is enabled by default, but passing ``--old-reporter`` falls back to the depre
 このセクションでは、言語そのものとは関係なく、コンパイラーのインターフェースに影響を与える変更点を紹介します。
 これらの変更により、コマンドラインでのコンパイラの使用方法、プログラマブルインターフェースの使用方法、コンパイラが生成した出力の分析方法が変わる可能性があります。
 
-.. New Error Reporter
-
 新しいエラーリポーター
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
-.. It is enabled by default, but passing ``--old-reporter`` falls back to the the deprecated old error reporter.
-
 新しいエラーレポーターが導入されました。
 これは、コマンドライン上でよりアクセスしやすいエラーメッセージを生成することを目的としています。
-デフォルトでは有効になっていますが、 ``--old-reporter`` を指定すると、非推奨の古いエラーレポーターに戻ります。
+また、これはデフォルトでは有効になっており、 ``--old-reporter`` を指定すると、非推奨の古いエラーレポーターに戻ります。
 
 .. Metadata Hash Options
 
