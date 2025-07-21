@@ -1,23 +1,15 @@
 .. index:: ! error, revert, require, ! selector; of an error
 .. _errors:
 
-<<<<<<< HEAD
-******************
-エラーとリバート文
-******************
-=======
-*************
-Custom Errors
-*************
->>>>>>> english/develop
+**************
+カスタムエラー
+**************
 
 Solidityのエラーは、操作が失敗した理由をユーザーに説明するための、便利でガス効率の良い方法です。
 エラーはコントラクト（インターフェースやライブラリを含む）の内外で定義できます。
 
-<<<<<<< HEAD
-これらは、 :ref:`リバート文<revert-statement>` と一緒に使用する必要があります。
-リバート文は、現在のコールのすべての変更をリバートし、エラーデータをコール側に戻します。
-=======
+.. TODO:
+
 They have to be used together with the :ref:`revert statement <revert-statement>`
 or the :ref:`require function <assert-and-require-statements>`.
 In the case of ``revert`` statements, or ``require`` calls where the condition is evaluated to be false,
@@ -25,7 +17,6 @@ all changes in the current call are reverted, and the error data passed back to 
 
 The example below shows custom error usage with the ``revert`` statement in function ``transferWithRevertError``,
 as well as the newer approach with ``require`` in function ``transferWithRequireError``.
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -57,24 +48,16 @@ as well as the newer approach with ``require`` in function ``transferWithRequire
         // ...
     }
 
-<<<<<<< HEAD
-.. Errors cannot be overloaded or overridden but are inherited.
-.. The same error can be defined in multiple places as long as the scopes are distinct.
-.. Instances of errors can only be created using ``revert`` statements.
-=======
+.. TODO:
+
 Another important detail to mention when it comes to using ``require`` with custom errors, is that memory
 allocation for the error-based revert reason will only happen in the reverting case, which, along with
 optimization of constants and string literals makes this about as gas-efficient as the
 ``if (!condition) revert CustomError(args)`` pattern.
 
-Errors cannot be overloaded or overridden but are inherited.
-The same error can be defined in multiple places as long as the scopes are distinct.
-Instances of errors can only be created using ``revert`` statements, or as the second argument to ``require`` functions.
->>>>>>> english/develop
-
 エラーはオーバーロードやオーバーライドできませんが、継承されます。
 スコープが異なっている限り、同じエラーを複数の場所で定義できます。
-エラーのインスタンスは、 ``revert`` 文を使ってのみ作成できます。
+エラーのインスタンスは、 ``revert`` 文を使うか、 ``require`` 関数の第2引数としてのみ作成できます。
 
 .. The error creates data that is then passed to the caller with the revert operation to either return to the off-chain component or catch it in a :ref:`try/catch statement <try-catch>`.
 .. Note that an error can only be caught when coming from an external call, reverts happening in internal calls or inside the same function cannot be caught.
@@ -107,18 +90,11 @@ Instances of errors can only be created using ``revert`` statements, or as the s
 
 .. note::
 
-<<<<<<< HEAD
     コントラクトが同じ名前の異なるエラーでリバートすることは可能ですし、呼び出し元では区別できない異なる場所で定義されたエラーであっても可能です。
     外部、つまりABIにとっては、エラーの名前だけが重要であり、そのエラーが定義されているコントラクトやファイルは関係ありません。
-=======
-The statement ``require(condition, "description");`` would be equivalent to
-``if (!condition) revert Error("description")`` if you could define ``error Error(string)``.
-Note, however, that ``Error`` is a built-in type and cannot be defined in user-supplied code.
->>>>>>> english/develop
 
 .. The statement ``require(condition, "description");`` would be equivalent to
-.. ``if (!condition) revert Error("description")`` if you could define
-.. ``error Error(string)``.
+.. ``if (!condition) revert Error("description")`` if you could define ``error Error(string)``.
 .. Note, however, that ``Error`` is a built-in type and cannot be defined in user-supplied code.
 
 ``require(condition, "description");`` という文は、 ``error Error(string)`` を定義できれば ``if (!condition) revert Error("description")`` と同じになります。
