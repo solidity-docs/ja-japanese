@@ -54,51 +54,28 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-<<<<<<< HEAD
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-=======
->>>>>>> english/develop
 
     contract Owned {
         address payable owner;
         constructor() { owner = payable(msg.sender); }
     }
 
-<<<<<<< HEAD
     // 他のコントラクトから派生させるには、`is`を使用します。
     // 派生したコントラクトは、内部関数や状態変数を含む、プライベートでないすべてのメンバにアクセスできます。
     // しかし、これらは `this` を介して外部からアクセスすることはできません。
-    contract Destructible is Owned {
-        // キーワード `virtual` は、その関数が派生クラスでその振る舞いを変更できる (「オーバーライド」) ことを意味します。
-        function destroy() virtual public {
-            if (msg.sender == owner) selfdestruct(owner);
-        }
-    }
-
-    // これらの抽象コントラクトは、コンパイラにインターフェースを知らせるためにのみ提供されています。
-    // ボディを持たない関数に注意してください。
-    // コントラクトがすべての関数を実装していない場合、インターフェースとしてのみ使用できます。
-=======
-    // Use `is` to derive from another contract. Derived
-    // contracts can access all non-private members including
-    // internal functions and state variables. These cannot be
-    // accessed externally via `this`, though.
     contract Emittable is Owned {
         event Emitted();
 
-        // The keyword `virtual` means that the function can change
-        // its behavior in derived classes ("overriding").
+        // キーワード `virtual` は、その関数が派生クラスでその振る舞いを変更できる (「オーバーライド」) ことを意味します。
         function emitEvent() virtual public {
             if (msg.sender == owner)
                 emit Emitted();
         }
     }
 
-    // These abstract contracts are only provided to make the
-    // interface known to the compiler. Note the function
-    // without body. If a contract does not implement all
-    // functions it can only be used as an interface.
->>>>>>> english/develop
+    // これらの抽象コントラクトは、コンパイラにインターフェースを知らせるためにのみ提供されています。
+    // ボディを持たない関数に注意してください。
+    // コントラクトがすべての関数を実装していない場合、インターフェースとしてのみ使用できます。
     abstract contract Config {
         function lookup(uint id) public virtual returns (address adr);
     }
@@ -108,104 +85,51 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         function unregister() public virtual;
     }
 
-<<<<<<< HEAD
     // 多重継承が可能です。
-    // `Owned` は `Destructible` のベースクラスでもあるが、 `Owned` のインスタンスは一つしかないことに注意（C++ の仮想継承と同じ）。
-    contract Named is Owned, Destructible {
-=======
-    // Multiple inheritance is possible. Note that `Owned` is
-    // also a base class of `Emittable`, yet there is only a single
-    // instance of `Owned` (as for virtual inheritance in C++).
+    // `Owned` は `Emittable` のベースクラスでもありますが、 `Owned` のインスタンスは一つしかないことに注意してください（C++ の仮想継承と同じ）。
     contract Named is Owned, Emittable {
->>>>>>> english/develop
         constructor(bytes32 name) {
             Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
             NameReg(config.lookup(1)).register(name);
         }
 
-<<<<<<< HEAD
         // 関数は、同じ名前、同じ入力の数/型の別の関数によってオーバーライドできます。
         // オーバーライドされた関数が異なる型の出力パラメータを持っている場合、それはエラーの原因となります。
         // ローカル関数とメッセージベースの関数呼び出しの両方が、これらのオーバーライドを考慮に入れています。
         // 関数をオーバーライドしたい場合は、`override` キーワードを使用する必要があります。
         // また、この関数を再びオーバーライドしたい場合は、`virtual`キーワードを指定する必要があります。
-        function destroy() public virtual override {
-            if (msg.sender == owner) {
-                Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
-                NameReg(config.lookup(1)).unregister();
-                // 特定のオーバーライドされた関数を呼び出すことは可能です。
-                Destructible.destroy();
-=======
-        // Functions can be overridden by another function with the same name and
-        // the same number/types of inputs. If the overriding function has different
-        // types of output parameters, that causes an error.
-        // Both local and message-based function calls take these overrides
-        // into account.
-        // If you want the function to override, you need to use the
-        // `override` keyword. You need to specify the `virtual` keyword again
-        // if you want this function to be overridden again.
         function emitEvent() public virtual override {
             if (msg.sender == owner) {
                 Config config = Config(0xD5f9D8D94886E70b06E474c3fB14Fd43E2f23970);
                 NameReg(config.lookup(1)).unregister();
-                // It is still possible to call a specific
-                // overridden function.
+                // 特定のオーバーライドされた関数を呼び出すことは可能です。
                 Emittable.emitEvent();
->>>>>>> english/develop
             }
         }
     }
 
-<<<<<<< HEAD
     // コンストラクタが引数を取る場合、派生コントラクトのコンストラクタでヘッダまたはモディファイアを呼び出すスタイルで提供する必要があります(下記参照)。
-    contract PriceFeed is Owned, Destructible, Named("GoldFeed") {
-=======
-
-    // If a constructor takes an argument, it needs to be
-    // provided in the header or modifier-invocation-style at
-    // the constructor of the derived contract (see below).
     contract PriceFeed is Owned, Emittable, Named("GoldFeed") {
         uint info;
 
->>>>>>> english/develop
         function updateInfo(uint newInfo) public {
             if (msg.sender == owner) info = newInfo;
         }
 
-<<<<<<< HEAD
         // ここでは、 `override` のみを指定し、 `virtual` は指定しません。
-        // これは、 `PriceFeed` から派生したコントラクトは、もう `destroy` の挙動を変更できないことを意味します。
-        function destroy() public override(Destructible, Named) { Named.destroy(); }
-=======
-        // Here, we only specify `override` and not `virtual`.
-        // This means that contracts deriving from `PriceFeed`
-        // cannot change the behavior of `emitEvent` anymore.
+        // これは、 `PriceFeed` から派生したコントラクトは、もう `emitEvent` の挙動を変更できないことを意味します。
         function emitEvent() public override(Emittable, Named) { Named.emitEvent(); }
->>>>>>> english/develop
         function get() public view returns(uint r) { return info; }
     }
 
-<<<<<<< HEAD
-.. Note that above, we call ``Destructible.destroy()`` to "forward" the
-.. destruction request. The way this is done is problematic, as
-.. seen in the following example:
 
-上記では、破壊要求を「送金」するために ``Destructible.destroy()`` をコールしていることに注意してください。
+上記では、emit イベント要求を "フォワード" するために ``Destructible.emitEvent()`` をコールしていることに注意してください。
 この方法は、次の例に見られるように、問題があります。
-=======
-Note that above, we call ``Emittable.emitEvent()`` to "forward" the
-emit event request. The way this is done is problematic, as
-seen in the following example:
->>>>>>> english/develop
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-<<<<<<< HEAD
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-=======
->>>>>>> english/develop
 
     contract Owned {
         address payable owner;
@@ -222,14 +146,6 @@ seen in the following example:
         }
     }
 
-<<<<<<< HEAD
-    contract Base1 is Destructible {
-        function destroy() public virtual override { /* cleanup 1 */ Destructible.destroy(); }
-    }
-
-    contract Base2 is Destructible {
-        function destroy() public virtual override { /* cleanup 2 */ Destructible.destroy(); }
-=======
     contract Base1 is Emittable {
         event Base1Emitted();
         function emitEvent() public virtual override {
@@ -246,7 +162,6 @@ seen in the following example:
             emit Base2Emitted();
             Emittable.emitEvent();
         }
->>>>>>> english/develop
     }
 
     contract Final is Base1, Base2 {
@@ -258,30 +173,15 @@ seen in the following example:
         }
     }
 
-<<<<<<< HEAD
-.. A call to ``Final.destroy()`` will call ``Base2.destroy`` because we specify it
-.. explicitly in the final override, but this function will bypass
-.. ``Base1.destroy``. The way around this is to use ``super``:
-
-``Final.destroy()`` への呼び出しは、最終的なオーバーライドで明示的に指定しているので ``Base2.destroy`` を呼び出しますが、この関数は ``Base1.destroy`` をバイパスします。
-これを回避する方法は、 ``super`` を使うことです。
-=======
-A call to ``Final.emitEvent()`` will call ``Base2.emitEvent`` because we specify it
-explicitly in the final override, but this function will bypass
-``Base1.emitEvent``, resulting in the following sequence of events:
-``FinalEmitted -> Base2Emitted -> Emitted``, instead of the expected sequence:
-``FinalEmitted -> Base2Emitted -> Base1Emitted -> Emitted``.
-The way around this is to use ``super``:
->>>>>>> english/develop
+``Final.emitEvent()`` を呼び出すと、明示的に最終的なオーバーライドで指定しているため、 ``Base2.emitEvent`` が呼ばれます。  
+しかしこの関数は ``Base1.emitEvent`` をバイパスしてしまい、結果として次の順序でイベントが発生します: ``FinalEmitted -> Base2Emitted -> Emitted``。  
+これは本来期待される順序 ``FinalEmitted -> Base2Emitted -> Base1Emitted -> Emitted`` とは異なります。  
+この問題を回避する方法は、 ``super`` を使うことです。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-<<<<<<< HEAD
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-=======
->>>>>>> english/develop
 
     contract Owned {
         address payable owner;
@@ -298,14 +198,6 @@ The way around this is to use ``super``:
         }
     }
 
-<<<<<<< HEAD
-    contract Base1 is Destructible {
-        function destroy() public virtual override { /* cleanup 1 */ super.destroy(); }
-    }
-
-    contract Base2 is Destructible {
-        function destroy() public virtual override { /* cleanup 2 */ super.destroy(); }
-=======
     contract Base1 is Emittable {
         event Base1Emitted();
         function emitEvent() public virtual override {
@@ -323,7 +215,6 @@ The way around this is to use ``super``:
             emit Base2Emitted();
             super.emitEvent();
         }
->>>>>>> english/develop
     }
 
     contract Final is Base1, Base2 {
@@ -335,34 +226,16 @@ The way around this is to use ``super``:
         }
     }
 
-<<<<<<< HEAD
-.. If ``Base2`` calls a function of ``super``, it does not simply
-.. call this function on one of its base contracts.  Rather, it
-.. calls this function on the next base contract in the final
-.. inheritance graph, so it will call ``Base1.destroy()`` (note that
-.. the final inheritance sequence is -- starting with the most
-.. derived contract: Final, Base2, Base1, Destructible, owned).
-.. The actual function that is called when using super is
-.. not known in the context of the class where it is used,
-.. although its type is known. This is similar for ordinary
-.. virtual method lookup.
+.. If ``Final`` calls a function of ``super``, it does not simply call this function on one of its base contracts.
+.. Rather, it calls this function on the next base contract in the final inheritance graph, so it will call ``Base1.emitEvent()`` (note that the final inheritance sequence is -- starting with the most derived contract: Final, Base2, Base1, Emittable, Owned).
+.. The actual function that is called when using super is not known in the context of the class where it is used, although its type is known.
+.. This is similar for ordinary virtual method lookup.
 
-``Base2`` が ``super`` の関数を呼び出す場合、単純にそのベースコントラクトの1つでこの関数を呼び出すのではありません。
-むしろ、最終的な継承グラフの次のベースコントラクトでこの関数を呼び出すので、 ``Base1.destroy()`` を呼び出すことになります（最終的な継承順序は--最も派生したコントラクトから始まることに注意してください: Final、Base2、Base1、Destructible、owned）。
-superを使うときに呼び出される実際の関数は、型はわかっていても、使われるクラスのコンテキストではわかりません。
-これは通常の仮想メソッドの検索でも同様です。
-=======
-If ``Final`` calls a function of ``super``, it does not simply
-call this function on one of its base contracts.  Rather, it
-calls this function on the next base contract in the final
-inheritance graph, so it will call ``Base1.emitEvent()`` (note that
-the final inheritance sequence is -- starting with the most
-derived contract: Final, Base2, Base1, Emittable, Owned).
-The actual function that is called when using super is
-not known in the context of the class where it is used,
-although its type is known. This is similar for ordinary
-virtual method lookup.
->>>>>>> english/develop
+``Final`` が ``super`` の関数を呼び出す場合、それは単にベースコントラクトのいずれかの関数を呼び出すわけではありません。  
+むしろ、最終的な継承グラフにおける次のベースコントラクトの関数が呼び出されます。
+したがって、 ``Base1.emitEvent()`` が呼び出されます（最も派生したコントラクトから始まる最終的な継承順は、Final → Base2 → Base1 → Emittable → Owned です）。  
+``super`` を使った場合に実際に呼び出される関数は、それが使われているクラスの文脈内では特定できませんが、その型（シグネチャ）はわかっています。  
+これは通常の仮想関数の探索と似ています。
 
 .. index:: ! overriding;function
 
@@ -588,13 +461,7 @@ virtual method lookup.
 コンストラクタ
 ==============
 
-<<<<<<< HEAD
 コンストラクタは、 ``constructor`` キーワードで宣言されたオプションの関数で、コントラクトの作成時に実行され、コントラクトの初期化コードを実行できます。
-=======
-A constructor is an optional function declared with the ``constructor`` keyword
-which is executed upon contract creation, and where you can run contract
-initialization code.
->>>>>>> english/develop
 
 .. Before the constructor code is executed, state variables are initialised to
 .. their specified value if you initialise them inline, or their :ref:`default value<default-value>` if you do not.
@@ -828,20 +695,12 @@ SolidityはPythonに似ていますが、ベースクラスの有向非巡回グ
 同じ名前の異なる種類のメンバーの継承
 ====================================
 
-コントラクト内の以下のペアが継承により同じ名前になっている場合はエラーとなります。
-    - 関数とモディファイア
-    - 関数とイベント
-    - イベントとモディファイア
+.. TODO:
 
-<<<<<<< HEAD
-例外として、状態変数のゲッターが外部関数をオーバーライドできます。
-=======
-The only situations where, due to inheritance, a contract may contain multiple definitions sharing
-the same name are:
+The only situations where, due to inheritance, a contract may contain multiple definitions sharing the same name are:
 
 - Overloading of functions.
 - Overriding of virtual functions.
 - Overriding of external virtual functions by state variable getters.
 - Overriding of virtual modifiers.
 - Overloading of events.
->>>>>>> english/develop
