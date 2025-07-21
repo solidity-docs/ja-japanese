@@ -7,17 +7,10 @@
 .. index:: ! assembly, ! asm, ! evmasm
 
 Ethereum Virtual Machineの言語に近い言語で、Solidityの文にインラインアセンブリを挟むことができます。
-これにより、より細かな制御が可能となり、特にライブラリを書いて言語を強化する場合に有効です。
+これにより、より細かな制御が可能となり、特にライブラリを作成して言語を拡張したり、ガス使用量を最適化したりする際に役立ちます。
 
-<<<<<<< HEAD
 Solidityのインラインアセンブリに使用される言語は :ref:`Yul <yul>` と呼ばれ、詳細はそのセクションに書かれています。
 このセクションでは、インラインアセンブリのコードが周囲のSolidityコードとどのように連携するかについてのみ説明します。
-=======
-You can interleave Solidity statements with inline assembly in a language close
-to the one of the Ethereum Virtual Machine. This gives you more fine-grained control,
-which is especially useful when you are enhancing the language by writing libraries or
-optimizing gas usage.
->>>>>>> english/develop
 
 .. .. warning::
 
@@ -178,23 +171,14 @@ Solidityの変数やその他の識別子は、それら名前を使ってアク
 .. For dynamic calldata arrays, you can access their calldata offset (in bytes) and length (number of elements) using ``x.offset`` and ``x.length``.
 .. Both expressions can also be assigned to, but as for the static case, no validation will be performed to ensure that the resulting data area is within the bounds of ``calldatasize()``.
 
-<<<<<<< HEAD
 動的なcalldata配列の場合、 ``x.offset`` と ``x.length`` を使ってcalldataのオフセット（バイト単位）と長さ（要素数）にアクセスできます。
 両方の式は代入することもできますが、静的の場合と同様に、結果として得られるデータ領域が ``calldatasize()`` の範囲内にあるかどうかの検証は行われません。
-=======
-For local storage variables or state variables (including transient storage) a single Yul identifier
-is not sufficient, since they do not necessarily occupy a single full storage slot.
-Therefore, their "address" is composed of a slot and a byte-offset
-inside that slot. To retrieve the slot pointed to by the variable ``x``, you
-use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
-Using ``x`` itself will result in an error.
->>>>>>> english/develop
 
-.. For local storage variables or state variables, a single Yul identifier is not sufficient, since they do not necessarily occupy a single full storage slot.
+.. For local storage variables or state variables (including transient storage) a single Yul identifier is not sufficient, since they do not necessarily occupy a single full storage slot.
 .. Therefore, their "address" is composed of a slot and a byte-offset inside that slot.
 .. To retrieve the slot pointed to by the variable ``x``, you use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
 
-ローカルストレージ変数や状態変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
+ローカルストレージ変数や状態変数（transient storage含む）の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
 そのため、変数の「アドレス」は、スロットとそのスロット内のバイトオフセットで構成されます。
 変数 ``x`` が指すスロットを取得するには ``x.slot`` を、バイトオフセットを取得するには ``x.offset`` を使います。
 ``x`` をそのまま使うとエラーになります。
@@ -483,15 +467,12 @@ Solidityの複数のバージョンで互換性のあるライブラリを開発
         ...
     }
 
-<<<<<<< HEAD
 .. Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with backward-compatibility with older compiler versions, prefer using the dialect string.
 
 なお、コメントによるアノテーションは、将来のブレーキングリリースで禁止する予定です。
 したがって、古いコンパイラのバージョンとの後方互換性にこだわらない場合は、方言文字列を使用することをお勧めします。
-=======
-Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with
-backward-compatibility with older compiler versions, prefer using the dialect string.
 
+.. TODO:
 Advanced Safe Use of Memory
 ---------------------------
 
@@ -512,4 +493,3 @@ for the duration of temporarily changing the value at memory offset ``0x60``, yo
 length values when reading dynamic arrays, until you restore the zero value at ``0x60``. To be more precise, we only guarantee
 safety when overwriting the zero pointer, if the remainder of the assembly snippet does not interact with the memory of
 high-level Solidity objects (including by reading from offsets previously stored in variables).
->>>>>>> english/develop
