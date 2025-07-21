@@ -1,22 +1,12 @@
 .. index:: storage, state variable, mapping, transient storage
 
-<<<<<<< HEAD
-**********************************
-ストレージ内の状態変数のレイアウト
-**********************************
+**************************************************
+ストレージと一時ストレージ内の状態変数のレイアウト
+**************************************************
 
 .. _storage-inplace-encoding:
 
-コントラクトの状態変数はストレージにコンパクトに格納され、複数の値が同じストレージスロットを使用することがあります。
-動的なサイズの配列やマッピング（後述）を除き、データはスロット ``0`` に格納された最初の状態変数から順に連続して格納されます。
-各変数には、その型に応じてバイト単位のサイズが決定されます。
-32バイトに満たない複数の連続したアイテムは、以下のルールに従って、可能な限り1つのストレージスロットにまとめられます。
-=======
-**********************************************************
-Layout of State Variables in Storage and Transient Storage
-**********************************************************
-
-.. _storage-inplace-encoding:
+.. TODO:
 
 .. note::
     The rules described in this section apply for both storage and transient storage data locations.
@@ -24,15 +14,10 @@ Layout of State Variables in Storage and Transient Storage
     Thus storage and transient storage state variables can be safely interleaved without any side effects.
     Only value types are supported for transient storage.
 
-State variables of contracts are stored in storage in a compact way such
-that multiple values sometimes use the same storage slot.
-Except for dynamically-sized arrays and mappings (see below), data is stored
-contiguously item after item starting with the first state variable,
-which is stored in slot ``0``. For each variable,
-a size in bytes is determined according to its type.
-Multiple, contiguous items that need less than 32 bytes are packed into a single
-storage slot if possible, according to the following rules:
->>>>>>> english/develop
+コントラクトの状態変数はストレージにコンパクトに格納され、複数の値が同じストレージスロットを使用することがあります。
+動的なサイズの配列やマッピング（後述）を除き、データはスロット ``0`` に格納された最初の状態変数から順に連続して格納されます。
+各変数には、その型に応じてバイト単位のサイズが決定されます。
+32バイトに満たない複数の連続したアイテムは、以下のルールに従って、可能な限り1つのストレージスロットにまとめられます。
 
 - ストレージスロットの最初のアイテムは、下位にアラインされ格納されます。
 - 値型はそれを格納するのに必要な数のバイトしか使用しません。
@@ -236,19 +221,12 @@ JSON出力
 
 .. _storage-layout-top-level:
 
-<<<<<<< HEAD
-.. The storage layout of a contract can be requested via
+.. The storage (or transient storage) layout of a contract can be requested via
 .. the :ref:`standard JSON interface <compiler-api>`.  The output is a JSON object containing two keys,
 .. ``storage`` and ``types``.  The ``storage`` object is an array where each
 .. element has the following form:
-=======
-The storage (or transient storage) layout of a contract can be requested via
-the :ref:`standard JSON interface <compiler-api>`.  The output is a JSON object containing two keys,
-``storage`` and ``types``.  The ``storage`` object is an array where each
-element has the following form:
->>>>>>> english/develop
 
-コントラクトのストレージレイアウトは、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
+コントラクトのストレージレイアウト（あるいは一時ストレージレイアウト）は、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
 出力されるのは、 ``storage`` と ``types`` の2つのキーを含むJSONオブジェクトです。
 ``storage`` オブジェクトは配列で、各要素は次のような形をしています。
 
@@ -347,15 +325,10 @@ element has the following form:
 .. note::
   コントラクトのストレージレイアウトのJSON出力フォーマットはまだ実験的なものと考えられており、Solidityの非破壊的なリリースで変更される可能性があります。
 
-<<<<<<< HEAD
-.. The following example shows a contract and its storage layout, containing
-.. value and reference types, types that are encoded packed, and nested types.
-=======
-The following example shows a contract and both its storage and transient storage layout,
-containing value and reference types, types that are encoded packed, and nested types.
->>>>>>> english/develop
+.. The following example shows a contract and both its storage and transient storage layout,
+.. containing value and reference types, types that are encoded packed, and nested types.
 
-次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージのレイアウトを示しています。
+次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージレイアウト及び一時ストレージレイアウトを示しています。
 
 .. code-block:: solidity
 
@@ -383,8 +356,8 @@ containing value and reference types, types that are encoded packed, and nested 
         bytes b1;
     }
 
-Storage Layout
---------------
+ストレージレイアウト
+--------------------
 
 .. code-block:: json
 
@@ -554,9 +527,7 @@ Storage Layout
       }
     }
 
-<<<<<<< HEAD
-=======
-Transient Storage Layout
+一時ストレージレイアウト
 ------------------------
 
 .. code-block:: json
@@ -601,4 +572,3 @@ Transient Storage Layout
         }
       }
     }
->>>>>>> english/develop
