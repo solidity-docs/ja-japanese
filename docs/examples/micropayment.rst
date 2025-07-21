@@ -44,11 +44,7 @@
 署名するもの
 ------------
 
-<<<<<<< HEAD
 支払いを履行するコントラクトの場合、署名されたメッセージには以下が含まれていなければなりません。
-=======
-For a contract that fulfills payments, the signed message must include:
->>>>>>> english/develop
 
     1. 受信者のアドレス
     2. 送金される金額
@@ -64,17 +60,14 @@ For a contract that fulfills payments, the signed message must include:
 アリスはメッセージにコントラクトのアドレスを含めることでこの攻撃から守ることができ、コントラクトのアドレス自体を含むメッセージだけが受け入れられます。
 このセクションの最後にある完全なコントラクトの ``claimPayment()`` 関数の最初の2行に、この例があります。
 
-<<<<<<< HEAD
-引数のパッキング
-----------------
-=======
+.. TODO:
+
 Furthermore, instead of destroying the contract by calling ``selfdestruct``,
 which is currently deprecated, we will disable the contract's functionalities by freezing it,
 resulting in the reversion of any call after it being frozen.
 
-Packing arguments
------------------
->>>>>>> english/develop
+引数のパッキング
+----------------
 
 さて、署名付きメッセージに含めるべき情報がわかったところで、メッセージをまとめ、ハッシュ化し、署名する準備が整いました。
 簡単にするために、データを連結します。
@@ -124,12 +117,6 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-<<<<<<< HEAD
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-    contract ReceiverPays {
-        address owner = msg.sender;
-=======
->>>>>>> english/develop
 
     contract Owned {
         address payable owner;
@@ -302,21 +289,13 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 ペイメントチャネルのクローズ
 ----------------------------
 
-ボブが資金を受け取る準備ができたら、スマートコントラクトの ``close`` 関数をコールしてペイメントチャネルを閉じる時です。
-チャネルを閉じると、受取人に支払うべきEtherが支払われ、コントラクトが破棄され、残っているEtherがAliceに送り返されます。
-チャネルを閉じるために、BobはAliceが署名したメッセージを提供する必要があります。
+Bob が資金を受け取る準備ができたら、スマートコントラクトの ``close`` 関数をコールしてペイメントチャネルを閉じる時です。
+チャネルを閉じることで、受取人に支払うべき Ether が支払われ、コントラクトは凍結されて無効化され、残りの Ether は Alice に返却されます。  
+チャネルを閉じるには、Bob は Alice によって署名されたメッセージを提供する必要があります。
 
-<<<<<<< HEAD
 スマートコントラクトは、メッセージに送信者の有効な署名が含まれていることを検証する必要があります。
 この検証を行うためのプロセスは、受信者が使用するプロセスと同じです。
 Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセクションのJavaScriptの対応する関数と同じように動作しますが、後者の関数は ``ReceiverPays`` コントラクトから借用しています。
-=======
-When Bob is ready to receive his funds, it is time to
-close the payment channel by calling a ``close`` function on the smart contract.
-Closing the channel pays the recipient the Ether they are owed and
-deactivates the contract by freezing it, sending any remaining Ether back to Alice. To
-close the channel, Bob needs to provide a message signed by Alice.
->>>>>>> english/develop
 
 ``close`` 関数を呼び出すことができるのは、ペイメントチャネルの受信者のみです。
 受信者は当然、最新のペイメントメッセージを渡します。
@@ -324,18 +303,11 @@ close the channel, Bob needs to provide a message signed by Alice.
 もし送信者がこの関数を呼び出すことができれば、より低い金額のメッセージを提供し、受信者を騙して債務を支払うことができます。
 
 この関数は、署名されたメッセージが与えられたパラメータと一致するかどうかを検証します。
-すべてがチェックアウトされれば、受信者には自分の分のEtherが送られ、送信者には ``selfdestruct`` 経由で残りの分が送られます。
+すべてがチェックアウトされれば、受信者には自分の分のEtherが送られ、送信者には ``transfer`` 経由で残りの資金が送られます。
 ``close`` 関数はコントラクト全体で見ることができます。
 
-<<<<<<< HEAD
 チャネルの有効期限
 ------------------
-=======
-The function verifies the signed message matches the given parameters.
-If everything checks out, the recipient is sent their portion of the Ether,
-and the sender is sent the remaining funds via a ``transfer``.
-You can see the ``close`` function in the full contract.
->>>>>>> english/develop
 
 ボブはいつでも支払いチャネルを閉じることができますが、それができなかった場合、アリスはエスクローされた資金を回収する方法が必要です。
 コントラクトのデプロイ時に *有効期限* が設定されました。
@@ -352,13 +324,6 @@ You can see the ``close`` function in the full contract.
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-<<<<<<< HEAD
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-    contract SimplePaymentChannel {
-        address payable public sender;      // 支払いを送信するアカウント
-        address payable public recipient;   // 支払いを受けるアカウント
-        uint256 public expiration;  // 受信者が閉じない場合のタイムアウト
-=======
 
     contract Frozeable {
         bool private _frozen = false;
@@ -377,7 +342,6 @@ You can see the ``close`` function in the full contract.
         address payable public sender;    // The account sending payments.
         address payable public recipient; // The account receiving the payments.
         uint256 public expiration;        // Timeout in case the recipient never closes.
->>>>>>> english/develop
 
         constructor (address payable recipientAddress, uint256 duration)
             payable
@@ -387,19 +351,12 @@ You can see the ``close`` function in the full contract.
             expiration = block.timestamp + duration;
         }
 
-<<<<<<< HEAD
         /// 受信者は送信者から署名された金額を提示することで、いつでもチャンネルを閉じることができます。
         /// 受信者はその金額を送信し、残りは送信者に戻ります。
-        function close(uint256 amount, bytes memory signature) external {
-=======
-        /// the recipient can close the channel at any time by presenting a
-        /// signed amount from the sender. the recipient will be sent that amount,
-        /// and the remainder will go back to the sender
         function close(uint256 amount, bytes memory signature)
             external
             notFrozen
         {
->>>>>>> english/develop
             require(msg.sender == recipient);
             require(isValidSignature(amount, signature));
 
@@ -408,33 +365,22 @@ You can see the ``close`` function in the full contract.
             sender.transfer(address(this).balance);
         }
 
-<<<<<<< HEAD
         /// 送信者はいつでも有効期限を延長できます。
-        function extend(uint256 newExpiration) external {
-=======
-        /// the sender can extend the expiration at any time
         function extend(uint256 newExpiration)
             external
             notFrozen
         {
->>>>>>> english/develop
             require(msg.sender == sender);
             require(newExpiration > expiration);
 
             expiration = newExpiration;
         }
 
-<<<<<<< HEAD
         /// 受信者がチャネルを閉じることなくタイムアウトに達した場合、Etherは送信者に戻されます。
-        function claimTimeout() external {
-=======
-        /// if the timeout is reached without the recipient closing the channel,
-        /// then the Ether is released back to the sender.
         function claimTimeout()
             external
             notFrozen
         {
->>>>>>> english/develop
             require(block.timestamp >= expiration);
             freeze();
             sender.transfer(address(this).balance);
@@ -446,22 +392,12 @@ You can see the ``close`` function in the full contract.
             returns (bool)
         {
             bytes32 message = prefixed(keccak256(abi.encodePacked(this, amount)));
-<<<<<<< HEAD
-
             // 署名が支払い送信者のものであることを確認します。
-            return recoverSigner(message, signature) == sender;
-        }
-
-        /// これ以下の関数はすべて「署名の作成と検証」の章から引用しているだけです。
-
-=======
-            // check that the signature is from the payment sender
             return recoverSigner(message, signature) == sender;
         }
 
         /// All functions below this are just taken from the chapter
         /// 'creating and verifying signatures' chapter.
->>>>>>> english/develop
         function splitSignature(bytes memory sig)
             internal
             pure
@@ -496,15 +432,9 @@ You can see the ``close`` function in the full contract.
     }
 
 .. note::
-<<<<<<< HEAD
-=======
-  The function ``splitSignature`` does not use all security
-  checks. A real implementation should use a more rigorously tested library,
-  such as openzeppelin's `version  <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ of this code.
->>>>>>> english/develop
 
     関数 ``splitSignature`` は、すべてのセキュリティチェックを使用していません。
-    実際の実装では、openzepplinの `バージョン  <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ のように、より厳密にテストされたライブラリを使用する必要があります。
+    実際の実装では、OpenZeppelin の `バージョン  <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ のように、より厳密にテストされたライブラリを使用する必要があります。
 
 ペイメントの検証
 ----------------
