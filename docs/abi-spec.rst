@@ -51,7 +51,9 @@ Also, the ABI specification for libraries is :ref:`slightly different <library-s
 
 型
 ==
+
 .. TODO:
+
 Note that the library ABIs can take types different than below e.g. for non-storage structs. See :ref:`library selectors <library-selectors>` for details.
 
 次のような基本型があります。
