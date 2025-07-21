@@ -16,11 +16,9 @@
 コントラクトのインタフェース関数が強く型付けされ、それがコンパイル時に知られており、かつ静的であるとしています。
 また、すべてのコントラクトは、それらが呼び出すコントラクトのインタフェース定義をコンパイル時に利用可能であるとしています。
 
-<<<<<<< HEAD
 この仕様では、インターフェースが動的である、あるいは、実行時にしかわからないコントラクトは扱いません。
-=======
-This specification does not address contracts whose interface is dynamic or otherwise known only at run-time. Also, the ABI specification for libraries is :ref:`slightly different <library-selectors>`.
->>>>>>> english/develop
+.. TODO:
+Also, the ABI specification for libraries is :ref:`slightly different <library-selectors>`.
 
 .. _abi_function_selector:
 .. index:: ! selector; of a function
@@ -51,14 +49,10 @@ This specification does not address contracts whose interface is dynamic or othe
 例えば、戻り値やイベントの引数も同じようにエンコーディングされます。
 ただし、関数を指定する4バイトのセレクタはありません。
 
-<<<<<<< HEAD
 型
 ==
-=======
+.. TODO:
 Note that the library ABIs can take types different than below e.g. for non-storage structs. See :ref:`library selectors <library-selectors>` for details.
-
-The following elementary types exist:
->>>>>>> english/develop
 
 次のような基本型があります。
 
@@ -322,44 +316,9 @@ Solidityでは、タプルを除いて、上記で紹介したすべての型を
         function sam(bytes memory, bool, uint[] memory) public pure {}
     }
 
-``Foo`` の例では、 ``69`` と ``true`` というパラメータで ``baz`` を呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです。
+したがって ``Foo`` の例では、
 
-<<<<<<< HEAD
-- ``0xcdcd77c0``: メソッドID。シグネチャ ``baz(uint32,bool)`` のASCII形式のKeccakハッシュの最初の4バイトです。
-- ``0x0000000000000000000000000000000000000000000000000000000000000045``: 第1パラメータ。
-  32バイトにパディングされたuint32の値 ``69`` 。
-- ``0x0000000000000000000000000000000000000000000000000000000000000001``: 第2パラメータ。
-  32バイトにパディングされたboolの値 ``true`` 。
-=======
-Thus, for our ``Foo`` example, if we wanted to call ``bar`` with the argument ``["abc", "def"]``, we would pass 68 bytes total, broken down into:
-
-- ``0xfce353f6``: the Method ID. This is derived from the signature ``bar(bytes3[2])``.
-- ``0x6162630000000000000000000000000000000000000000000000000000000000``: the first part of the first
-  parameter, a ``bytes3`` value ``"abc"`` (left-aligned).
-- ``0x6465660000000000000000000000000000000000000000000000000000000000``: the second part of the first
-  parameter, a ``bytes3`` value ``"def"`` (left-aligned).
-
-In total:
-
-.. code-block:: none
-
-    0xfce353f661626300000000000000000000000000000000000000000000000000000000006465660000000000000000000000000000000000000000000000000000000000
-
-If we wanted to call ``baz`` with the parameters ``69`` and
-``true``, we would pass 68 bytes total, which can be broken down into:
->>>>>>> english/develop
-
-合わせると、
-
-.. code-block:: none
-
-    0xcdcd77c000000000000000000000000000000000000000000000000000000000000000450000000000000000000000000000000000000000000000000000000000000001
-
-この関数は単一の ``bool`` を返します。
-例えば、 ``false`` を返すとしたら、その出力は単一のバイト列 ``0x0000000000000000000000000000000000000000000000000000000000000000`` であり、これは単一のboolです。
-
-<<<<<<< HEAD
-``bar`` を ``["abc", "def"]`` の引数で呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです。
+``bar`` を ``["abc", "def"]`` の引数で呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです:
 
 - ``0xfce353f6``: メソッドID。シグネチャ ``bar(bytes3[2])`` から得られます。
 - ``0x6162630000000000000000000000000000000000000000000000000000000000``: 第1パラメータの最初の部分で、 ``bytes3`` の値 ``"abc"`` （左寄せ）。
@@ -371,11 +330,26 @@ If we wanted to call ``baz`` with the parameters ``69`` and
 
     0xfce353f661626300000000000000000000000000000000000000000000000000000000006465660000000000000000000000000000000000000000000000000000000000
 
+``69`` と ``true`` というパラメータで ``baz`` を呼び出す場合、合計68バイトを渡すことになり、その内訳は以下の通りです:
+
+- ``0xcdcd77c0``: メソッドID。シグネチャ ``baz(uint32,bool)`` のASCII形式のKeccakハッシュの最初の4バイトです。
+- ``0x0000000000000000000000000000000000000000000000000000000000000045``: 第1パラメータ。
+  32バイトにパディングされたuint32の値 ``69`` 。
+- ``0x0000000000000000000000000000000000000000000000000000000000000001``: 第2パラメータ。
+  32バイトにパディングされたboolの値 ``true`` 。
+
+合わせると、
+
+.. code-block:: none
+
+    0xcdcd77c000000000000000000000000000000000000000000000000000000000000000450000000000000000000000000000000000000000000000000000000000000001
+
+この関数は単一の ``bool`` を返します。
+例えば、 ``false`` を返すとしたら、その出力は単一のバイト列 ``0x0000000000000000000000000000000000000000000000000000000000000000`` であり、これは単一のboolです。
+
 引数 ``"dave"`` 、 ``true`` 、 ``[1,2,3]`` で ``sam`` を呼び出したい場合、合計292バイトを渡すことになり、その内訳は以下の通りです。
-=======
 If we wanted to call ``sam`` with the arguments ``"dave"``, ``true`` and ``[1,2,3]``, we would
 pass 292 bytes total, broken down into:
->>>>>>> english/develop
 
 - ``0xa5643bf2``: メソッドID。シグネチャ ``sam(bytes,bool,uint256[])`` から得られます。 ``uint`` はその正規の表現である ``uint256`` に置き換えられていることに注意してください。
 - ``0x0000000000000000000000000000000000000000000000000000000000000060``: 第1引数（動的型）のデータ部の位置で、引数ブロックの先頭からのバイト数で表します。この場合は ``0x60`` 。
