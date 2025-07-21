@@ -627,22 +627,17 @@ Solidityでは、エラーの処理にステートをリバートする例外を
     低レベル関数の ``call`` 、 ``delegatecall`` 、 ``staticcall`` は、EVMの設計の一環として、呼び出されたアカウントが存在しない場合、最初の戻り値として ``true`` を返します。
     必要に応じて、呼び出す前にアカウントの存在を確認する必要があります。
 
-<<<<<<< HEAD
 .. Exceptions can contain error data that is passed back to the caller
 .. in the form of :ref:`error instances <errors>`.
 .. The built-in errors ``Error(string)`` and ``Panic(uint256)`` are
 .. used by special functions, as explained below. ``Error`` is used for "regular" error conditions
 .. while ``Panic`` is used for errors that should not be present in bug-free code.
-=======
-.. _assert-and-require-statements:
-
-Panic via ``assert`` and Error via ``require``
-----------------------------------------------
->>>>>>> english/develop
 
 例外にはエラーデータを含めることができ、 :ref:`error instances <errors>` の形で呼び出し側に戻されます。
 組み込みエラーの ``Error(string)`` と ``Panic(uint256)`` は、以下に説明するように特別な関数で使用されます。
 ``Error`` は「通常の」エラー状態に使用され、 ``Panic`` はバグのないコードでは存在してはならないエラーに使用されます。
+
+.. _assert-and-require-statements:
 
 ``assert`` を介したパニックと ``require`` を介したエラー
 --------------------------------------------------------
@@ -660,7 +655,6 @@ Panic via ``assert`` and Error via ``require``
 .. tools can evaluate your contract to identify the conditions and
 .. function calls which will cause a Panic.
 
-<<<<<<< HEAD
 Assertは、内部エラーのテストや不変性のチェックにのみ使用します。
 適切に機能しているコードは、外部からの不正な入力に対してもパニックを起こさないはずです。
 もしそうなってしまったら、コントラクトにバグがあるので修正する必要があります。
@@ -703,24 +697,8 @@ Assertは、内部エラーのテストや不変性のチェックにのみ使�
 
 #. 0x51: 内部関数型のゼロ初期化変数を呼び出した場合。
 
-.. The ``require`` function either creates an error without any data or
-.. an error of type ``Error(string)``. It
-.. should be used to ensure valid conditions
-.. that cannot be detected until execution time.
-.. This includes conditions on inputs
-.. or return values from calls to external contracts.
+.. TODO:
 
-``require`` 関数は、データのないエラーを作成するか、 ``Error(string)`` 型のエラーを作成します。
-``require`` 関数は、実行時まで検出できない有効な条件を保証するために使用する必要があります。
-これには、入力に対する条件や、外部コントラクトへの呼び出しからの戻り値が含まれます。
-
-.. note::
-
-    現在、 ``require`` との組み合わせでカスタムエラーを使用できません。
-    代わりに ``if (!condition) revert CustomError();`` を仕様してください。
-
-``Error(string)`` 例外（またはデータのない例外）は、以下のような場合にコンパイラによって生成されます。
-=======
 The ``require`` function provides three overloads:
 
 1. ``require(bool)`` which will revert without any data (not even an error selector).
@@ -733,9 +711,7 @@ The ``require`` function provides three overloads:
     For example, in ``require(condition, CustomError(f()));`` and ``require(condition, f());``,
     function ``f()`` will be called regardless of whether the supplied condition is ``true`` or ``false``.
 
-An ``Error(string)`` exception (or an exception without data) is generated
-by the compiler in the following situations:
->>>>>>> english/develop
+``Error(string)`` 例外（またはデータのない例外）は、以下のような場合にコンパイラによって生成されます。
 
 .. #. Calling ``require(x)`` where ``x`` evaluates to ``false``.
 .. #. If you use ``revert()`` or ``revert("description")``.
@@ -748,7 +724,6 @@ by the compiler in the following situations:
 
 #. ``revert()`` や ``revert("description")`` を使う場合。
 
-<<<<<<< HEAD
 #. コードを含まないコントラクトを対象とした外部関数呼び出しを行った場合。
 
 #. ``payable`` モディファイアのないパブリック関数（コンストラクタ、フォールバック関数を含む）を介してコントラクトがEtherを受け取る場合。
@@ -779,18 +754,16 @@ by the compiler in the following situations:
 
 #. ``new`` キーワードを使ってコントラクトを作成しても、コントラクトの作成が :ref:`正しく終了しない場合<creating-contracts>` 。
 
-``require`` にはオプションでメッセージ文字列を指定できますが、 ``assert`` には指定できません。
-
-.. note::
-=======
 You can optionally provide a message string or a custom error to ``require``, but not to ``assert``.
 
-.. note::
-    If you do not provide a string or custom error argument to ``require``, it will revert
-    with empty error data, not even including the error selector.
->>>>>>> english/develop
+``require`` にはオプションでメッセージ文字列を指定できますが、 ``assert`` には指定できません。
+``require`` にはオプションでメッセージ文字列やカスタムエラーを指定できますが、 ``assert`` には指定できません。
 
-    ``require`` に文字列の引数を与えない場合、エラーセレクタを含めずに空のエラーデータでリバートします。
+.. note::
+
+    .. If you do not provide a string or custom error argument to ``require``, it will revert with empty error data, not even including the error selector.
+
+    ``require`` に文字列やカスタムエラーの引数を指定しない場合、エラーセレクタすら含まれない空のエラーデータでリバートされます。
 
 次の例では、 ``require`` で入力の状態を確認し、 ``assert`` で内部のエラーチェックを行うことができます。
 
