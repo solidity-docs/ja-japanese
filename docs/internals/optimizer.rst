@@ -1328,12 +1328,8 @@ FunctionSpecializer
 .. Other optimization steps will be able to make more simplifications to the function. The
 .. optimization step is mainly useful for functions that would not be inlined.
 
-<<<<<<< HEAD
 他の最適化ステップでは、関数をより単純化できます。
 最適化ステップは、主にインライン化されないような関数に有効です。
-=======
-Prerequisites: Disambiguator, FunctionHoister.
->>>>>>> english/develop
 
 前提条件: Disambiguator、FunctionHoister。
 

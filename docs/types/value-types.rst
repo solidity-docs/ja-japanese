@@ -439,23 +439,6 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 
 .. note::
 
-<<<<<<< HEAD
-    バージョン0.8.0以前では、 ``byte`` は ``bytes1`` のエイリアスでした。
-
-動的サイズのバイト列
---------------------
-
-``bytes``:
-    動的なサイズのバイト配列。
-    :ref:`arrays` を参照。
-    値型ではありません！
-``string``:
-    動的サイズのUTF-8エンコードされた文字列。
-    :ref:`arrays` を参照。
-    値型ではありません！
-
-=======
->>>>>>> english/develop
 .. index:: address, ! literal;address
 
 .. _address_literals:
@@ -815,24 +798,20 @@ Unicodeリテラル
     .. The caller cannot pass its calldata directly to an external function and always ABI-encodes the arguments into memory.
     .. Marking the parameters as ``calldata`` only affects the implementation of the external function and is meaningless in a function pointer on the caller's side.
 
-<<<<<<< HEAD
     ``calldata`` パラメータを持つ外部関数は、 ``calldata`` パラメータを持つ外部関数型と互換性がありません。
     代わりに ``memory`` パラメータを持つ対応する型と互換性があります。
     例えば、 ``function (string calldata) external`` 型の値が指すことのできる関数はありませんが、 ``function (string memory) external`` は ``function f(string memory) external {}`` と ``function g(string calldata) external {}`` を指すことができます。
     これは、どちらの場所でも、引数が同じように関数に渡されるからです。
     呼び出し元はcalldataを直接外部関数に渡すことはできず、常に引数をメモリにABIエンコードします。
     パラメータを ``calldata`` としてマークすることは、外部関数の実装にのみ影響し、呼び出し側の関数ポインタでは意味を持ちません。
-=======
+
+.. TODO:
+
 .. warning::
     Comparison of internal function pointers can have unexpected results in the legacy pipeline with the optimizer enabled,
     as it can collapse identical functions into one, which will then lead to said function pointers comparing as equal instead of not.
     Such comparisons are not advised, and will lead to the compiler issuing a warning, until the next breaking release (0.9.0),
     when the warning will be upgraded to an error, thereby making such comparisons disallowed.
-
-Libraries are excluded because they require a ``delegatecall`` and use :ref:`a different ABI
-convention for their selectors <library-selectors>`.
-Functions declared in interfaces do not have definitions so pointing at them does not make sense either.
->>>>>>> english/develop
 
 ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。
 インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。

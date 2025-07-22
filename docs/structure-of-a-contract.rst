@@ -106,14 +106,9 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity ^0.8.22;
 
-    event HighestBidIncreased(address bidder, uint amount); // Event
+    event HighestBidIncreased(address bidder, uint amount); // イベント
 
     contract SimpleAuction {
-<<<<<<< HEAD
-        event HighestBidIncreased(address bidder, uint amount); // イベント
-
-=======
->>>>>>> english/develop
         function bid() public payable {
             // ...
             emit HighestBidIncreased(msg.sender, msg.value); // イベントのトリガー

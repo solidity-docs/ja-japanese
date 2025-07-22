@@ -67,7 +67,6 @@
 .. Types defined inside interfaces and other contract-like structures
 .. can be accessed from other contracts: ``Token.TokenType`` or ``Token.Coin``.
 
-<<<<<<< HEAD
 インターフェースや他のコントラクトに似た構造の中で定義された型は、他のコントラクトからアクセスできます。
 ``Token.TokenType`` または ``Token.Coin`` 。
 
@@ -77,7 +76,3 @@
 
     インターフェースは :doc:`Solidity version 0.5.0 <050-breaking-changes>` 以降 ``enum`` 型をサポートしています。
     プラグマバージョンが最低限このバージョンを指定していることを確認してください。
-=======
-.. warning::
->>>>>>> english/develop
-

@@ -711,12 +711,7 @@ OK:
         return x + 1;
     }
 
-<<<<<<< HEAD
 NG:
-=======
-
-No:
->>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -1114,31 +1109,19 @@ NG:
 
 .. Order of Layout
 
-<<<<<<< HEAD
 ****************
 レイアウトの順序
 ****************
 
-.. Layout contract elements in the following order:
-=======
-Contract elements should be laid out in the following order:
-
-1. Pragma statements
-2. Import statements
-3. Events
-4. Errors
-5. Interfaces
-6. Libraries
-7. Contracts
->>>>>>> english/develop
-
-コントラクトの要素を以下の順序でレイアウトします。
+コントラクト要素は次の順序で配置するべきです：
 
 1. プラグマ文
 2. インポート文
-3. インターフェース
-4. ライブラリ
-5. コントラクト
+3. イベント
+4. エラー
+5. インターフェース
+6. ライブラリ
+7. コントラクト
 
 .. Inside each contract, library or interface, use the following order:
 
