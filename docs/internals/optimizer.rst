@@ -5,8 +5,11 @@
 オプティマイザ
 **************
 
-Solidityコンパイラは、2つの異なるオプティマイザモジュールを使用しています。
-オペコードレベルで動作する「旧」オプティマイザと、Yul IRコードで動作する「新」オプティマイザです。
+The Solidity compiler involves optimizations at three different levels (in order of execution):
+
+- Optimizations during code generation based on a direct analysis of Solidity code.
+- Optimizing transformations on the Yul IR code.
+- Optimizations at the opcode level.
 
 オペコードベースのオプティマイザは、オペコードに `簡略化ルール <https://github.com/ethereum/solidity/blob/develop/libevmasm/RuleList.h>`_ を適用します。
 また、同じコードセットを組み合わせたり、使われていないコードを削除したりします。
@@ -18,14 +21,32 @@ Yulベースのオプティマイザは、関数呼び出しをまたいで動�
 それらの引数と戻り値がお互いに依存しない場合、関数呼び出しを並べ替えることができます。
 同様に、ある関数に副作用がなく、その実行結果にゼロをかける場合は、その関数呼び出しを完全に削除できます。
 
+The codegen-based optimizer affects the initial low-level code produced from the Solidity input.
+In the legacy pipeline, the bytecode is generated immediately and most of the optimizations of this
+kind are implicit and not configurable, the only exception being an optimization which changes the
+order of literals in binary operations.
+The IR-based pipeline takes a different approach and produces Yul IR closely matching the structure
+of the Solidity code, with nearly all optimizations deferred to the Yul optimizer module.
+In that case codegen-level optimization is done only in very limited cases which are difficult to
+handle in Yul IR, but are straightforward with the high-level information from analysis phase at hand.
+An example of such an optimization is the bypass of checked arithmetic when incrementing the counter
+in certain idiomatic ``for`` loops.
+
 現在、パラメータ ``--optimize`` は、生成されたバイトコードにはオペコードベースのオプティマイザを、ABI coder v2などで内部的に生成されたYulコードにはYulオプティマイザを適用します。
 ``solc --ir-optimized --optimize`` は、Solidityのソースに対して最適化されたYul IRを生成するために使用できます。
 同様に、 ``solc --strict-assembly --optimize`` はスタンドアローンのYulモードに使用できます。
 
 .. note::
-    .. The `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_ is always enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
+    Some optimizer steps, such as, for example, the `peephole optimizer <https://en.wikipedia.org/wiki/Peephole_optimization>`_
+    and the :ref:`unchecked loop increment optimizer <unchecked-loop-optimizer>` are always
+    enabled by default and can only be turned off via the :ref:`Standard JSON <compiler-api>`.
 
-    `peepholeオプティマイザ <https://en.wikipedia.org/wiki/Peephole_optimization>`_ はデフォルトで常に有効になっており、 :ref:`Standard JSON <compiler-api>` によってのみオフにできます。
+.. note::
+    An empty optimizer sequence, i.e ``:``, is accepted even without ``--optimize`` in order to fully disable
+    the user-supplied portion of the Yul :ref:`optimizer sequence <selecting-optimizations>`, as by default,
+    even when the optimizer is not turned on, the :ref:`unused pruner <unused-pruner>` step will be run.
+
+You can find more details on both optimizer modules and their optimization steps below.
 
 オプティマイザモジュールとその最適化ステップの詳細は以下の通りです。
 
@@ -323,15 +344,11 @@ Yulベースのオプティマイザは、いくつかのステージとコン�
 Yulベースのオプティマイザモジュールの全構成要素を以下に説明します。
 以下の変換ステップが主な構成要素です。
 
-- SSA Transform
-
-- Common Subexpression Eliminator
-
-- Expression Simplifier
-
-- Redundant Assign Eliminator
-
-- Full Inliner
+- SSATransform
+- CommonSubexpressionEliminator
+- ExpressionSimplifier
+- UnusedAssignEliminator
+- FullInliner
 
 .. _optimizer-steps:
 
@@ -345,7 +362,7 @@ Yulベースのオプティマイザモジュールの全構成要素を以下�
 Abbreviation Full name
 ============ ===============================
 ``f``        :ref:`block-flattener`
-``l``        :ref:`circular-reference-pruner`
+``l``        :ref:`circular-references-pruner`
 ``c``        :ref:`common-subexpression-eliminator`
 ``C``        :ref:`conditional-simplifier`
 ``U``        :ref:`conditional-unsimplifier`
@@ -367,11 +384,11 @@ Abbreviation Full name
 ``T``        :ref:`literal-rematerialiser`
 ``L``        :ref:`load-resolver`
 ``M``        :ref:`loop-invariant-code-motion`
-``r``        :ref:`redundant-assign-eliminator`
 ``m``        :ref:`rematerialiser`
-``V``        :ref:`SSA-reverser`
-``a``        :ref:`SSA-transform`
+``V``        :ref:`ssa-reverser`
+``a``        :ref:`ssa-transform`
 ``t``        :ref:`structural-simplifier`
+``r``        :ref:`unused-assign-eliminator`
 ``p``        :ref:`unused-function-parameter-pruner`
 ``S``        :ref:`unused-store-eliminator`
 ``u``        :ref:`unused-pruner`
@@ -384,6 +401,8 @@ Abbreviation Full name
 いくつかのステップは ``BlockFlattener``, ``FunctionGrouper``, ``ForLoopInitRewriter`` によって確保されるプロパティに依存しています。
 このため、Yulオプティマイザは、ユーザーが提供したステップを適用する前に、常にそれらを適用します。
 
+.. _selecting-optimizations:
+
 最適化の選択
 ------------
 
@@ -392,7 +411,7 @@ Abbreviation Full name
 
 .. code-block:: bash
 
-    solc --optimize --ir-optimized --yul-optimizations 'dhfoD[xarrscLMcCTU]uljmul:fDnTOc'
+    solc --optimize --ir-optimized --yul-optimizations 'dhfoD[xarrscLMcCTU]uljmul:fDnTOcmu'
 
 .. The order of steps is significant and affects the quality of the output.
 .. Moreover, applying a step may uncover new optimization opportunities for others that were already applied, so repeating steps is often beneficial.
@@ -467,7 +486,7 @@ FunctionHoisterは、すべての関数定義を最上位のブロックの最�
 FunctionGrouper
 ^^^^^^^^^^^^^^^
 
-.. The function grouper has to be applied after the disambiguator and the function hoister.
+.. The function grouper has to be applied after the Disambiguator and the FunctionHoister.
 .. Its effect is that all topmost elements that are not function definitions are moved into a single block which is the first statement of the root block.
 
 FunctionGrouperは、DisambiguatorとFunctionHoisterの後に適用しなければなりません。
@@ -490,11 +509,12 @@ FunctionGrouperは、DisambiguatorとFunctionHoisterの後に適用しなけれ�
 ForLoopConditionIntoBody
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. This transformation moves the loop-iteration condition of a for-loop into loop body.
+.. This transformation moves the loop-iteration condition of a ``for`` loop into loop body.
 .. We need this transformation because :ref:`expression-splitter` will not apply to iteration condition expressions (the ``C`` in the following example).
 
-この変換は、forループのループ反復条件をループ本体に移動させるものです。
+この変換は、 ``for`` ループのループ反復条件をループ本体に移動させるものです。
 :ref:`expression-splitter` は反復条件式（以下の例では ``C`` ）には適用されないため、この変換が必要です。
+
 
 .. code-block:: text
 
@@ -511,18 +531,18 @@ ForLoopConditionIntoBody
         Body...
     }
 
-.. This transformation can also be useful when paired with ``LoopInvariantCodeMotion``, since invariants in the loop-invariant conditions can then be taken outside the loop.
+.. This transformation can also be useful when paired with LoopInvariantCodeMotion, since invariants in the loop-invariant conditions can then be taken outside the loop.
 
-ループ不変条件の不変量をループの外に出すことができるため、この変換は ``LoopInvariantCodeMotion`` と組み合わせても有効です。
+ループ不変条件の不変量をループの外に出すことができるため、この変換は LoopInvariantCodeMotion と組み合わせても有効です。
 
 .. _for-loop-init-rewriter:
 
 ForLoopInitRewriter
 ^^^^^^^^^^^^^^^^^^^
 
-.. This transformation moves the initialization part of a for-loop to before the loop:
+.. This transformation moves the initialization part of a ``for`` loop to before the loop:
 
-この変換により、for-loopの初期化部分がループの前に移動します。
+この変換により、 ``for`` ループの初期化部分がループの前に移動します。
 
 .. code-block:: text
 
@@ -539,9 +559,9 @@ ForLoopInitRewriter
         Body...
     }
 
-.. This eases the rest of the optimization process because we can ignore the complicated scoping rules of the for loop initialization block.
+.. This eases the rest of the optimization process because we can ignore the complicated scoping rules of the ``for`` loop initialization block.
 
-これにより、forループ初期化ブロックの複雑なスコープルールを無視できるため、残りの最適化プロセスが容易になります。
+これにより、 ``for`` ループ初期化ブロックの複雑なスコープルールを無視できるため、残りの最適化プロセスが容易になります。
 
 .. _var-decl-initializer:
 
@@ -657,15 +677,16 @@ ExpressionSplitterは、 ``add(mload(0x123), mul(mload(0x456), 0x20))`` のよ�
 これは、ループのコントロールフローが、すべてのケースで内部式の「アウトライン化」を許可していないため、ループの反復条件には適用されません。
 :ref:`for-loop-condition-into-body` を適用して反復条件をループ本体に移動させることで、この制限を回避できます。
 
-.. The final program should be in a form such that (with the exception of loop conditions) function calls cannot appear nested inside expressions and all function call arguments have to be variables.
+.. The final program should be in an *expression-split form*, where (with the exception of loop conditions) function calls cannot appear nested inside expressions and all function call arguments have to be variables.
 
-最終的なプログラムは、（ループ条件を除いて）関数呼び出しを式の中に入れ子にすることはできず、関数呼び出しの引数はすべて変数でなければならないという形にしなければなりません。
+最終的なプログラムは *expression-split form* （式分離形式）である必要があります。  
+これは、ループ条件を除き、関数呼び出しを式の中にネストして書くことはできず、すべての関数呼び出しの引数は変数でなければならないという形式です。
 
 この形式の利点は、オペコードの順序を変更するのがかなり容易であることと、関数呼び出しのインライン化を実行するのも容易であることです。
 さらに、式の個々の部分を置き換えたり、「式ツリー」を再編成したりするのも簡単です。
 難点は、人間にとって読みにくいコードであることです。
 
-.. _SSA-transform:
+.. _ssa-transform:
 
 SSATransform
 ^^^^^^^^^^^^
@@ -709,31 +730,30 @@ SSATransform
 .. Furthermore, always record the current value of ``i`` used for ``a`` and replace each
 .. reference to ``a`` by ``a_i``.
 .. The current value mapping is cleared for a variable ``a`` at the end of each block
-.. in which it was assigned to and at the end of the for loop init block if it is assigned
-.. inside the for loop body or post block.
+.. in which it was assigned to and at the end of the ``for`` loop init block if it is assigned
+.. inside the ``for`` loop body or post block.
 .. If a variable's value is cleared according to the rule above and the variable is declared outside
 .. the block, a new SSA variable will be created at the location where control flow joins,
-.. this includes the beginning of loop post/body block and the location right after
-.. If/Switch/ForLoop/Block statement.
+.. this includes the beginning of loop post/body block and the location right after ``if``/``switch``/``for``/block statement.
 
 さらに、 ``a`` に使われている ``i`` の現在の値を常に記録し、 ``a`` への各参照を ``a_i`` に置き換えます。
-変数 ``a`` の現在値のマッピングは、それが代入された各ブロックの終了時、およびforループ本体やポストブロック内で代入された場合はforループのinitブロックの終了時にクリアされます。
-上記のルールで変数の値がクリアされ、その変数がブロック外で宣言された場合、ループのポスト/ボディブロックの先頭や、If/Switch/ForLoop/Block文の直後など、コントロールフローが合流する位置に新たなSSA変数が作成されます。
+変数 ``a`` の現在値のマッピングは、それが代入された各ブロックの終了時、および ``for`` ループ本体やポストブロック内で代入された場合は ``for`` ループのinitブロックの終了時にクリアされます。
+上記のルールで変数の値がクリアされ、その変数がブロック外で宣言された場合、ループのポスト/ボディブロックの先頭や、 ``if``, ``switch``, ``for``, block 文の直後など、コントロールフローが合流する位置に新たなSSA変数が作成されます。
 
-このステージの後、不要な中間代入を削除するために、Redundant Assign Eliminatorを使用することをお勧めします。
+このステージの後、不要な中間代入を削除するために、UnusedAssignEliminatorを使用することをお勧めします。
 
-.. This stage provides best results if the Expression Splitter and the Common Subexpression Eliminator
+.. This stage provides best results if the ExpressionSplitter and the CommonSubexpressionEliminator
 .. are run right before it, because then it does not generate excessive amounts of variables.
-.. On the other hand, the Common Subexpression Eliminator could be more efficient if run after the
+.. On the other hand, the CommonSubexpressionEliminator could be more efficient if run after the
 .. SSA transform.
 
-このステージでは、Expression SplitterとCommon Subexpression Eliminatorが直前に実行されると、過剰な量の変数が生成されないため、最良の結果が得られます。
-一方、Common Subexpression EliminatorはSSAトランスフォームの後に実行した方がより効率的です。
+このステージでは、ExpressionSplitterとCommonSubexpressionEliminatorが直前に実行されると、過剰な量の変数が生成されないため、最良の結果が得られます。
+一方、CommonSubexpressionEliminatorはSSAトランスフォームの後に実行した方がより効率的です。
 
-.. _redundant-assign-eliminator:
+.. _unused-assign-eliminator:
 
-RedundantAssignEliminator
-^^^^^^^^^^^^^^^^^^^^^^^^^
+UnusedAssignEliminator
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. The SSA transform always generates an assignment of the form ``a := a_i``, even though these might be unnecessary in many cases, like the following example:
 
@@ -764,11 +784,11 @@ SSAトランスフォームでは、このスニペットを次のように変�
         sstore(a_3, 1)
     }
 
-.. The Redundant Assign Eliminator removes all the three assignments to ``a``, because
+.. The UnusedAssignEliminator removes all the three assignments to ``a``, because
 .. the value of ``a`` is not used and thus turn this
 .. snippet into strict SSA form:
 
-Redundant Assign Eliminatorは、 ``a`` の値が使用されていないため、 ``a`` への3つの割り当てをすべて削除し、このスニペットを厳密なSSAフォームにします。
+UnusedAssignEliminatorは、 ``a`` の値が使用されていないため、 ``a`` への3つの割り当てをすべて削除し、このスニペットを厳密なSSAフォームにします。
 
 .. code-block:: yul
 
@@ -779,10 +799,10 @@ Redundant Assign Eliminatorは、 ``a`` の値が使用されていないため�
         sstore(a_3, 1)
     }
 
-.. Of course the intricate parts of determining whether an assignment is redundant or not
+.. Of course the intricate parts of determining whether an assignment is unused or not
 .. are connected to joining control flow.
 
-もちろん、代入が冗長であるかどうかを判断する複雑な部分は、コントロールフローの結合につながっています。
+もちろん、代入が未使用であるかどうかを判断する複雑な部分は、コントロールフローの結合につながっています。
 
 .. The component works as follows in detail:
 
@@ -799,12 +819,12 @@ ASTは、情報収集のステップと実際の削除のステップの2回に�
 これは、代入された値が後でその変数への参照によって使われるかどうかを示すものです。
 
 .. When an assignment is visited, it is added to the mapping in the "undecided" state
-.. (see remark about for loops below) and every other assignment to the same variable
+.. (see remark about ``for`` loops below) and every other assignment to the same variable
 .. that is still in the "undecided" state is changed to "unused".
 .. When a variable is referenced, the state of any assignment to that variable still
 .. in the "undecided" state is changed to "used".
 
-代入が訪問されると、「undecided」状態のマッピングに追加され（後述のforループに関する記述を参照）、「undecided」状態のままの同じ変数への他のすべての代入は「unused」に変更されます。
+代入が訪問されると、「undecided」状態のマッピングに追加され（後述の ``for`` ループに関する記述を参照）、「undecided」状態のままの同じ変数への他のすべての代入は「unused」に変更されます。
 ある変数が参照されると、「undecided」状態にあるその変数へのすべての割り当ての状態は "used"に変更されます。
 
 .. At points where control flow splits, a copy
@@ -822,12 +842,12 @@ ASTは、情報収集のステップと実際の削除のステップの2回に�
 - 「unused」「used」 -> 「used」
 - 「undecided」「used」 -> 「used」
 
-.. For for-loops, the condition, body and post-part are visited twice, taking
+.. For ``for`` loops, the condition, body and post-part are visited twice, taking
 .. the joining control-flow at the condition into account.
 .. In other words, we create three control flow paths: Zero runs of the loop,
 .. one run and two runs and then combine them at the end.
 
-for-loopでは、condition、body、post-partを2回訪れ、conditionでのコントロールフローの結合を考慮します。
+``for`` ループでは、condition、body、post-partを2回訪れ、conditionでのコントロールフローの結合を考慮します。
 つまり、3つのコントロールフローの経路を作ります。
 つまり、0回のループ、1回のループ、2回のループの3つのコントロールフローを作成し、最後にそれらを結合します。
 
@@ -863,17 +883,17 @@ for-loopでは、condition、body、post-partを2回訪れ、conditionでのコ�
 
 .. code-block:: none
 
-    max(s, f(s), f(f(s))) = max(s, f(s), f(f(s)), f(f(f(s))), ...).
+    max(s, f(s), f(f(s))) = max(s, f(s), f(f(s)), f(f(f(s))), ...)
 
 .. In summary, running the loop at most twice is enough because there are only three
 .. different states.
 
 要するに、3つの異なる状態があるだけなので、ループを最大2回実行すれば十分です。
 
-.. For switch statements that have a "default"-case, there is no control-flow
-.. part that skips the switch.
+.. For ``switch`` statements that have a default-case, there is no control-flow
+.. part that skips the ``switch``.
 
-defaultのケースを持つswitch文では、スイッチをスキップするコントロールフローの部分はありません。
+defaultのケースを持つ ``switch`` 文では、スイッチをスキップするコントロールフローの部分はありません。
 
 .. When a variable goes out of scope, all statements still in the "undecided"
 .. state are changed to "unused", unless the variable is the return
@@ -920,7 +940,7 @@ movabilityは、式の特性の一つです。
 DataflowAnalyzer
 ^^^^^^^^^^^^^^^^
 
-.. The Dataflow Analyzer is not an optimizer step itself but is used as a tool
+.. The DataflowAnalyzer is not an optimizer step itself but is used as a tool
 .. by other components. While traversing the AST, it tracks the current value of
 .. each variable, as long as that value is a movable expression.
 .. It records the variables that are part of the expression
@@ -929,18 +949,18 @@ DataflowAnalyzer
 .. all stored values of all variables ``b`` are cleared whenever ``a`` is part
 .. of the currently stored expression for ``b``.
 
-Dataflow Analyzerは、それ自体はオプティマイザではありませんが、他のコンポーネントのツールとして使用されます。
+DataflowAnalyzer は、それ自体はオプティマイザではありませんが、他のコンポーネントのツールとして使用されます。
 ASTをトラバースしながら、各変数の現在の値を追跡します（その値がmovableな式である限り）。
 各変数に現在割り当てられている式の一部である変数を記録します。
 変数 ``a`` に代入されるたびに、 ``a`` の現在の格納値が更新され、 ``a`` が ``b`` の現在格納されている式の一部であるときは、すべての変数 ``b`` のすべての格納値がクリアされます。
 
 .. At control-flow joins, knowledge about variables is cleared if they have or would be assigned
 .. in any of the control-flow paths. For instance, upon entering a
-.. for loop, all variables are cleared that will be assigned during the
+.. ``for`` loop, all variables are cleared that will be assigned during the
 .. body or the post block.
 
 コントロールフローの分岐点では、コントロールフローのいずれかの経路で代入された、または代入される可能性のある変数についての知識がクリアされます。
-たとえば、forループに入ると、bodyまたはpostブロックで代入される予定のすべての変数がクリアされます。
+たとえば、 ``for`` ループに入ると、bodyまたはpostブロックで代入される予定のすべての変数がクリアされます。
 
 式スケールの単純化
 ------------------
@@ -955,12 +975,12 @@ ASTをトラバースしながら、各変数の現在の値を追跡します�
 CommonSubexpressionEliminator
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. This step uses the Dataflow Analyzer and replaces subexpressions that
+.. This step uses the DataflowAnalyzer and replaces subexpressions that
 .. syntactically match the current value of a variable by a reference to
 .. that variable. This is an equivalence transform because such subexpressions have
 .. to be movable.
 
-このステップでは、Dataflow Analyzer を使用して、構文的に変数の現在の値と一致する部分式を、その変数への参照に置き換えます。
+このステップでは、DataflowAnalyzer を使用して、構文的に変数の現在の値と一致する部分式を、その変数への参照に置き換えます。
 このような部分式はmovableでなければならないため、これは等価変換です。
 
 .. All subexpressions that are identifiers themselves are replaced by their
@@ -970,35 +990,35 @@ CommonSubexpressionEliminator
 
 .. The combination of the two rules above allow to compute a local value
 .. numbering, which means that if two variables have the same
-.. value, one of them will always be unused. The Unused Pruner or the
-.. Redundant Assign Eliminator will then be able to fully eliminate such
+.. value, one of them will always be unused. The UnusedPruner or the
+.. UnusedAssignEliminator will then be able to fully eliminate such
 .. variables.
 
 上記の2つのルールの組み合わせにより、ローカルな値のナンバリングを計算できます。
 これは、2つの変数が同じ値を持つ場合、そのうちの1つは常に使用されないことを意味します。
-Unused PrunerやRedundant Assign Eliminatorは、このような変数を完全に排除できます。
+UnusedPrunerやUnusedAssignEliminatorは、このような変数を完全に排除できます。
 
-.. This step is especially efficient if the expression splitter is run
+.. This step is especially efficient if the ExpressionSplitter is run
 .. before. If the code is in pseudo-SSA form,
 .. the values of variables are available for a longer time and thus we
 .. have a higher chance of expressions to be replaceable.
 
-このステップは、式分割機が前に実行されている場合、特に効率的です。
+このステップは、ExpressionSplitter が前に実行されている場合、特に効率的です。
 コードが疑似SSA形式であれば、変数の値はより長い時間利用可能であるため、式が置換可能になる可能性が高くなります。
 
-.. The expression simplifier will be able to perform better replacements
-.. if the common subexpression eliminator was run right before it.
+.. The ExpressionSplitter will be able to perform better replacements
+.. if the CommonSubexpressionEliminator was run right before it.
 
-式単純化装置は、その直前に共通部分式除去装置が実行されていれば、より良い置換を行うことができます。
+ExpressionSplitter は、その直前に CommonSubexpressionEliminator が実行されていれば、より良い置換を行うことができます。
 
 .. _expression-simplifier:
 
 ExpressionSimplifier
 ^^^^^^^^^^^^^^^^^^^^
 
-.. The ExpressionSimplifier uses the Dataflow Analyzer and makes use of a list of equivalence transforms on expressions like ``X + 0 -> X`` to simplify the code.
+.. The ExpressionSimplifier uses the DataflowAnalyzer and makes use of a list of equivalence transforms on expressions like ``X + 0 -> X`` to simplify the code.
 
-Expression Simplifierは、Dataflow Analyzerを使用し、 ``X + 0 -> X`` のような式に対する等価変換のリストを利用してコードを単純化します。
+ExpressionSimplifier は、DataflowAnalyzer を使用し、 ``X + 0 -> X`` のような式に対する等価変換のリストを利用してコードを単純化します。
 
 .. It tries to match patterns like ``X + 0`` on each subexpression.
 .. During the matching procedure, it resolves variables to their currently
@@ -1011,12 +1031,12 @@ Expression Simplifierは、Dataflow Analyzerを使用し、 ``X + 0 -> X`` の�
 .. Some of the patterns like ``X - X -> 0`` can only be applied as long
 .. as the expression ``X`` is movable, because otherwise it would remove its potential side-effects.
 .. Since variable references are always movable, even if their current
-.. value might not be, the Expression Simplifier is again more powerful
+.. value might not be, the ExpressionSimplifier is again more powerful
 .. in split or pseudo-SSA form.
 
 ``X - X -> 0`` のようないくつかのパターンは、式 ``X`` がmovableである限り適用できます。
 そうでなければ、その潜在的な副作用を取り除くことになるからです。
-変数参照は、現在の値がそうでないかもしれないとしても、常にmovableであるため、式の簡略化は、分割または疑似SSAの形で再び強力になります。
+変数参照は、現在の値がそうでないかもしれないとしても、常にmovableであるため、 ExpressionSimplifier は、分割または疑似SSAの形で再び強力になります。
 
 .. _literal-rematerialiser:
 
@@ -1044,7 +1064,7 @@ LoadResolver
 文スケールの単純化
 ------------------
 
-.. _circular-reference-pruner:
+.. _circular-references-pruner:
 
 CircularReferencesPruner
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1059,10 +1079,10 @@ CircularReferencesPruner
 ConditionalSimplifier
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. The Conditional Simplifier inserts assignments to condition variables if the value can be determined
+.. The ConditionalSimplifier inserts assignments to condition variables if the value can be determined
 .. from the control-flow.
 
-条件付きシンプリファイアは、コントロールフローから値が決定できる場合、条件変数への割り当てを挿入します。
+ConditionalSimplifier は、コントロールフローから値が決定できる場合、条件変数への割り当てを挿入します。
 
 .. Destroys SSA form.
 
@@ -1076,20 +1096,12 @@ SSAフォームを破棄します。
 条件は式がゼロでないことをチェックするだけなので、特定の値を割り当てることはできません。
 
 現在の機能:
-
-.. - switch cases: insert "<condition> := <caseLabel>"
-.. - after if statement with terminating control-flow, insert "<condition> := 0"
-
-- スイッチケースで「<condition> := <caseLabel>」を挿入します。
-- 終了コントロールフローのif文の後に、「<条件> := 0」を挿入します。
+- ``switch`` ケース: ``<condition> := <caseLabel>`` を挿入します。
+- 終了コントロールフローの ``if`` 文の後に、 ``<condition> := 0`` を挿入します。
 
 今後の機能:
-
-.. - allow replacements by "1"
-.. - take termination of user-defined functions into account
-
-- 「1」による置き換えを可能にします。
-- ユーザー定義関数の終了を考慮に入れます。
+- ``1`` による置き換えを可能にします。
+- ユーザー定義関数の終了（termination）を考慮に入れます。
 
 .. Works best with SSA form and if dead code removal has run before.
 
@@ -1102,9 +1114,7 @@ SSA形式で、かつデッドコード除去を実行したことがある場�
 ConditionalUnsimplifier
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-.. Reverse of Conditional Simplifier.
-
-Conditional Simplifierの逆です。
+ConditionalSimplifier の逆です。
 
 .. _control-flow-simplifier:
 
@@ -1113,19 +1123,25 @@ ControlFlowSimplifier
 
 いくつかのコントロールフロー構造を簡素化をします:
 
-.. - replace switch with only default case with pop(expression) and body
-.. - replace switch with const expr with matching case body
-.. - replace ``for`` with terminating control flow and without other break/continue by ``if``
+.. - replace ``if`` with empty body with ``pop(condition)``
+.. - remove empty default ``switch`` case
+.. - remove empty ``switch`` case if no default case exists
+.. - replace ``switch`` with no cases with ``pop(expression)``
+.. - turn ``switch`` with single case into ``if``
+.. - replace ``switch`` with only default case with ``pop(expression)`` and body
+.. - replace ``switch`` with const expr with matching case body
+.. - replace ``for`` with terminating control flow and without other ``break``/``continue`` by ``if``
+.. - remove ``leave`` at the end of a function.
 
-- pop(condition)でifを空のボディに置き換える
-- 空のデフォルトのスイッチケースを削除する
-- デフォルトのケースが存在しない場合、空のスイッチケースを削除する
-- ケースのないswitchをpop(expression)で置き換える
-- シングルケースのスイッチをifに変える
-- pop(expression)とbodyでデフォルトケースのみのswitchに変更する
-- スイッチを、ケースボディが一致するconst exprに置き換える
-- ``for`` を終端コントロールフローに置き換える、 ``if`` による他のブレーク/コンティニューなしで
-- 関数の最後にある ``leave`` を削除する
+- 空の本体を持つ ``if`` は ``pop(condition)`` に置き換える  
+- 空のデフォルト ``switch`` ケースを削除する  
+- デフォルトケースが存在しない場合、空の ``switch`` ケースを削除する  
+- ケースが存在しない ``switch`` は ``pop(expression)`` に置き換える  
+- ケースが1つだけの ``switch`` は ``if`` に変換する  
+- デフォルトケースのみの ``switch`` は ``pop(expression)`` とその本体に置き換える  
+- 定数式の ``switch`` は、マッチするケースの本体に置き換える  
+- 終了する制御フローを持ち、``break`` や ``continue`` を含まない ``for`` は ``if`` に置き換える  
+- 関数の末尾にある ``leave`` を削除する
 
 .. None of these operations depend on the data flow. The StructuralSimplifier
 .. performs similar tasks that do depend on data flow.
@@ -1148,19 +1164,19 @@ DeadCodeEliminator
 
 この最適化ステージでは、到達できないコードを削除します。
 
-.. Unreachable code is any code within a block which is preceded by a leave, return, invalid, break, continue, selfdestruct, revert or by a call to a user-defined function that recurses infinitely.
+.. Unreachable code is any code within a block which is preceded by a ``leave``, ``return``, ``invalid``, ``break``, ``continue``, ``selfdestruct``, ``revert`` or by a call to a user-defined function that recurses infinitely.
 
-到達不可能なコードとは、ブロック内のコードのうち、leave、return、invalid、break、continue、selfdestruct、revert、または無限に再帰するユーザー定義関数の呼び出しが先行するものを指します。
+到達不可能なコードとは、ブロック内のコードのうち、 ``leave``, ``return``, ``invalid``, ``break``, ``continue``, ``selfdestruct``, ``revert``、または無限に再帰するユーザー定義関数の呼び出しが先行するものを指します。
 
 .. Function definitions are retained as they might be called by earlier code and thus are considered reachable.
 
 関数定義は、以前のコードから呼び出される可能性があるため、到達可能とみなされて保持されます。
 
-.. Because variables declared in a for loop's init block have their scope extended to the loop body, we require ForLoopInitRewriter to run before this step.
+.. Because variables declared in a ``for`` loop's init block have their scope extended to the loop body, we require ForLoopInitRewriter to run before this step.
 
-forループのinitブロックで宣言された変数は、そのスコープがループ本体にまで及ぶため、このステップの前にForLoopInitRewriterを実行する必要があります。
+``for`` ループのinitブロックで宣言された変数は、そのスコープがループ本体にまで及ぶため、このステップの前にForLoopInitRewriterを実行する必要があります。
 
-前提条件: ForLoopInitRewriter、Function Hoister、Function Grouper。
+前提条件: ForLoopInitRewriter、FunctionHoister、FunctionGrouper。
 
 .. _equal-store-eliminator:
 
@@ -1171,10 +1187,10 @@ EqualStoreEliminator
 
 このステップは、 ``mstore(k, v)`` / ``sstore(k, v)`` の呼び出しが過去にあり、その間に他のストアがなく、 ``k`` と ``v`` の値が変更されていない場合に、 ``mstore(k, v)`` と ``sstore(k, v)`` の呼び出しを削除します。
 
-.. This simple step is effective if run after the SSA transform and the Common Subexpression Eliminator, because SSA will make sure that the variables will not change and the Common Subexpression Eliminator re-uses exactly the same variable if the value is known to be the same.
+.. This simple step is effective if run after the SSATransform and the CommonSubexpressionEliminator, because SSA will make sure that the variables will not change and the CommonSubexpressionEliminator re-uses exactly the same variable if the value is known to be the same.
 
-この単純なステップは、SSA変換とCommon Subexpression Eliminatorの後に実行すると効果的です。
-SSAは変数が変更されないことを確認し、Common Subexpression Eliminatorは値が同じであることが分かっている場合、まったく同じ変数を再利用するからです。
+この単純なステップは、SSATransformとCommonSubexpressionEliminatorの後に実行すると効果的です。
+SSAは変数が変更されないことを確認し、CommonSubexpressionEliminatorは値が同じであることが分かっている場合、まったく同じ変数を再利用するからです。
 
 前提条件: Disambiguator、ForLoopInitRewriter。
 
@@ -1185,8 +1201,8 @@ UnusedPruner
 
 このステップでは、参照されることのないすべての関数の定義を削除します。
 
-.. It also removes the declaration of variables that are never referenced.
-.. If the declaration assigns a value that is not movable, the expression is retained,
+.. It also removes declarations of variables that are never referenced.
+.. If a declaration assigns a value that is not movable, the expression is retained,
 .. but its value is discarded.
 
 また、決して参照されない変数の宣言も削除されます。
@@ -1206,28 +1222,30 @@ StructuralSimplifier
 
 これは、構造的なレベルで様々な種類の単純化を行う一般的なステップです。
 
-.. - replace switch with only default case by ``pop(expression)`` and body
-.. - replace switch with literal expression by matching case body
-.. - replace for loop with false condition by its initialization part
+.. - replace ``if`` statement with empty body by ``pop(condition)``
+.. - replace ``if`` statement with true condition by its body
+.. - remove ``if`` statement with false condition
+.. - turn ``switch`` with single case into ``if``
+.. - replace ``switch`` with only default case by ``pop(expression)`` and body
+.. - replace ``switch`` with literal expression by matching case body
+.. - replace ``for`` loop with false condition by its initialization part
 
-- if文を ``pop(condition)`` による空のボディに置き換える
-- 真の条件を持つif文をそのボディで置き換える
-- 偽の条件を持つif文は削除する
-- シングルケースのスイッチをifに変える
-- スイッチを ``pop(expression)`` とボディのデフォルトケースのみに置き換える
-- 大文字小文字を一致させてスイッチをリテラル表現に置き換える
-- 偽条件のforループを初期化部分で置き換える
+- 本体が空の ``if`` 文は ``pop(condition)`` に置き換える  
+- 条件が常に true の ``if`` 文は、その本体に置き換える  
+- 条件が常に false の ``if`` 文は削除する  
+- ケースが1つだけの ``switch`` は ``if`` に変換する  
+- デフォルトケースのみの ``switch`` は ``pop(expression)`` とその本体に置き換える  
+- リテラル式の ``switch`` は、マッチするケースの本体に置き換える  
+- 条件が常に false の ``for`` ループは、その初期化部分に置き換える
 
-.. This component uses the Dataflow Analyzer.
-
-このコンポーネントは、Dataflow Analyzerを使用します。
+このコンポーネントは、DataflowAnalyzerを使用します。
 
 .. _block-flattener:
 
 BlockFlattener
 ^^^^^^^^^^^^^^
 
-.. This stage eliminates nested blocks by inserting the statement in the
+.. This stage eliminates nested blocks by inserting the statements in the
 .. inner block at the appropriate place in the outer block. It depends on the
 .. FunctionGrouper and does not flatten the outermost block to keep the form
 .. produced by the FunctionGrouper.
@@ -1278,10 +1296,9 @@ LoopInvariantCodeMotion
 考慮されるのは、ループの本体またはポストブロック内のトップレベルの文のみです。
 つまり、条件分岐内の変数宣言はループの外に移動されません。
 
-要件:
+より良い結果を得るために、最初に ExpressionSplitter と SSATransform を実行するべきです。
 
-- Disambiguator、ForLoopInitRewriter、FunctionHoisterは前もって実行する必要があります。
-- より良い結果を得るためには、ExpressionSplitterとSSAトランスフォームを前もって実行する必要があります。
+前提条件：Disambiguator、ForLoopInitRewriter、FunctionHoister。
 
 関数レベルの最適化
 ------------------
@@ -1355,7 +1372,7 @@ LiteralRematerialiserというステップは正しさのために必要では�
 以下のようなケースに対処するのに役立ちます。
 ``function f(x) -> y { revert(y, y} }`` はリテラル ``y`` がその値 ``0`` に置き換えられるので、関数を書き換えることができます。
 
-.. index:: ! unused store eliminator
+.. index:: ! UnusedStoreEliminator
 .. _unused-store-eliminator:
 
 UnusedStoreEliminator
@@ -1384,9 +1401,9 @@ UnusedStoreEliminator
         sstore(c, 3)
     }
 
-.. will be transformed into the code below after the Unused Store Eliminator step is run
+.. will be transformed into the code below after the UnusedStoreEliminator step is run
 
-Unused Store Eliminatorステップが実行されると、以下のコードに変換されます。
+UnusedStoreEliminator ステップが実行されると、以下のコードに変換されます。
 
 .. code-block:: yul
 
@@ -1396,7 +1413,7 @@ Unused Store Eliminatorステップが実行されると、以下のコードに
         sstore(c, 3)
     }
 
-.. For memory store operations, things are generally simpler, at least in the outermost yul block as all such statements will be removed if they are never read from in any code path.
+.. For memory store operations, things are generally simpler, at least in the outermost Yul block as all such statements will be removed if they are never read from in any code path.
 .. At function analysis level, however, the approach is similar to ``sstore``, as we do not know whether the memory location will be read once we leave the function's scope, so the statement will be removed only if all code paths lead to a memory overwrite.
 
 メモリストア操作の場合、一般的には、少なくとも一番外側のYulブロックでは、そのようなステートメントは、どのコードパスでも読み込まれることがなければ、すべて削除されるので単純です。
@@ -1419,7 +1436,7 @@ EquivalentFunctionCombiner
 
 2つの関数が構文的に同等で、変数名の変更は可能だが順序変更はできない場合、一方の関数への参照は他方の関数で置き換えられます。
 
-実際に関数を取り除くのは、Unused Prunerが行います。
+実際に関数を取り除くのは、UnusedPruner が行います。
 
 関数のインライン化
 ------------------
@@ -1438,7 +1455,7 @@ ExpressionInliner
 さらに、すべてのパラメータについて、以下のすべてが真である必要があります。
 
 - 引数がmovableである
-- パラメータの参照回数が関数ボディ内で2回以下であるか、または引数のコストがかなり低い（"コスト"は最大でも1で、0xffまでの定数のようなもの）
+- パラメータの参照回数が関数ボディ内で2回以下であるか、または引数のコストがかなり低い（"コスト"は最大でも1で、 ``0xff`` までの定数のようなもの）
 
 .. Example: The function to be inlined has the form of ``function f(...) -> r { r := E }`` where
 .. ``E`` is an expression that does not reference ``r`` and all arguments in the function call are movable expressions.
@@ -1458,13 +1475,13 @@ ExpressionInliner
 FullInliner
 ^^^^^^^^^^^
 
-.. The Full Inliner replaces certain calls of certain functions by the function's body.
+.. The FullInliner replaces certain calls of certain functions by the function's body.
 .. This is not very helpful in most cases, because it just increases the code size but does not have a benefit.
 .. Furthermore, code is usually very expensive and we would often rather have shorter code than more efficient code.
-.. In same cases, though, inlining a function can have positive effects on subsequent optimizer steps.
+.. In some cases, though, inlining a function can have positive effects on subsequent optimizer steps.
 .. This is the case if one of the function arguments is a constant, for example.
 
-Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体に置き換えます。
+FullInliner では、特定の関数の特定の呼び出しを関数の本体に置き換えます。
 これはコードサイズが大きくなるだけで、ほとんどの場合あまり役に立ちません。
 コードは通常非常に高価なものであり、効率の良いコードよりも短いコードの方が良い場合が多いのです。
 しかし、いくつかのケースでは、関数のインライン化が後続のオプティマイザのステップにプラスの効果をもたらすことがあります。
@@ -1486,6 +1503,13 @@ Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体�
 その後、この特殊化された関数に対してオプティマイザを実行します。
 その結果、大きな利益が得られた場合は、特化された関数を残し、そうでない場合は元の関数を代わりに使用します。
 
+.. TODO:
+
+FunctionHoister and ExpressionSplitter are recommended as prerequisites since they make the step
+more efficient, but are not required for correctness.
+In particular, function calls with other function calls as arguments are not inlined, but running
+ExpressionSplitter beforehand ensures that there are no such calls in the input.
+
 クリーンアップ
 --------------
 
@@ -1500,14 +1524,14 @@ Full Inlinerでは、特定の関数の特定の呼び出しを関数の本体�
 ExpressionJoiner
 ^^^^^^^^^^^^^^^^
 
-.. This is the opposite operation of the expression splitter. It turns a sequence of
+.. This is the opposite operation of the ExpressionSplitter. It turns a sequence of
 .. variable declarations that have exactly one reference into a complex expression.
 .. This stage fully preserves the order of function calls and opcode executions.
 .. It does not make use of any information concerning the commutativity of the opcodes;
 .. if moving the value of a variable to its place of use would change the order
 .. of any function call or opcode execution, the transformation is not performed.
 
-これは、式分割器とは逆の動作です。
+これは、ExpressionSplitter とは逆の動作です。
 正確に1つの参照を持つ変数宣言のシーケンスを複雑な式に変えます。
 このステージでは、関数の呼び出しとオペコードの実行の順序が完全に保持されます。
 オペコードの可換性に関する情報は利用しません。
@@ -1535,14 +1559,14 @@ ExpressionJoiner
 このようにオペコードを並び替える場合、変数参照やリテラルは無視されます。
 そのため、リテラル ``3`` の評価後に ``add`` のオペコードが実行されるにもかかわらず、スニペット ``let x := add(0, 2) let y := mul(x, 3)`` は ``let y := mul(add(0, 2), 3)`` に変換されてしまいます。
 
-.. _SSA-reverser:
+.. _ssa-reverser:
 
 SSAReverser
 ^^^^^^^^^^^
 
-.. This is a tiny step that helps in reversing the effects of the SSA transform if it is combined with the Common Subexpression Eliminator and the Unused Pruner.
+.. This is a tiny step that helps in reversing the effects of the SSATransform if it is combined with the CommonSubexpressionEliminator and the UnusedPruner.
 
-これは、Common Subexpression EliminatorやUnused Prunerと組み合わせることで、SSAトランスフォームの効果を元に戻すのに役立つ小さな一歩です。
+これは、CommonSubexpressionEliminatorやUnusedPrunerと組み合わせることで、SSATransform の効果を元に戻すのに役立つ小さな一歩です。
 
 .. The SSA form we generate is detrimental to code generation because it produces many local variables.
 .. It would be better to just re-use existing variables with assignments instead of fresh variable declarations.
@@ -1550,7 +1574,7 @@ SSAReverser
 私たちが生成するSSAフォームは、多くのローカル変数を生成するため、コード生成に悪影響を及ぼします。
 新しい変数を宣言する代わりに、既存の変数を代入して再利用する方が良いでしょう。
 
-SSAトランスフォームは、
+SSATransformは、
 
 .. code-block:: yul
 
@@ -1568,12 +1592,12 @@ SSAトランスフォームは、
     a := a_2
 
 .. The problem is that instead of ``a``, the variable ``a_1`` is used
-.. whenever ``a`` was referenced. The SSA transform changes statements
+.. whenever ``a`` was referenced. The SSATransform changes statements
 .. of this form by just swapping out the declaration and the assignment. The above
 .. snippet is turned into
 
 問題は、 ``a`` が参照されるたびに、 ``a`` の代わりに ``a_1`` という変数が使われることです。
-SSAトランスフォームでは、このような形式の文を、宣言と代入を入れ替えるだけで変更します。
+SSATransform では、このような形式の文を、宣言と代入を入れ替えるだけで変更します。
 上のスニペットは次のように変わります。
 
 .. code-block:: yul
@@ -1585,13 +1609,13 @@ SSAトランスフォームでは、このような形式の文を、宣言と�
     let a_2 := a
 
 .. This is a very simple equivalence transform, but when we now run the
-.. Common Subexpression Eliminator, it will replace all occurrences of ``a_1``
-.. by ``a`` (until ``a`` is re-assigned). The Unused Pruner will then
+.. CommonSubexpressionEliminator, it will replace all occurrences of ``a_1``
+.. by ``a`` (until ``a`` is re-assigned). The UnusedPruner will then
 .. eliminate the variable ``a_1`` altogether and thus fully reverse the
 .. SSA transform.
 
-これは非常に単純な同値変換ですが、次にCommon Subexpression Eliminatorを実行すると、 ``a_1`` のすべての出現箇所が ``a`` に置き換えられます（ ``a`` が再割り当てされるまで）。
-その後、Unused Prunerが変数 ``a_1`` を完全に除去し、SSAトランスフォームを完全に逆にします。
+これは非常に単純な同値変換ですが、次にCommonSubexpressionEliminatorを実行すると、 ``a_1`` のすべての出現箇所が ``a`` に置き換えられます（ ``a`` が再割り当てされるまで）。
+その後、UnusedPrunerが変数 ``a_1`` を完全に除去し、SSAトランスフォームを完全に逆にします。
 
 .. _stack-compressor:
 
@@ -1629,19 +1653,19 @@ Rematerialiser
 .. the value of the expression did not change between the point of assignment and the
 .. point of use. The main benefit of this stage is that it can save stack slots if it
 .. leads to a variable being eliminated completely (see below), but it can also
-.. save a DUP opcode on the EVM if the expression is very cheap.
+.. save a ``DUP`` opcode on the EVM if the expression is very cheap.
 
 再物質化ステージでは、変数の参照を、その変数に最後に割り当てられた式で置き換えようとします。
 これはもちろん、この式が比較的安価に評価できる場合にのみ有益です。
 さらに、代入時点と使用時点の間で式の値が変化していない場合にのみ、意味的に等価となります。
-このステージの主な利点は、変数を完全に排除することにつながる場合、スタックスロットを節約できることですが（後述）、式が非常に安価な場合、EVM上のDUPオペコードを節約することもできます。
+このステージの主な利点は、変数を完全に排除することにつながる場合、スタックスロットを節約できることですが（後述）、式が非常に安価な場合、EVM上の ``DUP`` オペコードを節約することもできます。
 
-.. The Rematerialiser uses the Dataflow Analyzer to track the current values of variables,
+.. The Rematerialiser uses the DataflowAnalyzer to track the current values of variables,
 .. which are always movable.
 .. If the value is very cheap or the variable was explicitly requested to be eliminated,
 .. the variable reference is replaced by its current value.
 
-Rematerialiserは、Dataflow Analyzerを使用して、常にmovableな変数の現在の値を追跡します。
+Rematerialiserは、DataflowAnalyzerを使用して、常にmovableな変数の現在の値を追跡します。
 値が非常に安い場合や、変数の削除が明示的に要求された場合、変数の参照はその現在の値で置き換えられます。
 
 .. _for-loop-condition-out-of-body:
@@ -1691,3 +1715,63 @@ ForLoopConditionIntoBodyの変換の逆です。
 にします。
 
 LiteralRematerialiserは、このステップの前に実行する必要があります。
+
+Codegen-Based Optimizer Module
+==============================
+
+Currently, the codegen-based optimizer module provides two optimizations.
+
+The first one, available in the legacy code generator, moves literals to the right side of
+commutative binary operators, which helps exploit their associativity.
+
+The other one, available in the IR-based code generator, enables the use of unchecked arithmetic
+when generating code for incrementing the counter variable of certain idiomatic ``for`` loops.
+This avoids wasting gas by identifying some conditions that guarantee that the counter variable
+cannot overflow.
+This eliminates the need to use a verbose unchecked arithmetic block inside the loop body to
+increment the counter variable.
+
+.. _unchecked-loop-optimizer:
+
+Unchecked Loop Increment
+------------------------
+
+Introduced in Solidity ``0.8.22``, the overflow check optimization step is concerned with identifying
+the conditions under which the ``for`` loop counter can be safely incremented
+without overflow checks.
+
+This optimization is **only** applied to ``for`` loops of the general form:
+
+.. code-block:: solidity
+
+    for (uint i = X; i < Y; ++i) {
+        // variable i is not modified in the loop body
+    }
+
+The condition and the fact that the counter variable is only ever incremented
+guarantee that it never overflows.
+The precise requirements for the loop to be eligible for the optimization are as follows:
+
+- The loop condition is a comparison of the form ``i < Y``, for a local counter variable ``i``
+  (called the "loop counter" hereon) and an expression ``Y``.
+- The built-in operator ``<`` is necessarily used in the loop condition and is the only operator
+  that triggers the optimization. ``<=`` and the like are intentionally excluded. Additionally,
+  user-defined operators are **not** eligible.
+- The loop expression is a prefix or postfix increment of the counter variable, i.e, ``i++`` or ``++i``.
+- The loop counter is a local variable of a built-in integer type.
+- The loop counter is **not** modified by the loop body or by the expression used as the loop condition.
+- The comparison is performed on the same type as the loop counter, meaning that the type of the
+  right-hand-side expression is implicitly convertible to the type of the counter, such that the latter
+  is not implicitly widened before the comparison.
+
+To clarify the last condition, consider the following example:
+
+.. code-block:: solidity
+
+    for (uint8 i = 0; i < uint16(1000); i++) {
+        // ...
+    }
+
+In this case, the counter ``i`` has its type implicitly converted from ``uint8``
+to ``uint16`` before the comparison and the condition is in fact never false, so
+the overflow check for the increment cannot be removed.

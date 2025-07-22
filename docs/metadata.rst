@@ -170,9 +170,9 @@ IPFSの場合、 ``ipfs add`` が返すCIDに含まれるハッシュ（ファ�
     },
     // 必須: コンパイルされたソースファイル/ソースユニット。キーはファイルパス。
     "sources": {
-      "destructible": {
+      "settable": {
         // 必須（「url」が使用されていない場合）: ソースファイルのリテラルコンテンツ
-        "content": "contract destructible is owned { function destroy() { if (msg.sender == owner) selfdestruct(owner); } }",
+        "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }",
         // 必須: ソースファイルのkeccak256ハッシュ
         "keccak256": "0x234..."
       },

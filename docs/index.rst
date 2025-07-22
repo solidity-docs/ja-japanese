@@ -4,7 +4,7 @@ Solidity
 Solidityは、スマートコントラクトを実装するための、オブジェクト指向の高級言語です。
 スマートコントラクトとは、Ethereumのアカウントの動作を制御するプログラムのことです。
 
-Solidityは、 Ethereum Virtual Machine (EVM)をターゲットに設計されている `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。
+Solidityは、 Ethereum Virtual Machine (EVM)をターゲットに設計されている `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly_bracket_languages>`_ です。
 C++、Python、JavaScriptの影響を受けています。
 Solidityがどの言語から影響を受けているかについては、 :doc:`言語の影響 <language-influences>` のセクションで詳しく説明しています。
 

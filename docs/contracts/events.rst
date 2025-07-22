@@ -12,17 +12,17 @@
 Solidityのイベントは、EVMのロギング機能の上に抽象化を与えます。
 アプリケーションは、EthereumクライアントのRPCインターフェースを介して、これらのイベントをサブスクライブし、リッスンできます。
 
-.. Events are inheritable members of contracts. When you call them, they cause the
-.. arguments to be stored in the transaction's log - a special data structure
+.. Events can be defined at file level or as inheritable members of contracts (including interfaces and libraries).
+.. When you call them, they cause the arguments to be stored in the transaction's log - a special data structure
 .. in the blockchain. These logs are associated with the address of the contract,
 .. are incorporated into the blockchain, and stay there as long as a block is
 .. accessible (forever as of now, but this might
-.. change with Serenity). The Log and its event data is not accessible from within
+.. change in the future). The Log and its event data is not accessible from within
 .. contracts (not even from the contract that created them).
 
-イベントはコントラクトの継承可能なメンバーです。
+イベントは、ファイルレベルで定義することも、コントラクト（インターフェースやライブラリを含む）の継承可能なメンバーとして定義することもできます。
 イベントを呼び出すと、引数がトランザクションのログ（ブロックチェーンの特別なデータ構造）に保存されます。
-これらのログはコントラクトのアドレスに関連付けられ、ブロックチェーンに組み込まれ、ブロックがアクセス可能である限りそこに留まります（現時点では永遠ですが、Serenityでは変わるかもしれません）。
+これらのログはそれらをemitしたコントラクトのアドレスに関連付けられ、ブロックチェーンに組み込まれ、ブロックがアクセス可能である限りそこに留まります（現時点では永遠ですが、将来変わるかもしれません）。
 ログとそのイベントデータはコントラクト内からはアクセスできません（ログを作成したコントラクトからもアクセスできません）。
 
 .. It is possible to request a Merkle proof for logs, so if

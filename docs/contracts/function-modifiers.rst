@@ -16,7 +16,6 @@
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.1 <0.9.0;
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
 
     contract owned {
         constructor() { owner = payable(msg.sender); }
@@ -35,14 +34,6 @@
         }
     }
 
-    contract destructible is owned {
-        // このコントラクトは `onlyOwner` モディファイアを `owned` から継承し、 `destroy` 関数に適用します。
-        // これにより、 `destroy` への呼び出しは、保存されているオーナーによって実行された場合にのみ有効となります。
-        function destroy() public onlyOwner {
-            selfdestruct(owner);
-        }
-    }
-
     contract priced {
         // モディファイアは引数を受け取ることができます:
         modifier costs(uint price) {
@@ -52,7 +43,7 @@
         }
     }
 
-    contract Register is priced, destructible {
+    contract Register is priced, owned {
         mapping(address => bool) registeredAddresses;
         uint price;
 
@@ -64,6 +55,9 @@
             registeredAddresses[msg.sender] = true;
         }
 
+        // This contract inherits the `onlyOwner` modifier from
+        // the `owned` contract. As a result, calls to `changePrice` will
+        // only take effect if they are made by the stored owner.
         function changePrice(uint price_) public onlyOwner {
             price = price_;
         }
@@ -136,8 +130,8 @@
 ``return;`` を持つモディファイアからの明示的なリターンは、関数が返す値に影響を与えません。
 しかし、モディファイアは、関数本体を全く実行しないことを選択でき、その場合、関数本体が空であった場合と同様に、戻り値の変数は :ref:`デフォルト値<default-value>` に設定されます。
 
-``_`` マークはモディファイアの中で複数回現れることがあります。
-それぞれの出現箇所は、関数本体で置き換えられます。
+``_`` 記号は、modifier の中で複数回登場することがあります。
+それぞれの出現箇所が関数本体に置き換えられ、最後の ``_`` の返り値が関数の戻り値となります。
 
 .. Arbitrary expressions are allowed for modifier arguments and in this context, all symbols visible from the function are visible in the modifier.
 .. Symbols introduced in the modifier are not visible in the function (as they might change by overriding).

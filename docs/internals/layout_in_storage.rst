@@ -1,10 +1,18 @@
-.. index:: storage, state variable, mapping
+.. index:: storage, state variable, mapping, transient storage
 
-**********************************
-ストレージ内の状態変数のレイアウト
-**********************************
+************************************************************
+ストレージとトランジェントストレージ内の状態変数のレイアウト
+************************************************************
 
 .. _storage-inplace-encoding:
+
+.. TODO:
+
+.. note::
+    The rules described in this section apply for both storage and transient storage data locations.
+    The layouts are completely independent and don't interfere with each other's variable locations.
+    Thus storage and transient storage state variables can be safely interleaved without any side effects.
+    Only value types are supported for transient storage.
 
 コントラクトの状態変数はストレージにコンパクトに格納され、複数の値が同じストレージスロットを使用することがあります。
 動的なサイズの配列やマッピング（後述）を除き、データはスロット ``0`` に格納された最初の状態変数から順に連続して格納されます。
@@ -213,12 +221,12 @@ JSON出力
 
 .. _storage-layout-top-level:
 
-.. The storage layout of a contract can be requested via
+.. The storage (or transient storage) layout of a contract can be requested via
 .. the :ref:`standard JSON interface <compiler-api>`.  The output is a JSON object containing two keys,
 .. ``storage`` and ``types``.  The ``storage`` object is an array where each
 .. element has the following form:
 
-コントラクトのストレージレイアウトは、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
+コントラクトのストレージレイアウト（あるいはトランジェントストレージレイアウト）は、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
 出力されるのは、 ``storage`` と ``types`` の2つのキーを含むJSONオブジェクトです。
 ``storage`` オブジェクトは配列で、各要素は次のような形をしています。
 
@@ -317,15 +325,15 @@ JSON出力
 .. note::
   コントラクトのストレージレイアウトのJSON出力フォーマットはまだ実験的なものと考えられており、Solidityの非破壊的なリリースで変更される可能性があります。
 
-.. The following example shows a contract and its storage layout, containing
-.. value and reference types, types that are encoded packed, and nested types.
+.. The following example shows a contract and both its storage and transient storage layout,
+.. containing value and reference types, types that are encoded packed, and nested types.
 
-次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージのレイアウトを示しています。
+次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージレイアウト及びトランジェントストレージレイアウトを示しています。
 
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.4.0 <0.9.0;
+    pragma solidity ^0.8.28;
     contract A {
         struct S {
             uint128 a;
@@ -335,14 +343,21 @@ JSON出力
         }
 
         uint x;
-        uint y;
+        uint transient y;
+        uint w;
+        uint transient z;
+
         S s;
         address addr;
+        address transient taddr;
         mapping(uint => mapping(address => bool)) map;
         uint[] array;
         string s1;
         bytes b1;
     }
+
+ストレージレイアウト
+--------------------
 
 .. code-block:: json
 
@@ -357,15 +372,15 @@ JSON出力
           "type": "t_uint256"
         },
         {
-          "astId": 17,
+          "astId": 19,
           "contract": "fileA:A",
-          "label": "y",
+          "label": "w",
           "offset": 0,
           "slot": "1",
           "type": "t_uint256"
         },
         {
-          "astId": 20,
+          "astId": 24,
           "contract": "fileA:A",
           "label": "s",
           "offset": 0,
@@ -373,7 +388,7 @@ JSON出力
           "type": "t_struct(S)13_storage"
         },
         {
-          "astId": 22,
+          "astId": 26,
           "contract": "fileA:A",
           "label": "addr",
           "offset": 0,
@@ -381,7 +396,7 @@ JSON出力
           "type": "t_address"
         },
         {
-          "astId": 28,
+          "astId": 34,
           "contract": "fileA:A",
           "label": "map",
           "offset": 0,
@@ -389,7 +404,7 @@ JSON出力
           "type": "t_mapping(t_uint256,t_mapping(t_address,t_bool))"
         },
         {
-          "astId": 31,
+          "astId": 37,
           "contract": "fileA:A",
           "label": "array",
           "offset": 0,
@@ -397,7 +412,7 @@ JSON出力
           "type": "t_array(t_uint256)dyn_storage"
         },
         {
-          "astId": 33,
+          "astId": 39,
           "contract": "fileA:A",
           "label": "s1",
           "offset": 0,
@@ -405,7 +420,7 @@ JSON出力
           "type": "t_string_storage"
         },
         {
-          "astId": 35,
+          "astId": 41,
           "contract": "fileA:A",
           "label": "b1",
           "offset": 0,
@@ -512,3 +527,48 @@ JSON出力
       }
     }
 
+トランジェントストレージレイアウト
+----------------------------------
+
+.. code-block:: json
+
+    {
+      "storage": [
+        {
+          "astId": 17,
+          "contract": "fileA:A",
+          "label": "y",
+          "offset": 0,
+          "slot": "0",
+          "type": "t_uint256"
+        },
+        {
+          "astId": 21,
+          "contract": "fileA:A",
+          "label": "z",
+          "offset": 0,
+          "slot": "1",
+          "type": "t_uint256"
+        },
+        {
+          "astId": 28,
+          "contract": "fileA:A",
+          "label": "taddr",
+          "offset": 0,
+          "slot": "2",
+          "type": "t_address"
+        }
+      ],
+      "types": {
+        "t_address": {
+          "encoding": "inplace",
+          "label": "address",
+          "numberOfBytes": "20"
+        },
+        "t_uint256": {
+          "encoding": "inplace",
+          "label": "uint256",
+          "numberOfBytes": "32"
+        }
+      }
+    }

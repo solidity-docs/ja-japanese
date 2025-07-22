@@ -38,9 +38,6 @@
 * `Dapp <https://dapp.tools/>`_
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。
 
-* `Embark <https://framework.embarklabs.io/>`_
-    非中央集権的なアプリケーションを構築及びデプロイするための開発者プラットフォーム。
-
 * `Foundry <https://github.com/foundry-rs/foundry>`_
     Rustで書かれたEthereumアプリケーション開発のための高速、ポータブル、モジュラーなツールキット。
 
@@ -97,7 +94,7 @@
 
 * Visual Studio Code (VS Code)
 
-    * `Ethereum Remix Visual Studio Code extension <https://marketplace.visualstudio.com/items?itemName=RemixProject.ethereum-remix>`_
+    * `Ethereum Remix Visual Studio Code extension <https://github.com/ethereum/remix-vscode>`_
         VS Code用のEthereum Remix拡張パック。
 
     * `Solidity Visual Studio Code extension, by Juan Blanco <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
@@ -164,7 +161,7 @@ Solidityのツール
 * `PIET <https://piet.slock.it/>`_
     シンプルなグラフィカルインターフェースを介してSolidityスマートコントラクトを開発、監査、使用するためのツール。
 
-* `Scaffold-ETH <https://github.com/scaffold-eth/scaffold-eth>`_
+* `Scaffold-ETH 2 <https://github.com/scaffold-eth/scaffold-eth-2>`_
     迅速なプロダクトイテレーションに焦点を当てたフォーク可能なEthereum開発スタック。
 
 .. * `sol2uml <https://www.npmjs.com/package/sol2uml>`_

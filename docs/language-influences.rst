@@ -4,7 +4,7 @@
 言語の影響
 ##########
 
-Solidityは、いくつかの有名なプログラミング言語に影響やインスピレーションを受けた `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly-bracket_languages>`_ です。
+Solidityは、いくつかの有名なプログラミング言語に影響やインスピレーションを受けた `カーリーブラケット言語 <https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Curly_bracket_languages>`_ です。
 
 .. Solidity is most profoundly influenced by C++, but also borrowed concepts from languages like Python, JavaScript, and others.
 

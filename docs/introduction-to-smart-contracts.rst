@@ -72,8 +72,9 @@ Solidityにおけるコントラクトとは、Ethereumブロックチェーン�
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity ^0.8.4;
+    pragma solidity ^0.8.26;
 
+    // This will only compile via IR
     contract Coin {
         // キーワード「public」は、変数を他のコントラクトからアクセスできるようにします
         address public minter;
@@ -100,12 +101,7 @@ Solidityにおけるコントラクトとは、Ethereumブロックチェーン�
 
         // コールしてきたアカウントから指定したアドレスに指定した量のコインを送ります
         function send(address receiver, uint amount) public {
-            if (amount > balances[msg.sender])
-                revert InsufficientBalance({
-                    requested: amount,
-                    available: balances[msg.sender]
-                });
-
+            require(amount <= balances[msg.sender], InsufficientBalance(amount, balances[msg.sender]));
             balances[msg.sender] -= amount;
             balances[receiver] += amount;
             emit Sent(msg.sender, receiver, amount);
@@ -191,7 +187,9 @@ WebアプリケーションなどのEthereumクライアントは、ブロック
 
 :ref:`エラー <errors>` を使うと、条件や演算が失敗したときに呼び出し側に詳しい情報を提供できます。
 エラーは :ref:`revert文 <revert-statement>` と一緒に使用されます。
-``revert`` 文は ``require`` 関数と同様にすべての変更を無条件に中止してリバートさせますが、エラーの名前や、呼び出し側（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に提供される追加データを提供することもできるので、失敗をデバッグしたり対処したりすることがより簡単にできます。
+``revert`` 文は、すべての変更を無条件に中止し、巻き戻します。
+これは :ref:`require関数 <assert-and-require-statements>` と非常によく似ています。  
+どちらの方法でも、エラー名や追加データを指定でき、それらは呼び出し元（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に渡されるため、失敗の原因をより簡単にデバッグしたり、対応したりすることができます。
 
 ``send`` 関数は、（すでにコインを持っている人なら）誰でも他の人にコインを送るために使えます。
 送金者が送金するのに十分なコインを持っていない場合は、 ``if`` の条件がtrueと評価されます。
@@ -251,7 +249,7 @@ AmazonのAWSを使うためには、内部でどのように機能している�
 ブロックは一定の間隔でチェーンに追加されますが、この間隔は将来変更される可能性があります。
 最新の情報については、 `Etherscan <https://etherscan.io/chart/blocktime>`_ などでネットワークをモニタリングすることをお勧めします。
 
-「オーダーセレクションメカニズム」（これを「マイニング」と呼びます）の一環として、ブロックが時々リバートされることがありますが、それはチェーンの「端」に限ったことです。
+「オーダーセレクションメカニズム」（これを「 `アテステーション <https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/>`_ 」と呼びます）の一環として、ブロックが時々リバートされることがありますが、それはチェーンの「端」に限ったことです。
 特定のブロックの上にブロックが追加されればされるほど、そのブロックがリバートされる可能性は低くなります。
 つまり、あなたのトランザクションがリバートされ、さらにはブロックチェーンから削除されることもあるかもしれませんが、時間が経てば経つほど、その可能性は低くなります。
 
@@ -343,12 +341,14 @@ EVMがトランザクションを実行している間、ガスは特定のル�
 
 EVMのエグゼキューターはトランザクションを含めるかどうかを選択できるため、トランザクション送信者は低いガス価格を設定することでシステムを悪用することはできません。
 
-.. index:: ! storage, ! memory, ! stack
+.. index:: ! storage, ! memory, ! stack, ! transient storage
 
-ストレージ、メモリ、スタック
-============================
+.. _locations:
 
-Ethereum Virtual Machineには、データを保存できる3つの領域「ストレージ」「メモリ」「スタック」があります。
+ストレージ、トランジェントストレージ、メモリ、スタック
+======================================================
+
+Ethereum Virtual Machineには、データを保存できる異なる領域「ストレージ」「トランジェントストレージ」「メモリ」「スタック」があります。
 
 各アカウントには **ストレージ** と呼ばれるデータ領域があり、関数呼び出しやトランザクション間で永続的に使用されます。
 storageは256ビットのワードを256ビットのワードにマッピングするkey-value storeです。
@@ -357,7 +357,17 @@ storageは256ビットのワードを256ビットのワードにマッピング�
 派生する計算、キャッシング、アグリゲートなどのデータはコントラクトの外に保存します。
 コントラクトは、コントラクト以外のストレージに対して読み書きできません。
 
-2つ目のデータ領域は **メモリ** と呼ばれ、コントラクトはメッセージを呼び出すたびにクリアされたばかりのインスタンスを取得します。
+.. TODO:
+
+Similar to storage, there is another data area called **transient storage**,
+where the main difference is that it is reset at the end of each transaction.
+The values stored in this data location persist only across function calls originating
+from the first call of the transaction.
+When the transaction ends, the transient storage is reset and the values stored there
+become unavailable to calls in subsequent transactions.
+Despite this, the cost of reading and writing to transient storage is significantly lower than for storage.
+
+3つ目のデータ領域は **メモリ** と呼ばれ、コントラクトはメッセージを呼び出すたびにクリアされたばかりのインスタンスを取得します。
 メモリは線形で、バイトレベルでアドレスを指定できますが、読み出しは256ビットの幅に制限され、書き込みは8ビットまたは256ビットの幅に制限されます。
 メモリは、これまで手つかずだったメモリワード（ワード内の任意のオフセット）にアクセス（読み出しまたは書き込み）すると、ワード（256ビット）単位で拡張されます。
 拡張時には、ガスによるコストを支払わなければなりません。
@@ -369,6 +379,31 @@ EVMはレジスタマシンではなく、スタックマシンなので、す�
 一番上の16個の要素の1つをスタックの一番上にコピーしたり、一番上の要素をその下の16個の要素の1つと入れ替えたりすることが可能です。
 それ以外の操作では、スタックから最上位の2要素（操作によっては1要素、またはそれ以上）を取り出し、その結果をスタックにプッシュします。
 もちろん、スタックの要素をストレージやメモリに移動させて、スタックに深くアクセスすることは可能ですが、最初にスタックの最上部を取り除かずに、スタックの深いところにある任意の要素にアクセスすることはできません。
+
+Calldata, Returndata and Code
+=============================
+
+There are also other data areas which are not as apparent as those discussed previously.
+However, they are routinely used during the execution of smart contract transactions.
+
+The calldata region is the data sent to a transaction as part of a smart contract transaction.
+For example, when creating a contract, calldata would be the constructor code of the new contract.
+The parameters of external functions are always initially stored in calldata in an ABI-encoded form
+and only then decoded into the location specified in their declaration.
+If declared as ``memory``, the compiler will eagerly decode them into memory at the beginning of the function,
+while marking them as ``calldata`` means that this will be done lazily, only when accessed.
+Value types and ``storage`` pointers are decoded directly onto the stack.
+
+The returndata is the way a smart contract can return a value after a call.
+In general, external Solidity functions use the ``return`` keyword to ABI-encode values into the returndata area.
+
+The code is the region where the EVM instructions of a smart contract are stored.
+Code is the bytes read, interpreted, and executed by the EVM during smart contract execution.
+Instruction data stored in the code is persistent as part of a contract account state field.
+Immutable and constant variables are stored in the code region.
+All references to immutables are replaced with the values assigned to them.
+A similar process is performed for constants which have their expressions inlined
+in the places where they are referenced in the smart contract code.
 
 .. index:: ! instruction
 
@@ -451,9 +486,23 @@ create
 理論的にはコントラクトを削除することは良いアイデアのように聞こえますが、削除されたコントラクトに誰かがEtherを送ると、そのEtherは永遠に失われてしまうため、潜在的には危険です。
 
 .. warning::
-    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
+    However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it,
+    the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract,
+    deleting any data, including storage keys, code and the account itself.
+    See `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ for more details.
 
-    バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、 ``SELFDESTRUCT`` オペコードがいずれ動作に破壊的変更を受けるため、非推奨の警告が発せられます。
+    The new behaviour is the result of a network-wide change that affects all contracts present on
+    the Ethereum mainnet and testnets.
+    It is important to note that this change is dependent on the EVM version of the chain on which
+    the contract is deployed.
+    The ``--evm-version`` setting used when compiling the contract has no bearing on it.
+
+    Also, note that the ``selfdestruct`` opcode has been deprecated in Solidity version 0.8.18,
+    as recommended by `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    The deprecation is still in effect and the compiler will still emit warnings on its use.
+    Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
+    Future changes to the EVM might further reduce the functionality of the opcode.
 
 .. warning::
     ``selfdestruct`` によってコントラクトが削除されたとしても、それはブロックチェーンの歴史の一部であり、おそらくほとんどのEthereumノードが保持しています。
@@ -473,7 +522,7 @@ create
 ==============================
 
 コントラクトのアドレスの中には、特別なものがあります。
-``1`` から ``8`` までのアドレスには「プリコンパイル済みコントラクト」が含まれており、他のコントラクトと同様に呼び出すことができますが、その動作（およびガス消費量）は、そのアドレスに格納されているEVMコードによって定義されるのではなく（コードが含まれていない）、EVMの実行環境自体に実装されています。
+``1`` から ``0x0a`` までのアドレスには「プリコンパイル済みコントラクト」が含まれており、他のコントラクトと同様に呼び出すことができますが、その動作（およびガス消費量）は、そのアドレスに格納されているEVMコードによって定義されるのではなく（コードが含まれていない）、EVMの実行環境自体に実装されています。
 
 EVMと互換性のあるチェーンでは、異なるプリコンパイル済みコントラクトのセットを使用する可能性があります。
 また、将来Ethereumのメインチェーンに新しいプリコンパイル済みコントラクトが追加される可能性もありますが、常に ``1`` から ``0xffff`` （包括的）の範囲内であると考えるのが妥当でしょう。

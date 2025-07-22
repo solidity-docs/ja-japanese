@@ -70,8 +70,9 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
         /// @dev The Alexandr N. Tetearing algorithm could increase precision
         /// @param rings The number of rings from dendrochronological sample
         /// @return Age in years, rounded up for partial years
-        function age(uint256 rings) external virtual pure returns (uint256) {
-            return rings + 1;
+        /// @return Name of the tree
+        function age(uint256 rings) external virtual pure returns (uint256, string memory) {
+            return (rings + 1, "tree");
         }
 
         /// @notice Returns the amount of leaves the tree has.
@@ -88,8 +89,8 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
     }
 
     contract KumquatTree is Tree, Plant {
-        function age(uint256 rings) external override pure returns (uint256) {
-            return rings + 2;
+        function age(uint256 rings) external override pure returns (uint256, string memory) {
+            return (rings + 2, "Kumquat");
         }
 
         /// Return the amount of leaves that this specific kind of tree has
@@ -111,11 +112,11 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 ================= ============================================================================================ =============================
 タグ                                                                                                           コンテキスト
 ================= ============================================================================================ =============================
-``@title``        コントラクトあるいはインターフェースを説明すべき名前                                         contract, library, interface
-``@author``       オーサーの名前                                                                               contract, library, interface
-``@notice``       これがどういうことを行うのか、エンドユーザー向けの説明                                       contract, library, interface, function, public state variable, event
-``@dev``          開発者向けの追加の説明                                                                       contract, library, interface, function, state variable, event
-``@param``        Doxygenのようなパラメータの説明（後ろにパラメータ名をつける必要がある）                      function, event
+``@title``        コントラクトあるいはインターフェースを説明すべき名前                                         contract, library, interface, struct, enum
+``@author``       オーサーの名前                                                                               contract, library, interface, struct, enum
+``@notice``       これがどういうことを行うのか、エンドユーザー向けの説明                                       contract, library, interface, function, public state variable, event, struct, enum, error
+``@dev``          開発者向けの追加の説明                                                                       contract, library, interface, function, state variable, event, struct, enum, error
+``@param``        Doxygenのようなパラメータの説明（後ろにパラメータ名をつける必要がある）                      function, event, error
 ``@return``       コントラクトの関数のリターン変数の説明                                                       function, public state variable
 ``@inheritdoc``   ベース関数から不足しているタグを全てコピーする（後ろにコントラクト名をつける必要がある）     function, public state variable
 ``@custom:...``   カスタムタグ、セマンティクスはアプリケーションで定義                                         everywhere
@@ -202,7 +203,7 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
 ユーザードキュメント
 --------------------
 
-上記のドキュメントでは、以下のようなユーザードキュメントのJSONファイルが出力されます。
+上記のドキュメントでは、以下のような ``Tree`` コントラクトのためのユーザードキュメントのJSONファイルが出力されます。
 
 .. code-block:: json
 
@@ -214,6 +215,10 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
         "age(uint256)" :
         {
           "notice" : "Calculate tree age in years, rounded up, for live trees"
+        }
+        "leaves()" :
+        {
+            "notice" : "Returns the amount of leaves the tree has."
         }
       },
       "notice" : "You can use this contract for only the most basic simulation"
@@ -249,7 +254,14 @@ NatSpecを持たない関数は、そのベースとなる関数のドキュメ�
           {
             "rings" : "The number of rings from dendrochronological sample"
           },
-          "return" : "age in years, rounded up for partial years"
+          "returns" : {
+            "_0" : "Age in years, rounded up for partial years",
+            "_1" : "Name of the tree"
+          }
+        },
+        "leaves()" :
+        {
+            "details" : "Returns only a fixed number."
         }
       },
       "title" : "A simulator for trees"

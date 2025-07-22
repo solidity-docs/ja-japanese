@@ -19,7 +19,9 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 状態変数
 ========
 
-状態変数は、コントラクトストレージに値が永続的に保存される変数です。
+状態変数とは、その値がコントラクトのストレージに永続的に保存されるか、  
+あるいは一時的にトランジェントストレージに保存され、トランザクションの終了時にクリアされる変数です。  
+詳細については :ref:`data locations <locations>` を参照してください。
 
 .. code-block:: solidity
 
@@ -102,11 +104,11 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.4.21 <0.9.0;
+    pragma solidity ^0.8.22;
+
+    event HighestBidIncreased(address bidder, uint amount); // イベント
 
     contract SimpleAuction {
-        event HighestBidIncreased(address bidder, uint amount); // イベント
-
         function bid() public payable {
             // ...
             emit HighestBidIncreased(msg.sender, msg.value); // イベントのトリガー

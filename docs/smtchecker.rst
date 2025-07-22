@@ -621,10 +621,10 @@ CLIの場合、 ``<targets>`` は1つまたは複数の検証ターゲットの�
 ====================
 
 .. If there are any proved targets, the SMTChecker issues one warning per engine stating how many targets were proved.
-.. If the user wishes to see all the specific proved targets, the CLI option ``--model-checker-show-proved`` and the JSON option ``settings.modelChecker.showProved = true`` can be used.
+.. If the user wishes to see all the specific proved targets, the CLI option ``--model-checker-show-proved-safe`` and the JSON option ``settings.modelChecker.showProvedSafe = true`` can be used.
 
 証明されたターゲットがある場合、SMTCheckerはエンジンごとに、証明されたターゲットの数を示す警告を1回発行します。
-もしユーザーが証明されたターゲットをすべて見たい場合は、CLIオプション ``--model-checker-show-proved`` とJSONオプション ``settings.modelChecker.showProved = true`` を使用できます。
+もしユーザーが証明されたターゲットをすべて見たい場合は、CLIオプション ``--model-checker-show-proved-safe`` とJSONオプション ``settings.modelChecker.showProvedSafe = true`` を使用できます。
 
 .. Unproved Targets
 
@@ -864,6 +864,7 @@ SMTCheckerが適用するSMTエンコーディングでは、Solidity 言語の�
 
 .. code-block:: solidity
 
+    // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.8.0;
 
     contract A {
@@ -1049,15 +1050,14 @@ BMCはSMTソルバーを使用し、CHCはHornソルバーを使用していま�
 SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHornソルバーとして利用可能な `z3 <https://github.com/Z3Prover/z3>`_ や、両方の機能を持つ `Eldarica <https://github.com/uuverifiers/eldarica>`_ のように、同じツールが両方の役割を果たすこともよくあります。
 
 .. The user can choose which solvers should be used, if available, via the CLI
-.. option ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}`` or the JSON option
+.. option ``--model-checker-solvers {all,cvc5,eld,smtlib2,z3}`` or the JSON option
 .. ``settings.modelChecker.solvers=[smtlib2,z3]``, where:
 
-ユーザーは、使用可能な場合、どのソルバーを使用するかを、CLIオプション ``--model-checker-solvers {all,cvc4,eld,smtlib2,z3}`` またはJSONオプション ``settings.modelChecker.solvers=[smtlib2,z3]`` で選択できます。
+ユーザーは、使用可能な場合、どのソルバーを使用するかを、CLIオプション ``--model-checker-solvers {all,cvc5,eld,smtlib2,z3}`` またはJSONオプション ``settings.modelChecker.solvers=[smtlib2,z3]`` で選択できます。
 
-.. - ``cvc4`` is only available if the ``solc`` binary is compiled with it. Only BMC uses ``cvc4``.
+.. - ``cvc5`` is used via its binary which must be installed in the system. Only BMC uses ``cvc5``.
 
-- ``cvc4`` は、 ``solc`` のバイナリがコンパイルされている場合にのみ使用できます。
-  ``cvc4`` を使うのはBMCだけです。
+- ``cvc5`` は、システムにインストールされた実行ファイルを通じて使用されます。 ``cvc5`` を使用するのは BMC のみです。
 
 .. - ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
 
@@ -1109,10 +1109,10 @@ BMCもCHCも ``z3`` を採用しており、 ``z3`` はブラウザを含めて�
 上級者であれば、より複雑な問題に対して別のソルバーを試すためにこのオプションを適用するかもしれません。
 
 .. Please note that certain combinations of chosen engine and solver will lead to
-.. the SMTChecker doing nothing, for example choosing CHC and ``cvc4``.
+.. the SMTChecker doing nothing, for example choosing CHC and ``cvc5``.
 
 なお、選択したエンジンとソルバーの組み合わせによっては、SMTCheckerが何もしない場合があります。
-例えば、CHCと ``cvc4`` を選択した場合などです。
+例えば、CHCと ``cvc5`` を選択した場合などです。
 
 .. Abstraction and False Positives
 
@@ -1227,7 +1227,7 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 |complex)                           |                                      |
 +-----------------------------------+--------------------------------------+
 |external functions without         |BMC: Erase state knowledge and assume |
-|implementation                     |result is nondeterminisc.             |
+|implementation                     |result is nondeterministic.           |
 |                                   |CHC: Nondeterministic summary.        |
 |                                   |Try to infer invariants that hold     |
 |                                   |after the call returns.               |

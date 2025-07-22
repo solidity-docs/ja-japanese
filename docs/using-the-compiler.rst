@@ -92,14 +92,14 @@ Solidityリポジトリのビルドターゲットの1つは、Solidityのコマ
 ライブラリのリンク
 ------------------
 
-.. If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__``.
+.. If your contracts use :ref:`libraries <libraries>`, you will notice that the bytecode contains substrings of the form ``__$53aea86b7d70b31448b230b20ae141a537$__`` `(format was different <v0.5.0) <https://docs.soliditylang.org/en/v0.4.26/contracts.html#libraries>`_.
 .. These are placeholders for the actual library addresses.
 .. The placeholder is a 34 character prefix of the hex encoding of the keccak256 hash of the fully qualified library name.
 .. The bytecode file will also contain lines of the form ``// <placeholder> -> <fq library name>`` at the end to help identify which libraries the placeholders represent.
 .. Note that the fully qualified library name is the path of its source file and the library name separated by ``:``.
 .. You can use ``solc`` as a linker meaning that it will insert the library addresses for you at those points:
 
-コントラクトで :ref:`ライブラリ <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` のような部分文字列が含まれていることに気づくでしょう。
+コントラクトで :ref:`ライブラリ <libraries>` を使用している場合、バイトコードに ``__$53aea86b7d70b31448b230b20ae141a537$__`` のような部分文字列が含まれていることに気づくでしょう `(このフォーマットは <v0.5.0 では異なっていました) <https://docs.soliditylang.org/en/v0.4.26/contracts.html#libraries>`_ 。
 これは、実際のライブラリアドレスのプレースホルダーです。
 プレースホルダーは、完全に修飾されたライブラリ名のkeccak256ハッシュの16進数エンコーディングの34文字のプレフィックスです。
 また、バイトコードファイルには、プレースホルダーがどのライブラリを表しているかを識別するために、最後に ``// <placeholder> -> <fq library name>`` という形式の行が含まれます。
@@ -211,11 +211,11 @@ EVMのバージョンをターゲットに設定
 以下は、対象となるEVMのバージョンと、各バージョンで導入されたコンパイラ関連の変更点の一覧です。
 各バージョン間の下位互換性は保証されていません。
 
-- ``homestead``
+- ``homestead`` (*サポートは終了予定*)
 
   - （最も古いバージョン）
 
-- ``tangerineWhistle``
+- ``tangerineWhistle`` (*サポートは終了予定*)
 
   .. - Gas cost for access to other accounts increased, relevant for gas estimation and the optimizer.
 
@@ -226,14 +226,14 @@ EVMのバージョンをターゲットに設定
 
   - 外部からのコールに対しては、デフォルトですべてのガスが送信されますが、従来は一定量を保持する必要がありました。
 
-- ``spuriousDragon``
+- ``spuriousDragon`` (*サポートは終了予定*)
 
   .. - Gas cost for the ``exp`` opcode increased, relevant for gas estimation and the optimizer.
 
   - ``exp`` オペコードのガスコストが増加しました。
     ガスの推定とオプティマイザに関係します。
 
-- ``byzantium``
+- ``byzantium`` (*サポートは終了予定*)
 
   - オペコード ``returndatacopy`` 、 ``returndatasize`` 、 ``staticcall`` がアセンブリで利用可能になりました。
 
@@ -280,9 +280,17 @@ EVMのバージョンをターゲットに設定
 
   - ``prevrandao()``と ``block.prevrandao`` を導入し、現在では非推奨となっている ``block.difficulty`` のセマンティクスを変更し、インラインアセンブリの ``difficulty()`` を禁止しました（ `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ を参照してください）。
 
-- ``shanghai`` （ **デフォルト** ）
+- ``shanghai``
 
   - ``push0`` の導入により、コードサイズが小さくなり、ガスが節約できるようになりました（ `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_ を参照）。
+
+- ``cancun`` (**default**)
+   - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
+   - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+   - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
+   - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+
+- ``prague`` (**experimental**)
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -320,7 +328,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
 .. code-block:: javascript
 
     {
-      // 必須: Source code language. Currently supported are "Solidity", "Yul" and "SolidityAST" (experimental).
+      // 必須: Source code language. Currently supported are "Solidity", "Yul", "SolidityAST" (experimental), "EVMAssembly" (experimental).
       "language": "Solidity",
       // 必須
       "sources":
@@ -344,21 +352,40 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             // If files are used, their directories should be added to the command-line via
             // `--allow-paths <path>`.
           ]
-          // If language is set to "SolidityAST", an AST needs to be supplied under the "ast" key.
+        },
+        "settable":
+        {
+          // Optional: keccak256 hash of the source file
+          "keccak256": "0x234...",
+          // Required (unless "urls" is used): literal contents of the source file
+          "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }"
+        },
+        "myFile.sol_json.ast":
+        {
+          // If language is set to "SolidityAST", an AST needs to be supplied under the "ast" key
+          // and there can be only one source file present.
+          // The format is the same as used by the `ast` output.
           // Note that importing ASTs is experimental and in particular that:
           // - importing invalid ASTs can produce undefined results and
           // - no proper error reporting is available on invalid ASTs.
           // Furthermore, note that the AST import only consumes the fields of the AST as
           // produced by the compiler in "stopAfter": "parsing" mode and then re-performs
           // analysis, so any analysis-based annotations of the AST are ignored upon import.
-          "ast": { ... } // formatted as the json ast requested with the ``ast`` output selection.
+          "ast": { ... }
         },
-        "destructible":
+        "myFile_evm.json":
         {
-          // オプション: ソースファイルのkeccak256ハッシュ
-          "keccak256": "0x234...",
-          // Required (unless "urls" is used): literal contents of the source file
-          "content": "contract destructible is owned { function shutdown() { if (msg.sender == owner) selfdestruct(owner); } }"
+          // If language is set to "EVMAssembly", an EVM Assembly JSON object needs to be supplied
+          // under the "assemblyJson" key and there can be only one source file present.
+          // The format is the same as used by the `evm.legacyAssembly` output or `--asm-json`
+          // output on the command line.
+          // Note that importing EVM assembly is experimental.
+          "assemblyJson":
+          {
+            ".code": [ ... ],
+            ".data": { ... }, // optional
+            "sourceList": [ ... ] // optional (if no `source` node was defined in any `.code` object)
+          }
         }
       },
       // オプション
@@ -397,6 +424,9 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             "cse": false,
             // Optimize representation of literal numbers and strings in code.
             "constantOptimizer": false,
+            // Use unchecked arithmetic when incrementing the counter of for loops
+            // under certain circumstances. It is always on if no details are given.
+            "simpleCounterForLoopUncheckedIncrement": true,
             // 新しいYulオプティマイザ。
             // 主にABIコーダーv2とインラインアセンブリのコードで動作します。
             // It is activated together with the global optimizer setting and can be deactivated here.
@@ -421,9 +451,10 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         },
         // Version of the EVM to compile for.
         // Affects type checking and code generation. Can be homestead,
-        // tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, istanbul, berlin, london or paris
-        "evmVersion": "byzantium",
-        // オプション: Change compilation pipeline to go through the Yul intermediate representation.
+        // tangerineWhistle, spuriousDragon, byzantium, constantinople,
+        // petersburg, istanbul, berlin, london, paris, shanghai, cancun (default) or prague.
+        "evmVersion": "cancun",
+        // Optional: Change compilation pipeline to go through the Yul intermediate representation.
         // This is false by default.
         "viaIR": true,
         // オプション: Debugging settings
@@ -463,7 +494,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         // Addresses of the libraries. If not all libraries are given here,
         // it can result in unlinked objects whose output data is different.
         "libraries": {
-          // The top level key is the the name of the source file where the library is used.
+          // The top level key is the name of the source file where the library is used.
           // If remappings are used, this source file should match the global path
           // after remappings were applied.
           // If this key is an empty string, that refers to a global level.
@@ -480,7 +511,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         // but to the whole source file like the AST.
         // A star as contract name refers to all contracts in the file.
         // Similarly, a star as a file name matches all files.
-        // To select all outputs the compiler can possibly generate, use
+        // To select all outputs the compiler can possibly generate, with the exclusion of
+        // Yul intermediate representation outputs, use
         // "outputSelection: { "*": { "*": [ "*" ], "": [ "*" ] } }"
         // but note that this might slow down the compilation process needlessly.
         //
@@ -498,7 +530,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         //   irAst - AST of Yul intermediate representation of the code before optimization
         //   irOptimized - Intermediate representation after optimization
         //   irOptimizedAst - AST of intermediate representation after optimization
-        //   storageLayout - Slots, offsets and types of the contract's state variables.
+        //   storageLayout - Slots, offsets and types of the contract's state variables in storage.
+        //   transientStorageLayout - Slots, offsets and types of the contract's state variables in transient storage.
         //   evm.assembly - New assembly format
         //   evm.legacyAssembly - Old-style assembly format in JSON
         //   evm.bytecode.functionDebugData - Debugging information at function level
@@ -512,7 +545,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         //   evm.methodIdentifiers - The list of function hashes
         //   evm.gasEstimates - Function gas estimates
         //
-        // Note that using a using `evm`, `evm.bytecode`, etc. will select every
+        // Note that using `evm`, `evm.bytecode`, etc. will select every
         // target part of that output. Additionally, `*` can be used as a wildcard to request everything.
         //
         "outputSelection": {
@@ -555,14 +588,14 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
           // Choose which types of invariants should be reported to the user: contract, reentrancy.
           "invariants": ["contract", "reentrancy"],
           // Choose whether to output all proved targets. The default is `false`.
-          "showProved": true,
+          "showProvedSafe": true,
           // Choose whether to output all unproved targets. The default is `false`.
           "showUnproved": true,
           // Choose whether to output all unsupported language features. The default is `false`.
           "showUnsupported": true,
           // Choose which solvers should be used, if available.
           // See the Formal Verification section for the solvers description.
-          "solvers": ["cvc4", "smtlib2", "z3"],
+          "solvers": ["cvc5", "smtlib2", "z3"],
           // Choose which targets should be checked: constantCondition,
           // underflow, overflow, divByZero, balance, assert, popEmptyArray, outOfBounds.
           // If the option is not given all targets are checked by default,
@@ -652,6 +685,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             "irOptimizedAst": {/* ... */},
             // See the Storage Layout documentation.
             "storageLayout": {"storage": [/* ... */], "types": {/* ... */} },
+            // See the Storage Layout documentation.
+            "transientStorageLayout": {"storage": [/* ... */], "types": {/* ... */} },
             // EVM-related outputs
             "evm": {
               // Assembly (string)

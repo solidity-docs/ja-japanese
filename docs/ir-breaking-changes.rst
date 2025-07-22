@@ -37,6 +37,8 @@ IRベースのコードジェネレーターを導入したのは、コード生
 このセクションでは、セマンティックのみの変更点をリストアップしています。
 そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
 
+.. _state-variable-initialization-order:
+
 .. - The order of state variable initialization has changed in case of inheritance.
 
 ..   The order used to be:

@@ -237,7 +237,7 @@ OK:
         bytes32[] options
     );
 
-    LongAndLotsOfArgs(
+    emit LongAndLotsOfArgs(
         sender,
         recipient,
         publicKey,
@@ -255,7 +255,7 @@ NG:
                             uint256 amount,
                             bytes32[] options);
 
-    LongAndLotsOfArgs(sender,
+    emit LongAndLotsOfArgs(sender,
                       recipient,
                       publicKey,
                       amount,
@@ -707,8 +707,8 @@ OK:
         return balanceOf[from];
     }
 
-    function shutdown() public onlyOwner {
-        selfdestruct(owner);
+    function increment(uint x) public pure onlyOwner returns (uint) {
+        return x + 1;
     }
 
 NG:
@@ -719,8 +719,8 @@ NG:
         return balanceOf[from];
     }
 
-    function shutdown() onlyOwner public {
-        selfdestruct(owner);
+    function increment(uint x) onlyOwner public pure returns (uint) {
+        return x + 1;
     }
 
 .. For long function declarations, it is recommended to drop each argument onto
@@ -1113,15 +1113,15 @@ NG:
 レイアウトの順序
 ****************
 
-.. Layout contract elements in the following order:
-
-コントラクトの要素を以下の順序でレイアウトします。
+コントラクト要素は次の順序で配置するべきです：
 
 1. プラグマ文
 2. インポート文
-3. インターフェース
-4. ライブラリ
-5. コントラクト
+3. イベント
+4. エラー
+5. インターフェース
+6. ライブラリ
+7. コントラクト
 
 .. Inside each contract, library or interface, use the following order:
 

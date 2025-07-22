@@ -221,7 +221,6 @@ view関数
 
 次のような記述は、状態の修正とみなされます。
 
-.. #. Writing to state variables.
 .. #. :ref:`Emitting events <events>`.
 .. #. :ref:`Creating other contracts <creating-contracts>`.
 .. #. Using ``selfdestruct``.
@@ -230,7 +229,7 @@ view関数
 .. #. Using low-level calls.
 .. #. Using inline assembly that contains certain opcodes.
 
-#. 状態変数への書き込み。
+#. 状態変数（ストレージとトランジェントストレージ）への書き込み。
 #. :ref:`イベントの発生<events>` 。
 #. :ref:`他のコントラクトの作成<creating-contracts>` 。
 #. ``selfdestruct`` の使用。
@@ -304,13 +303,12 @@ pure関数
 
 上記で説明したステートの修飾文のリストに加えて、以下のものはステートからの読み取りとみなされます。
 
-.. #. Reading from state variables.
 .. #. Accessing ``address(this).balance`` or ``<address>.balance``.
 .. #. Accessing any of the members of ``block``, ``tx``, ``msg`` (with the exception of ``msg.sig`` and ``msg.data``).
 .. #. Calling any function not marked ``pure``.
 .. #. Using inline assembly that contains certain opcodes.
 
-#. 状態変数からの読み出し。
+#. 状態変数（ストレージとトランジェントストレージ）からの読み出し。
 #. ``address(this).balance`` または ``<address>.balance`` へのアクセス。
 #. ``block`` 、 ``tx`` 、 ``msg`` （ ``msg.sig`` 、 ``msg.data`` を除く）のメンバーのいずれかにアクセスすること。
 #. ``pure`` とマークされていない関数を呼び出すこと。
@@ -370,7 +368,7 @@ Pure関数は、 :ref:`エラーが発生 <assert-and-require>` したときに�
 .. .. note::
 
 ..   Prior to version 0.4.17 the compiler did not enforce that ``pure`` is not reading the state.
-..   It is a compile-time type check, which can be circumvented doing invalid explicit conversions
+..   It is a compile-time type check, which can be circumvented by doing invalid explicit conversions
 ..   between contract types, because the compiler can verify that the type of the contract does
 ..   not do state-changing operations, but it cannot check that the contract that will be called
 ..   at runtime is actually of that type.

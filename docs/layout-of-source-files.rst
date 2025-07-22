@@ -28,7 +28,7 @@ Solidity は `npm recommendation <https://docs.npmjs.com/cli/v7/configuring-npm/
 
 コメントは、ファイルレベルではファイルのどこにあってもコンパイラに認識されますが、ファイルの先頭に置くことをお勧めします。
 
-SPDXライセンス識別子の使用方法の詳細は、 `SPDXのWebサイト <https://spdx.org/ids-how>`_ に記載されています。
+SPDXライセンス識別子の使用方法の詳細は、 `SPDXのWebサイト <https://spdx.dev/learn/handling-license-info/#how>`_ に記載されています。
 
 .. index:: ! pragma
 

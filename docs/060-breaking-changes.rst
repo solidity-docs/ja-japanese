@@ -165,17 +165,12 @@ Solidity v0.6.0の破壊的変更点
 このセクションでは、言語そのものとは関係なく、コンパイラーのインターフェースに影響を与える変更点を紹介します。
 これらの変更により、コマンドラインでのコンパイラの使用方法、プログラマブルインターフェースの使用方法、コンパイラが生成した出力の分析方法が変わる可能性があります。
 
-.. New Error Reporter
-
 新しいエラーリポーター
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. A new error reporter was introduced, which aims at producing more accessible error messages on the command-line.
-.. It is enabled by default, but passing ``--old-reporter`` falls back to the the deprecated old error reporter.
-
 新しいエラーレポーターが導入されました。
 これは、コマンドライン上でよりアクセスしやすいエラーメッセージを生成することを目的としています。
-デフォルトでは有効になっていますが、 ``--old-reporter`` を指定すると、非推奨の古いエラーレポーターに戻ります。
+また、これはデフォルトでは有効になっており、 ``--old-reporter`` を指定すると、非推奨の古いエラーレポーターに戻ります。
 
 .. Metadata Hash Options
 

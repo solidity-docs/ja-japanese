@@ -284,13 +284,8 @@ Solidity v0.8.0の破壊的変更点
   JSONのフィールド ``abi`` 、 ``devdoc`` 、 ``userdoc`` 、 ``storage-layout`` がサブオブジェクトになりました。
   0.8.0以前では、これらは文字列としてシリアライズされていました。
 
-.. * The "legacy AST" has been removed (``--ast-json`` on the commandline interface and ``legacyAST`` for standard JSON).
-..   Use the "compact AST" (``--ast-compact--json`` resp. ``AST``) as replacement.
-
-* 「レガシーAST」が削除されました（コマンドラインインターフェースでは ``--ast-json`` 、標準JSONでは ``legacyAST`` ）。
-  代わりに「コンパクトAST」（ ``--ast-compact--json`` 、標準JSONでは ``AST`` ）を使用してください。
-
-.. * The old error reporter (``--old-reporter``) has been removed.
+* 「レガシーAST」が削除されました（コマンドラインインターフェースでは ``--ast-json`` 、スタンダードJSONでは ``legacyAST`` ）。
+  この代わりに「コンパクトAST」（それぞれ ``--ast-compact-json`` と ``AST`` ）を使用してください。
 
 * 旧エラーレポーター（ ``--old-reporter`` ）は削除されました。
 

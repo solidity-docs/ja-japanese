@@ -60,6 +60,12 @@
 アリスはメッセージにコントラクトのアドレスを含めることでこの攻撃から守ることができ、コントラクトのアドレス自体を含むメッセージだけが受け入れられます。
 このセクションの最後にある完全なコントラクトの ``claimPayment()`` 関数の最初の2行に、この例があります。
 
+.. TODO:
+
+Furthermore, instead of destroying the contract by calling ``selfdestruct``,
+which is currently deprecated, we will disable the contract's functionalities by freezing it,
+resulting in the reversion of any call after it being frozen.
+
 引数のパッキング
 ----------------
 
@@ -111,30 +117,54 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-    contract ReceiverPays {
-        address owner = msg.sender;
 
+    contract Owned {
+        address payable owner;
+        constructor() {
+            owner = payable(msg.sender);
+        }
+    }
+
+    contract Freezable is Owned {
+        bool private _frozen = false;
+
+        modifier notFrozen() {
+            require(!_frozen, "Inactive Contract.");
+            _;
+        }
+
+        function freeze() internal {
+            if (msg.sender == owner)
+                _frozen = true;
+        }
+    }
+
+    contract ReceiverPays is Freezable {
         mapping(uint256 => bool) usedNonces;
 
         constructor() payable {}
 
-        function claimPayment(uint256 amount, uint256 nonce, bytes memory signature) external {
+        function claimPayment(uint256 amount, uint256 nonce, bytes memory signature)
+            external
+            notFrozen
+        {
             require(!usedNonces[nonce]);
             usedNonces[nonce] = true;
 
             // this recreates the message that was signed on the client
             bytes32 message = prefixed(keccak256(abi.encodePacked(msg.sender, amount, nonce, this)));
-
             require(recoverSigner(message, signature) == owner);
-
             payable(msg.sender).transfer(amount);
         }
 
-        /// destroy the contract and reclaim the leftover funds.
-        function shutdown() external {
+        /// freeze the contract and reclaim the leftover funds.
+        function shutdown()
+            external
+            notFrozen
+        {
             require(msg.sender == owner);
-            selfdestruct(payable(msg.sender));
+            freeze();
+            payable(msg.sender).transfer(address(this).balance);
         }
 
         /// signature methods.
@@ -163,7 +193,6 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
             returns (address)
         {
             (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
-
             return ecrecover(message, v, r, s);
         }
 
@@ -260,9 +289,9 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 ペイメントチャネルのクローズ
 ----------------------------
 
-ボブが資金を受け取る準備ができたら、スマートコントラクトの ``close`` 関数をコールしてペイメントチャネルを閉じる時です。
-チャネルを閉じると、受取人に支払うべきEtherが支払われ、コントラクトが破棄され、残っているEtherがAliceに送り返されます。
-チャネルを閉じるために、BobはAliceが署名したメッセージを提供する必要があります。
+Bob が資金を受け取る準備ができたら、スマートコントラクトの ``close`` 関数をコールしてペイメントチャネルを閉じる時です。
+チャネルを閉じることで、受取人に支払うべき Ether が支払われ、コントラクトは凍結されて無効化され、残りの Ether は Alice に返却されます。  
+チャネルを閉じるには、Bob は Alice によって署名されたメッセージを提供する必要があります。
 
 スマートコントラクトは、メッセージに送信者の有効な署名が含まれていることを検証する必要があります。
 この検証を行うためのプロセスは、受信者が使用するプロセスと同じです。
@@ -274,7 +303,7 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
 もし送信者がこの関数を呼び出すことができれば、より低い金額のメッセージを提供し、受信者を騙して債務を支払うことができます。
 
 この関数は、署名されたメッセージが与えられたパラメータと一致するかどうかを検証します。
-すべてがチェックアウトされれば、受信者には自分の分のEtherが送られ、送信者には ``selfdestruct`` 経由で残りの分が送られます。
+すべてがチェックアウトされれば、受信者には自分の分のEtherが送られ、送信者には ``transfer`` 経由で残りの資金が送られます。
 ``close`` 関数はコントラクト全体で見ることができます。
 
 チャネルの有効期限
@@ -295,11 +324,24 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
 
     // SPDX-License-Identifier: GPL-3.0
     pragma solidity >=0.7.0 <0.9.0;
-    // 非推奨のselfdestructを使用するためwarningが出力されます。
-    contract SimplePaymentChannel {
-        address payable public sender;      // 支払いを送信するアカウント
-        address payable public recipient;   // 支払いを受けるアカウント
-        uint256 public expiration;  // 受信者が閉じない場合のタイムアウト
+
+    contract Frozeable {
+        bool private _frozen = false;
+
+        modifier notFrozen() {
+            require(!_frozen, "Inactive Contract.");
+            _;
+        }
+
+        function freeze() internal {
+            _frozen = true;
+        }
+    }
+
+    contract SimplePaymentChannel is Frozeable {
+        address payable public sender;    // The account sending payments.
+        address payable public recipient; // The account receiving the payments.
+        uint256 public expiration;        // Timeout in case the recipient never closes.
 
         constructor (address payable recipientAddress, uint256 duration)
             payable
@@ -311,16 +353,23 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
 
         /// 受信者は送信者から署名された金額を提示することで、いつでもチャンネルを閉じることができます。
         /// 受信者はその金額を送信し、残りは送信者に戻ります。
-        function close(uint256 amount, bytes memory signature) external {
+        function close(uint256 amount, bytes memory signature)
+            external
+            notFrozen
+        {
             require(msg.sender == recipient);
             require(isValidSignature(amount, signature));
 
             recipient.transfer(amount);
-            selfdestruct(sender);
+            freeze();
+            sender.transfer(address(this).balance);
         }
 
         /// 送信者はいつでも有効期限を延長できます。
-        function extend(uint256 newExpiration) external {
+        function extend(uint256 newExpiration)
+            external
+            notFrozen
+        {
             require(msg.sender == sender);
             require(newExpiration > expiration);
 
@@ -328,9 +377,13 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
         }
 
         /// 受信者がチャネルを閉じることなくタイムアウトに達した場合、Etherは送信者に戻されます。
-        function claimTimeout() external {
+        function claimTimeout()
+            external
+            notFrozen
+        {
             require(block.timestamp >= expiration);
-            selfdestruct(sender);
+            freeze();
+            sender.transfer(address(this).balance);
         }
 
         function isValidSignature(uint256 amount, bytes memory signature)
@@ -339,13 +392,12 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
             returns (bool)
         {
             bytes32 message = prefixed(keccak256(abi.encodePacked(this, amount)));
-
             // 署名が支払い送信者のものであることを確認します。
             return recoverSigner(message, signature) == sender;
         }
 
-        /// これ以下の関数はすべて「署名の作成と検証」の章から引用しているだけです。
-
+        /// All functions below this are just taken from the chapter
+        /// 'creating and verifying signatures' chapter.
         function splitSignature(bytes memory sig)
             internal
             pure
@@ -361,7 +413,6 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
                 // final byte (first byte of the next 32 bytes)
                 v := byte(0, mload(add(sig, 96)))
             }
-
             return (v, r, s);
         }
 
@@ -371,7 +422,6 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
             returns (address)
         {
             (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
-
             return ecrecover(message, v, r, s);
         }
 
@@ -384,7 +434,7 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
 .. note::
 
     関数 ``splitSignature`` は、すべてのセキュリティチェックを使用していません。
-    実際の実装では、openzepplinの `バージョン  <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ のように、より厳密にテストされたライブラリを使用する必要があります。
+    実際の実装では、OpenZeppelin の `バージョン  <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol>`_ のように、より厳密にテストされたライブラリを使用する必要があります。
 
 ペイメントの検証
 ----------------

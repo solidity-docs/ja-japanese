@@ -32,7 +32,7 @@ ABIのエンコード関数とデコード関数
 - ``abi.encodeCall(function functionPointer, (...)) returns (bytes memory)``:
   タプルに含まれる引数を用いて ``functionPointer`` の呼び出しをABIエンコードします。
   完全な型チェックを行い、型が関数のシグネチャと一致することを保証します。
-  結果は ``abi.encodeWithSelector(functionPointer.selector, (...))`` に等くなります。
+  結果は ``abi.encodeWithSelector(functionPointer.selector, ...)`` に等くなります。
 
 - ``abi.encodeWithSignature(string memory signature, ...) returns (bytes memory)``:
   ``abi.encodeWithSelector(bytes4(keccak256(bytes(signature))), ...)`` と同等です。
@@ -52,13 +52,18 @@ ABIのエンコード関数とデコード関数
 ``address`` のメンバー
 ======================
 
+.. TODO:
+
 - ``<address>.balance`` (``uint256``): :ref:`address` の残高（Wei）
 - ``<address>.code`` (``bytes memory``): :ref:`address` のコード（空にもなり得る）
 - ``<address>.codehash`` (``bytes32``): :ref:`address` のコードハッシュ
+- ``<address>.call(bytes memory) returns (bool, bytes memory)``: issue low-level ``CALL`` with the given payload, returns success condition and return data
+- ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``: issue low-level ``DELEGATECALL`` with the given payload, returns success condition and return data
+- ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: issue low-level ``STATICCALL`` with the given payload, returns success condition and return data
 - ``<address payable>.send(uint256 amount) returns (bool)``: 指定した量のWeiを :ref:`address` に送り、失敗したら ``false`` を返します。
 - ``<address payable>.transfer(uint256 amount)``: 指定した量のWeiを :ref:`address` に送り、失敗したらリバートします。
 
-.. index:: blockhash, block, block;basefree, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
+.. index:: blockhash, blobhash, block, block;basefee, block;blobbasefee, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
 .. index:: gasleft, msg;data, msg;sender, msg;sig, msg;value, tx;gasprice, tx;origin
 
 ブロックとトランザクションのプロパティ
@@ -66,7 +71,14 @@ ABIのエンコード関数とデコード関数
 
 - ``blockhash(uint blockNumber) returns (bytes32)``: 指定したブロックのハッシュ。最新の256ブロックに対してのみ動作します。
 
+- ``blobhash(uint index) returns (bytes32)``: versioned hash of the ``index``-th blob associated with the current transaction.
+  A versioned hash consists of a single byte representing the version (currently ``0x01``), followed by the last 31 bytes
+  of the SHA256 hash of the KZG commitment (`EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+  Returns zero if no blob with the given index exists.
+
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）。
+
+- ``block.blobbasefee`` (``uint``): current block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_)
 
 - ``block.chainid`` (``uint``): カレントブロックのチェーンID。
 
@@ -137,11 +149,13 @@ ABIのエンコード関数とデコード関数
 コントラクト関連
 ================
 
+.. TODO:
+
 - ``this`` （現在のコントラクトの型）: 現在のコントラクトで、 ``address`` または ``address payable`` に明示的に変換できるもの。
 
 - ``super``: 継承階層の1つ上の階層のコントラクト。
 
-- ``selfdestruct(address payable recipient)``: 現在のコントラクトを破棄し、その資金を指定されたアドレスに送ります。
+- ``selfdestruct(address payable recipient)``: send all funds to the given address and (only on EVMs before Cancun or when invoked within the transaction creating the contract) destroy the contract.
 
 .. index:: type;name, type;creationCode, type;runtimeCode, type;interfaceId, type;min, type;max
 
@@ -191,7 +205,7 @@ ABIのエンコード関数とデコード関数
 - 関数の ``view``: 状態の変更を不可とします。
 - 関数の ``payable``: コールと同時にEtherを受信できるようにします。
 - 状態変数の ``constant``: 初期化を除き、代入を禁止し、ストレージスロットを占有しません。
-- 状態変数の ``immutable``: コンストラクション時に正確に1つの代入を可能にし、その後は一定です。コードに格納されます。
+- 状態変数の ``immutable``: コンストラクション時に代入を可能にし、デプロイ後は定数となります。コードに格納されます。
 - イベントの ``anonymous``: イベントのシグネチャをトピックとして保存しません。
 - イベントパラメータの ``indexed``: パラメータをトピックとして保存します。
 - 関数やモディファイアの ``virtual``: 関数やモディファイアの動作を派生コントラクトで変更できるようにします。

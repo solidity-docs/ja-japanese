@@ -7,7 +7,7 @@
 .. index:: ! assembly, ! asm, ! evmasm
 
 Ethereum Virtual Machineの言語に近い言語で、Solidityの文にインラインアセンブリを挟むことができます。
-これにより、より細かな制御が可能となり、特にライブラリを書いて言語を強化する場合に有効です。
+これにより、より細かな制御が可能となり、特にライブラリを作成して言語を拡張したり、ガス使用量を最適化したりする際に役立ちます。
 
 Solidityのインラインアセンブリに使用される言語は :ref:`Yul <yul>` と呼ばれ、詳細はそのセクションに書かれています。
 このセクションでは、インラインアセンブリのコードが周囲のSolidityコードとどのように連携するかについてのみ説明します。
@@ -174,11 +174,11 @@ Solidityの変数やその他の識別子は、それら名前を使ってアク
 動的なcalldata配列の場合、 ``x.offset`` と ``x.length`` を使ってcalldataのオフセット（バイト単位）と長さ（要素数）にアクセスできます。
 両方の式は代入することもできますが、静的の場合と同様に、結果として得られるデータ領域が ``calldatasize()`` の範囲内にあるかどうかの検証は行われません。
 
-.. For local storage variables or state variables, a single Yul identifier is not sufficient, since they do not necessarily occupy a single full storage slot.
+.. For local storage variables or state variables (including transient storage) a single Yul identifier is not sufficient, since they do not necessarily occupy a single full storage slot.
 .. Therefore, their "address" is composed of a slot and a byte-offset inside that slot.
 .. To retrieve the slot pointed to by the variable ``x``, you use ``x.slot``, and to retrieve the byte-offset you use ``x.offset``.
 
-ローカルストレージ変数や状態変数の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
+ローカルストレージ変数や状態変数（transient storage含む）の場合、必ずしも1つのストレージスロットを占有しているわけではないので、単一のYul識別子では不十分です。
 そのため、変数の「アドレス」は、スロットとそのスロット内のバイトオフセットで構成されます。
 変数 ``x`` が指すスロットを取得するには ``x.slot`` を、バイトオフセットを取得するには ``x.offset`` を使います。
 ``x`` をそのまま使うとエラーになります。
@@ -200,15 +200,18 @@ Solidityの変数やその他の識別子は、それら名前を使ってアク
     :force:
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.7.0 <0.9.0;
+    pragma solidity >=0.8.28 <0.9.0;
 
+    // This will report a warning
     contract C {
+        bool transient a;
         uint b;
-        function f(uint x) public view returns (uint r) {
+        function f(uint x) public returns (uint r) {
             assembly {
                 // ストレージスロットのオフセットは無視します。
                 // この特別なケースではゼロであることが分かっています。
                 r := mul(x, sload(b.slot))
+                tstore(a.slot, true)
             }
         }
     }
@@ -468,3 +471,26 @@ Solidityの複数のバージョンで互換性のあるライブラリを開発
 
 なお、コメントによるアノテーションは、将来のブレーキングリリースで禁止する予定です。
 したがって、古いコンパイラのバージョンとの後方互換性にこだわらない場合は、方言文字列を使用することをお勧めします。
+
+.. TODO:
+
+Advanced Safe Use of Memory
+---------------------------
+
+Beyond the strict definition of memory-safety given above, there are cases in which you may want to use more than 64 bytes
+of scratch space starting at memory offset ``0``. If you are careful, it can be admissible to use memory up to (and not
+including) offset ``0x80`` and still safely declare the assembly block as ``memory-safe``.
+This is admissible under either of the following conditions:
+
+- By the end of the assembly block, the free memory pointer at offset ``0x40`` is restored to a sane value (i.e. it is either
+  restored to its original value or an increment of it due to a manual memory allocation), and the memory word at offset ``0x60``
+  is restored to a value of zero.
+
+- The assembly block terminates, i.e. execution can never return to high-level Solidity code. This is the case, for example,
+  if your assembly block unconditionally ends in calling the ``revert`` opcode.
+
+Furthermore, you need to be aware that the default-value of dynamic arrays in Solidity point to memory offset ``0x60``, so
+for the duration of temporarily changing the value at memory offset ``0x60``, you can no longer rely on getting accurate
+length values when reading dynamic arrays, until you restore the zero value at ``0x60``. To be more precise, we only guarantee
+safety when overwriting the zero pointer, if the remainder of the assembly snippet does not interact with the memory of
+high-level Solidity objects (including by reading from offsets previously stored in variables).
