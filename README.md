@@ -2,14 +2,17 @@
 
 Solidityドキュメントの日本語翻訳プロジェクトです。
 進捗状況は https://github.com/solidity-docs/ja-japanese/issues/1 で確認できます。
-このissueにある「Core Pages」の項目の翻訳が完了次第、[公式ドキュメント](https://docs.soliditylang.org/en/latest/)のフライアウトメニューに日本語が追加され、このリポジトリの内容が閲覧できるようになります。
-ただし、それまでは一時的に https://solidity-ja.readthedocs.io/ で日本語翻訳を閲覧可能にします（ビルド元はこのリポジトリと同期している https://github.com/minaminao/ja-japanese です）。
+このリポジトリは https://docs.soliditylang.org/ja/latest/ と連携しています。
 
 Solidityドキュメントの翻訳者のチャットは https://forum.soliditylang.org/t/new-communication-channel-about-solidity-docs-community-translations/918 に記載されています。
+
+なお以前は、 https://solidity-ja.readthedocs.io/ で日本語翻訳を閲覧可能でした（ビルド元はこのリポジトリと同期している https://github.com/minaminao/ja-japanese です）。
+現在は https://docs.soliditylang.org/ja/ にリダイレクトされます。
 
 ## 翻訳に際して
 
 ### 同期PRの対処の仕方
+
 基本的にGitHubのGUIだけでは難しい。
 
 まず、同期PRの「Files changed」から変更されたドキュメントのファイル一覧を見る。
@@ -22,7 +25,7 @@ Solidityドキュメントの翻訳者のチャットは https://forum.solidityl
 ### 環境構築の一例
 
 ```
-pyenv shell 3.11.1
+pyenv shell 3.12.7
 python -m venv venv
 source venv/bin/activate.fish
 pip install -r docs/requirements.txt
