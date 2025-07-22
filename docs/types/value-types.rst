@@ -438,6 +438,8 @@ Byzantiumから ``staticcall`` も使えるようになりました。
     代わりに ``bytes`` 型を使うのが良いでしょう。
 
 .. note::
+    
+    Prior to version 0.8.0, ``byte`` used to be an alias for ``bytes1``.
 
 .. index:: address, ! literal;address
 

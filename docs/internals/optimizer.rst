@@ -679,7 +679,7 @@ ExpressionSplitterは、 ``add(mload(0x123), mul(mload(0x456), 0x20))`` のよ�
 
 .. The final program should be in an *expression-split form*, where (with the exception of loop conditions) function calls cannot appear nested inside expressions and all function call arguments have to be variables.
 
-最終的なプログラムは *expression-split form*（式分離形式）である必要があります。  
+最終的なプログラムは *expression-split form* （式分離形式）である必要があります。  
 これは、ループ条件を除き、関数呼び出しを式の中にネストして書くことはできず、すべての関数呼び出しの引数は変数でなければならないという形式です。
 
 この形式の利点は、オペコードの順序を変更するのがかなり容易であることと、関数呼び出しのインライン化を実行するのも容易であることです。
