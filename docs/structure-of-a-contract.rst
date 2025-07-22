@@ -19,14 +19,9 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 状態変数
 ========
 
-<<<<<<< HEAD
-状態変数は、コントラクトストレージに値が永続的に保存される変数です。
-=======
-State variables are variables whose values are either permanently stored in contract
-storage or, alternatively, temporarily stored in transient storage which is cleaned at
-the end of each transaction.
-See :ref:`data locations <locations>` for more details.
->>>>>>> english/develop
+状態変数とは、その値がコントラクトのストレージに永続的に保存されるか、  
+あるいは一時的にトランジェントストレージに保存され、トランザクションの終了時にクリアされる変数です。  
+詳細については :ref:`data locations <locations>` を参照してください。
 
 .. code-block:: solidity
 

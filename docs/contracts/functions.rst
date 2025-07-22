@@ -229,7 +229,7 @@ view関数
 .. #. Using low-level calls.
 .. #. Using inline assembly that contains certain opcodes.
 
-#. 状態変数（ストレージと一時ストレージ）への書き込み。
+#. 状態変数（ストレージとトランジェントストレージ）への書き込み。
 #. :ref:`イベントの発生<events>` 。
 #. :ref:`他のコントラクトの作成<creating-contracts>` 。
 #. ``selfdestruct`` の使用。
@@ -308,7 +308,7 @@ pure関数
 .. #. Calling any function not marked ``pure``.
 .. #. Using inline assembly that contains certain opcodes.
 
-#. 状態変数（ストレージと一時ストレージ）からの読み出し。
+#. 状態変数（ストレージとトランジェントストレージ）からの読み出し。
 #. ``address(this).balance`` または ``<address>.balance`` へのアクセス。
 #. ``block`` 、 ``tx`` 、 ``msg`` （ ``msg.sig`` 、 ``msg.data`` を除く）のメンバーのいずれかにアクセスすること。
 #. ``pure`` とマークされていない関数を呼び出すこと。

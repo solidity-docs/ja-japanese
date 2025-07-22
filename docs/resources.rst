@@ -35,16 +35,8 @@
 * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
     Ethereum Virtual Machineをターゲットとしたスマートコントラクトのための、Pythonベースの開発およびテストフレームワーク。
 
-<<<<<<< HEAD
 * `Dapp <https://dapp.tools/>`_
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。
-
-* `Embark <https://framework.embarklabs.io/>`_
-    非中央集権的なアプリケーションを構築及びデプロイするための開発者プラットフォーム。
-=======
-    * `Foundry <https://github.com/foundry-rs/foundry>`_
-        Fast, portable and modular toolkit for Ethereum application development written in Rust.
->>>>>>> english/develop
 
 * `Foundry <https://github.com/foundry-rs/foundry>`_
     Rustで書かれたEthereumアプリケーション開発のための高速、ポータブル、モジュラーなツールキット。
@@ -102,13 +94,8 @@
 
 * Visual Studio Code (VS Code)
 
-<<<<<<< HEAD
-    * `Ethereum Remix Visual Studio Code extension <https://marketplace.visualstudio.com/items?itemName=RemixProject.ethereum-remix>`_
-        VS Code用のEthereum Remix拡張パック。
-=======
     * `Ethereum Remix Visual Studio Code extension <https://github.com/ethereum/remix-vscode>`_
-        Ethereum Remix extension pack for VS Code
->>>>>>> english/develop
+        VS Code用のEthereum Remix拡張パック。
 
     * `Solidity Visual Studio Code extension, by Juan Blanco <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
         シンタックスハイライトとSolidityコンパイラを含むMicrosoft Visual Studio Code用のSolidityプラグイン。
@@ -171,19 +158,14 @@ Solidityのツール
 .. * `PIET <https://piet.slock.it/>`_
 ..     A tool to develop, audit and use Solidity smart contracts through a simple graphical interface.
 
-<<<<<<< HEAD
 * `PIET <https://piet.slock.it/>`_
     シンプルなグラフィカルインターフェースを介してSolidityスマートコントラクトを開発、監査、使用するためのツール。
 
-* `Scaffold-ETH <https://github.com/scaffold-eth/scaffold-eth>`_
+* `Scaffold-ETH 2 <https://github.com/scaffold-eth/scaffold-eth-2>`_
     迅速なプロダクトイテレーションに焦点を当てたフォーク可能なEthereum開発スタック。
 
 .. * `sol2uml <https://www.npmjs.com/package/sol2uml>`_
 ..     Unified Modeling Language (UML) class diagram generator for Solidity contracts.
-=======
-* `Scaffold-ETH 2 <https://github.com/scaffold-eth/scaffold-eth-2>`_
-    Forkable Ethereum development stack focused on fast product iterations.
->>>>>>> english/develop
 
 * `sol2uml <https://www.npmjs.com/package/sol2uml>`_
     Solidityコントラクト用のUnified Modeling Language (UML)クラスのダイアグラムジェネレーター。

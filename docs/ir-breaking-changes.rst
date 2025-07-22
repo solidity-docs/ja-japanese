@@ -20,13 +20,7 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 .. You can enable it on the command-line using ``--via-ir`` or with the option ``{"viaIR": true}`` in standard-json and we encourage everyone to try it out!
 
-<<<<<<< HEAD
 コマンドラインで ``--via-ir`` を使って有効にしたり、スタンダードJSONで ``{"viaIR": true}`` オプションを使って有効にできますので、ぜひ皆さんに試していただきたいと思います。
-=======
-.. _state-variable-initialization-order:
-
-- The order of state variable initialization has changed in case of inheritance.
->>>>>>> english/develop
 
 .. For several reasons, there are tiny semantic differences between the old and the IR-based code generator, mostly in areas where we would not expect people to rely on this behavior anyway.
 
@@ -42,6 +36,8 @@ IRベースのコードジェネレーターを導入したのは、コード生
 
 このセクションでは、セマンティックのみの変更点をリストアップしています。
 そのため、既存のコードの中に新しい、あるいは異なる動作が隠されている可能性があります。
+
+.. _state-variable-initialization-order:
 
 .. - The order of state variable initialization has changed in case of inheritance.
 

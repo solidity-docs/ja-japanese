@@ -35,19 +35,21 @@
 .. An import callback is free to interpret source unit names in an arbitrary way, not just as paths.
 .. If there is no callback available when one is needed or if it fails to locate the source code, compilation fails.
 
-<<<<<<< HEAD
 VFSには、コンパイラーが入力として受け取ったファイルのみが最初に入力されます。
 使用するコンパイラの種類によって異なる *インポートコールバック* を使用して、コンパイル中に追加のファイルを読み込むことができます（後述）。
 コンパイラは、VFS内のインポートパスに一致するソースユニット名が見つからない場合、コールバックを起動し、その名前で配置されるソースコードを取得する役割を果たします。
 インポートコールバックは、ソースユニット名をパスとしてだけでなく、任意の方法で自由に解釈できます。
 必要なときに利用可能なコールバックがない場合や、ソースコードの取得に失敗した場合は、コンパイルに失敗します。
 
-.. The command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback that interprets a source unit name as a path in the local filesystem.
+.. By default, the command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback that interprets a source unit name as a path in the local filesystem.
+.. This callback can be disabled using the ``--no-import-callback`` command-line option.
 .. The `JavaScript interface <https://github.com/ethereum/solc-js>`_ does not provide any by default, but one can be provided by the user.
-.. This mechanism can be used to obtain source code from locations other then the local filesystem (which may not even be accessible, e.g. when the compiler is running in a browser).
+.. This mechanism can be used to obtain source code from locations other than the local filesystem (which may not even be accessible, e.g. when the compiler is running in a browser).
 .. For example the `Remix IDE <https://remix.ethereum.org/>`_ provides a versatile callback that lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry <https://remix-ide.readthedocs.io/en/latest/import.html>`_.
 
-コマンドラインコンパイラには、ソースユニット名をローカルファイルシステムのパスとして解釈する初歩的なコールバックである *Host Filesystem Loader* が用意されています。
+デフォルトでは、コマンドラインコンパイラは *Host Filesystem Loader* を提供します。  
+これは、ソースユニット名をローカルファイルシステム上のパスとして解釈する基本的なコールバックです。
+このコールバックは、``--no-import-callback`` コマンドラインオプションを使って無効にできます。
 `JavaScriptインターフェース <https://github.com/ethereum/solc-js>`_ はデフォルトでは提供していませんが、ユーザーが提供することもできます。
 このメカニズムを使用して、ローカルファイルシステム以外の場所からソースコードを取得できます（ブラウザでコンパイラを実行している場合など、アクセスできない場合もあります）。
 例えば、 `Remix IDE <https://remix.ethereum.org/>`_ は汎用性の高いコールバックを提供しており、これを利用して `HTTP、IPFS、SwarmのURLからファイルをインポートしたり、NPMレジストリのパッケージを直接参照したり <https://remix-ide.readthedocs.io/en/latest/import.html>`_ できます。
@@ -59,18 +61,6 @@ VFSには、コンパイラーが入力として受け取ったファイルの�
 
 ..     For portability it is recommended to avoid using import paths that will work correctly only with a specific import callback or only on one platform.
 ..     For example you should always use forward slashes since they work as path separators also on platforms that support backslashes.
-=======
-By default, the command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback
-that interprets a source unit name as a path in the local filesystem.
-This callback can be disabled using the ``--no-import-callback`` command-line option.
-The `JavaScript interface <https://github.com/ethereum/solc-js>`_ does not provide any by default,
-but one can be provided by the user.
-This mechanism can be used to obtain source code from locations other than the local filesystem
-(which may not even be accessible, e.g. when the compiler is running in a browser).
-For example the `Remix IDE <https://remix.ethereum.org/>`_ provides a versatile callback that
-lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
-<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
->>>>>>> english/develop
 
 .. note::
 
@@ -694,12 +684,11 @@ CLI Path NormalizationとStripping
 
     import "github.com/ethereum/dapp-bin/library/math.sol"; // source unit name: dapp-bin/library/math.sol
 
-<<<<<<< HEAD
 .. The compiler will look for the file in the VFS under ``dapp-bin/library/math.sol``.
-.. If the file is not available there, the source unit name will be passed to the Host Filesystem Loader, which will then look in ``/project/dapp-bin/library/iterable_mapping.sol``.
+.. If the file is not available there, the source unit name will be passed to the Host Filesystem Loader, which will then look in ``/project/dapp-bin/library/math.sol``.
 
 コンパイラは、 ``dapp-bin/library/math.sol`` の下のVFSでファイルを探します。
-そこにファイルがない場合は、ソースユニット名がHost Filesystem Loaderに渡され、Host Filesystem Loaderは ``/project/dapp-bin/library/iterable_mapping.sol`` を探します。
+そこにファイルがない場合は、ソースユニット名がHost Filesystem Loaderに渡され、Host Filesystem Loaderは ``/project/dapp-bin/library/math.sol`` を探します。
 
 .. .. warning::
 
@@ -713,11 +702,6 @@ CLI Path NormalizationとStripping
 ..     To avoid having your local directory structure embedded in the metadata, it is recommended to designate the directories containing libraries as *include paths* instead.
 ..     For example, in the example above ``--include-path /home/user/packages/`` would let you use imports starting with ``mymath/``.
 ..     Unlike remapping, the option on its own will not make ``mymath`` appear as ``@math`` but this can be achieved by creating a symbolic link or renaming the package subdirectory.
-=======
-The compiler will look for the file in the VFS under ``dapp-bin/library/math.sol``.
-If the file is not available there, the source unit name will be passed to the Host Filesystem
-Loader, which will then look in ``/project/dapp-bin/library/math.sol``.
->>>>>>> english/develop
 
 .. warning::
 

@@ -1,7 +1,7 @@
 .. index:: storage, state variable, mapping, transient storage
 
 **************************************************
-ストレージと一時ストレージ内の状態変数のレイアウト
+ストレージとトランジェントストレージ内の状態変数のレイアウト
 **************************************************
 
 .. _storage-inplace-encoding:
@@ -226,7 +226,7 @@ JSON出力
 .. ``storage`` and ``types``.  The ``storage`` object is an array where each
 .. element has the following form:
 
-コントラクトのストレージレイアウト（あるいは一時ストレージレイアウト）は、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
+コントラクトのストレージレイアウト（あるいはトランジェントストレージレイアウト）は、 :ref:`標準JSONインターフェース<compiler-api>` を介して要求できます。
 出力されるのは、 ``storage`` と ``types`` の2つのキーを含むJSONオブジェクトです。
 ``storage`` オブジェクトは配列で、各要素は次のような形をしています。
 
@@ -328,7 +328,7 @@ JSON出力
 .. The following example shows a contract and both its storage and transient storage layout,
 .. containing value and reference types, types that are encoded packed, and nested types.
 
-次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージレイアウト及び一時ストレージレイアウトを示しています。
+次の例では、値型と参照型、エンコードされたパック型、ネストされた型を含むコントラクトとそのストレージレイアウト及びトランジェントストレージレイアウトを示しています。
 
 .. code-block:: solidity
 
@@ -527,7 +527,7 @@ JSON出力
       }
     }
 
-一時ストレージレイアウト
+トランジェントストレージレイアウト
 ------------------------
 
 .. code-block:: json
