@@ -131,19 +131,10 @@ Solidityにおけるコントラクトとは、Ethereumブロックチェーン�
 次の行の ``mapping(address => uint) public balances;`` もパブリックな状態変数を作成しますが、より複雑なデータ型です。
 この :ref:`mapping <mapping-types>` 型は、アドレスを :ref:`符号なし整数 <integers>` にマッピングします。
 
-<<<<<<< HEAD
 マッピングは、考えられるすべてのキーが最初から存在し、バイト表現がすべてゼロである値にマッピングされるように仮想的に初期化された `ハッシュテーブル <https://en.wikipedia.org/wiki/Hash_table>`_ と見なすことができます。
 しかし、マッピングのすべてのキーのリストを得ることも、すべての値のリストを得ることもできません。
 マッピングに追加したものを記録するか、そのようなことが必要ないコンテキストで使用してください。
 あるいは、リストで保持するか、より適切なデータ型を使用することをお勧めします。
-=======
-Mappings can be seen as `hash tables <https://en.wikipedia.org/wiki/Hash_table>`_ which are
-virtually initialized such that every possible key exists from the start and is mapped to a
-value whose byte-representation is all zeros. However, it is neither possible to obtain a list of all keys of
-a mapping, nor a list of all values. Record what you
-added to the mapping, or use it in a context where this is not needed. Or
-even better, keep a list, or use a more suitable data type.
->>>>>>> english/develop
 
 ``public`` キーワードで作成した :ref:`ゲッター関数<getter-functions>` は、マッピングの場合は複雑です。
 次のようになります。
@@ -194,19 +185,11 @@ WebアプリケーションなどのEthereumクライアントは、ブロック
 デフォルトの :ref:`算術チェック <unchecked>` により、式 ``balances[receiver] += amount;`` がオーバーフローした場合、つまり、任意精度の算術演算で ``balances[receiver] + amount`` が ``uint`` の最大値（ ``2**256 - 1`` ）よりも大きくなった場合には、トランザクションはリバートしてしまうことに注意してください。
 これは、関数 ``send`` の中の ``balances[receiver] += amount;`` という文にも当てはまります。
 
-<<<<<<< HEAD
 :ref:`エラー <errors>` を使うと、条件や演算が失敗したときに呼び出し側に詳しい情報を提供できます。
 エラーは :ref:`revert文 <revert-statement>` と一緒に使用されます。
-``revert`` 文は ``require`` 関数と同様にすべての変更を無条件に中止してリバートさせますが、エラーの名前や、呼び出し側（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に提供される追加データを提供することもできるので、失敗をデバッグしたり対処したりすることがより簡単にできます。
-=======
-:ref:`Errors <errors>` allow you to provide more information to the caller about
-why a condition or operation failed. Errors are used together with the
-:ref:`revert statement <revert-statement>`. The ``revert`` statement unconditionally
-aborts and reverts all changes, much like the :ref:`require function <assert-and-require-statements>`.
-Both approaches allow you to provide the name of an error and additional data which will be supplied to the caller
-(and eventually to the front-end application or block explorer) so that
-a failure can more easily be debugged or reacted upon.
->>>>>>> english/develop
+``revert`` 文は、すべての変更を無条件に中止し、巻き戻します。
+これは :ref:`require関数 <assert-and-require-statements>` と非常によく似ています。  
+どちらの方法でも、エラー名や追加データを指定でき、それらは呼び出し元（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に渡されるため、失敗の原因をより簡単にデバッグしたり、対応したりすることができます。
 
 ``send`` 関数は、（すでにコインを持っている人なら）誰でも他の人にコインを送るために使えます。
 送金者が送金するのに十分なコインを持っていない場合は、 ``if`` の条件がtrueと評価されます。
@@ -266,17 +249,9 @@ AmazonのAWSを使うためには、内部でどのように機能している�
 ブロックは一定の間隔でチェーンに追加されますが、この間隔は将来変更される可能性があります。
 最新の情報については、 `Etherscan <https://etherscan.io/chart/blocktime>`_ などでネットワークをモニタリングすることをお勧めします。
 
-<<<<<<< HEAD
-「オーダーセレクションメカニズム」（これを「マイニング」と呼びます）の一環として、ブロックが時々リバートされることがありますが、それはチェーンの「端」に限ったことです。
+「オーダーセレクションメカニズム」（これを「 `アテステーション <https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/>`_ 」と呼びます）の一環として、ブロックが時々リバートされることがありますが、それはチェーンの「端」に限ったことです。
 特定のブロックの上にブロックが追加されればされるほど、そのブロックがリバートされる可能性は低くなります。
 つまり、あなたのトランザクションがリバートされ、さらにはブロックチェーンから削除されることもあるかもしれませんが、時間が経てば経つほど、その可能性は低くなります。
-=======
-As part of the "order selection mechanism", which is called `attestation <https://ethereum.org/en/developers/docs/consensus-mechanisms/pos/attestations/>`_, it may happen that
-blocks are reverted from time to time, but only at the "tip" of the chain. The more
-blocks are added on top of a particular block, the less likely this block will be reverted. So it might be that your transactions
-are reverted and even removed from the blockchain, but the longer you wait, the less
-likely it will be.
->>>>>>> english/develop
 
 .. note::
 
@@ -368,20 +343,12 @@ EVMのエグゼキューターはトランザクションを含めるかどう�
 
 .. index:: ! storage, ! memory, ! stack, ! transient storage
 
-<<<<<<< HEAD
-ストレージ、メモリ、スタック
-============================
-
-Ethereum Virtual Machineには、データを保存できる3つの領域「ストレージ」「メモリ」「スタック」があります。
-=======
 .. _locations:
 
-Storage, Transient Storage, Memory and the Stack
-================================================
+ストレージ、一時ストレージ、メモリ、スタック
+============================================
 
-The Ethereum Virtual Machine has different areas where it can store data with the most
-prominent being storage, transient storage, memory and the stack.
->>>>>>> english/develop
+Ethereum Virtual Machineには、データを保存できる異なる領域「ストレージ」「一時ストレージ」「メモリ」「スタック」があります。
 
 各アカウントには **ストレージ** と呼ばれるデータ領域があり、関数呼び出しやトランザクション間で永続的に使用されます。
 storageは256ビットのワードを256ビットのワードにマッピングするkey-value storeです。
@@ -390,13 +357,8 @@ storageは256ビットのワードを256ビットのワードにマッピング�
 派生する計算、キャッシング、アグリゲートなどのデータはコントラクトの外に保存します。
 コントラクトは、コントラクト以外のストレージに対して読み書きできません。
 
-<<<<<<< HEAD
-2つ目のデータ領域は **メモリ** と呼ばれ、コントラクトはメッセージを呼び出すたびにクリアされたばかりのインスタンスを取得します。
-メモリは線形で、バイトレベルでアドレスを指定できますが、読み出しは256ビットの幅に制限され、書き込みは8ビットまたは256ビットの幅に制限されます。
-メモリは、これまで手つかずだったメモリワード（ワード内の任意のオフセット）にアクセス（読み出しまたは書き込み）すると、ワード（256ビット）単位で拡張されます。
-拡張時には、ガスによるコストを支払わなければなりません。
-メモリは大きくなればなるほどコストが高くなります（二次関数的にスケールする）。
-=======
+.. TODO:
+
 Similar to storage, there is another data area called **transient storage**,
 where the main difference is that it is reset at the end of each transaction.
 The values stored in this data location persist only across function calls originating
@@ -405,14 +367,11 @@ When the transaction ends, the transient storage is reset and the values stored 
 become unavailable to calls in subsequent transactions.
 Despite this, the cost of reading and writing to transient storage is significantly lower than for storage.
 
-The third data area is called **memory**, of which a contract obtains
-a freshly cleared instance for each message call. Memory is linear and can be
-addressed at byte level, but reads are limited to a width of 256 bits, while writes
-can be either 8 bits or 256 bits wide. Memory is expanded by a word (256-bit), when
-accessing (either reading or writing) a previously untouched memory word (i.e. any offset
-within a word). At the time of expansion, the cost in gas must be paid. Memory is more
-costly the larger it grows (it scales quadratically).
->>>>>>> english/develop
+3つ目のデータ領域は **メモリ** と呼ばれ、コントラクトはメッセージを呼び出すたびにクリアされたばかりのインスタンスを取得します。
+メモリは線形で、バイトレベルでアドレスを指定できますが、読み出しは256ビットの幅に制限され、書き込みは8ビットまたは256ビットの幅に制限されます。
+メモリは、これまで手つかずだったメモリワード（ワード内の任意のオフセット）にアクセス（読み出しまたは書き込み）すると、ワード（256ビット）単位で拡張されます。
+拡張時には、ガスによるコストを支払わなければなりません。
+メモリは大きくなればなるほどコストが高くなります（二次関数的にスケールする）。
 
 EVMはレジスタマシンではなく、スタックマシンなので、すべての計算は **スタック** と呼ばれるデータ領域で行われます。
 スタックの最大サイズは1024要素で、256ビットのワードを含みます。
@@ -527,11 +486,6 @@ create
 理論的にはコントラクトを削除することは良いアイデアのように聞こえますが、削除されたコントラクトに誰かがEtherを送ると、そのEtherは永遠に失われてしまうため、潜在的には危険です。
 
 .. warning::
-<<<<<<< HEAD
-    .. From version 0.8.18 and up, the use of ``selfdestruct`` in both Solidity and Yul will trigger a deprecation warning, since the ``SELFDESTRUCT`` opcode will eventually undergo breaking changes in behavior as stated in `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
-
-    バージョン 0.8.18 以降、Solidity と Yul の両方で ``selfdestruct`` を使用すると、 `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ で述べられているように、 ``SELFDESTRUCT`` オペコードがいずれ動作に破壊的変更を受けるため、非推奨の警告が発せられます。
-=======
     From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
     However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it,
     the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract,
@@ -549,7 +503,6 @@ create
     The deprecation is still in effect and the compiler will still emit warnings on its use.
     Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
     Future changes to the EVM might further reduce the functionality of the opcode.
->>>>>>> english/develop
 
 .. warning::
     ``selfdestruct`` によってコントラクトが削除されたとしても、それはブロックチェーンの歴史の一部であり、おそらくほとんどのEthereumノードが保持しています。
@@ -568,17 +521,8 @@ create
 プリコンパイル済みコントラクト
 ==============================
 
-<<<<<<< HEAD
 コントラクトのアドレスの中には、特別なものがあります。
-``1`` から ``8`` までのアドレスには「プリコンパイル済みコントラクト」が含まれており、他のコントラクトと同様に呼び出すことができますが、その動作（およびガス消費量）は、そのアドレスに格納されているEVMコードによって定義されるのではなく（コードが含まれていない）、EVMの実行環境自体に実装されています。
-=======
-There is a small set of contract addresses that are special:
-The address range between ``1`` and (including) ``0x0a`` contains
-"precompiled contracts" that can be called as any other contract
-but their behavior (and their gas consumption) is not defined
-by EVM code stored at that address (they do not contain code)
-but instead is implemented in the EVM execution environment itself.
->>>>>>> english/develop
+``1`` から ``0x0a`` までのアドレスには「プリコンパイル済みコントラクト」が含まれており、他のコントラクトと同様に呼び出すことができますが、その動作（およびガス消費量）は、そのアドレスに格納されているEVMコードによって定義されるのではなく（コードが含まれていない）、EVMの実行環境自体に実装されています。
 
 EVMと互換性のあるチェーンでは、異なるプリコンパイル済みコントラクトのセットを使用する可能性があります。
 また、将来Ethereumのメインチェーンに新しいプリコンパイル済みコントラクトが追加される可能性もありますが、常に ``1`` から ``0xffff`` （包括的）の範囲内であると考えるのが妥当でしょう。
