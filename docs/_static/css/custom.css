@@ -87,7 +87,8 @@ h1 {
     font-size: 44px;
     color: var(--color-a) !important;
     line-height: 1.1;
-    text-wrap: balance;
+    /* 日本語には不適: */
+    /* text-wrap: balance; */
     margin-top: 4rem;
     margin-bottom: 1.5rem;
 }
@@ -105,7 +106,8 @@ h2 {
     font-size: 38px;
     color: var(--color-a) !important;
     line-height: 46px;
-    text-wrap: balance;
+    /* 日本語には不適: */
+    /* text-wrap: balance; */
     margin-top: 4rem;
     margin-bottom: 1.5rem;
 }
@@ -117,7 +119,8 @@ h3 {
     font-size: 32px;
     color: var(--color-a) !important;
     line-height: 46px;
-    text-wrap: balance;
+    /* 日本語には不適: */
+    /* text-wrap: balance; */
     margin-top: 4rem;
     margin-bottom: 1.5rem;
 }
@@ -128,7 +131,8 @@ h4 {
     font-size: 32px;
     color: var(--color-a) !important;
     line-height: 46px;
-    text-wrap: balance;
+    /* 日本語には不適: */
+    /* text-wrap: balance; */
     margin-top: 3rem;
     margin-bottom: 1.5rem;
 }
@@ -139,7 +143,8 @@ h5 {
     font-size: 18px;
     color: var(--color-a) !important;
     line-height: 1.4;
-    text-wrap: balance;
+    /* 日本語には不適: */
+    /* text-wrap: balance; */
 }
 
 h6 {
@@ -148,7 +153,8 @@ h6 {
     font-size: 16px;
     color: var(--color-a) !important;
     line-height: 1.4;
-    text-wrap: balance;
+    /* 日本語には不適: */
+    /* text-wrap: balance; */
 }
 
 span.pre,
