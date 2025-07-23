@@ -100,6 +100,7 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 
 .. warning::
 
+<<<<<<< HEAD
   注意すべきなのは、 ``feed.info{value: 10, gas: 800}`` は関数呼び出しで ``value`` と送信される ``gas`` の量をローカルに設定しているだけで、最後の括弧内は実際の呼び出しを実行しているということです。
   そのため、 ``feed.info{value: 10, gas: 800}`` は関数をコールして ``value`` と ``gas`` の設定が失われることはなく、 ``feed.info{value: 10, gas: 800}()`` のみが関数呼び出しを実行します。
 
@@ -136,6 +137,39 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 ..     via its functions. Write your functions in a way that, for example, calls to
 ..     external functions happen after any changes to state variables in your contract
 ..     so your contract is not vulnerable to a reentrancy exploit.
+=======
+.. warning::
+    Due to the fact that the EVM considers a call to a non-existing contract to
+    always succeed, Solidity uses the ``extcodesize`` opcode to check that
+    the contract that is about to be called actually exists (it contains code)
+    and causes an exception if it does not. This check is skipped if the return
+    data will be decoded after the call and thus the ABI decoder will catch the
+    case of a non-existing contract.
+
+    This check is not performed in case of :ref:`low-level calls <address_related>` which
+    operate on addresses rather than contract instances.
+
+.. warning::
+    Be careful when using high-level calls to
+    :ref:`precompiled contracts <precompiledContracts>`,
+    since the compiler considers them non-existing according to the
+    above logic even though they execute code and can return data.
+
+.. note::
+    Since the version 0.8.10, the compiler does not check ``extcodesize`` on
+    high-level external calls if return data is expected, because an empty code
+    will be unable to return data, and the ABI decoder will revert.
+    As a consequence, this allows high-level external calls to precompiled
+    contracts, since they can return data despite having no code
+    associated with their addresses.
+
+    Read about :ref:`precompiled contracts <precompiledContracts>` and
+    :ref:`low-level calls <address_related>`
+    for more information.
+
+Function calls also cause exceptions if the called contract itself
+throws an exception or goes out of gas.
+>>>>>>> v0.8.30
 
 .. warning::
 
@@ -241,8 +275,15 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 例に見られるように、 ``value`` オプションを使用して ``D`` のインスタンスを作成中にEtherを送信することは可能ですが、ガスの量を制限できません。
 作成に失敗した場合（スタック不足、残高不足、その他の問題）、例外が発生します。
 
+<<<<<<< HEAD
 ソルトされたコントラクト作成 / create2
 --------------------------------------
+=======
+.. _salted-contract-creations:
+
+Salted contract creations / create2
+-----------------------------------
+>>>>>>> v0.8.30
 
 コントラクトを作成する際、コントラクトのアドレスは、作成するコントラクトのアドレスと、コントラクトを作成するたびに増加するカウンタから計算されます。
 
@@ -1015,9 +1056,20 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 ..     The caller always retains at least 1/64th of the gas in a call and thus even if the called contract goes out of gas, the caller still has some gas left.
 
 .. note::
+<<<<<<< HEAD
 
     失敗したコールの原因はさまざまです。
     エラーメッセージが呼び出されたコントラクトから直接来ていると思わないでください。
     エラーはコールチェーンのより深いところで発生し、呼び出されたコントラクトがそれをフォワードしただけかもしれません。
     また、意図的なエラー状態ではなく、ガス欠状態が原因である可能性もあります。
     コール側は常に1/64以上のガスを保持しているため、コールされたコントラクトがガス欠になっても、コール側にはガスが残っています。
+=======
+    The reason behind a failed call can be manifold. Do not assume that
+    the error message is coming directly from the called contract:
+    The error might have happened deeper down in the call chain and the
+    called contract just forwarded it. Also, it could be due to an
+    out-of-gas situation and not a deliberate error condition:
+    The caller always retains at least 1/64th of the gas in a call and thus
+    even if the called contract goes out of gas, the caller still
+    has some gas left.
+>>>>>>> v0.8.30

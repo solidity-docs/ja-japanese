@@ -988,9 +988,19 @@ verbatim
     let x := calldataload(0)
     let double := verbatim_1i_1o(hex"600202", x)
 
+<<<<<<< HEAD
 .. This code will result in a ``dup1`` opcode to retrieve ``x`` (the optimizer might directly re-use result of the ``calldataload`` opcode, though) directly followed by ``600202``.
 .. The code is assumed to consume the copied value of ``x`` and produce the result on the top of the stack.
 .. The compiler then generates code to allocate a stack slot for ``double`` and store the result there.
+=======
+This code will result in a ``dup1`` opcode to retrieve ``x``
+(the optimizer might directly reuse result of the
+``calldataload`` opcode, though)
+directly followed by ``600202``. The code is assumed to
+consume the copied value of ``x`` and produce the result
+on the top of the stack. The compiler then generates code
+to allocate a stack slot for ``double`` and store the result there.
+>>>>>>> v0.8.30
 
 このコードでは、 ``x`` を取得するための ``dup1`` オペコード（オプティマイザは ``calldataload`` オペコードの結果を直接再利用するかもしれませんが）が、 ``600202`` に続いて表示されます。
 このコードは、 ``x`` のコピーされた値を消費して、スタックの一番上に結果を生成すると想定されます。
@@ -1000,12 +1010,25 @@ verbatim
 
 他のオペコードと同様に、引数はスタック上に左端の引数が一番上になるように並べられ、戻り値は右端の変数がスタックの一番上になるように並べられるとされています。
 
+<<<<<<< HEAD
 .. Since ``verbatim`` can be used to generate arbitrary opcodes
 .. or even opcodes unknown to the Solidity compiler, care has to be taken
 .. when using ``verbatim`` together with the optimizer. Even when the
 .. optimizer is switched off, the code generator has to determine
 .. the stack layout, which means that e.g. using ``verbatim`` to modify
 .. the stack height can lead to undefined behavior.
+=======
+- Control-flow should not jump into or out of verbatim blocks,
+  but it can jump within the same verbatim block. In particular,
+  reverting or returning from the block is *not* allowed.
+- Stack contents apart from the input and output parameters
+  should not be accessed.
+- The stack height difference should be exactly ``m - n``
+  (output slots minus input slots).
+- Verbatim bytecode cannot make any assumptions about the
+  surrounding bytecode. All required parameters have to be
+  passed in as stack variables.
+>>>>>>> v0.8.30
 
 ``verbatim`` は、任意のオペコードや、Solidityコンパイラにとって未知のオペコードを生成するために使用できるため、オプティマイザと ``verbatim`` を併用する際には注意が必要です。
 オプティマイザがオフになっていても、コードジェネレーターはスタックレイアウトを決定しなければなりません。

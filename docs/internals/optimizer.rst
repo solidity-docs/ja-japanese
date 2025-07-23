@@ -1185,7 +1185,14 @@ EqualStoreEliminator
 
 .. This steps removes ``mstore(k, v)`` and ``sstore(k, v)`` calls if there was a previous call to ``mstore(k, v)`` / ``sstore(k, v)``, no other store in between and the values of ``k`` and ``v`` did not change.
 
+<<<<<<< HEAD
 このステップは、 ``mstore(k, v)`` / ``sstore(k, v)`` の呼び出しが過去にあり、その間に他のストアがなく、 ``k`` と ``v`` の値が変更されていない場合に、 ``mstore(k, v)`` と ``sstore(k, v)`` の呼び出しを削除します。
+=======
+This simple step is effective if run after the SSATransform and the
+CommonSubexpressionEliminator, because SSA will make sure that the variables
+will not change and the CommonSubexpressionEliminator reuses exactly the same
+variable if the value is known to be the same.
+>>>>>>> v0.8.30
 
 .. This simple step is effective if run after the SSATransform and the CommonSubexpressionEliminator, because SSA will make sure that the variables will not change and the CommonSubexpressionEliminator re-uses exactly the same variable if the value is known to be the same.
 
@@ -1566,7 +1573,14 @@ SSAReverser
 
 .. This is a tiny step that helps in reversing the effects of the SSATransform if it is combined with the CommonSubexpressionEliminator and the UnusedPruner.
 
+<<<<<<< HEAD
 これは、CommonSubexpressionEliminatorやUnusedPrunerと組み合わせることで、SSATransform の効果を元に戻すのに役立つ小さな一歩です。
+=======
+The SSA form we generate is detrimental to code generation
+because it produces many local variables. It would
+be better to just reuse existing variables with assignments instead of
+fresh variable declarations.
+>>>>>>> v0.8.30
 
 .. The SSA form we generate is detrimental to code generation because it produces many local variables.
 .. It would be better to just re-use existing variables with assignments instead of fresh variable declarations.

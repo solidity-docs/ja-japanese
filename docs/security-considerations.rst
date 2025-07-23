@@ -429,7 +429,22 @@ Solidityの型 ``mapping`` （ :ref:`mapping-types` 参照）は、ストレー�
 ``eraseMaps`` を呼び出すと、状態変数 ``array`` の長さはゼロになりますが、その ``mapping`` 要素はゼロにできないので、その情報はコントラクトのストレージの中で生き続けます。
 ``array`` を削除した後、 ``allocate(5)`` を呼び出すと、再び ``array[4]`` にアクセスできるようになり、 ``readMap(4, 128)`` を呼び出すと、 ``writeMap`` を再度呼び出さなくても256を返します。
 
+<<<<<<< HEAD
 .. If your ``mapping`` information must be deleted, consider using a library similar to `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_, allowing you to traverse the keys and delete their values in the appropriate ``mapping``.
+=======
+Internal Function Pointers in Upgradeable Contracts
+===================================================
+
+Updating the code of your contract may :ref:`invalidate the values of variables of internal function
+types<function-type-value-stability-across-contract-updates>`.
+Consider such values ephemeral and avoid storing them in state variables.
+If you do, you must ensure that they never persist across code updates and are never used by
+other contracts having access to the same storage space as a result of a delegatecall or account
+abstraction.
+
+Minor Details
+=============
+>>>>>>> v0.8.30
 
 ``mapping`` の情報を削除する必要がある場合は、 `iterable mapping <https://github.com/ethereum/dapp-bin/blob/master/library/iterable_mapping.sol>`_ と同様のライブラリを使用することを検討し、適切な ``mapping`` でキーをトラバースしてその値を削除できます。
 

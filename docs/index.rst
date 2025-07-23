@@ -27,7 +27,12 @@ Solidityやこのドキュメントを改善するためのアイデアはいつ
 
 .. Hint::
 
+<<<<<<< HEAD
    このドキュメントは、左下のバージョン表示メニューをクリックして、希望のダウンロード形式を選択すると、PDF、HTML、Epubのいずれかでダウンロードできます。
+=======
+  You can download this documentation as PDF, HTML or Epub
+  by clicking on the versions flyout menu in the bottom-right corner and selecting the preferred download format.
+>>>>>>> v0.8.30
 
 
 はじめに
@@ -79,6 +84,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 左下のフライアウトメニューをクリックし、好みの言語を選択することで言語を切り替えることができます。
 
+<<<<<<< HEAD
 * `中国語 <https://docs.soliditylang.org/zh/latest/>`_
 * `フランス語 <https://docs.soliditylang.org/fr/latest/>`_
 * `インドネシア語 <https://github.com/solidity-docs/id-indonesian>`_
@@ -88,6 +94,17 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 * `ロシア語 <https://github.com/solidity-docs/ru-russian>`_
 * `スペイン語 <https://github.com/solidity-docs/es-spanish>`_
 * `トルコ語 <https://docs.soliditylang.org/tr/latest/>`_
+=======
+* `Chinese <https://docs.soliditylang.org/zh-cn/latest/>`_
+* `French <https://docs.soliditylang.org/fr/latest/>`_
+* `Indonesian <https://github.com/solidity-docs/id-indonesian>`_
+* `Japanese <https://github.com/solidity-docs/ja-japanese>`_
+* `Korean <https://github.com/solidity-docs/ko-korean>`_
+* `Persian <https://github.com/solidity-docs/fa-persian>`_
+* `Russian <https://github.com/solidity-docs/ru-russian>`_
+* `Spanish <https://github.com/solidity-docs/es-spanish>`_
+* `Turkish <https://docs.soliditylang.org/tr/latest/>`_
+>>>>>>> v0.8.30
 
 .. note::
 

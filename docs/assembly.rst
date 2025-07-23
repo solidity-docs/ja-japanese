@@ -236,9 +236,15 @@ Solidityの変数やその他の識別子は、それら名前を使ってアク
     ``uint32 x = f(); assembly { x := and(x, 0xffffffff) /* now use x */ }`` 符号付きの型をクリーンにするには、 ``signextend`` オペコードを使用できます。
     オペコード: ``assembly { signextend(<num_bytes_of_x_minus_one>, x) }``
 
+<<<<<<< HEAD
 .. Since Solidity 0.6.0 the name of a inline assembly variable may not
 .. shadow any declaration visible in the scope of the inline assembly block
 .. (including variable, contract and function declarations).
+=======
+Since Solidity 0.6.0, the name of an inline assembly variable may not
+shadow any declaration visible in the scope of the inline assembly block
+(including variable, contract and function declarations).
+>>>>>>> v0.8.30
 
 Solidity 0.6.0以降、インラインアセンブリ変数の名前は、インラインアセンブリブロックのスコープ内で見える宣言（変数宣言、コントラクト宣言、関数宣言を含む）をシャドーイングできません。
 
@@ -291,6 +297,7 @@ EVMアセンブリとは対照的に、Solidityには、 ``uint24`` などの256
 メモリー管理
 ============
 
+<<<<<<< HEAD
 .. Solidity manages memory in the following way. There is a "free memory pointer"
 .. at position ``0x40`` in memory. If you want to allocate memory, use the memory
 .. starting from where this pointer points at and update it.
@@ -305,6 +312,17 @@ Solidityは次のような方法でメモリを管理しています。
 このメモリが以前に使用されていないという保証はないので、その内容が0バイトであると仮定できません。
 割り当てられたメモリを解放するメカニズムは組み込まれていません。
 以下は、上記のプロセスに沿ってメモリを割り当てるために使用できるアセンブリスニペットです。
+=======
+Solidity manages memory in the following way. There is a "free memory pointer"
+at position ``0x40`` in memory. If you want to allocate memory, use the memory
+starting from where this pointer points at and update it.
+There is no guarantee that the memory has not been used before and thus
+you cannot assume that its contents are zero bytes.
+There is no built-in mechanism to release or free allocated memory.
+Solidity does not guarantee and does not require that the values in memory
+are placed at positions aligned to a multiple of any value.
+Here is an assembly snippet you can use for allocating memory that follows the process outlined above:
+>>>>>>> v0.8.30
 
 .. code-block:: yul
 

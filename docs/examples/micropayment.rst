@@ -233,8 +233,15 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
 例えば、インターネットカフェにネットワーク接続料を支払うような短時間のトランザクションの場合、ペイメントチャネルは限られた時間しか開いていないかもしれません。
 一方、従業員に時給を支払うような定期的な支払いの場合は、数ヶ月または数年にわたってペイメントチャネルを開いておくことができます。
 
+<<<<<<< HEAD
 ペイメントチャネルのオープン
 ----------------------------
+=======
+To open the payment channel, Alice deploys the smart contract, attaching
+the Ether to be escrowed and specifying the intended recipient and a
+maximum duration for the channel to exist. This is the ``constructor``
+in the ``SimplePaymentChannel`` contract, at the end of this section.
+>>>>>>> v0.8.30
 
 ペイメントチャネルを開くために、アリスはスマートコントラクトをデプロイし、エスクローされるイーサを添付し、意図する受取人とチャネルが存在する最大期間を指定します。
 これが、このセクションの最後にあるコントラクトの関数 ``SimplePaymentChannel`` です。

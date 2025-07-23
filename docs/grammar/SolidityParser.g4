@@ -51,9 +51,14 @@ symbolAliases: LBrace aliases+=importAliases (Comma aliases+=importAliases)* RBr
 /**
  * コントラクトのトップレベルの定義。
  */
-contractDefinition:
+contractDefinition
+locals [boolean layoutSet=false, boolean inheritanceSet=false]
+:
 	Abstract? Contract name=identifier
-	inheritanceSpecifierList?
+	(
+		{!$layoutSet}? Layout At expression {$layoutSet = true;}
+		| {!$inheritanceSet}? inheritanceSpecifierList {$inheritanceSet = true;}
+	)*
 	LBrace contractBodyElement* RBrace;
 /**
  * インターフェースのトップレベルの定義。
@@ -371,7 +376,7 @@ expression:
 	expression LBrack index=expression? RBrack # IndexAccess
 	| expression LBrack startIndex=expression? Colon endIndex=expression? RBrack # IndexRangeAccess
 	| expression Period (identifier | Address) # MemberAccess
-	| expression LBrace (namedArgument (Comma namedArgument)*)? RBrace # FunctionCallOptions
+	| expression LBrace (namedArgument (Comma namedArgument)*) RBrace # FunctionCallOptions
 	| expression callArgumentList # FunctionCall
 	| Payable callArgumentList # PayableConversion
 	| Type LParen typeName RParen # MetaType
@@ -412,7 +417,7 @@ inlineArrayExpression: LBrack (expression ( Comma expression)* ) RBrack;
 /**
  * 通常の非キーワード識別子以外に、'from' や 'error' などのキーワードも識別子として使用することができます。
  */
-identifier: Identifier | From | Error | Revert | Global | Transient;
+identifier: Identifier | From | Error | Revert | Global | Transient | Layout | At;
 
 literal: stringLiteral | numberLiteral | booleanLiteral | hexStringLiteral | unicodeStringLiteral;
 

@@ -11,7 +11,7 @@
 
 Unlike :ref:`reference types <reference-types>`, value type declarations do not
 specify a data location since they are small enough to be stored on the stack.
-The only exception are :ref:`state variables <structure-state-variables>`.
+The only exception is :ref:`state variables <structure-state-variables>`.
 Those are by default located in storage, but can also be marked as
 :ref:`transient <transient-storage>`, :ref:`constant or immutable <constants>`.
 
@@ -214,15 +214,29 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 ``address payable`` から ``address`` への暗黙の変換は許されますが、 ``address`` から ``address payable`` への変換は ``payable(<address>)`` を介して明示的に行う必要があります。
 
+<<<<<<< HEAD
 ``uint160`` 、整数リテラル、 ``bytes20`` 、コントラクト型については、 ``address`` との明示的な変換が可能です。
 
 ``address`` 型とコントラクト型の式のみが、明示的な変換 ``payable(...)`` によって ``address payable`` 型に変換できます。
 コントラクト型については、コントラクトがEtherを受信できる場合、つまりコントラクトが :ref:`receive <receive-ether-function>` またはpayableのフォールバック関数を持っている場合にのみ、この変換が可能です。
 ``payable(0)`` は有効であり、このルールの例外であることに注意してください。
+=======
+Only expressions of type ``address`` and contract type can be converted to the type ``address
+payable`` via the explicit conversion ``payable(...)``. For contract-type, this conversion is only
+allowed if the contract can receive Ether, i.e., the contract either has a :ref:`receive
+<receive-ether-function>` or a payable fallback function. Note that ``payable(0)`` is valid and is
+an exception to this rule.
+>>>>>>> v0.8.30
 
 .. note::
 
+<<<<<<< HEAD
     .. Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+=======
+    The distinction between ``address`` and ``address payable`` was introduced in version 0.5.0.
+    Also starting from that version, contracts are not implicitly convertible to the ``address`` type, but can still be explicitly converted to
+    ``address`` or to ``address payable``, if they have a receive or payable fallback function.
+>>>>>>> v0.8.30
 
     ``address`` 型の変数が必要で、その変数にEtherを送ろうと思っているなら、その変数の型を ``address payable`` と宣言して、この要求を見えるようにします。
     また、この区別や変換はできるだけ早い段階で行うようにしてください。
@@ -730,16 +744,41 @@ Unicodeリテラル
 関数型
 ------
 
+<<<<<<< HEAD
 関数型は、関数の型です。
 関数型の変数は、関数から代入でき、関数型のパラメータは、関数呼び出しに関数を渡したり、関数呼び出しから関数を返したりするのに使われます。
 関数型には、 *内部（internal）* 関数と *外部（external）* 関数の2種類があります。
+=======
+Function types are the types of functions. Variables of a function type
+can be assigned from functions and function parameters of function type
+can be used to pass functions to and return functions from function calls.
+Function types come in two flavours - *internal* and *external* functions:
+>>>>>>> v0.8.30
 
 内部関数は、現在のコントラクトのコンテキストの外では実行できないため、現在のコントラクトの内部（より具体的には、現在のコードユニットの内部で、内部ライブラリ関数や継承された関数も含む）でのみ呼び出すことができます。
 内部関数の呼び出しは、現在のコントラクトの関数を内部で呼び出す場合と同様に、そのエントリーラベルにジャンプすることで実現します。
 
 外部関数は、アドレスと関数シグネチャで構成されており、外部関数呼び出しを介して渡したり、外部関数呼び出しから返したりできます。
 
+<<<<<<< HEAD
 関数型は以下のように表記されています。
+=======
+Note that public functions of the current contract can be used both as an
+internal and as an external function. To use ``f`` as an internal function,
+just use ``f``, if you want to use its external form, use ``this.f``.
+
+If a function type variable is not initialised, calling it results
+in a :ref:`Panic error<assert-and-require>`. The same happens if you call a function after using ``delete``
+on it.
+
+.. note::
+    Lambda or inline functions are planned but not yet supported.
+
+Declaration syntax
+^^^^^^^^^^^^^^^^^^
+
+Function types are notated as follows:
+>>>>>>> v0.8.30
 
 .. code-block:: solidity
     :force:
@@ -753,7 +792,12 @@ Unicodeリテラル
 これは関数型にのみ適用されることに注意してください。
 コントラクトで定義された関数については、ビジビリティを明示的に指定する必要があり、デフォルトはありません。
 
+<<<<<<< HEAD
 変換:
+=======
+Conversions
+^^^^^^^^^^^
+>>>>>>> v0.8.30
 
 関数型 ``A`` は、それらのパラメータ型が同一であり、戻り値の型が同一であり、それらの内部/外部プロパティが同一であり、 ``A`` の状態の変更可能性が ``B`` の状態の変更可能性よりも制限されている場合に限り、関数型 ``B`` に暗黙的に変換可能です。
 具体的には以下です。
@@ -772,6 +816,7 @@ Unicodeリテラル
 明確にするために、etherを拒否することは、etherを拒否しないことよりも制限されます。
 つまり、payableな関数をnon-payableな関数で上書きすることは可能ですが、その逆はできません。
 
+<<<<<<< HEAD
 .. Additionally, When you define a ``non-payable`` function pointer, the compiler does not enforce that the pointed function will actually reject ether.
 .. Instead, it enforces that the function pointer is never used to send ether.
 .. Which makes it possible to assign a ``payable`` function pointer to a ``non-payable`` function pointer ensuring both types behave the same way, i.e, both cannot be used to send ether.
@@ -791,6 +836,18 @@ Unicodeリテラル
 内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。
 これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。
 一方、外部関数型は、パブリック関数と外部コントラクト関数にのみ対応しています。
+=======
+If external function types are used outside of the context of Solidity,
+they are treated as the ``function`` type, which encodes the address
+followed by the function identifier together in a single ``bytes24`` type.
+
+A function of an internal type can be assigned to a variable of an internal function type regardless
+of where it is defined.
+This includes private, internal and public functions of both contracts and libraries as well as free
+functions.
+External function types, on the other hand, are only compatible with public and external contract
+functions.
+>>>>>>> v0.8.30
 
 .. note::
     .. External functions with ``calldata`` parameters are incompatible with external function types with ``calldata`` parameters.
@@ -818,7 +875,12 @@ Unicodeリテラル
 ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。
 インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
 
+<<<<<<< HEAD
 メンバー:
+=======
+Members
+^^^^^^^
+>>>>>>> v0.8.30
 
 外部（またはパブリック）関数には、次のようなメンバーを持ちます。
 
@@ -828,12 +890,69 @@ Unicodeリテラル
 
 .. note::
 
+<<<<<<< HEAD
     外部（またはパブリック）関数には、追加のメンバー ``.gas(uint)`` と ``.value(uint)`` がありました。
     これらはSolidity 0.6.2で非推奨となり、Solidity 0.7.0で削除されました。
     代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。
     詳細は :ref:`外部関数呼び出し<external-function-calls>` を参照してください。
 
 メンバーの使用法を示す例:
+=======
+.. _function-type-value-stability-across-contract-updates:
+
+Value stability across contract updates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An important aspect to consider when using values of function types is whether the value will
+remain valid if the underlying code changes.
+
+The state of the blockchain is not completely immutable and there are multiple ways to place
+different code under the same address:
+
+- Directly deploying different code using :ref:`salted contract creation<salted-contract-creations>`.
+- Delegating to a different contract via :ref:`DELEGATECALL<delegatecall>`
+  (upgradeable code behind a proxy contract is a common example of this).
+- Account abstraction as defined by `EIP-7702 <https://eips.ethereum.org/EIPS/eip-7702>`_.
+
+External function types can be considered as stable as contract's ABI, which makes them very portable.
+Their ABI representation always consists of a contract address and a function selector and it is
+perfectly safe to store them long-term or pass them between contracts.
+While it is possible for the referenced function to change or disappear, a direct external call
+would be affected the same way, so there is no additional risk in such use.
+
+In case of internal functions, however, the value is an identifier that is strongly tied to
+contract's bytecode.
+The actual representation of the identifier is an implementation detail and may change between
+compiler versions or even :ref:`between different backends<internal-function-pointers-in-ir>`.
+Values assigned under a given representation are deterministic (i.e. guaranteed to remain the same
+as long as the source code is the same) but are easily affected by changes such as adding, removing
+or reordering of functions.
+The compiler is also free to remove internal functions that are never used, which may affect other identifiers.
+Some representations, e.g. one where identifiers are simply jump targets, may be affected by
+virtually any change, even one completely unrelated to internal functions.
+
+To counter this, the language limits the use of internal function types outside of the context in
+which they are valid.
+This is why internal function types cannot be used as parameters of external functions (or in any
+other way that is exposed in contract's ABI).
+However, there are still situations where it is up to the user to decide whether their use is safe or not.
+For example long-term storage of such values in state variables is discouraged, but may be safe if
+the contract code is never going to be updated.
+It is also always possible to side-step any safeguards by using inline assembly.
+Such use always needs careful consideration.
+
+.. note::
+    The removal of unused internal functions only takes into account explicit references to
+    such functions by name.
+    Implicit references, such as assigning a new value to a function type variable in inline assembly
+    may still lead to the removal of the function if it is not also referenced explicitly elsewhere
+    in the source.
+
+Examples
+^^^^^^^^
+
+Example that shows how to use the members:
+>>>>>>> v0.8.30
 
 .. code-block:: solidity
 
@@ -952,7 +1071,10 @@ Unicodeリテラル
             exchangeRate = response;
         }
     }
+<<<<<<< HEAD
 
 .. note::
 
     ラムダ関数やインライン関数が予定されていますが、まだサポートされていません。
+=======
+>>>>>>> v0.8.30
