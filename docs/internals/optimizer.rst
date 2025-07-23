@@ -5,11 +5,17 @@
 オプティマイザ
 **************
 
-The Solidity compiler involves optimizations at three different levels (in order of execution):
+.. The Solidity compiler involves optimizations at three different levels (in order of execution):
 
-- Optimizations during code generation based on a direct analysis of Solidity code.
-- Optimizing transformations on the Yul IR code.
-- Optimizations at the opcode level.
+.. - Optimizations during code generation based on a direct analysis of Solidity code.
+.. - Optimizing transformations on the Yul IR code.
+.. - Optimizations at the opcode level.
+
+Solidity コンパイラは、以下の3つの異なるレベルで最適化を行います（実行順）:
+
+- Solidity コードを直接解析して行うコード生成時の最適化
+- Yul 中間表現（IR）に対する変換ベースの最適化
+- オペコードレベルでの最適化
 
 オペコードベースのオプティマイザは、オペコードに `簡略化ルール <https://github.com/ethereum/solidity/blob/develop/libevmasm/RuleList.h>`_ を適用します。
 また、同じコードセットを組み合わせたり、使われていないコードを削除したりします。
@@ -21,16 +27,21 @@ Yulベースのオプティマイザは、関数呼び出しをまたいで動�
 それらの引数と戻り値がお互いに依存しない場合、関数呼び出しを並べ替えることができます。
 同様に、ある関数に副作用がなく、その実行結果にゼロをかける場合は、その関数呼び出しを完全に削除できます。
 
-The codegen-based optimizer affects the initial low-level code produced from the Solidity input.
-In the legacy pipeline, the bytecode is generated immediately and most of the optimizations of this
-kind are implicit and not configurable, the only exception being an optimization which changes the
-order of literals in binary operations.
-The IR-based pipeline takes a different approach and produces Yul IR closely matching the structure
-of the Solidity code, with nearly all optimizations deferred to the Yul optimizer module.
-In that case codegen-level optimization is done only in very limited cases which are difficult to
-handle in Yul IR, but are straightforward with the high-level information from analysis phase at hand.
-An example of such an optimization is the bypass of checked arithmetic when incrementing the counter
-in certain idiomatic ``for`` loops.
+.. The codegen-based optimizer affects the initial low-level code produced from the Solidity input.
+.. In the legacy pipeline, the bytecode is generated immediately and most of the optimizations of this kind are implicit and not configurable, the only exception being an optimization which changes the order of literals in binary operations.
+.. The IR-based pipeline takes a different approach and produces Yul IR closely matching the structure of the Solidity code, with nearly all optimizations deferred to the Yul optimizer module.
+.. In that case codegen-level optimization is done only in very limited cases which are difficult to handle in Yul IR, but are straightforward with the high-level information from analysis phase at hand.
+.. An example of such an optimization is the bypass of checked arithmetic when incrementing the counter in certain idiomatic ``for`` loops.
+
+コード生成ベースの最適化は、Solidity の入力から生成される初期の低レベルコードに影響を与えます。
+従来のパイプラインでは、バイトコードはすぐに生成され、こうした種類の最適化のほとんどは暗黙的かつ設定不能です。
+ただし、バイナリ演算におけるリテラルの順序を変更する最適化だけは例外です。
+一方、IR ベースのパイプラインは異なるアプローチを取り、Solidity コードの構造に密接に対応した Yul IR を生成し、
+最適化のほぼすべてを Yul 最適化モジュールに委ねます。
+この場合、Yul IR では扱いにくいものの、解析フェーズから得られる高レベル情報を使えば簡単に扱えるような、
+ごく限られたケースでのみコード生成レベルの最適化が行われます。
+このような最適化の例として、特定の典型的な ``for`` ループでカウンタをインクリメントする際に
+チェック付き算術をスキップする処理が挙げられます。
 
 現在、パラメータ ``--optimize`` は、生成されたバイトコードにはオペコードベースのオプティマイザを、ABI coder v2などで内部的に生成されたYulコードにはYulオプティマイザを適用します。
 ``solc --ir-optimized --optimize`` は、Solidityのソースに対して最適化されたYul IRを生成するために使用できます。
@@ -679,7 +690,7 @@ ExpressionSplitterは、 ``add(mload(0x123), mul(mload(0x456), 0x20))`` のよ�
 
 .. The final program should be in an *expression-split form*, where (with the exception of loop conditions) function calls cannot appear nested inside expressions and all function call arguments have to be variables.
 
-最終的なプログラムは *expression-split form* （式分離形式）である必要があります。  
+最終的なプログラムは *expression-split form* （式分離形式）である必要があります。
 これは、ループ条件を除き、関数呼び出しを式の中にネストして書くことはできず、すべての関数呼び出しの引数は変数でなければならないという形式です。
 
 この形式の利点は、オペコードの順序を変更するのがかなり容易であることと、関数呼び出しのインライン化を実行するのも容易であることです。
@@ -1133,14 +1144,14 @@ ControlFlowSimplifier
 .. - replace ``for`` with terminating control flow and without other ``break``/``continue`` by ``if``
 .. - remove ``leave`` at the end of a function.
 
-- 空の本体を持つ ``if`` は ``pop(condition)`` に置き換える  
-- 空のデフォルト ``switch`` ケースを削除する  
-- デフォルトケースが存在しない場合、空の ``switch`` ケースを削除する  
-- ケースが存在しない ``switch`` は ``pop(expression)`` に置き換える  
-- ケースが1つだけの ``switch`` は ``if`` に変換する  
-- デフォルトケースのみの ``switch`` は ``pop(expression)`` とその本体に置き換える  
-- 定数式の ``switch`` は、マッチするケースの本体に置き換える  
-- 終了する制御フローを持ち、``break`` や ``continue`` を含まない ``for`` は ``if`` に置き換える  
+- 空の本体を持つ ``if`` は ``pop(condition)`` に置き換える
+- 空のデフォルト ``switch`` ケースを削除する
+- デフォルトケースが存在しない場合、空の ``switch`` ケースを削除する
+- ケースが存在しない ``switch`` は ``pop(expression)`` に置き換える
+- ケースが1つだけの ``switch`` は ``if`` に変換する
+- デフォルトケースのみの ``switch`` は ``pop(expression)`` とその本体に置き換える
+- 定数式の ``switch`` は、マッチするケースの本体に置き換える
+- 終了するコントロールフローを持ち、 ``break`` や ``continue`` を含まない ``for`` は ``if`` に置き換える
 - 関数の末尾にある ``leave`` を削除する
 
 .. None of these operations depend on the data flow. The StructuralSimplifier
@@ -1231,12 +1242,12 @@ StructuralSimplifier
 .. - replace ``switch`` with literal expression by matching case body
 .. - replace ``for`` loop with false condition by its initialization part
 
-- 本体が空の ``if`` 文は ``pop(condition)`` に置き換える  
-- 条件が常に true の ``if`` 文は、その本体に置き換える  
-- 条件が常に false の ``if`` 文は削除する  
-- ケースが1つだけの ``switch`` は ``if`` に変換する  
-- デフォルトケースのみの ``switch`` は ``pop(expression)`` とその本体に置き換える  
-- リテラル式の ``switch`` は、マッチするケースの本体に置き換える  
+- 本体が空の ``if`` 文は ``pop(condition)`` に置き換える
+- 条件が常に true の ``if`` 文は、その本体に置き換える
+- 条件が常に false の ``if`` 文は削除する
+- ケースが1つだけの ``switch`` は ``if`` に変換する
+- デフォルトケースのみの ``switch`` は ``pop(expression)`` とその本体に置き換える
+- リテラル式の ``switch`` は、マッチするケースの本体に置き換える
 - 条件が常に false の ``for`` ループは、その初期化部分に置き換える
 
 このコンポーネントは、DataflowAnalyzerを使用します。
@@ -1299,7 +1310,7 @@ LoopInvariantCodeMotion
 
 より良い結果を得るために、最初に ExpressionSplitter と SSATransform を実行するべきです。
 
-前提条件：Disambiguator、ForLoopInitRewriter、FunctionHoister。
+前提条件: Disambiguator、ForLoopInitRewriter、FunctionHoister。
 
 関数レベルの最適化
 ------------------

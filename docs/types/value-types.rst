@@ -843,60 +843,80 @@ Declaration syntax
     代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。
     詳細は :ref:`外部関数呼び出し<external-function-calls>` を参照してください。
 
+.. Value stability across contract updates
+
 .. _function-type-value-stability-across-contract-updates:
 
-Value stability across contract updates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+コントラクトの更新における値の安定性  
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-An important aspect to consider when using values of function types is whether the value will
-remain valid if the underlying code changes.
+.. An important aspect to consider when using values of function types is whether the value will remain valid if the underlying code changes.
 
-The state of the blockchain is not completely immutable and there are multiple ways to place
-different code under the same address:
+関数型の値を使用する際に重要な点は、その値が基盤となるコードの変更後も有効であり続けるかどうかです。
 
-- Directly deploying different code using :ref:`salted contract creation<salted-contract-creations>`.
-- Delegating to a different contract via :ref:`DELEGATECALL<delegatecall>`
-  (upgradeable code behind a proxy contract is a common example of this).
-- Account abstraction as defined by `EIP-7702 <https://eips.ethereum.org/EIPS/eip-7702>`_.
+.. The state of the blockchain is not completely immutable and there are multiple ways to place different code under the same address:
 
-External function types can be considered as stable as contract's ABI, which makes them very portable.
-Their ABI representation always consists of a contract address and a function selector and it is
-perfectly safe to store them long-term or pass them between contracts.
-While it is possible for the referenced function to change or disappear, a direct external call
-would be affected the same way, so there is no additional risk in such use.
+ブロックチェーンの状態は完全に不変というわけではなく、同じアドレスの下に異なるコードを配置する方法が複数存在します:
 
-In case of internal functions, however, the value is an identifier that is strongly tied to
-contract's bytecode.
-The actual representation of the identifier is an implementation detail and may change between
-compiler versions or even :ref:`between different backends<internal-function-pointers-in-ir>`.
-Values assigned under a given representation are deterministic (i.e. guaranteed to remain the same
-as long as the source code is the same) but are easily affected by changes such as adding, removing
-or reordering of functions.
-The compiler is also free to remove internal functions that are never used, which may affect other identifiers.
-Some representations, e.g. one where identifiers are simply jump targets, may be affected by
-virtually any change, even one completely unrelated to internal functions.
+.. - Directly deploying different code using :ref:`salted contract creation<salted-contract-creations>`.
+.. - Delegating to a different contract via :ref:`DELEGATECALL<delegatecall>`
+..   (upgradeable code behind a proxy contract is a common example of this).
+.. - Account abstraction as defined by `EIP-7702 <https://eips.ethereum.org/EIPS/eip-7702>`_.
 
-To counter this, the language limits the use of internal function types outside of the context in
-which they are valid.
-This is why internal function types cannot be used as parameters of external functions (or in any
-other way that is exposed in contract's ABI).
-However, there are still situations where it is up to the user to decide whether their use is safe or not.
-For example long-term storage of such values in state variables is discouraged, but may be safe if
-the contract code is never going to be updated.
-It is also always possible to side-step any safeguards by using inline assembly.
-Such use always needs careful consideration.
+- :ref:`ソルト付きコントラクト生成 <salted-contract-creations>` を使って、異なるコードを直接デプロイ。
+- :ref:`DELEGATECALL <delegatecall>` を通じて別のコントラクトへ委譲
+  （プロキシコントラクトの背後にあるアップグレード可能なコードがその代表的な例）。
+- `EIP-7702 <https://eips.ethereum.org/EIPS/eip-7702>`_ に定義されるアカウント抽象化。
+
+.. External function types can be considered as stable as contract's ABI, which makes them very portable.
+.. Their ABI representation always consists of a contract address and a function selector and it is perfectly safe to store them long-term or pass them between contracts.
+.. While it is possible for the referenced function to change or disappear, a direct external call would be affected the same way, so there is no additional risk in such use.
+
+外部関数型はコントラクトの ABI と同じくらい安定していると考えることができるため、非常に移植性が高いです。
+その ABI 表現は常にコントラクトアドレスと関数セレクタで構成されており、長期間の保存やコントラクト間での受け渡しにおいても安全です。
+参照している関数が変更されたり消失したりする可能性はありますが、それは直接の外部呼び出しでも同様に影響を受けるため、
+そのような使い方に追加的なリスクはありません。
+
+.. In case of internal functions, however, the value is an identifier that is strongly tied to contract's bytecode.
+.. The actual representation of the identifier is an implementation detail and may change between compiler versions or even :ref:`between different backends<internal-function-pointers-in-ir>`.
+.. Values assigned under a given representation are deterministic (i.e. guaranteed to remain the same as long as the source code is the same) but are easily affected by changes such as adding, removing or reordering of functions.
+.. The compiler is also free to remove internal functions that are never used, which may affect other identifiers.
+.. Some representations, e.g. one where identifiers are simply jump targets, may be affected by virtually any change, even one completely unrelated to internal functions.
+
+一方で、内部関数の場合、その値はコントラクトのバイトコードに強く結びついた識別子です。
+この識別子の実際の表現は実装依存であり、コンパイラのバージョンや :ref:`異なるバックエンド <internal-function-pointers-in-ir>` 間で変更される可能性があります。
+特定の表現のもとで代入される値は決定的（すなわち、ソースコードが同じであれば常に同じ値になることが保証される）ではありますが、
+関数の追加・削除・順序の変更といった変化により簡単に影響を受けます。
+コンパイラは未使用の内部関数を削除することもあるため、それによって他の識別子に影響が出ることもあります。
+識別子が単なるジャンプ先であるような表現では、内部関数とは無関係な変更でさえ影響を与える可能性があります。
+
+.. To counter this, the language limits the use of internal function types outside of the context in which they are valid.
+.. This is why internal function types cannot be used as parameters of external functions (or in any other way that is exposed in contract's ABI).
+.. However, there are still situations where it is up to the user to decide whether their use is safe or not.
+.. For example long-term storage of such values in state variables is discouraged, but may be safe if the contract code is never going to be updated.
+.. It is also always possible to side-step any safeguards by using inline assembly.
+.. Such use always needs careful consideration.
+
+この問題に対処するため、言語仕様では内部関数型の使用を、それが有効なコンテキストの外では制限しています。
+そのため、内部関数型は外部関数の引数として使用することはできません（あるいはコントラクトの ABI に露出するようなその他の方法でも使用できません）。
+しかし、それでもその使用が安全かどうかをユーザー自身が判断しなければならない場面は存在します。
+例えば、こうした値を状態変数に長期保存することは推奨されませんが、コントラクトのコードが決して更新されないのであれば、安全である可能性もあります。
+また、インラインアセンブリを使えば、あらゆる保護機構を回避することも可能です。
+このような使い方をする場合には、常に慎重な検討が必要です。
 
 .. note::
-    The removal of unused internal functions only takes into account explicit references to
-    such functions by name.
-    Implicit references, such as assigning a new value to a function type variable in inline assembly
-    may still lead to the removal of the function if it is not also referenced explicitly elsewhere
-    in the source.
+    .. The removal of unused internal functions only takes into account explicit references to such functions by name.
+    .. Implicit references, such as assigning a new value to a function type variable in inline assembly may still lead to the removal of the function if it is not also referenced explicitly elsewhere in the source.
 
-Examples
-^^^^^^^^
+    未使用の内部関数の削除は、関数名による明示的な参照のみを対象としています。
+    インラインアセンブリ内で関数型の変数に新しい値を代入するような暗黙的な参照は、
+    ソース内の他の場所でその関数が明示的に参照されていない限り、関数の削除を引き起こす可能性があります。
 
-メンバーの使い方を示す例：
+
+例
+^^
+
+メンバーの使い方を示す例:
 
 .. code-block:: solidity
 

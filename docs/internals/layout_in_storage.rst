@@ -6,13 +6,11 @@
 
 .. _storage-inplace-encoding:
 
-.. TODO:
-
 .. note::
-    The rules described in this section apply for both storage and transient storage data locations.
-    The layouts are completely independent and don't interfere with each other's variable locations.
-    Thus storage and transient storage state variables can be safely interleaved without any side effects.
-    Only value types are supported for transient storage.
+    このセクションで説明されているルールは、ストレージとトランジェントストレージの両方のデータロケーションに適用されます。  
+    それぞれのレイアウトは完全に独立しており、互いの変数のロケーションに干渉することはありません。  
+    そのため、ストレージとトランジェントストレージの状態変数は、互いを気にすることなく安全に配置できます。
+    トランジェントストレージでは、値型のみがサポートされています。
 
 コントラクトの状態変数はストレージにコンパクトに格納され、複数の値が同じストレージスロットを使用することがあります。
 動的なサイズの配列やマッピング（後述）を除き、データはスロット ``0`` に格納された最初の状態変数から順に連続して格納されます。
@@ -37,41 +35,24 @@
 
 構造体や配列の要素は、あたかも個々の値が与えられたかのように、それぞれの要素の後に格納されます。
 
-.. .. warning::
+.. If a contract specifies a :ref:`custom storage layout<custom-storage-layout>`, the slots assigned
+.. to static storage variables are shifted according the value defined as the layout base.
+.. Locations of dynamic arrays and mappings are also indirectly affected by this due to shifting
+.. of the static slots they are based on.
+.. The custom layout is specified in the most derived contract and, following the order explained
+.. above, starting from the most base-ward contract's variables, all storage slots are adjusted.
 
-..     When using elements that are smaller than 32 bytes, your contract's gas usage may be higher.
-..     This is because the EVM operates on 32 bytes at a time. Therefore, if the element is smaller
-..     than that, the EVM must use more operations in order to reduce the size of the element from 32
-..     bytes to the desired size.
+コントラクトが :ref:`カスタムストレージレイアウト <custom-storage-layout>` を指定している場合、静的ストレージ変数に割り当てられるスロットは、レイアウトベースとして定義された値に従ってシフトされます。
+動的配列やマッピングの位置も、それらが基づいている静的スロットのシフトにより間接的に影響を受けます。
+カスタムレイアウトは最も派生したコントラクトで指定され、上述の順序に従って、最も基底に近いコントラクトの変数から順に、すべてのストレージスロットが調整されます。
 
-..     It might be beneficial to use reduced-size types if you are dealing with storage values
-..     because the compiler will pack multiple elements into one storage slot, and thus, combine
-..     multiple reads or writes into a single operation.
-..     If you are not reading or writing all the values in a slot at the same time, this can
-..     have the opposite effect, though: When one value is written to a multi-value storage
-..     slot, the storage slot has to be read first and then
-..     combined with the new value such that other data in the same slot is not destroyed.
+.. In the following example, contract ``C`` inherits from contracts ``A`` and ``B`` and also
+.. specifies a custom storage base slot.
+.. The result is that all storage variable slots of the inheritance tree are adjusted according to
+.. the value specified by ``C``.
 
-..     When dealing with function arguments or memory
-..     values, there is no inherent benefit because the compiler does not pack these values.
-
-..     Finally, in order to allow the EVM to optimize for this, ensure that you try to order your
-..     storage variables and ``struct`` members such that they can be packed tightly. For example,
-..     declaring your storage variables in the order of ``uint128, uint128, uint256`` instead of
-..     ``uint128, uint256, uint128``, as the former will only take up two slots of storage whereas the
-..     latter will take up three.
-
-If a contract specifies a :ref:`custom storage layout<custom-storage-layout>`, the slots assigned
-to static storage variables are shifted according the value defined as the layout base.
-Locations of dynamic arrays and mappings are also indirectly affected by this due to shifting
-of the static slots they are based on.
-The custom layout is specified in the most derived contract and, following the order explained
-above, starting from the most base-ward contract's variables, all storage slots are adjusted.
-
-In the following example, contract ``C`` inherits from contracts ``A`` and ``B`` and also
-specifies a custom storage base slot.
-The result is that all storage variable slots of the inheritance tree are adjusted according to
-the value specified by ``C``.
+次の例では、コントラクト ``C`` はコントラクト ``A`` と ``B`` を継承し、さらにカスタムのストレージベーススロットを指定しています。  
+その結果、継承ツリー内のすべてのストレージ変数スロットが ``C`` によって指定された値に従って調整されます。
 
 .. code-block:: solidity
 
@@ -107,27 +88,36 @@ the value specified by ``C``.
         bytes5 o;
     }
 
-In the example, the storage layout starts with the inherited
-state variable ``a`` stored directly inside the base slot (slot ``42``).
-Transient, constant and immutable variables are stored in separate
-locations, and thus, ``b``, ``i``, ``c`` and ``d`` have no effect on the storage layout.
-Then we get to the dynamic array ``e`` and mapping ``f``.
-They both reserve a whole slot whose address will be used to :ref:`calculate<storage-hashed-encoding>`
-the location where their data is actually stored.
-The slot cannot be shared with any other variable, because the resulting addresses must be unique.
-The next two variables, ``g`` and ``h``, need 2 bytes each and can be packed together into
-slot ``45``, at offsets ``0`` and ``2`` respectively.
-Since ``s`` is a struct, its two members are packed contiguously, each taking up 5 bytes.
-Even though they both would still fit in slot ``45``, structs and arrays always start a new slot.
-Therefore, ``s`` is placed in slot ``46`` and the next variable, ``k``, in slot ``47``.
-Base contracts, on the other hand, can share slots with derived ones, so ``l`` does not require an new one.
-Then variable ``m``, which is an array of 10 items, gets into slot ``48`` and takes up 10 bytes.
-``n`` is an array as well, but due to the size of its items, cannot fill its first slot perfectly
-and spills over to the next one.
-Finally, variable ``o`` ends up in slot ``51``, even though it is of the same type as items of ``n``.
-As explained before, variables after structs and arrays always start a new slot.
+.. In the example, the storage layout starts with the inherited state variable ``a`` stored directly inside the base slot (slot ``42``).
+.. Transient, constant and immutable variables are stored in separate locations, and thus, ``b``, ``i``, ``c`` and ``d`` have no effect on the storage layout.
+.. Then we get to the dynamic array ``e`` and mapping ``f``.
+.. They both reserve a whole slot whose address will be used to :ref:`calculate<storage-hashed-encoding>` the location where their data is actually stored.
+.. The slot cannot be shared with any other variable, because the resulting addresses must be unique.
+.. The next two variables, ``g`` and ``h``, need 2 bytes each and can be packed together into slot ``45``, at offsets ``0`` and ``2`` respectively.
+.. Since ``s`` is a struct, its two members are packed contiguously, each taking up 5 bytes.
+.. Even though they both would still fit in slot ``45``, structs and arrays always start a new slot.
+.. Therefore, ``s`` is placed in slot ``46`` and the next variable, ``k``, in slot ``47``.
+.. Base contracts, on the other hand, can share slots with derived ones, so ``l`` does not require an new one.
+.. Then variable ``m``, which is an array of 10 items, gets into slot ``48`` and takes up 10 bytes.
+.. ``n`` is an array as well, but due to the size of its items, cannot fill its first slot perfectly and spills over to the next one.
+.. Finally, variable ``o`` ends up in slot ``51``, even though it is of the same type as items of ``n``.
+.. As explained before, variables after structs and arrays always start a new slot.
 
-Putting it all together, the storage and transient storage layouts of contract ``C`` can be illustrated as follows:
+この例では、ストレージレイアウトは継承された状態変数 ``a`` から始まり、ベーススロット（スロット ``42``）に直接格納されます。  
+トランジェント変数、定数、immutable 変数は別の場所に格納されるため、 ``b``、 ``i``、 ``c``、 ``d`` はストレージレイアウトに影響しません。
+次に動的配列 ``e`` とマッピング ``f`` が現れます。  
+これらはそれぞれ 1 つのスロットを予約し、そのアドレスが :ref:`格納位置の計算 <storage-hashed-encoding>` に使われます。  
+このスロットは他の変数と共有できません。なぜなら、計算された格納先アドレスが一意である必要があるからです。
+次の変数 ``g`` と ``h`` はそれぞれ 2 バイトを必要とし、スロット ``45`` にそれぞれオフセット ``0`` と ``2`` でパックされます。  
+構造体 ``s`` は、メンバーがそれぞれ 5 バイトを必要とし、連続して詰められます。  
+しかし、構造体と配列は常に新しいスロットから開始されるため、 ``s`` はスロット ``46`` に、次の変数 ``k`` はスロット ``47`` に格納されます。
+一方、ベースコントラクトは派生コントラクトとスロットを共有できるため、 ``l`` は新しいスロットを必要としません。  
+次に、10 要素の配列である ``m`` はスロット ``48`` に配置され、10 バイトを占有します。
+``n`` も配列ですが、その要素サイズのために最初のスロットを完全には埋めきれず、次のスロットにまたがって配置されます。  
+最後に、変数 ``o`` は ``n`` の要素と同じ型であるにもかかわらず、スロット ``51`` に配置されます。  
+これは、構造体や配列の後に続く変数は常に新しいスロットから開始されるというルールによるものです。
+
+これらをすべて踏まえると、コントラクト ``C`` のストレージおよびトランジェントストレージのレイアウトは、次のように示すことができます:
 
 - Storage:
   ::
@@ -148,8 +138,11 @@ Putting it all together, the storage and transient storage layouts of contract `
 
       00 [iiiiiiiiiiiiiiiibbbbbbbbbbbbbbbb]
 
-Note that the storage specifier affects ``A`` and ``B`` only as a part of ``C``'s inheritance hierarchy.
-When deployed independently, their storage starts at ``0``:
+.. Note that the storage specifier affects ``A`` and ``B`` only as a part of ``C``'s inheritance hierarchy.
+.. When deployed independently, their storage starts at ``0``:
+
+ストレージ指定子は、 ``A`` および ``B`` に対しては ``C`` の継承階層の一部としてのみ影響を与える点に注意してください。  
+それぞれが独立してデプロイされた場合、そのストレージは ``0`` から開始されます。
 
 - Storage layout of ``A``:
   ::

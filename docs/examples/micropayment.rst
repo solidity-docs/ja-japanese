@@ -60,11 +60,13 @@
 アリスはメッセージにコントラクトのアドレスを含めることでこの攻撃から守ることができ、コントラクトのアドレス自体を含むメッセージだけが受け入れられます。
 このセクションの最後にある完全なコントラクトの ``claimPayment()`` 関数の最初の2行に、この例があります。
 
-.. TODO:
+.. Furthermore, instead of destroying the contract by calling ``selfdestruct``,
+.. which is currently deprecated, we will disable the contract's functionalities by freezing it,
+.. resulting in the reversion of any call after it being frozen.
 
-Furthermore, instead of destroying the contract by calling ``selfdestruct``,
-which is currently deprecated, we will disable the contract's functionalities by freezing it,
-resulting in the reversion of any call after it being frozen.
+さらに、現在は非推奨となっている ``selfdestruct`` を呼び出してコントラクトを破壊する代わりに、  
+コントラクトを凍結することでその機能を無効化します。  
+これにより、凍結後に行われたすべての呼び出しはリバートされるようになります。
 
 引数のパッキング
 ----------------

@@ -189,7 +189,7 @@ WebアプリケーションなどのEthereumクライアントは、ブロック
 エラーは :ref:`revert文 <revert-statement>` と一緒に使用されます。
 ``revert`` 文は、すべての変更を無条件に中止し、巻き戻します。
 これは :ref:`require関数 <assert-and-require-statements>` と非常によく似ています。  
-どちらの方法でも、エラー名や追加データを指定でき、それらは呼び出し元（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に渡されるため、失敗の原因をより簡単にデバッグしたり、対応したりすることができます。
+どちらの方法でも、エラー名や追加データを指定でき、それらは呼び出し元（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に渡されるため、失敗の原因をより簡単にデバッグしたり、対応したりできます。
 
 ``send`` 関数は、（すでにコインを持っている人なら）誰でも他の人にコインを送るために使えます。
 送金者が送金するのに十分なコインを持っていない場合は、 ``if`` の条件がtrueと評価されます。
@@ -357,15 +357,16 @@ storageは256ビットのワードを256ビットのワードにマッピング�
 派生する計算、キャッシング、アグリゲートなどのデータはコントラクトの外に保存します。
 コントラクトは、コントラクト以外のストレージに対して読み書きできません。
 
-.. TODO:
+.. Similar to storage, there is another data area called **transient storage**, where the main difference is that it is reset at the end of each transaction.
+.. The values stored in this data location persist only across function calls originating from the first call of the transaction.
+.. When the transaction ends, the transient storage is reset and the values stored there become unavailable to calls in subsequent transactions.
+.. Despite this, the cost of reading and writing to transient storage is significantly lower than for storage.
 
-Similar to storage, there is another data area called **transient storage**,
-where the main difference is that it is reset at the end of each transaction.
-The values stored in this data location persist only across function calls originating
-from the first call of the transaction.
-When the transaction ends, the transient storage is reset and the values stored there
-become unavailable to calls in subsequent transactions.
-Despite this, the cost of reading and writing to transient storage is significantly lower than for storage.
+ストレージと同様に、 **トランジェントストレージ** と呼ばれる別のデータ領域があります。  
+主な違いは、各トランザクションの終了時にリセットされることです。  
+このデータ領域に格納された値は、トランザクション内の最初の呼び出しから派生した関数呼び出し間でのみ持続します。  
+トランザクションが終了すると、トランジェントストレージはリセットされ、そこに格納されていた値は以降のトランザクションでは利用できなくなります。
+トランジェントストレージの読み書きコストは、通常のストレージに比べて大幅に低くなっています。
 
 3つ目のデータ領域は **メモリ** と呼ばれ、コントラクトはメッセージを呼び出すたびにクリアされたばかりのインスタンスを取得します。
 メモリは線形で、バイトレベルでアドレスを指定できますが、読み出しは256ビットの幅に制限され、書き込みは8ビットまたは256ビットの幅に制限されます。
@@ -380,30 +381,47 @@ EVMはレジスタマシンではなく、スタックマシンなので、す�
 それ以外の操作では、スタックから最上位の2要素（操作によっては1要素、またはそれ以上）を取り出し、その結果をスタックにプッシュします。
 もちろん、スタックの要素をストレージやメモリに移動させて、スタックに深くアクセスすることは可能ですが、最初にスタックの最上部を取り除かずに、スタックの深いところにある任意の要素にアクセスすることはできません。
 
-Calldata, Returndata and Code
-=============================
+Calldata, Returndata, Code
+==========================
 
-There are also other data areas which are not as apparent as those discussed previously.
-However, they are routinely used during the execution of smart contract transactions.
+.. There are also other data areas which are not as apparent as those discussed previously.
+.. However, they are routinely used during the execution of smart contract transactions.
 
-The calldata region is the data sent to a transaction as part of a smart contract transaction.
-For example, when creating a contract, calldata would be the constructor code of the new contract.
-The parameters of external functions are always initially stored in calldata in an ABI-encoded form
-and only then decoded into the location specified in their declaration.
-If declared as ``memory``, the compiler will eagerly decode them into memory at the beginning of the function,
-while marking them as ``calldata`` means that this will be done lazily, only when accessed.
-Value types and ``storage`` pointers are decoded directly onto the stack.
+前述のものほど明示的ではありませんが、他にもいくつかのデータ領域が存在します。  
+それらはスマートコントラクトのトランザクション実行中に日常的に使用されています。
 
-The returndata is the way a smart contract can return a value after a call.
-In general, external Solidity functions use the ``return`` keyword to ABI-encode values into the returndata area.
+.. The calldata region is the data sent to a transaction as part of a smart contract transaction.
+.. For example, when creating a contract, calldata would be the constructor code of the new contract.
+.. The parameters of external functions are always initially stored in calldata in an ABI-encoded form and only then decoded into the location specified in their declaration.
+.. If declared as ``memory``, the compiler will eagerly decode them into memory at the beginning of the function, while marking them as ``calldata`` means that this will be done lazily, only when accessed.
+.. Value types and ``storage`` pointers are decoded directly onto the stack.
 
-The code is the region where the EVM instructions of a smart contract are stored.
-Code is the bytes read, interpreted, and executed by the EVM during smart contract execution.
-Instruction data stored in the code is persistent as part of a contract account state field.
-Immutable and constant variables are stored in the code region.
-All references to immutables are replaced with the values assigned to them.
-A similar process is performed for constants which have their expressions inlined
-in the places where they are referenced in the smart contract code.
+calldata 領域は、スマートコントラクトのトランザクションの一部として送信されるデータです。  
+たとえばコントラクトを作成する際、calldata には新しいコントラクトのコンストラクタコードが含まれます。  
+外部関数の引数は常に最初は ABI エンコードされた形式で calldata に格納され、その後に宣言で指定された場所にデコードされます。
+引数が ``memory`` として宣言されている場合、コンパイラは関数の冒頭でそれらをメモリに即座にデコードします。  
+一方、 ``calldata`` として宣言された場合は、アクセスされたときに初めて遅延的にデコードされます。  
+値型や ``storage`` ポインタは、スタック上に直接デコードされます。
+
+.. The returndata is the way a smart contract can return a value after a call.
+.. In general, external Solidity functions use the ``return`` keyword to ABI-encode values into the returndata area.
+
+returndata は、スマートコントラクトが呼び出し後に値を返すための仕組みです。  
+通常、外部の Solidity 関数は ``return`` キーワードを使って、値を ABI エンコードし、この returndata 領域に格納します。
+
+.. The code is the region where the EVM instructions of a smart contract are stored.
+.. Code is the bytes read, interpreted, and executed by the EVM during smart contract execution.
+.. Instruction data stored in the code is persistent as part of a contract account state field.
+.. Immutable and constant variables are stored in the code region.
+.. All references to immutables are replaced with the values assigned to them.
+.. A similar process is performed for constants which have their expressions inlined in the places where they are referenced in the smart contract code.
+
+code は、スマートコントラクトの EVM 命令が格納されている領域です。  
+スマートコントラクトの実行中に、EVM はこの code 領域のバイト列を読み取り、解釈し、実行します。  
+code に格納された命令データは、コントラクトアカウントの状態フィールドの一部として永続的に保持されます。
+immutable 変数および constant 変数は code 領域に格納されます。  
+immutable への参照は、代入された値に置き換えられます。  
+constant についても同様に、定義された式がスマートコントラクトコード内の参照箇所にインライン展開されます。
 
 .. index:: ! instruction
 
@@ -487,23 +505,36 @@ create
 理論的にはコントラクトを削除することは良いアイデアのように聞こえますが、削除されたコントラクトに誰かがEtherを送ると、そのEtherは永遠に失われてしまうため、潜在的には危険です。
 
 .. warning::
-    From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
-    However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it,
-    the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract,
-    deleting any data, including storage keys, code and the account itself.
-    See `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ for more details.
+    .. From ``EVM >= Cancun`` onwards, ``selfdestruct`` will **only** send all Ether in the account to the given recipient and not destroy the contract.
+    .. However, when ``selfdestruct`` is called in the same transaction that creates the contract calling it, the behaviour of ``selfdestruct`` before Cancun hardfork (i.e., ``EVM <= Shanghai``) is preserved and will destroy the current contract, deleting any data, including storage keys, code and the account itself.
+    .. See `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ for more details.
 
-    The new behaviour is the result of a network-wide change that affects all contracts present on
-    the Ethereum mainnet and testnets.
-    It is important to note that this change is dependent on the EVM version of the chain on which
-    the contract is deployed.
-    The ``--evm-version`` setting used when compiling the contract has no bearing on it.
+    ``EVM >= Cancun`` 以降では、``selfdestruct`` はアカウント内のすべての Ether を指定された受取人に送信する **だけで**、コントラクト自体は破壊されません。  
+    ただし、``selfdestruct`` をコントラクトの作成と同じトランザクション内で呼び出した場合は、Cancun ハードフォーク以前（つまり ``EVM <= Shanghai``）の挙動が維持され、  
+    そのコントラクトは破壊され、ストレージキー・コード・アカウント自体を含むすべてのデータが削除されます。  
+    詳しくは `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ を参照してください。
 
-    Also, note that the ``selfdestruct`` opcode has been deprecated in Solidity version 0.8.18,
-    as recommended by `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
-    The deprecation is still in effect and the compiler will still emit warnings on its use.
-    Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
-    Future changes to the EVM might further reduce the functionality of the opcode.
+    .. The new behaviour is the result of a network-wide change that affects all contracts present on
+    .. the Ethereum mainnet and testnets.
+    .. It is important to note that this change is dependent on the EVM version of the chain on which
+    .. the contract is deployed.
+    .. The ``--evm-version`` setting used when compiling the contract has no bearing on it.
+
+    この新しい挙動は、Ethereum メインネットおよびテストネット上のすべてのコントラクトに影響を与えるネットワーク全体の変更によるものです。  
+    この変更は、コントラクトがデプロイされるチェーンの EVM バージョンに依存する点に注意が必要です。  
+    コントラクトをコンパイルする際に使用する ``--evm-version`` 設定は、この挙動には影響を与えません。
+
+    .. Also, note that the ``selfdestruct`` opcode has been deprecated in Solidity version 0.8.18,
+    .. as recommended by `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_.
+    .. The deprecation is still in effect and the compiler will still emit warnings on its use.
+    .. Any use in newly deployed contracts is strongly discouraged even if the new behavior is taken into account.
+    .. Future changes to the EVM might further reduce the functionality of the opcode.
+
+    また、``selfdestruct`` オペコードは Solidity バージョン 0.8.18 において非推奨とされており、  
+    これは `EIP-6049 <https://eips.ethereum.org/EIPS/eip-6049>`_ の推奨に基づくものです。  
+    この非推奨措置は現在も有効であり、使用時にはコンパイラが警告を出します。  
+    たとえ新しい挙動を考慮したとしても、新たにデプロイされるコントラクトでの使用は強く推奨されません。  
+    将来的な EVM の変更によって、このオペコードの機能がさらに制限される可能性もあります。
 
 .. warning::
     ``selfdestruct`` によってコントラクトが削除されたとしても、それはブロックチェーンの歴史の一部であり、おそらくほとんどのEthereumノードが保持しています。

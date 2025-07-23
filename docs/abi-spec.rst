@@ -17,8 +17,7 @@
 また、すべてのコントラクトは、それらが呼び出すコントラクトのインタフェース定義をコンパイル時に利用可能であるとしています。
 
 この仕様では、インターフェースが動的である、あるいは、実行時にしかわからないコントラクトは扱いません。
-.. TODO:
-Also, the ABI specification for libraries is :ref:`slightly different <library-selectors>`.
+また、ライブラリに対する ABI の仕様は :ref:`わずかに異なります <library-selectors>`。
 
 .. _abi_function_selector:
 .. index:: ! selector; of a function
