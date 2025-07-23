@@ -51,3 +51,8 @@ make latexpdf
 
 - `.. NOTE: `はメモ。
 -->
+
+### 特定のバージョンの同期PRの作り方
+
+https://github.com/solidity-docs/.github/blob/main/scripts/create-sync-branch-for-release.sh をこのリポジトリのルートで実行するとブランチが生成される。
+それをpushしてPRを作成する。
