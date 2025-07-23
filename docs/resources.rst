@@ -19,9 +19,6 @@
 統合（Ethereum）開発環境
 ========================
 
-<<<<<<< HEAD
-..     * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
-..         Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
 ..     * `Dapp <https://dapp.tools/>`_
 ..         Tool for building, testing and deploying smart contracts from the command-line.
 ..     * `Embark <https://framework.embarklabs.io/>`_
@@ -33,8 +30,14 @@
 ..     * `Remix <https://remix.ethereum.org/>`_
 ..         Browser-based IDE with integrated compiler and Solidity runtime environment without server-side components.
 
+* `Ape <https://docs.apeworx.io/ape>`_
+    A Python-based web3 development tool for compiling, testing, and interacting with smart contracts.
+
 * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
-    Ethereum Virtual Machineをターゲットとしたスマートコントラクトのための、Pythonベースの開発およびテストフレームワーク。
+    A Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
+    💡 Note: As per the official docs, Brownie is no longer actively maintained.
+    Future releases may come sporadically - or never at all.
+    Check out Ape Framework (first in list) for all your python Ethereum development needs.
 
 * `Dapp <https://dapp.tools/>`_
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。
@@ -47,37 +50,12 @@
 
 * `Remix <https://remix.ethereum.org/>`_
     サーバーサイドのコンポーネントを使用せず、コンパイラとSolidity実行環境を統合したブラウザベースのIDE。
-=======
-* `Ape <https://docs.apeworx.io/ape>`_
-        A Python-based web3 development tool for compiling, testing, and interacting with smart contracts.
-
-* `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
-        A Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
-        💡 Note: As per the official docs, Brownie is no longer actively maintained.
-        Future releases may come sporadically - or never at all.
-        Check out Ape Framework (first in list) for all your python Ethereum development needs.
-
-* `Dapp <https://dapp.tools/>`_
-        Tool for building, testing and deploying smart contracts from the command-line.
-
-* `Foundry <https://github.com/foundry-rs/foundry>`_
-        Fast, portable and modular toolkit for Ethereum application development written in Rust.
-
-* `Hardhat <https://hardhat.org/>`_
-        Ethereum development environment with local Ethereum network, debugging features and plugin ecosystem.
-
-* `Remix <https://remix.ethereum.org/>`_
-        Browser-based IDE with integrated compiler and Solidity runtime environment without server-side components.
-
-* `Truffle <https://trufflesuite.com/truffle/>`_
-        Ethereum development framework.
-        💡 Note: Consensys announced the sunset of Truffle on September 21, 2023.
-        Current users may check out the migration path and available product support `here.
-        <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
->>>>>>> v0.8.30
 
 * `Truffle <https://trufflesuite.com/truffle/>`_
     Ethereum開発フレームワーク。
+    💡 Note: Consensys announced the sunset of Truffle on September 21, 2023.
+    Current users may check out the migration path and available product support `here.
+    <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
 
 .. Editor Integrations
 
@@ -124,12 +102,8 @@
 * Visual Studio Code (VS Code)
 
     * `Ethereum Remix Visual Studio Code extension <https://github.com/ethereum/remix-vscode>`_
-<<<<<<< HEAD
         VS Code用のEthereum Remix拡張パック。
-=======
-        Ethereum Remix extension pack for VS Code
         💡 Note: As per the official repository, this extension has been removed from the VSCODE marketplace and will be replaced by a dedicated stand-alone desktop application.
->>>>>>> v0.8.30
 
     * `Solidity Visual Studio Code extension, by Juan Blanco <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
         シンタックスハイライトとSolidityコンパイラを含むMicrosoft Visual Studio Code用のSolidityプラグイン。
@@ -141,14 +115,10 @@
         Visual Studio Codeにセキュリティのためのシンタックスとセマンティックハイライトを追加。
 
     * `Truffle for VS Code <https://marketplace.visualstudio.com/items?itemName=trufflesuite-csi.truffle-vscode>`_
-<<<<<<< HEAD
         EthereumおよびEVM互換のブロックチェーン上でのスマートコントラクトの構築、デバッグ、デプロイ。
-=======
-        Build, debug and deploy smart contracts on Ethereum and EVM-compatible blockchains.
         💡 Note: This extension has built-in support for the Truffle Suite which is being sunset.
         For information on ongoing support, migration options and FAQs, visit the `Consensys blog.
         <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
->>>>>>> v0.8.30
 
 Solidityのツール
 ================
@@ -186,19 +156,11 @@ Solidityのツール
 * `evmdis <https://github.com/Arachnid/evmdis>`_
     バイトコードに対して静的解析を行い、生のEVM操作よりも高い抽象度を提供するEVM逆アセンブラ。
 
-.. * `EVM Lab <https://github.com/ethereum/evmlab/>`_
-..     Rich tool package to interact with the EVM. Includes a VM, Etherchain API, and a trace-viewer with gas cost display.
-
 * `EVM Lab <https://github.com/ethereum/evmlab/>`_
-<<<<<<< HEAD
-    EVMと対話するためのリッチなツールパッケージ。
-    VM、Etherchain API、ガスコストを表示するトレースビューアが含まれています。
+    A collection of tools to interact with the EVM. The package includes a VM, Etherchain API, and a trace-viewer with gas cost display.
 
 .. * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
 ..     EVM debugger and symbolic execution engine.
-=======
-    A collection of tools to interact with the EVM. The package includes a VM, Etherchain API, and a trace-viewer with gas cost display.
->>>>>>> v0.8.30
 
 * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
     EVMデバッガとシンボリック実行エンジン。
@@ -267,19 +229,17 @@ Solidityのツール
 * `Universal Mutator <https://github.com/agroce/universalmutator>`_
     設定可能なルールを持ち、SolidityとVyperをサポートする、突然変異生成のためのツール。
 
-<<<<<<< HEAD
+* `Wake <https://github.com/Ackee-Blockchain/wake>`_
+    A Python-based Solidity development and testing framework with built-in vulnerability detectors.
+
 サードパーティのSolidityパーサーとグラマー
 ==========================================
 
 .. * `Solidity Parser for JavaScript <https://github.com/solidity-parser/parser>`_
 ..     A Solidity parser for JS built on top of a robust ANTLR4 grammar.
-=======
-* `Wake <https://github.com/Ackee-Blockchain/wake>`_
-    A Python-based Solidity development and testing framework with built-in vulnerability detectors.
 
 Third-Party Solidity Parsers and Grammars
 =========================================
->>>>>>> v0.8.30
 
 * `Solidity Parser for JavaScript <https://github.com/solidity-parser/parser>`_
     堅牢なANTLR4文法の上に構築されたJS用のSolidityパーサー。

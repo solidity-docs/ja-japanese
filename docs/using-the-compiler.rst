@@ -281,27 +281,19 @@ EVMのバージョンをターゲットに設定
   - ``prevrandao()``と ``block.prevrandao`` を導入し、現在では非推奨となっている ``block.difficulty`` のセマンティクスを変更し、インラインアセンブリの ``difficulty()`` を禁止しました（ `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ を参照してください）。
 
 - ``shanghai``
-<<<<<<< HEAD
 
   - ``push0`` の導入により、コードサイズが小さくなり、ガスが節約できるようになりました（ `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_ を参照）。
 
-- ``cancun`` (**default**)
-=======
-   - Smaller code size and gas savings due to the introduction of ``push0`` (see `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_).
 - ``cancun``
->>>>>>> v0.8.30
    - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
    - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
    - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
    - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
-<<<<<<< HEAD
 
-- ``prague`` (**experimental**)
-=======
 - ``prague`` (**default**)
+
 - ``osaka`` (**experimental**)
    - Experimental compilation to EOF is available starting from this version. (`EIP-7692 <https://eips.ethereum.org/EIPS/eip-7692>`_)
->>>>>>> v0.8.30
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -404,11 +396,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
       {
         // オプション: Stop compilation after the given stage. Currently only "parsing" is valid here
         "stopAfter": "parsing",
-<<<<<<< HEAD
-        // オプション: Sorted list of remappings
-=======
-        // Optional: List of remappings
->>>>>>> v0.8.30
+        // オプション: List of remappings
         "remappings": [ ":g=/dir" ],
         // オプション: Optimizer settings
         "optimizer": {
@@ -432,13 +420,6 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
           // Note that the 'enabled' setting only affects the defaults here and has no effect when
           // all values are provided explicitly.
           "details": {
-<<<<<<< HEAD
-            // 何も指定しない場合、peepholeオプティマイザは常にオンになります。
-            "peephole": true,
-            // 何も指定しない場合、inlinerは常にオンになります。
-            "inliner": false,
-            // The unused jumpdest remover is always on if no details are given, use details to switch it off.
-=======
             // Peephole optimizer (opcode-based). Optional. Default: true.
             // Default for EVMAssembly input: false when optimization is not enabled.
             // NOTE: Always runs (even with optimization disabled) except for EVMAssembly input or when explicitly turned off here.
@@ -448,7 +429,6 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             // Unused JUMPDEST remover (opcode-based). Optional. Default: true.
             // Default for EVMAssembly input: false when optimization is not enabled.
             // NOTE: Always runs (even with optimization disabled) except for EVMAssembly input or when explicitly turned off here.
->>>>>>> v0.8.30
             "jumpdestRemover": true,
             // Literal reordering (codegen-based). Optional. Default: true when optimization is enabled.
             // Moves literals to the right of commutative binary operators during code generation, helping exploit associativity.
@@ -456,12 +436,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             // Block deduplicator (opcode-based). Optional. Default: true when optimization is enabled.
             // Unifies assembly code blocks that share content.
             "deduplicate": false,
-<<<<<<< HEAD
-            // Common subexpression elimination, this is the most complicated step but can also provide the largest gain.
-=======
             // Common subexpression elimination (opcode-based). Optional. Default: true when optimization is enabled.
             // This is the most complicated step but can also provide the largest gain.
->>>>>>> v0.8.30
             "cse": false,
             // Constant optimizer (opcode-based). Optional. Default: true when optimization is enabled.
             // Tries to find better representations of literal numbers and strings, that satisfy the
@@ -471,33 +447,13 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
             // Use unchecked arithmetic when incrementing the counter of 'for' loops under certain circumstances.
             // NOTE: Always runs (even with optimization disabled) unless explicitly turned off here.
             "simpleCounterForLoopUncheckedIncrement": true,
-<<<<<<< HEAD
-            // 新しいYulオプティマイザ。
-            // 主にABIコーダーv2とインラインアセンブリのコードで動作します。
-            // It is activated together with the global optimizer setting and can be deactivated here.
-            // Before Solidity 0.6.0 it had to be activated through this switch.
-=======
             // Yul optimizer. Optional. Default: true when optimization is enabled.
             // Used to optimize the IR produced by the Yul IR-based pipeline as well as inline assembly
             // and utility Yul code generated by the compiler.
             // NOTE: Before Solidity 0.6.0 the default was false.
->>>>>>> v0.8.30
             "yul": false,
             // Tuning options for the Yul optimizer. Optional.
             "yulDetails": {
-<<<<<<< HEAD
-              // 変数のスタックスロットの割り当てを改善し、スタックスロットを早めに解放できます。
-              // Yulオプティマイザが有効な場合、デフォルトで有効になります。
-              "stackAllocation": true,
-              // Select optimization steps to be applied.
-              // It is also possible to modify both the optimization sequence and the clean-up sequence.
-              // Instructions for each sequence are separated with the ":" delimiter and the values are provided in the form of optimization-sequence:clean-up-sequence.
-              // For more information see "The Optimizer > Selecting Optimizations".
-              // This field is optional, and if not provided, the default sequences for both optimization and clean-up are used.
-              // If only one of the sequences is provided the other will not be run.
-              // If only the delimiter ":" is provided then neither the optimization nor the clean-up sequence will be run.
-              // If set to an empty value, only the default clean-up sequence is used and no optimization steps are applied.
-=======
               // Improve allocation of stack slots for variables, can free up stack slots early.
               // Optional. Default: true if Yul optimizer is enabled.
               "stackAllocation": true,
@@ -510,7 +466,6 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
               // In particular if the whole value consists only of the delimiter, both sequences are empty.
               // Note that there are several hard-coded steps that always run, even when both sequences are empty.
               // For more information see "The Optimizer > Selecting Optimizations".
->>>>>>> v0.8.30
               "optimizerSteps": "dhfoDgvulfnTUtnIf..."
             }
           }

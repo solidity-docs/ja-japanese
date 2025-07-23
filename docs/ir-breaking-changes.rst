@@ -337,17 +337,10 @@ IRベースのコードジェネレーターを導入したのは、コード生
 内部構造
 ========
 
-<<<<<<< HEAD
-.. Internal function pointers
+.. _internal-function-pointers-in-ir:
 
 内部の関数ポインタ
 ------------------
-=======
-.. _internal-function-pointers-in-ir:
-
-Internal function pointers
---------------------------
->>>>>>> v0.8.30
 
 .. index:: function pointers
 
@@ -365,7 +358,6 @@ Internal function pointers
 新しいコードジェネレータでは、関数ポインタは、順番に割り当てられる内部IDを使用します。
 ジャンプによる呼び出しができないため、関数ポインタによる呼び出しは、常に ``switch`` 文を使って正しい関数を選択する内部ディスパッチ関数を使用する必要があります。
 
-<<<<<<< HEAD
 .. The ID ``0`` is reserved for uninitialized function pointers which then cause a panic in the dispatch function when called.
 
 ID ``0`` は、初期化されていない関数ポインタ用に予約されており、このポインタが呼び出されると、ディスパッチ関数でパニックが発生します。
@@ -376,18 +368,14 @@ ID ``0`` は、初期化されていない関数ポインタ用に予約され�
 古いコードジェネレータでは、内部関数ポインタは、常にパニックを起こす特別な関数で初期化されます。
 このため、ストレージ内の内部関数ポインタの構築時にストレージへの書き込みが発生します。
 
-クリーンアップ
---------------
-=======
 .. note::
     The compiler is free to omit internal functions that are never explicitly referenced by name.
     As a consequence, assigning to a function type variable in inline assembly does not guarantee
     that the assigned value will be included in the internal dispatch.
     The function must also be explicitly referenced elsewhere in the code.
 
-Cleanup
--------
->>>>>>> v0.8.30
+クリーンアップ
+--------------
 
 .. index:: cleanup, dirty bits
 

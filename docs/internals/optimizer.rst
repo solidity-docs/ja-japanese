@@ -1185,19 +1185,13 @@ EqualStoreEliminator
 
 .. This steps removes ``mstore(k, v)`` and ``sstore(k, v)`` calls if there was a previous call to ``mstore(k, v)`` / ``sstore(k, v)``, no other store in between and the values of ``k`` and ``v`` did not change.
 
-<<<<<<< HEAD
 このステップは、 ``mstore(k, v)`` / ``sstore(k, v)`` の呼び出しが過去にあり、その間に他のストアがなく、 ``k`` と ``v`` の値が変更されていない場合に、 ``mstore(k, v)`` と ``sstore(k, v)`` の呼び出しを削除します。
-=======
-This simple step is effective if run after the SSATransform and the
-CommonSubexpressionEliminator, because SSA will make sure that the variables
-will not change and the CommonSubexpressionEliminator reuses exactly the same
-variable if the value is known to be the same.
->>>>>>> v0.8.30
 
-.. This simple step is effective if run after the SSATransform and the CommonSubexpressionEliminator, because SSA will make sure that the variables will not change and the CommonSubexpressionEliminator re-uses exactly the same variable if the value is known to be the same.
+.. This simple step is effective if run after the SSATransform and the CommonSubexpressionEliminator,
+.. because SSA will make sure that the variables will not change and the CommonSubexpressionEliminator reuses exactly the same variable if the value is known to be the same.
 
 この単純なステップは、SSATransformとCommonSubexpressionEliminatorの後に実行すると効果的です。
-SSAは変数が変更されないことを確認し、CommonSubexpressionEliminatorは値が同じであることが分かっている場合、まったく同じ変数を再利用するからです。
+なぜなら、SSAは変数が変更されないことを確認し、CommonSubexpressionEliminatorは値が同じであることが分かっている場合、まったく同じ変数を再利用するからです。
 
 前提条件: Disambiguator、ForLoopInitRewriter。
 
@@ -1573,17 +1567,10 @@ SSAReverser
 
 .. This is a tiny step that helps in reversing the effects of the SSATransform if it is combined with the CommonSubexpressionEliminator and the UnusedPruner.
 
-<<<<<<< HEAD
 これは、CommonSubexpressionEliminatorやUnusedPrunerと組み合わせることで、SSATransform の効果を元に戻すのに役立つ小さな一歩です。
-=======
-The SSA form we generate is detrimental to code generation
-because it produces many local variables. It would
-be better to just reuse existing variables with assignments instead of
-fresh variable declarations.
->>>>>>> v0.8.30
 
 .. The SSA form we generate is detrimental to code generation because it produces many local variables.
-.. It would be better to just re-use existing variables with assignments instead of fresh variable declarations.
+.. It would be better to just reuse existing variables with assignments instead of fresh variable declarations.
 
 私たちが生成するSSAフォームは、多くのローカル変数を生成するため、コード生成に悪影響を及ぼします。
 新しい変数を宣言する代わりに、既存の変数を代入して再利用する方が良いでしょう。

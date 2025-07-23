@@ -1038,7 +1038,6 @@ CHCエンジンは、BMCよりも証明できる内容がはるかに多く、�
 SMTソルバーとHornソルバー
 =========================
 
-<<<<<<< HEAD
 .. The two engines detailed above use automated theorem provers as their logical
 .. backends.  BMC uses an SMT solver, whereas CHC uses a Horn solver. Often the
 .. same tool can act as both, as seen in `z3 <https://github.com/Z3Prover/z3>`_,
@@ -1074,30 +1073,7 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   これをコンパイラの `コールバックメカニズム <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。
   これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
 
-.. - ``z3`` is available
-
-..   - if ``solc`` is compiled with it;
-
-..   - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
-
-..   - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
-
-- 以下の場合 ``z3`` が使えます。
-
-  -  ``solc`` がz3とともにコンパイルされている場合。
-
-  - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
-
-  -  ``soljson.js`` （Solidity 0.6.9 以降）では静的に、つまりコンパイラのJavaScriptバイナリを使用しています。
-=======
-- ``cvc5`` is used via its binary which must be installed in the system. Only BMC uses ``cvc5``.
-- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
-- ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
-  These can be used together with the compiler's `callback mechanism <https://github.com/ethereum/solc-js>`_ so that
-  any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
-  This can be used by both BMC and CHC depending on which solvers are called.
 - ``z3`` is available statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler. Otherwise it is used via its binary which must be installed in the system.
->>>>>>> v0.8.30
 
 .. note::
 

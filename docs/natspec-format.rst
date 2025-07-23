@@ -34,17 +34,10 @@ NatSpecには、サードパーティのツールが使用するアノテーシ�
 ドキュメントの例
 ================
 
-<<<<<<< HEAD
-.. Documentation is inserted above each ``contract``, ``interface``, ``library``, ``function``, and ``event`` using the Doxygen notation format.
+.. Documentation is inserted above each ``contract``, ``interface``, ``library``, ``function``, ``enum``, ``enum`` value and ``event`` using the Doxygen notation format.
 .. A ``public`` state variable is equivalent to a ``function`` for the purposes of NatSpec.
-=======
-Documentation is inserted above each ``contract``, ``interface``, ``library``,
-``function``, ``enum``, ``enum`` value and ``event`` using the Doxygen notation format.
-A ``public`` state variable is equivalent to a ``function``
-for the purposes of NatSpec.
->>>>>>> v0.8.30
 
-ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``library`` 、 ``function`` 、 ``event`` の上に挿入されます。
+ドキュメントは、Doxygen記法のフォーマットを使用して、各 ``contract`` 、 ``interface`` 、 ``library`` 、 ``function`` 、 ``enum`` 、 ``enum`` の値 、 ``event`` の上に挿入されます。
 ``public`` の状態変数は、NatSpecの目的上、 ``function`` と同等です。
 
 - Solidityでは、1行のコメントに ``///`` を、複数行のコメントに ``/**`` から始めて ``*/`` で終わるものを使えます。
@@ -116,33 +109,18 @@ for the purposes of NatSpec.
 次の表では、各NatSpecタグの目的と使用される場所を説明しています。
 特別なケースとして、タグが使用されていない場合、Solidityのコンパイラは ``///`` または ``/**`` のコメントを ``@notice`` のタグが付いている場合と同じように解釈します。
 
-<<<<<<< HEAD
 ================= ============================================================================================ =============================
 タグ                                                                                                           コンテキスト
 ================= ============================================================================================ =============================
-``@title``        コントラクトあるいはインターフェースを説明すべき名前                                         contract, library, interface, struct, enum
-``@author``       オーサーの名前                                                                               contract, library, interface, struct, enum
-``@notice``       これがどういうことを行うのか、エンドユーザー向けの説明                                       contract, library, interface, function, public state variable, event, struct, enum, error
-``@dev``          開発者向けの追加の説明                                                                       contract, library, interface, function, state variable, event, struct, enum, error
-``@param``        Doxygenのようなパラメータの説明（後ろにパラメータ名をつける必要がある）                      function, event, error
-``@return``       コントラクトの関数のリターン変数の説明                                                       function, public state variable
-``@inheritdoc``   ベース関数から不足しているタグを全てコピーする（後ろにコントラクト名をつける必要がある）     function, public state variable
+``@title``        コントラクトあるいはインターフェースを説明すべき名前                                         contract, library, interface, struct, enum, enum values
+``@author``       オーサーの名前                                                                               contract, library, interface, struct, enum, enum values
+``@notice``       これがどういうことを行うのか、エンドユーザー向けの説明                                       contract, library, interface, function, public state variable, event, struct, enum, enum values, error
+``@dev``          開発者向けの追加の説明                                                                       contract, library, interface, function, state variable, event, struct, enum, enum values, error
+``@param``        Doxygenのようなパラメータの説明（後ろにパラメータ名をつける必要がある）                      function, event, enum values, error
+``@return``       コントラクトの関数のリターン変数の説明                                                       function, enum, enum values, public state variable
+``@inheritdoc``   ベース関数から不足しているタグを全てコピーする（後ろにコントラクト名をつける必要がある）     function, enum, enum values, public state variable
 ``@custom:...``   カスタムタグ、セマンティクスはアプリケーションで定義                                         everywhere
 ================= ============================================================================================ =============================
-=======
-=============== ====================================================================================== =============================
-Tag                                                                                                    Context
-=============== ====================================================================================== =============================
-``@title``      A title that should describe the contract/interface                                    contract, library, interface, struct, enum, enum values
-``@author``     The name of the author                                                                 contract, library, interface, struct, enum, enum values
-``@notice``     Explain to an end user what this does                                                  contract, library, interface, function, public state variable, event, struct, enum, enum values error
-``@dev``        Explain to a developer any extra details                                               contract, library, interface, function, state variable, event, struct, enum, enum values, error
-``@param``      Documents a parameter just like in Doxygen (must be followed by parameter name)        function, event, enum values, error
-``@return``     Documents the return variables of a contract's function                                function, enum, enum values, public state variable
-``@inheritdoc`` Copies all missing tags from the base function (must be followed by the contract name) function, enum, enum values, public state variable
-``@custom:...`` Custom tag, semantics is application-defined                                           everywhere
-=============== ====================================================================================== =============================
->>>>>>> v0.8.30
 
 ``(int quotient, int remainder)`` のように関数が複数の値を返す場合は、 ``@param`` 文と同じ形式で複数の ``@return`` 文を使用します。
 
