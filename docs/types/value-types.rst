@@ -11,7 +11,7 @@
 
 Unlike :ref:`reference types <reference-types>`, value type declarations do not
 specify a data location since they are small enough to be stored on the stack.
-The only exception are :ref:`state variables <structure-state-variables>`.
+The only exception is :ref:`state variables <structure-state-variables>`.
 Those are by default located in storage, but can also be marked as
 :ref:`transient <transient-storage>`, :ref:`constant or immutable <constants>`.
 
@@ -739,7 +739,21 @@ Unicodeリテラル
 
 外部関数は、アドレスと関数シグネチャで構成されており、外部関数呼び出しを介して渡したり、外部関数呼び出しから返したりできます。
 
-関数型は以下のように表記されています。
+Note that public functions of the current contract can be used both as an
+internal and as an external function. To use ``f`` as an internal function,
+just use ``f``, if you want to use its external form, use ``this.f``.
+
+If a function type variable is not initialised, calling it results
+in a :ref:`Panic error<assert-and-require>`. The same happens if you call a function after using ``delete``
+on it.
+
+.. note::
+    Lambda or inline functions are planned but not yet supported.
+
+Declaration syntax
+^^^^^^^^^^^^^^^^^^
+
+関数型は以下のように表記されます。
 
 .. code-block:: solidity
     :force:
@@ -753,7 +767,8 @@ Unicodeリテラル
 これは関数型にのみ適用されることに注意してください。
 コントラクトで定義された関数については、ビジビリティを明示的に指定する必要があり、デフォルトはありません。
 
-変換:
+変換
+^^^^
 
 関数型 ``A`` は、それらのパラメータ型が同一であり、戻り値の型が同一であり、それらの内部/外部プロパティが同一であり、 ``A`` の状態の変更可能性が ``B`` の状態の変更可能性よりも制限されている場合に限り、関数型 ``B`` に暗黙的に変換可能です。
 具体的には以下です。
@@ -780,13 +795,7 @@ Unicodeリテラル
 その代わりに、その関数ポインタは決して ether を送るために使われないことを強制します。
 そのため、 ``payable`` な関数ポインタを ``non-payable`` な関数ポインタに割り当てることで、両方の型が同じように動作する、つまり、どちらもEtherを送信するために使用できないことを保証することが可能になります。
 
-関数型変数が初期化されていない場合、それを呼び出すと :ref:`パニックエラー<assert-and-require>` になります。
-また、関数に ``delete`` を使用した後に関数を呼び出した場合も同様です。
-
 外部関数型がSolidityのコンテキスト外で使用される場合は、 ``function`` 型として扱われ、アドレスに続いて関数識別子をまとめて1つの ``bytes24`` 型にエンコードします。
-
-現在のコントラクトのパブリック関数は、内部関数としても外部関数としても使用できることに注意してください。
-``f`` を内部関数として使用したい場合は ``f`` を、外部関数として使用したい場合は ``this.f`` を使用してください。
 
 内部型の関数は、どこで定義されているかに関わらず、内部関数型の変数に代入できます。
 これには、コントラクトとライブラリの両方のプライベート関数、内部関数、パブリック関数のほか、フリーの関数も含まれます。
@@ -818,7 +827,8 @@ Unicodeリテラル
 ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。
 インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
 
-メンバー:
+メンバー
+^^^^^^^^
 
 外部（またはパブリック）関数には、次のようなメンバーを持ちます。
 
@@ -833,7 +843,60 @@ Unicodeリテラル
     代わりに ``{gas: ...}`` と ``{value: ...}`` を使って、それぞれ関数に送られるガスの量やweiの量を指定してください。
     詳細は :ref:`外部関数呼び出し<external-function-calls>` を参照してください。
 
-メンバーの使用法を示す例:
+.. _function-type-value-stability-across-contract-updates:
+
+Value stability across contract updates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An important aspect to consider when using values of function types is whether the value will
+remain valid if the underlying code changes.
+
+The state of the blockchain is not completely immutable and there are multiple ways to place
+different code under the same address:
+
+- Directly deploying different code using :ref:`salted contract creation<salted-contract-creations>`.
+- Delegating to a different contract via :ref:`DELEGATECALL<delegatecall>`
+  (upgradeable code behind a proxy contract is a common example of this).
+- Account abstraction as defined by `EIP-7702 <https://eips.ethereum.org/EIPS/eip-7702>`_.
+
+External function types can be considered as stable as contract's ABI, which makes them very portable.
+Their ABI representation always consists of a contract address and a function selector and it is
+perfectly safe to store them long-term or pass them between contracts.
+While it is possible for the referenced function to change or disappear, a direct external call
+would be affected the same way, so there is no additional risk in such use.
+
+In case of internal functions, however, the value is an identifier that is strongly tied to
+contract's bytecode.
+The actual representation of the identifier is an implementation detail and may change between
+compiler versions or even :ref:`between different backends<internal-function-pointers-in-ir>`.
+Values assigned under a given representation are deterministic (i.e. guaranteed to remain the same
+as long as the source code is the same) but are easily affected by changes such as adding, removing
+or reordering of functions.
+The compiler is also free to remove internal functions that are never used, which may affect other identifiers.
+Some representations, e.g. one where identifiers are simply jump targets, may be affected by
+virtually any change, even one completely unrelated to internal functions.
+
+To counter this, the language limits the use of internal function types outside of the context in
+which they are valid.
+This is why internal function types cannot be used as parameters of external functions (or in any
+other way that is exposed in contract's ABI).
+However, there are still situations where it is up to the user to decide whether their use is safe or not.
+For example long-term storage of such values in state variables is discouraged, but may be safe if
+the contract code is never going to be updated.
+It is also always possible to side-step any safeguards by using inline assembly.
+Such use always needs careful consideration.
+
+.. note::
+    The removal of unused internal functions only takes into account explicit references to
+    such functions by name.
+    Implicit references, such as assigning a new value to a function type variable in inline assembly
+    may still lead to the removal of the function if it is not also referenced explicitly elsewhere
+    in the source.
+
+Examples
+^^^^^^^^
+
+メンバーの使い方を示す例：
 
 .. code-block:: solidity
 
@@ -952,7 +1015,3 @@ Unicodeリテラル
             exchangeRate = response;
         }
     }
-
-.. note::
-
-    ラムダ関数やインライン関数が予定されていますが、まだサポートされていません。

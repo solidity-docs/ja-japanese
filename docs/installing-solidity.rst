@@ -51,18 +51,18 @@ Remixは、複数のSolidityバージョンをインストールせずにnightly
 npm / Node.js
 =============
 
-`solcjs` プログラムは、Solidityのコンパイラである ``solcjs`` をインストールするための便利でポータブルな方法として使用します。
-`solcjs` プログラムは、このページの下の方で説明されているコンパイラへのアクセス方法よりも機能が少なくなっています。
+``solcjs`` プログラムは、Solidityのコンパイラである ``solcjs`` をインストールするための便利でポータブルな方法として使用します。
+また、 ``solcjs`` プログラムは、このページの下の方で説明されているコンパイラへのアクセス方法よりも機能が少なくなっています。
 :ref:`commandline-compiler` のドキュメントでは、フル機能のコンパイラである ``solc`` を使用していることを前提としています。
 ``solcjs`` の使い方は、独自の `リポジトリ <https://github.com/ethereum/solc-js>`_ の中で説明されています。
 
-注: solc-jsプロジェクトは、Emscriptenを使用してC++  `solc` から派生しており、両者は同じコンパイラのソースコードを使用しています。
-`solc-js` はJavaScriptプロジェクト（Remixなど）で直接使用できます。
-使用方法はsolc-jsのリポジトリを参照してください。
+注: ``solc-js`` プロジェクトは、Emscriptenを使用してC++  ``solc`` から派生しており、両者は同じコンパイラのソースコードを使用しています。
+``solc-js`` はJavaScriptプロジェクト（Remixなど）で直接使用できます。
+使用方法は solc-js のリポジトリを参照してください。
 
 .. code-block:: bash
 
-    npm install -g solc
+    npm install --global solc
 
 .. note::
 
@@ -83,26 +83,25 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
 
     docker run ethereum/solc:stable --help
 
-タグには、リリースのビルドバージョンを指定することもできます。例えば:
+.. note::
+    .. TODO
 
-.. code-block:: bash
-
-    docker run ethereum/solc:stable --help
-
-.. TODO:
-
-Note
-
-Specific compiler versions are supported as the Docker image tag such as `ethereum/solc:0.8.23`. We will be passing the
-`stable` tag here instead of specific version tag to ensure that users get the latest version by default and avoid the issue of
-an out-of-date version.
+    Specific compiler versions are supported as the Docker image tag such as ``ethereum/solc:0.8.23``.
+    We will be passing the ``stable`` tag here instead of specific version tag to ensure that users get
+    the latest version by default and avoid the issue of an out-of-date version.
 
 ホストマシンでSolidityのファイルをコンパイルするためにDockerイメージを使用するには、入出力用のローカルフォルダーをマウントし、コンパイルするコントラクトを指定します。
 例えば、以下のようになります:
 
 .. code-block:: bash
 
-    docker run -v /local/path:/sources ethereum/solc:stable -o /sources/output --abi --bin /sources/Contract.sol
+    docker run \
+        --volume "/tmp/some/local/path/:/sources/" \
+        ethereum/solc:stable \
+            /sources/Contract.sol \
+            --abi \
+            --bin \
+            --output-dir /sources/output/
 
 また、標準のJSONインターフェースを使用することもできます（コンパイラとツールを使用する場合は、このインターフェースを使用することをお勧めします）。
 このインターフェースを使用する場合、JSON入力が自己完結している限り、ディレクトリをマウントする必要はありません（つまり、:ref:`importコールバックによって読み込まれる <initial-vfs-content-standard-json-with-import-callback>` 必要がある外部ファイルを参照しない）。
@@ -214,7 +213,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 リポジトリは、エンドユーザーがすぐに使えるバイナリを素早く簡単に入手できるだけでなく、サードパーティのツールとの親和性も考慮しています。
 
 - コンテンツは https://binaries.soliditylang.org にミラーリングされ、認証やレート制限、gitを使用する必要なく、HTTPSで簡単にダウンロードできます。
-- コンテンツは、正しい `Content-Type` ヘッダと寛大なCORS設定で提供され、ブラウザ上で動作するツールで直接読み込めるようになっています。
+- コンテンツは、正しい ``Content-Type`` ヘッダと寛大なCORS設定で提供され、ブラウザ上で動作するツールで直接読み込めるようになっています。
 - バイナリは、インストールや解凍の必要がありません（ただし、必要なDLLがバンドルされた古いWindowsビルドは例外です）。
 - 私たちは、高いレベルの後方互換性を確保するよう努めています。
   一度追加されたファイルは、古い場所でシンボリックリンクやリダイレクトを提供することなく削除または移動されることはありません。
@@ -347,8 +346,8 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 以下のC++コンパイラとその最小バージョンでSolidityのコードベースを構築できます。
 
--  `GCC <https://gcc.gnu.org>`_ 、バージョン8以上
--  `Clang <https://clang.llvm.org/>`_ 、バージョン7以上
+-  `GCC <https://gcc.gnu.org>`_ 、バージョン11以上
+-  `Clang <https://clang.llvm.org/>`_ 、バージョン14以上
 -  `MSVC <https://visualstudio.microsoft.com/vs/>`_ 、バージョン2019以上
 
 前提知識 - macOS
@@ -465,7 +464,7 @@ Solidityのビルドは、Linux、macOS、その他のUnicesでもよく似て�
     cd build
     cmake -G "Visual Studio 16 2019" ..
 
-``scripts\install_deps.ps1`` がインストールしたバージョンのブーストを使用したい場合は、 ``cmake`` の呼び出しの引数として ``-DBoost_DIR="deps\boost\lib\cmake\Boost-*"`` と ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded`` を追加で渡す必要があります。
+``scripts\install_deps.ps1`` がインストールしたバージョンのブーストを使用したい場合は、 ``cmake`` の呼び出しの引数として ``-DBoost_ROOT="deps/boost" -DBoost_INCLUDE_DIR="deps/boost/include"`` と ``-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded`` を追加で渡す必要があります。
 
 これにより、そのビルドディレクトリに **solidity.sln** が作成されるはずです。
 そのファイルをダブルクリックすると、Visual Studioが起動します。
@@ -487,24 +486,11 @@ CMakeオプション
 SMTソルバー
 -----------
 
-Solidity は Z3 SMT ソルバーに対応しており、システム内で Z3 が見つかった場合はデフォルトでそれを使ってビルドされます。  
-Z3 の使用は ``cmake`` オプションで無効にすることも可能です。
-
-*注: 場合によっては、ビルドに失敗したときの回避策としても有効です。*
-
-ビルドフォルダ内で、デフォルトで有効になっている Z3 を無効にできます:
-
-.. code-block:: bash
-
-    # disables Z3 SMT Solver.
-    cmake .. -DUSE_Z3=OFF
+Solidity はオプションで SMT ソルバー（ ``z3``、 ``cvc5``、 ``Eldarica``）を使用できますが、それらの存在は実行時にのみチェックされ、ビルドの成功には必要ありません。
 
 .. note::
 
-    .. Solidity can optionally use other solvers, namely ``cvc5`` and ``Eldarica``, but their presence is checked only at runtime, they are not needed for the build to succeed.
-
-    Solidity はオプションで ``cvc5`` や ``Eldarica`` といった他のソルバーを使用することもできますが、それらの存在は実行時にのみチェックされ、ビルドの成功には必要ありません。
-
+    emscripten ビルドでは Z3 が必要であり、代わりにそれを静的リンクします。
 
 バージョン文字列の詳細
 ======================

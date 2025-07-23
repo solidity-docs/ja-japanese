@@ -117,7 +117,7 @@ Solidityに貢献するための選択肢はたくさんあります。
 事前準備
 --------
 
-すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_, `libz3 <https://github.com/Z3Prover/z3>`_, `Eldarica <https://github.com/uuverifiers/eldarica/>`_, `cvc5 <https://github.com/cvc5/cvc5>` ）をオプションでインストールできます。
+すべてのコンパイラテストを実行するために、いくつかの依存関係（ `evmone <https://github.com/ethereum/evmone/releases>`_, `z3 <https://github.com/Z3Prover/z3>`_, `Eldarica <https://github.com/uuverifiers/eldarica/>`_, `cvc5 <https://github.com/cvc5/cvc5>` ）をオプションでインストールできます。
 
 .. On macOS systems, some of the testing scripts expect GNU coreutils to be installed.
 .. This can be easiest accomplished using Homebrew: ``brew install coreutils``.
@@ -164,22 +164,17 @@ Solidityには様々なタイプのテストがあり、そのほとんどが `B
 
 ``evmone`` ライブラリは、ファイル名の拡張子が、Linuxでは ``.so`` 、Windowsシステムでは ``.dll`` 、macOSでは ``.dylib`` になるようにしてください。
 
-.. For running SMT tests, the ``libz3`` library must be installed and locatable by ``cmake`` during compiler configure stage.
-.. A few SMT tests use ``Eldarica`` instead of ``Z3``.
-.. ``Eldarica`` is a runtime dependency, its executable (``eld``) must be present in ``PATH`` for the tests to pass.
-.. However, if ``Eldarica`` is not found, these tests will be automatically skipped.
-
-SMTテストを実行するには、 ``libz3`` ライブラリがインストールされており、コンパイラの構成段階で ``cmake`` によって検出可能である必要があります。  
-一部のSMTテストは ``Z3`` の代わりに ``Eldarica`` を使用します。  
-``Eldarica`` は実行時の依存関係であり、その実行ファイル（ ``eld`` ）が ``PATH`` に存在する必要があります。  
+SMT テストを実行するには、 ``z3`` 実行ファイルが ``PATH`` に存在している必要があります。  
+一部の SMT テストでは ``z3`` の代わりに ``Eldarica`` を使用しており、  
+それらのテストを通過させるには ``eld`` 実行ファイルが ``PATH`` に存在している必要があります。  
 ただし、 ``Eldarica`` が見つからない場合、それらのテストは自動的にスキップされます。
 
-.. If the ``libz3`` library is not installed on your system, you should disable the
+.. If ``z3`` is not present on your system, you should disable the
 .. SMT tests by exporting ``SMT_FLAGS=--no-smt`` before running ``./scripts/tests.sh`` or
 .. running ``./scripts/soltest.sh --no-smt``.
 .. These tests are ``libsolidity/smtCheckerTests``.
 
-``libz3`` ライブラリがシステムにインストールされていない場合は、 ``./scripts/tests.sh`` を実行する前に ``SMT_FLAGS=--no-smt`` をエクスポートしてSMTテストを無効にするか、 ``./scripts/soltest.sh --no-smt`` を実行する必要があります。
+``z3`` があなたのシステムに存在しない場合は、 ``./scripts/tests.sh`` を実行する前に ``SMT_FLAGS=--no-smt`` をエクスポートしてSMTテストを無効にするか、 ``./scripts/soltest.sh --no-smt`` を実行する必要があります。
 これらのテストは ``libsolidity/smtCheckerTests`` です。
 
 .. note::
@@ -219,13 +214,13 @@ SMTテストを実行するには、 ``libz3`` ライブラリがインストー
 
 .. .. note::
 
-..     Those working in a Windows environment wanting to run the above basic sets without libz3.
+..     Those working in a Windows environment wanting to run the above basic sets without z3.
 ..     Using Git Bash, you use: ``./build/test/Release/soltest.exe -- --no-smt``.
 ..     If you are running this in plain Command Prompt, use ``.\build\test\Release\soltest.exe -- --no-smt``.
 
 .. note::
 
-    Windows環境で、上記の基本セットをlibz3なしで実行したい方は、次のようにしてください。
+    Windows環境で、上記の基本セットを z3 無しで実行したい方は、次のようにしてください。
     Git Bashを使っている場合、 ``./build/test/Release/soltest.exe -- --no-smt`` を実行してください。
     プレーンなコマンドプロンプトで実行する場合、 ``.\build\test\Release\soltest.exe -- --no-smt`` を実行してください。
 

@@ -120,53 +120,29 @@ IPFSの場合、 ``ipfs add`` が返すCIDに含まれるハッシュ（ファ�
         "version": 1 // NatSpecバージョン
       }
     },
-    // 必須: コンパイラの設定。コンパイル時のJSON入力の設定が反映。
-    // 標準JSON入力の「settings」フィールドのドキュメントを参照。
+    // Required: Compiler settings.
+    // Reflects the settings in the JSON input during compilation, except:
+    // - Different format: "libraries" field
+    // - Added field in metadata.settings: "compilationTarget"
+    // - Not in metadata.settings: "stopAfter", "debug.debugInfo", "outputSelection"
+    // See the standard JSON input's "settings" field docs for the rest.
     "settings": {
       // Solidityには必須: このメタデータの作成対象となるコントラクトまたはライブラリのファイルパスおよび名前。
+      // This field is not present in the standard JSON input settings.
       "compilationTarget": {
         "myDirectory/myFile.sol": "MyContract"
       },
-      // Solidityには必須
-      "evmVersion": "london",
       // Solidityには必須: 使用するライブラリのアドレス
+      // Note that metadata has a different format for "libraries" field than the standard JSON input.
+      // metadata format = { "MyLib.sol:MyLib": "0x123123..." }
+      // standard JSON input format = { "MyLib.sol": { "MyLib": "0x123123..." } }
       "libraries": {
-        "MyLib": "0x123123..."
+        "MyLib.sol:MyLib": "0x123123..."
       },
-      "metadata": {
-        // 入力のjsonで使用されている設定を反映、デフォルトは「true」
-        "appendCBOR": true,
-        // 入力のjsonで使用されている設定を反映、デフォルトは「ipfs」
-        "bytecodeHash": "ipfs",
-        // 入力のjsonで使用されている設定を反映、デフォルトは「false」
-        "useLiteralContent": true
-      },
-      // オプション: オプティマイザの設定。
-      // 「enabled」および「runs」フィールドは非推奨であり、後方互換性のためにのみ与えられています。
-      "optimizer": {
-        "details": {
-          "constantOptimizer": false,
-          "cse": false,
-          "deduplicate": false,
-          // inlinerのデフォルトは「true」
-          "inliner": true,
-          // jumpdestRemoverのデフォルトは「true」
-          "jumpdestRemover": true,
-          "orderLiterals": false,
-          // peepholeのデフォルトは「true」
-          "peephole": true,
-          "yul": true,
-          // オプション: "yul"が"true"の場合にのみ存在
-          "yulDetails": {
-            "optimizerSteps": "dhfoDgvulfnTUtnIf...",
-            "stackAllocation": false
-          }
-        },
-        "enabled": true,
-        "runs": 500
-      },
-      // Solidityには必須: ソースファイルのインポートのリマッピング。
-      "remappings": [ ":g=/dir" ]
+      // ...
+      // ...
+      // ...
+      // The rest of the fields and their defaults same as in std JSON input.
     },
     // 必須: コンパイルされたソースファイル/ソースユニット。キーはファイルパス。
     "sources": {

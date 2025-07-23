@@ -29,6 +29,7 @@ Ethereumには、特定のイベントで自動的に関数を呼び出す「cro
 .. include:: contracts/transient-storage.rst
 
 .. include:: contracts/constant-state-variables.rst
+.. include:: contracts/custom-storage-layout.rst
 .. include:: contracts/functions.rst
 
 .. include:: contracts/events.rst

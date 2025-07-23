@@ -21,7 +21,7 @@ include(EthPolicy)
 eth_policy()
 
 # project name and version should be set after cmake_policy CMP0048
-set(PROJECT_VERSION "0.8.29")
+set(PROJECT_VERSION "0.8.30")
 # OSX target needed in order to support std::visit
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
 project(solidity VERSION ${PROJECT_VERSION} LANGUAGES C CXX)
@@ -61,6 +61,11 @@ if (NOT IGNORE_VENDORED_DEPENDENCIES)
   include(fmtlib)
   include(nlohmann-json)
   include(range-v3)
+else ()
+  message(WARNING "-- Ignoring vendored dependencies. Will use installed versions if found. Versions may differ from the ones the compiler was tested with. Make sure to run the test suite and thoroughly test the resulting binaries before using them in production.")
+  find_package(fmt REQUIRED)
+  find_package(nlohmann_json REQUIRED)
+  find_package(range-v3 REQUIRED)
 endif()
 
 find_package(Threads)
@@ -90,58 +95,31 @@ configure_file("${PROJECT_SOURCE_DIR}/cmake/templates/license.h.in" include/lice
 
 include(EthOptions)
 configure_project(TESTS)
-set(TESTED_Z3_VERSION "4.12.1")
-set(MINIMUM_Z3_VERSION "4.8.16")
-find_package(Z3)
-if (${Z3_FOUND})
-  if (${STRICT_Z3_VERSION})
-    if (NOT ("${Z3_VERSION_STRING}" VERSION_EQUAL ${TESTED_Z3_VERSION}))
-      message(
-        FATAL_ERROR
-        "SMTChecker tests require Z3 ${TESTED_Z3_VERSION} for all tests to pass.\n\
-Build with -DSTRICT_Z3_VERSION=OFF if you want to use a different version. \
-You can also use -DUSE_Z3=OFF to build without Z3. In both cases use --no-smt when running tests."
-      )
+
+if(EMSCRIPTEN)
+    set(TESTED_Z3_VERSION "4.13.3")
+    set(MINIMUM_Z3_VERSION "4.8.16")
+    find_package(Z3)
+    if (${Z3_FOUND})
+      add_definitions(-DEMSCRIPTEN_BUILD)
+      if (${STRICT_Z3_VERSION})
+        if (NOT ("${Z3_VERSION_STRING}" VERSION_EQUAL ${TESTED_Z3_VERSION}))
+          message(
+            FATAL_ERROR
+            "SMTChecker tests require Z3 ${TESTED_Z3_VERSION} for all tests to pass.\n"
+          )
+        endif()
+      else()
+        if ("${Z3_VERSION_STRING}" VERSION_LESS ${MINIMUM_Z3_VERSION})
+          message(
+            FATAL_ERROR
+            "Solidity requires Z3 ${MINIMUM_Z3_VERSION} or newer."
+          )
+        endif()
+      endif()
+    else()
+        message(FATAL_ERROR "Solidity requires Z3 for emscripten build.")
     endif()
-  else()
-    if ("${Z3_VERSION_STRING}" VERSION_LESS ${MINIMUM_Z3_VERSION})
-      message(
-        FATAL_ERROR
-        "Solidity requires Z3 ${MINIMUM_Z3_VERSION} or newer. You can also use -DUSE_Z3=OFF to build without Z3."
-      )
-    endif()
-  endif()
-endif()
-
-if(${USE_Z3_DLOPEN})
-  add_definitions(-DHAVE_Z3)
-  add_definitions(-DHAVE_Z3_DLOPEN)
-  find_package(Python3 COMPONENTS Interpreter)
-  if(${Z3_FOUND})
-    get_target_property(Z3_HEADER_HINTS z3::libz3 INTERFACE_INCLUDE_DIRECTORIES)
-  endif()
-  find_path(Z3_HEADER_PATH z3.h HINTS ${Z3_HEADER_HINTS})
-  if(Z3_HEADER_PATH)
-    set(Z3_FOUND TRUE)
-  else()
-    message(SEND_ERROR "Dynamic loading of Z3 requires Z3 headers to be present at build time.")
-  endif()
-  if(NOT ${Python3_FOUND})
-    message(SEND_ERROR "Dynamic loading of Z3 requires Python 3 to be present at build time.")
-  endif()
-  if(${SOLC_LINK_STATIC})
-    message(SEND_ERROR "solc cannot be linked statically when dynamically loading Z3.")
-  endif()
-elseif (${Z3_FOUND})
-  add_definitions(-DHAVE_Z3)
-  message("Z3 SMT solver found. This enables optional SMT checking with Z3.")
-endif()
-
-find_program(CVC5_PATH cvc5)
-
-if (NOT (${Z3_FOUND} OR CVC5_PATH))
-  message("No SMT solver found (or it has been forcefully disabled). Optional SMT checking will not be available.\
-  \nPlease install Z3 or cvc5 or remove the option disabling them (USE_Z3).")
 endif()
 
 add_subdirectory(libsolutil)

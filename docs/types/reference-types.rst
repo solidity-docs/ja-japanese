@@ -41,6 +41,28 @@
 
     バージョン0.5.0までは、データロケーションを省略でき、変数の種類や関数の種類などに応じて異なるロケーションをデフォルトとしていましたが、現在ではすべての複合型でデータのロケーションを明示的に指定しなければなりません。
 
+.. note::
+    Arrays and structs with ``calldata`` location declared in a function body
+    or as its return parameters must be assigned before being used or returned.
+    There are certain cases in which non-trivial control flow is used and the compiler
+    can't properly detect the initialization.
+    A common workaround in such cases is to assign the affected variable to itself before
+    the correct initialization takes place.
+
+.. note::
+    Prior to version 0.6.9 data location for reference-type arguments was limited to
+    ``calldata`` in external functions, ``memory`` in public functions and either
+    ``memory`` or ``storage`` in internal and private ones.
+    Now ``memory`` and ``calldata`` are allowed in all functions regardless of their visibility.
+
+.. note::
+    Constructor parameters cannot use ``calldata`` as their data location.
+
+.. note::
+    Prior to version 0.5.0 the data location could be omitted, and would default to different locations
+    depending on the kind of variable, function type, etc., but all complex types must now give an explicit
+    data location.
+
 .. _data-location-assignment:
 
 データロケーションと代入の挙動

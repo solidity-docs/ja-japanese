@@ -17,7 +17,7 @@ Solidityのイベントは、EVMのロギング機能の上に抽象化を与え
 .. in the blockchain. These logs are associated with the address of the contract,
 .. are incorporated into the blockchain, and stay there as long as a block is
 .. accessible (forever as of now, but this might
-.. change in the future). The Log and its event data is not accessible from within
+.. change in the future). The Log and its event data are not accessible from within
 .. contracts (not even from the contract that created them).
 
 イベントは、ファイルレベルで定義することも、コントラクト（インターフェースやライブラリを含む）の継承可能なメンバーとして定義することもできます。

@@ -5,22 +5,20 @@
 一般的な資料
 ============
 
-* `Ethereum.org Developer Portal <https://ethereum.org/en/developers/>`_
+* `Ethereum.org Developers page <https://ethereum.org/en/developers/>`_
 * `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_
-* `Solidity Portal <https://soliditylang.org/>`_
-* `Solidity Changelog <https://github.com/ethereum/solidity/blob/develop/Changelog.md>`_
-* `Solidity Source Code on GitHub <https://github.com/ethereum/solidity/>`_
-* `Solidity Language Users Chat <https://matrix.to/#/#ethereum_solidity:gitter.im>`_
-* `Solidity Compiler Developers Chat <https://matrix.to/#/#ethereum_solidity-dev:gitter.im>`_
-* `Awesome Solidity <https://github.com/bkrem/awesome-solidity>`_
+* `Solidity website <https://soliditylang.org/>`_
+* `Solidity changelog <https://github.com/ethereum/solidity/blob/develop/Changelog.md>`_
+* `Solidity codebase on GitHub <https://github.com/ethereum/solidity/>`_
+* `Solidity language users chat <https://matrix.to/#/#ethereum_solidity:gitter.im>`_
+* `Solidity compiler developers chat <https://matrix.to/#/#ethereum_solidity-dev:gitter.im>`_
+* `awesome-solidity <https://github.com/bkrem/awesome-solidity>`_
 * `Solidity by Example <https://solidity-by-example.org/>`_
-* `Solidity Documentation Community Translations <https://github.com/solidity-docs>`_
+* `Solidity documentation community translations <https://github.com/solidity-docs>`_
 
 統合（Ethereum）開発環境
 ========================
 
-..     * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
-..         Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
 ..     * `Dapp <https://dapp.tools/>`_
 ..         Tool for building, testing and deploying smart contracts from the command-line.
 ..     * `Embark <https://framework.embarklabs.io/>`_
@@ -32,8 +30,14 @@
 ..     * `Remix <https://remix.ethereum.org/>`_
 ..         Browser-based IDE with integrated compiler and Solidity runtime environment without server-side components.
 
+* `Ape <https://docs.apeworx.io/ape>`_
+    A Python-based web3 development tool for compiling, testing, and interacting with smart contracts.
+
 * `Brownie <https://eth-brownie.readthedocs.io/en/stable/>`_
-    Ethereum Virtual Machineをターゲットとしたスマートコントラクトのための、Pythonベースの開発およびテストフレームワーク。
+    A Python-based development and testing framework for smart contracts targeting the Ethereum Virtual Machine.
+    💡 Note: As per the official docs, Brownie is no longer actively maintained.
+    Future releases may come sporadically - or never at all.
+    Check out Ape Framework (first in list) for all your python Ethereum development needs.
 
 * `Dapp <https://dapp.tools/>`_
     コマンドラインからスマートコントラクトを構築、テスト、デプロイするためのツール。
@@ -49,6 +53,9 @@
 
 * `Truffle <https://trufflesuite.com/truffle/>`_
     Ethereum開発フレームワーク。
+    💡 Note: Consensys announced the sunset of Truffle on September 21, 2023.
+    Current users may check out the migration path and available product support `here.
+    <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
 
 .. Editor Integrations
 
@@ -96,6 +103,7 @@
 
     * `Ethereum Remix Visual Studio Code extension <https://github.com/ethereum/remix-vscode>`_
         VS Code用のEthereum Remix拡張パック。
+        💡 Note: As per the official repository, this extension has been removed from the VSCODE marketplace and will be replaced by a dedicated stand-alone desktop application.
 
     * `Solidity Visual Studio Code extension, by Juan Blanco <https://juan.blanco.ws/solidity-contracts-in-visual-studio-code/>`_
         シンタックスハイライトとSolidityコンパイラを含むMicrosoft Visual Studio Code用のSolidityプラグイン。
@@ -108,6 +116,9 @@
 
     * `Truffle for VS Code <https://marketplace.visualstudio.com/items?itemName=trufflesuite-csi.truffle-vscode>`_
         EthereumおよびEVM互換のブロックチェーン上でのスマートコントラクトの構築、デバッグ、デプロイ。
+        💡 Note: This extension has built-in support for the Truffle Suite which is being sunset.
+        For information on ongoing support, migration options and FAQs, visit the `Consensys blog.
+        <https://consensys.io/blog/consensys-announces-the-sunset-of-truffle-and-ganache-and-new-hardhat>`_
 
 Solidityのツール
 ================
@@ -124,11 +135,17 @@ Solidityのツール
 * `abi-to-sol <https://github.com/gnidan/abi-to-sol>`_
     与えられたABI JSONからSolidityインターフェースソースを生成するツール。
 
+* `Aderyn <https://github.com/Cyfrin/aderyn>`_
+    Rust-based solidity smart contract static analyzer designed to help find vulnerabilities in Solidity code bases.
+
 * `Doxity <https://github.com/DigixGlobal/doxity>`_
     Solidityのためのドキュメントジェネレーター。
 
 .. * `Ethlint <https://github.com/duaraghav8/Ethlint>`_
 ..     Linter to identify and fix style and security issues in Solidity.
+
+* `ethdebug <https://github.com/ethdebug/format>`_
+    A standard debugging data format for smart contracts on Ethereum-compatible networks.
 
 * `Ethlint <https://github.com/duaraghav8/Ethlint>`_
     Solidityのスタイルとセキュリティの問題を特定し、修正するためのリンター。
@@ -139,12 +156,8 @@ Solidityのツール
 * `evmdis <https://github.com/Arachnid/evmdis>`_
     バイトコードに対して静的解析を行い、生のEVM操作よりも高い抽象度を提供するEVM逆アセンブラ。
 
-.. * `EVM Lab <https://github.com/ethereum/evmlab/>`_
-..     Rich tool package to interact with the EVM. Includes a VM, Etherchain API, and a trace-viewer with gas cost display.
-
 * `EVM Lab <https://github.com/ethereum/evmlab/>`_
-    EVMと対話するためのリッチなツールパッケージ。
-    VM、Etherchain API、ガスコストを表示するトレースビューアが含まれています。
+    A collection of tools to interact with the EVM. The package includes a VM, Etherchain API, and a trace-viewer with gas cost display.
 
 .. * `hevm <https://github.com/dapphub/dapptools/tree/master/src/hevm#readme>`_
 ..     EVM debugger and symbolic execution engine.
@@ -216,11 +229,17 @@ Solidityのツール
 * `Universal Mutator <https://github.com/agroce/universalmutator>`_
     設定可能なルールを持ち、SolidityとVyperをサポートする、突然変異生成のためのツール。
 
+* `Wake <https://github.com/Ackee-Blockchain/wake>`_
+    A Python-based Solidity development and testing framework with built-in vulnerability detectors.
+
 サードパーティのSolidityパーサーとグラマー
 ==========================================
 
 .. * `Solidity Parser for JavaScript <https://github.com/solidity-parser/parser>`_
 ..     A Solidity parser for JS built on top of a robust ANTLR4 grammar.
+
+Third-Party Solidity Parsers and Grammars
+=========================================
 
 * `Solidity Parser for JavaScript <https://github.com/solidity-parser/parser>`_
     堅牢なANTLR4文法の上に構築されたJS用のSolidityパーサー。

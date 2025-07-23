@@ -106,8 +106,10 @@ Solidityは、 ``try``/``catch`` 文の形での例外処理もサポートし�
 .. Due to the fact that the EVM considers a call to a non-existing contract to always succeed, Solidity uses the ``extcodesize`` opcode to check that the contract that is about to be called actually exists (it contains code) and causes an exception if it does not.
 .. This check is skipped if the return data will be decoded after the call and thus the ABI decoder will catch the case of a non-existing contract.
 
-EVMでは、存在しないコントラクトへの呼び出しは常に成功すると考えられているため、Solidityは ``extcodesize`` オペコードを使用して、呼び出されようとしているコントラクトが実際に存在する（コードが含まれている）かどうかをチェックし、存在しない場合は例外を発生させます。
-このチェックは、呼び出し後にリターンデータがデコードされる場合にはスキップされ、存在しないコントラクトのケースをABIデコーダがキャッチします。
+.. warning::
+    EVMでは、存在しないコントラクトへの呼び出しは常に成功すると考えられているため、Solidityは ``extcodesize`` オペコードを使用して、呼び出されようとしているコントラクトが実際に存在する（コードが含まれている）かどうかをチェックし、存在しない場合は例外を発生させます。
+
+    このチェックは、呼び出し後にリターンデータがデコードされる場合にはスキップされ、存在しないコントラクトのケースをABIデコーダがキャッチします。
 
 なお、コントラクトインスタンスではなく、アドレスを操作する :ref:`低レベル呼び出し<address_related>` の場合は、このチェックは行われません。
 
@@ -115,9 +117,21 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 ..     Be careful when using high-level calls to :ref:`precompiled contracts <precompiledContracts>`, since the compiler considers them non-existing according to the above logic even though they execute code and can return data.
 
-.. note::
+.. warning::
 
-    :ref:`プリコンパイル済みコントラクト<precompiledContracts>` のハイレベルな呼び出しを使用する際には、コードを実行してデータを返すことができるにもかかわらず、コンパイラは上記の論理に従ってそれらを存在しないものとみなすため、注意が必要です。
+    :ref:`プリコンパイル済みコントラクト <precompiledContracts>` のハイレベルな呼び出しを使用する際には、コードを実行してデータを返すことができるにもかかわらず、コンパイラは上記の論理に従ってそれらを存在しないものとみなすため、注意が必要です。
+
+.. note::
+    Since the version 0.8.10, the compiler does not check ``extcodesize`` on
+    high-level external calls if return data is expected, because an empty code
+    will be unable to return data, and the ABI decoder will revert.
+    As a consequence, this allows high-level external calls to precompiled
+    contracts, since they can return data despite having no code
+    associated with their addresses.
+
+    Read about :ref:`precompiled contracts <precompiledContracts>` and
+    :ref:`low-level calls <address_related>`
+    for more information.
 
 また、関数呼び出しは、呼び出されたコントラクト自身が例外を投げたり、ガス欠になったりした場合にも例外を発生させます。
 
@@ -240,6 +254,8 @@ EVMでは、存在しないコントラクトへの呼び出しは常に成功�
 
 例に見られるように、 ``value`` オプションを使用して ``D`` のインスタンスを作成中にEtherを送信することは可能ですが、ガスの量を制限できません。
 作成に失敗した場合（スタック不足、残高不足、その他の問題）、例外が発生します。
+
+.. _salted-contract-creations:
 
 ソルトされたコントラクト作成 / create2
 --------------------------------------

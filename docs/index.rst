@@ -27,7 +27,7 @@ Solidityやこのドキュメントを改善するためのアイデアはいつ
 
 .. Hint::
 
-   このドキュメントは、左下のバージョン表示メニューをクリックして、希望のダウンロード形式を選択すると、PDF、HTML、Epubのいずれかでダウンロードできます。
+   このドキュメントは、右下のバージョン表示メニューをクリックして、希望のダウンロード形式を選択すると、PDF、HTML、Epub のいずれかでダウンロードできます。
 
 
 はじめに
@@ -79,7 +79,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
 左下のフライアウトメニューをクリックし、好みの言語を選択することで言語を切り替えることができます。
 
-* `中国語 <https://docs.soliditylang.org/zh/latest/>`_
+* `中国語 <https://docs.soliditylang.org/zh-cn/latest/>`_
 * `フランス語 <https://docs.soliditylang.org/fr/latest/>`_
 * `インドネシア語 <https://github.com/solidity-docs/id-indonesian>`_
 * `日本語 <https://github.com/solidity-docs/ja-japanese>`_

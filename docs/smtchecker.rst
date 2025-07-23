@@ -1073,21 +1073,7 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   これをコンパイラの `コールバックメカニズム <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。
   これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
 
-.. - ``z3`` is available
-
-..   - if ``solc`` is compiled with it;
-
-..   - if a dynamic ``z3`` library of version >=4.8.x is installed in a Linux system (from Solidity 0.7.6);
-
-..   - statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler.
-
-- 以下の場合 ``z3`` が使えます。
-
-  -  ``solc`` がz3とともにコンパイルされている場合。
-
-  - Linuxシステムにバージョン>=4.8.xの動的 ``z3`` ライブラリがインストールされている場合（Solidity 0.7.6以降）。
-
-  -  ``soljson.js`` （Solidity 0.6.9 以降）では静的に、つまりコンパイラのJavaScriptバイナリを使用しています。
+- ``z3`` is available statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler. Otherwise it is used via its binary which must be installed in the system.
 
 .. note::
 
@@ -1218,9 +1204,9 @@ CHCエンジンは、内部関数の呼び出しをサポートするために�
 +-----------------------------------+--------------------------------------+
 |``addmod``, ``mulmod``             |Supported precisely.                  |
 +-----------------------------------+--------------------------------------+
-|``gasleft``, ``blockhash``,        |Abstracted with UF.                   |
-|``keccak256``, ``ecrecover``       |                                      |
-|``ripemd160``                      |                                      |
+|``gasleft``, ``blobhash``,         |Abstracted with UF.                   |
+|``blockhash``, ``keccak256``,      |                                      |
+|``ecrecover``, ``ripemd160``       |                                      |
 +-----------------------------------+--------------------------------------+
 |pure functions without             |Abstracted with UF                    |
 |implementation (external or        |                                      |

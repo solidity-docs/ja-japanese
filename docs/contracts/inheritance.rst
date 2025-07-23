@@ -597,7 +597,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
 .. Languages that allow multiple inheritance have to deal with
 .. several problems.  One is the `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_.
-.. Solidity is similar to Python in that it uses "`C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_"
+.. Solidity is similar to Python in that it uses C3 Linearization
 .. to force a specific order in the directed acyclic graph (DAG) of base classes. This
 .. results in the desirable property of monotonicity but
 .. disallows some inheritance graphs. Especially, the order in
@@ -608,7 +608,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
 多重継承が可能な言語は、いくつかの問題を抱えています。
 ひとつは「 `Diamond Problem <https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem>`_ 」です。
-SolidityはPythonに似ていますが、ベースクラスの有向非巡回グラフ（Directed Acyclic Graph; DAG）に特定の順序を強制するために「 `C3 Linearization <https://en.wikipedia.org/wiki/C3_linearization>`_ 」を使用しています。
+SolidityはPythonに似ていますが、ベースクラスの有向非巡回グラフ（Directed Acyclic Graph; DAG）に特定の順序を強制するために C3 Linearization を使用しています。
 この結果、単調性という望ましい特性が得られますが、いくつかの継承グラフが使えなくなります。
 特に、 ``is`` 指令でのベースクラスの順序は重要で、「最もベースに近いもの」から「最も派生したもの」の順に直接ベースコントラクトをリストアップする必要があります。
 この順序は、Pythonで使われている順序とは逆であることに注意してください。
