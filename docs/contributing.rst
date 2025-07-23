@@ -189,7 +189,7 @@ SMT テストを実行するには、 ``z3`` 実行ファイルが ``PATH`` に�
 .. ``./scripts/soltest.sh -t TestSuite/TestName``,
 .. where ``TestName`` can be a wildcard ``*``.
 
-テストのサブセットを実行するには、 ``./scripts/soltest.sh -t TestSuite/TestName``のようにフィルターを使うことができます。
+テストのサブセットを実行するには、 ``./scripts/soltest.sh -t TestSuite/TestName`` のようにフィルターを使うことができます。
 ``TestName`` にはワイルドカード ``*`` を指定できます。
 
 .. Or, for example, to run all the tests for the yul disambiguator:

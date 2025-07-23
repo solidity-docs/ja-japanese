@@ -71,7 +71,7 @@ Solidityのコントラクトは、オブジェクト指向言語のクラスに
 
 オーバーロード、つまり、同じモディファイア名で異なるパラメータを持つことはできません。
 
-関数と同様、モディファイアも :ref:`overridden <modifier-overriding>` にできます。
+関数と同様、モディファイアも :ref:`オーバーライド <modifier-overriding>` できます。
 
 .. code-block:: solidity
 

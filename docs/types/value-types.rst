@@ -847,7 +847,7 @@ Declaration syntax
 
 .. _function-type-value-stability-across-contract-updates:
 
-コントラクトの更新における値の安定性  
+コントラクトの更新における値の安定性
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. An important aspect to consider when using values of function types is whether the value will remain valid if the underlying code changes.
