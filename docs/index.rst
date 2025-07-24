@@ -77,7 +77,12 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 これらの言語は、完成度と最新度が異なります。
 正確な情報を得たい場合は、英語版を参考にしてください。
 
+<<<<<<< HEAD
 右下のフライアウトメニューをクリックし、好みの言語を選択することで言語を切り替えることができます。
+=======
+You can switch between languages by clicking on the flyout menu in the bottom-right corner
+and selecting the preferred language.
+>>>>>>> english/develop
 
 * `中国語 <https://docs.soliditylang.org/zh-cn/latest/>`_
 * `フランス語 <https://docs.soliditylang.org/fr/latest/>`_

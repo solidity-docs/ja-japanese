@@ -19,8 +19,12 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 * `Solidityフォーラム <https://forum.soliditylang.org/>`_ で言語の変更や新機能を提案やフィードバックの提供による言語設計プロセスへの関与。
 
+<<<<<<< HEAD
 .. To get started, you can try :ref:`building-from-source` in order to familiarize yourself with the components of Solidity and the build process.
 .. Also, it may be useful to become well-versed at writing smart-contracts in Solidity.
+=======
+The call takes place on `Jitsi <https://meet.solidity.org>`_.
+>>>>>>> english/develop
 
 まずは :ref:`building-from-source` を使って、Solidityのコンポーネントやビルドプロセスに慣れてみてください。
 また、Solidityでのスマートコントラクトの書き方を熟知することも有効でしょう。
