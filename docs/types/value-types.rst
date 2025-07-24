@@ -4,16 +4,13 @@
 値型
 ====
 
-.. The following are called value types because their variables will always be passed by value, i.e. they are always copied when they are used as function arguments or in assignments.
-
 下記で紹介するものは、変数が常に値で渡されるため、値型と呼ばれます。
 つまり、関数の引数や代入で使われるときは、常にコピーされます。
 
-Unlike :ref:`reference types <reference-types>`, value type declarations do not
-specify a data location since they are small enough to be stored on the stack.
-The only exception is :ref:`state variables <structure-state-variables>`.
-Those are by default located in storage, but can also be marked as
-:ref:`transient <transient-storage>`, :ref:`constant or immutable <constants>`.
+:ref:`参照型 <reference-types>` と異なり、値型の宣言ではデータロケーションを指定しません。  
+これは、値型がスタック上に格納できるほど小さいためです。
+唯一の例外は :ref:`状態変数 <structure-state-variables>` です。  
+状態変数はデフォルトでストレージに格納されますが、:ref:`transient <transient-storage>`、:ref:`constant あるいは immutable <constants>` として指定することも可能です。
 
 .. index:: ! bool, ! true, ! false
 
@@ -364,11 +361,19 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 なお、 ``addr.codehash`` は ``keccak256(addr.code)`` を使用するよりもコストが小さいです。
 
 .. warning::
-    The output of ``addr.codehash`` may be ``0`` if the account associated with ``addr`` is empty or non-existent
-    (i.e., it has no code, zero balance, and zero nonce as defined by `EIP-161 <https://eips.ethereum.org/EIPS/eip-161>`_).
-    If the account has no code but a non-zero balance or nonce, then ``addr.codehash`` will output the Keccak-256 hash of empty data
-    (i.e., ``keccak256("")`` which is equal to ``c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470``), as defined by
-    `EIP-1052 <https://eips.ethereum.org/EIPS/eip-1052>`_.
+    .. The output of ``addr.codehash`` may be ``0`` if the account associated with ``addr`` is empty or non-existent
+    .. (i.e., it has no code, zero balance, and zero nonce as defined by `EIP-161 <https://eips.ethereum.org/EIPS/eip-161>`_).
+    .. If the account has no code but a non-zero balance or nonce, then ``addr.codehash`` will output the Keccak-256 hash of empty data
+    .. (i.e., ``keccak256("")`` which is equal to ``c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470``), as defined by `EIP-1052 <https://eips.ethereum.org/EIPS/eip-1052>`_.
+
+    ``addr.codehash`` の出力は、``addr`` に関連付けられたアカウントが空または存在しない場合  
+    （すなわち、コードがなく、残高がゼロで、nonce もゼロである状態。これは `EIP-161 <https://eips.ethereum.org/EIPS/eip-161>`_ で定義されています）、  
+    ``0`` になることがあります。
+
+    アカウントにコードは存在しないが、残高または nonce がゼロでない場合、  
+    ``addr.codehash`` は空データに対する Keccak-256 ハッシュ（すなわち ``keccak256("")``）を返します。  
+    これは `EIP-1052 <https://eips.ethereum.org/EIPS/eip-1052>`_ で定義されており、  
+    その値は ``c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470`` です。
 
 .. note::
 
@@ -439,7 +444,9 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 
 .. note::
     
-    Prior to version 0.8.0, ``byte`` used to be an alias for ``bytes1``.
+    .. Prior to version 0.8.0, ``byte`` used to be an alias for ``bytes1``.
+
+    バージョン 0.8.0 より前では、 ``byte`` は ``bytes1`` のエイリアスとして使用されていました。
 
 .. index:: address, ! literal;address
 
@@ -739,19 +746,25 @@ Unicodeリテラル
 
 外部関数は、アドレスと関数シグネチャで構成されており、外部関数呼び出しを介して渡したり、外部関数呼び出しから返したりできます。
 
-Note that public functions of the current contract can be used both as an
-internal and as an external function. To use ``f`` as an internal function,
-just use ``f``, if you want to use its external form, use ``this.f``.
+.. Note that public functions of the current contract can be used both as an internal and as an external function.
+.. To use ``f`` as an internal function, just use ``f``, if you want to use its external form, use ``this.f``.
 
-If a function type variable is not initialised, calling it results
-in a :ref:`Panic error<assert-and-require>`. The same happens if you call a function after using ``delete``
-on it.
+現在のコントラクトの public 関数は、内部関数としても外部関数としても使用できることに注意してください。  
+``f`` を内部関数として使いたい場合はそのまま ``f`` を使用し、外部形式で使いたい場合は ``this.f`` を使います。
+
+.. If a function type variable is not initialised, calling it results in a :ref:`Panic error<assert-and-require>`.
+.. The same happens if you call a function after using ``delete`` on it.
+
+関数型の変数が初期化されていない状態で呼び出すと、:ref:`Panic エラー <assert-and-require>` が発生します。  
+同様に、``delete`` を使用して関数を削除した後に呼び出した場合も同じエラーが発生します。
 
 .. note::
-    Lambda or inline functions are planned but not yet supported.
+   ラムダ関数やインライン関数は将来的に対応が予定されていますが、現在はまだサポートされていません。
 
-Declaration syntax
-^^^^^^^^^^^^^^^^^^
+.. Declaration syntax
+
+宣言構文
+^^^^^^^^
 
 関数型は以下のように表記されます。
 
@@ -819,12 +832,17 @@ Declaration syntax
 .. TODO:
 
 .. warning::
-    Comparison of internal function pointers can have unexpected results in the legacy pipeline with the optimizer enabled,
-    as it can collapse identical functions into one, which will then lead to said function pointers comparing as equal instead of not.
-    Such comparisons are not advised, and will lead to the compiler issuing a warning, until the next breaking release (0.9.0),
-    when the warning will be upgraded to an error, thereby making such comparisons disallowed.
+    .. Comparison of internal function pointers can have unexpected results in the legacy pipeline with the optimizer enabled, as it can collapse identical functions into one, which will then lead to said function pointers comparing as equal instead of not.
+    .. Such comparisons are not advised, and will lead to the compiler issuing a warning, until the next breaking release (0.9.0), when the warning will be upgraded to an error, thereby making such comparisons disallowed.
 
-ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約<library-selectors>` の使用を必要とするため、除外されます。
+    最適化が有効な従来のパイプラインでは、内部関数ポインタの比較が予期しない結果をもたらすことがあります。  
+    これは、同一の関数が最適化によって統合されてしまい、本来は異なるはずの関数ポインタが等しいと評価される可能性があるためです。
+
+    このような比較は推奨されておらず、現在はコンパイラによって警告が出されます。  
+    次の後方互換性を破るリリース（0.9.0）ではこの警告はエラーに格上げされ、  
+    このような比較は許可されなくなります。
+
+ライブラリは、 ``delegatecall`` と :ref:`セレクタへの異なるABI規約 <library-selectors>` の使用を必要とするため、除外されます。
 インターフェースで宣言された関数は定義を持たないので、それを指し示すことも意味がありません。
 
 メンバー

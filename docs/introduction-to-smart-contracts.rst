@@ -34,8 +34,8 @@
 最初の行は、ソースコードがGPLバージョン3.0でライセンスされていることを示しています。
 このライセンス指定子は機械的に読み取り可能であり、ソースコードの公開がデフォルトとなっている環境では重要です。
 
-2行目では、ソースコードがSolidityバージョン0.4.16からバージョン0.9.0の前までのバージョンで書かれたものであることを示しています（バージョン0.9.0は含みません）。
-これは、コントラクトが新しい（破壊的変更があった）コンパイラのバージョンでコンパイルできないことを保証するためです。
+2行目では、ソースコードがバージョン0.4.16からバージョン0.9.0の前までのSolidityで書かれたものであることを示しています（バージョン0.9.0は含みません）。
+この指示は、コントラクトが新しい（破壊的変更があった）コンパイラのバージョンでコンパイルできないことを保証するためのものです。
 :ref:`pragma<pragma>` は、コンパイラに対してソースコードをどのように扱うかを規定する指示であり、Solidityに限らず一般的に使われているものです（例: `pragma once <https://en.wikipedia.org/wiki/Pragma_once>`_ ）。
 
 Solidityにおけるコントラクトとは、Ethereumブロックチェーン上の特定のアドレスに存在するコード（ *関数* ）とデータ（ *ステート* ）の集合です。
@@ -47,11 +47,11 @@ Solidityにおけるコントラクトとは、Ethereumブロックチェーン�
 現在のコントラクトのメンバ（状態変数など）にアクセスする場合、通常は ``this.`` という接頭辞を付けずに、その名前で直接アクセスします。
 他のいくつかの言語とは異なり、これを省略することは単なるスタイルの問題ではなく、メンバへのアクセス方法が全く異なるのです。
 
-このコントラクトを使えば、（Ethereumが構築したインフラにより）世界中の誰もがアクセス可能な1つの番号を誰もが保存できます。
-その番号の公開を防ぐ現実的な方法はないのです。
+このコントラクトを使えば、（Ethereumが構築したインフラにより）世界中の誰もがアクセス可能な1つの"値"を誰もが保存できます。
+その値の公開を防ぐ現実的な方法はないのです。
 ただし、この用途を除けば大したことはできません。
-誰もが ``set`` に別の値で再度コールをし、あなたの番号を上書きできますが、元の番号はブロックチェーンの履歴に保存されたままです。
-後で、自分だけが番号を変更できるようにアクセス制限をかける方法を見てみましょう。
+誰もが ``set`` に別の値で再度コールをし、あなたの値を上書きできますが、元の値はブロックチェーンの履歴に保存されたままです。
+後で、自分だけが値を変更できるようにアクセス制限をかける方法を見てみましょう。
 
 .. warning::
     Unicodeテキストを使用する際には、見た目が似ている（あるいは同じ）文字でもコードポイントが異なる場合があり、その場合は異なるバイト配列としてエンコードされるので注意が必要です。
@@ -381,8 +381,8 @@ EVMはレジスタマシンではなく、スタックマシンなので、す�
 それ以外の操作では、スタックから最上位の2要素（操作によっては1要素、またはそれ以上）を取り出し、その結果をスタックにプッシュします。
 もちろん、スタックの要素をストレージやメモリに移動させて、スタックに深くアクセスすることは可能ですが、最初にスタックの最上部を取り除かずに、スタックの深いところにある任意の要素にアクセスすることはできません。
 
-Calldata, Returndata, Code
-==========================
+コールデータ、リターンデータ、コード
+====================================
 
 .. There are also other data areas which are not as apparent as those discussed previously.
 .. However, they are routinely used during the execution of smart contract transactions.
@@ -396,9 +396,9 @@ Calldata, Returndata, Code
 .. If declared as ``memory``, the compiler will eagerly decode them into memory at the beginning of the function, while marking them as ``calldata`` means that this will be done lazily, only when accessed.
 .. Value types and ``storage`` pointers are decoded directly onto the stack.
 
-calldata 領域は、スマートコントラクトのトランザクションの一部として送信されるデータです。  
-たとえばコントラクトを作成する際、calldata には新しいコントラクトのコンストラクタコードが含まれます。  
-外部関数の引数は常に最初は ABI エンコードされた形式で calldata に格納され、その後に宣言で指定された場所にデコードされます。
+コールデータ領域は、スマートコントラクトのトランザクションの一部として送信されるデータです。  
+たとえばコントラクトを作成する際、コールデータには新しいコントラクトのコンストラクタコードが含まれます。  
+外部関数の引数は常に最初は ABI エンコードされた形式でコールデータに格納され、その後に宣言で指定された場所にデコードされます。
 引数が ``memory`` として宣言されている場合、コンパイラは関数の冒頭でそれらをメモリに即座にデコードします。  
 一方、 ``calldata`` として宣言された場合は、アクセスされたときに初めて遅延的にデコードされます。  
 値型や ``storage`` ポインタは、スタック上に直接デコードされます。
@@ -406,8 +406,8 @@ calldata 領域は、スマートコントラクトのトランザクション�
 .. The returndata is the way a smart contract can return a value after a call.
 .. In general, external Solidity functions use the ``return`` keyword to ABI-encode values into the returndata area.
 
-returndata は、スマートコントラクトが呼び出し後に値を返すための仕組みです。  
-通常、外部の Solidity 関数は ``return`` キーワードを使って、値を ABI エンコードし、この returndata 領域に格納します。
+リターンデータは、スマートコントラクトが呼び出し後に値を返すための仕組みです。  
+通常、外部の Solidity 関数は ``return`` キーワードを使って、値を ABI エンコードし、このリターンデータ領域に格納します。
 
 .. The code is the region where the EVM instructions of a smart contract are stored.
 .. Code is the bytes read, interpreted, and executed by the EVM during smart contract execution.
@@ -416,10 +416,10 @@ returndata は、スマートコントラクトが呼び出し後に値を返す
 .. All references to immutables are replaced with the values assigned to them.
 .. A similar process is performed for constants which have their expressions inlined in the places where they are referenced in the smart contract code.
 
-code は、スマートコントラクトの EVM 命令が格納されている領域です。  
-スマートコントラクトの実行中に、EVM はこの code 領域のバイト列を読み取り、解釈し、実行します。  
-code に格納された命令データは、コントラクトアカウントの状態フィールドの一部として永続的に保持されます。
-immutable 変数および constant 変数は code 領域に格納されます。  
+コードは、スマートコントラクトの EVM 命令が格納されている領域です。  
+スマートコントラクトの実行中に、EVM はこのコード領域のバイト列を読み取り、解釈し、実行します。  
+コード領域に格納された命令データは、コントラクトアカウントの状態フィールドの一部として永続的に保持されます。
+immutable 変数および constant 変数はコード領域に格納されます。  
 immutable への参照は、代入された値に置き換えられます。  
 constant についても同様に、定義された式がスマートコントラクトコード内の参照箇所にインライン展開されます。
 
@@ -432,7 +432,7 @@ EVMの命令セットは、コンセンサスの問題を引き起こす可能�
 すべての命令は、基本的なデータ型である256ビットのワード、またはメモリのスライス（または他のバイトアレイ）で動作します。
 通常の算術演算、ビット演算、論理演算、比較演算が可能です。
 条件付きおよび無条件のジャンプが可能です。
-さらにコントラクトでは、番号やタイムスタンプなど、現在のブロックの関連プロパティにアクセスできます。
+さらにコントラクトでは、ブロックナンバーやタイムスタンプなど、現在のブロックの関連プロパティにアクセスできます。
 
 完全なリストについては、インラインアセンブリのドキュメントの一部である :ref:`オペコードの一覧 <opcodes>` を参照してください。
 
@@ -511,7 +511,7 @@ create
 
     ``EVM >= Cancun`` 以降では、``selfdestruct`` はアカウント内のすべての Ether を指定された受取人に送信する **だけで**、コントラクト自体は破壊されません。  
     ただし、``selfdestruct`` をコントラクトの作成と同じトランザクション内で呼び出した場合は、Cancun ハードフォーク以前（つまり ``EVM <= Shanghai``）の挙動が維持され、  
-    そのコントラクトは破壊され、ストレージキー・コード・アカウント自体を含むすべてのデータが削除されます。  
+    そのコントラクトは破壊され、ストレージキー、コード、アカウント自体を含むすべてのデータが削除されます。  
     詳しくは `EIP-6780 <https://eips.ethereum.org/EIPS/eip-6780>`_ を参照してください。
 
     .. The new behaviour is the result of a network-wide change that affects all contracts present on

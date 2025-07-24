@@ -84,11 +84,13 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
     docker run ethereum/solc:stable --help
 
 .. note::
-    .. TODO
+    .. Specific compiler versions are supported as the Docker image tag such as ``ethereum/solc:0.8.23``.
+    .. We will be passing the ``stable`` tag here instead of specific version tag to ensure that users get
+    .. the latest version by default and avoid the issue of an out-of-date version.
 
-    Specific compiler versions are supported as the Docker image tag such as ``ethereum/solc:0.8.23``.
-    We will be passing the ``stable`` tag here instead of specific version tag to ensure that users get
-    the latest version by default and avoid the issue of an out-of-date version.
+    特定のコンパイラバージョンは ``ethereum/solc:0.8.23`` のように Docker イメージのタグとして指定できます。  
+    ここでは特定のバージョンタグの代わりに ``stable`` タグを使用することで、  
+    ユーザーがデフォルトで最新バージョンを取得できるようにし、古いバージョンによる問題を回避します。
 
 ホストマシンでSolidityのファイルをコンパイルするためにDockerイメージを使用するには、入出力用のローカルフォルダーをマウントし、コンパイルするコントラクトを指定します。
 例えば、以下のようになります:
@@ -139,11 +141,8 @@ nightlyバージョンは、以下のコマンドでインストールできま�
 `solidity <https://aur.archlinux.org/packages/solidity>`_ と `solidity-bin <https://aur.archlinux.org/packages/solidity-bin>`_ です。
 
 .. note::
-
-    .. Please be aware that `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_ packages are user-produced content and unofficial packages. Exercise caution when using them.
-
     `AUR <https://wiki.archlinux.org/title/Arch_User_Repository>`_ パッケージはユーザーが作成したコンテンツであり、非公式パッケージです。
-    使用するときは注意してください。
+    使用する際には注意してください。
 
 .. There is also a `snap package <https://snapcraft.io/solc>`_, however, it is **currently unmaintained**.
 .. It is installable in all the `supported Linux distros <https://snapcraft.io/docs/core/install>`_.

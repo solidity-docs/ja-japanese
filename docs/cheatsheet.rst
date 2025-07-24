@@ -78,7 +78,7 @@ ABIのエンコード関数とデコード関数
 
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）。
 
-- ``block.blobbasefee`` (``uint``): current block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_)
+- ``block.blobbasefee`` (``uint``): カレントブロックのブロブベースフィー（blob base fee）（ `EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ と `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_ ）。
 
 - ``block.chainid`` (``uint``): カレントブロックのチェーンID。
 
@@ -149,13 +149,9 @@ ABIのエンコード関数とデコード関数
 コントラクト関連
 ================
 
-.. TODO:
-
 - ``this`` （現在のコントラクトの型）: 現在のコントラクトで、 ``address`` または ``address payable`` に明示的に変換できるもの。
-
 - ``super``: 継承階層の1つ上の階層のコントラクト。
-
-- ``selfdestruct(address payable recipient)``: send all funds to the given address and (only on EVMs before Cancun or when invoked within the transaction creating the contract) destroy the contract.
+- ``selfdestruct(address payable recipient)``: すべての資金を指定されたアドレスに送金し、（Cancun 以前の EVM において、あるいは、コントラクトの作成トランザクション内で呼び出された場合に限り）コントラクトを破壊。
 
 .. index:: type;name, type;creationCode, type;runtimeCode, type;interfaceId, type;min, type;max
 

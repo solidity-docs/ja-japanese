@@ -369,10 +369,14 @@ ID ``0`` は、初期化されていない関数ポインタ用に予約され�
 このため、ストレージ内の内部関数ポインタの構築時にストレージへの書き込みが発生します。
 
 .. note::
-    The compiler is free to omit internal functions that are never explicitly referenced by name.
-    As a consequence, assigning to a function type variable in inline assembly does not guarantee
-    that the assigned value will be included in the internal dispatch.
-    The function must also be explicitly referenced elsewhere in the code.
+    .. The compiler is free to omit internal functions that are never explicitly referenced by name.
+    .. As a consequence, assigning to a function type variable in inline assembly does not guarantee that the assigned value will be included in the internal dispatch.
+    .. The function must also be explicitly referenced elsewhere in the code.
+
+    コンパイラは、名前によって明示的に参照されていない内部関数をできます。  
+    そのため、インラインアセンブリ内で関数型の変数に値を代入しても、その関数が内部ディスパッチに含まれるとは限りません。  
+    その関数はコードの他の箇所で明示的に参照されている必要があります。
+
 
 クリーンアップ
 --------------

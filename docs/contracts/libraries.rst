@@ -236,7 +236,7 @@ EVMでこれを実現するために、コントラクトから呼び出され�
 .. and storage pointers. For that reason, the function signatures used to compute the 4-byte selector are computed
 .. following an internal naming schema and arguments of types not supported in the contract ABI use an internal encoding.
 
-パブリックライブラリ関数や外部ライブラリ関数の外部呼び出しは可能ですが、そのような呼び出しのための呼び出し規約はSolidity内部のものとみなされ、通常の :ref:`コントラクトABI<ABI>` に指定されているものとは異なります。
+パブリックライブラリ関数や外部ライブラリ関数の外部呼び出しは可能ですが、そのような呼び出しのための呼び出し規約はSolidity内部のものとみなされ、通常の :ref:`コントラクトABI <ABI>` に指定されているものとは異なります。
 外部ライブラリ関数は、再帰的構造体やストレージポインタなど、外部コントラクト関数よりも多くの引数型をサポートしています。
 そのため、4バイトセレクタの計算に使用される関数シグネチャは、内部のネーミングスキーマに従って計算され、コントラクトABIでサポートされていない型の引数は、内部のエンコーディングを使用します。
 

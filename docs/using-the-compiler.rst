@@ -255,7 +255,7 @@ EVMのバージョンをターゲットに設定
 
 - ``petersburg``
 
-  - コンパイラの動作はconstantinopleの場合と同じです。
+  - コンパイラの動作は constantinople の場合と同じです。
 
 - ``istanbul``
 
@@ -278,22 +278,32 @@ EVMのバージョンをターゲットに設定
 
   .. - Introduces ``prevrandao()`` and ``block.prevrandao``, and changes the semantics of the now deprecated ``block.difficulty``, disallowing ``difficulty()`` in inline assembly (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_).
 
-  - ``prevrandao()``と ``block.prevrandao`` を導入し、現在では非推奨となっている ``block.difficulty`` のセマンティクスを変更し、インラインアセンブリの ``difficulty()`` を禁止しました（ `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ を参照してください）。
+  - ``prevrandao()`` と ``block.prevrandao`` を導入し、現在では非推奨となっている ``block.difficulty`` のセマンティクスを変更し、インラインアセンブリの ``difficulty()`` を禁止しました（ `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ を参照してください）。
 
 - ``shanghai``
 
   - ``push0`` の導入により、コードサイズが小さくなり、ガスが節約できるようになりました（ `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_ を参照）。
 
 - ``cancun``
-   - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
-   - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
-   - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
-   - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+
+  ..  - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
+  ..  - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+  ..  - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
+  ..  - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+
+  - ブロックの blob base fee（ `EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ および `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_）には、  
+    グローバル変数 ``block.blobbasefee`` またはインラインアセンブリの ``blobbasefee()`` を通じてアクセスできます。
+  - インラインアセンブリにおいて ``blobhash()`` が導入されており、  
+    トランザクションに関連付けられた blob の versioned hash を取得するための対応するグローバル関数も追加されています  
+    （ `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_ 参照）。
+  - アセンブリにて ``mcopy`` オペコードが使用可能になっています（ `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_ 参照）。
+  - アセンブリにて ``tstore`` および ``tload`` オペコードが使用可能になっています（ `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_ 参照）。
 
 - ``prague`` (**default**)
 
 - ``osaka`` (**experimental**)
-   - Experimental compilation to EOF is available starting from this version. (`EIP-7692 <https://eips.ethereum.org/EIPS/eip-7692>`_)
+
+   - このバージョンから、EOF への実験的なコンパイルが可能になりました（ `EIP-7692 <https://eips.ethereum.org/EIPS/eip-7692>`_ 参照）。
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:

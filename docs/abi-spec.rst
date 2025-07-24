@@ -51,9 +51,11 @@
 型
 ==
 
-.. TODO:
+.. Note that the library ABIs can take types different than below e.g. for non-storage structs.
+.. See :ref:`library selectors <library-selectors>` for details.
 
-Note that the library ABIs can take types different than below e.g. for non-storage structs. See :ref:`library selectors <library-selectors>` for details.
+ライブラリの ABI は、たとえばストレージ以外の構造体に対してなど、以下とは異なる型を取る場合があることに注意してください。  
+詳細は :ref:`library selectors <library-selectors>` を参照してください。
 
 次のような基本型があります。
 
