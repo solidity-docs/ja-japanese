@@ -39,7 +39,7 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 - 毎週水曜日の午後3時（CET/CEST）から。
 
-コールは `Jitsi <https://meet.ethereum.org/solidity>`_ で行われます。
+コールは `Jitsi <https://meet.solidity.org>`_ で行われます。
 
 イシューの報告方法
 ==================
