@@ -20,7 +20,7 @@ Solidityドキュメントの翻訳者のチャットは https://forum.solidityl
 次に、前回の同期PRの最終コミットハッシュから、今回の同期PRの最新コミットハッシュ間の差分を、Solidity本体のリポジトリ（このリポジトリではない）で、`git diff <old commit hash>..<new commit hash>`を実行して表示する。
 具体的なコミットハッシュは前回の同期PRの最後のコミットハッシュ（botによるコミットの直前）と、今回の同期PRの最後のコミットハッシュ（botによるコミットの直前）を使えば良い。
 
-そして、変更された各ファイルごとに、`gid diff`の結果画面で`/<file name>`コマンドで検索して変更点を調べる。
+そして、変更された各ファイルごとに、`git diff`の結果画面で`/<file name>`コマンドで検索して変更点を調べる。
 `git checkout <pr-commit-hash>` (`gh pr checkout sync-<version>-<commit hash>`, `gh pr checkout <ID>` 等) を用いて該当PRのブランチに切り替え、コンフリクトの対処や翻訳を行う。
 
 ### 環境構築の一例
