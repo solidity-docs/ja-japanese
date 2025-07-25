@@ -4,6 +4,7 @@ on:
   schedule:
     # Runs "at minute 44 past midnight on Mondays"
     - cron: "44 0 * * 1"
+  workflow_dispatch:
 
 env:
   BOT_USERNAME: soldocsbot
