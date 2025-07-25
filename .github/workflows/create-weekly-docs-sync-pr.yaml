@@ -56,14 +56,14 @@ jobs:
       - name: Load bot configuration from translation-bot.json in the translation repository
         id: bot-config
         run: |
-          bot/scripts/load-translation-bot-config.sh translation/translation-bot.json
+          bot/.github/scripts/load-translation-bot-config.sh translation/translation-bot.json
 
       - name: Prepare pull request title and description
         if: ${{ steps.bot-config.outputs.bot_disabled == 'false' }}
         run: |
           # Use the main repository checkout with tags to get them in `git describe` output.
           cd solidity/
-          ../bot/scripts/generate-pr-body.sh
+          ../bot/.github/scripts/generate-pr-body.sh
 
       - name: Check if sync branch already exists
         id: check-sync-branch
@@ -75,7 +75,7 @@ jobs:
           popd
 
           cd translation/
-          ../bot/scripts/check-remote-branch.sh "$sync_branch"
+          ../bot/.github/scripts/check-remote-branch.sh "$sync_branch"
 
       - name: Prepare pull request content
         if: ${{ steps.bot-config.outputs.bot_disabled == 'false' && steps.check-sync-branch.outputs.branch_exists == 'false' }}
@@ -84,10 +84,10 @@ jobs:
 
           # NOTE: The script will end up not creating a merge commit if there are no new upstream changes.
           # In that case we expect that the PR action will simply not create a PR.
-          ../bot/scripts/pull-and-resolve-english-changes.sh english/develop "$pr_title"
+          ../bot/.github/scripts/pull-and-resolve-english-changes.sh english/develop "$pr_title"
 
           if [[ ${{ steps.bot-config.outputs.randomly_assign_maintainers }} == 'true' ]]; then
-            ../bot/scripts/set-assignees.sh "ja-japanese"
+            ../bot/.github/scripts/set-assignees.sh "ja-japanese"
           fi
 
       - name: Remove this repository
