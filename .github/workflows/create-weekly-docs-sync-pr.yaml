@@ -14,11 +14,14 @@ env:
 jobs:
   createPullRequest:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Fetch translation repository
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ env.GITHUB_REPOSITORY_OWNER }}/ja-japanese
           # By default, checkout is fetching only the last commit. This will
           # cause "unrelated histories" error. "0" means unlimited fetch-depth.
@@ -46,7 +49,7 @@ jobs:
       - name: Fetch bot's repository
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           path: bot/
 
@@ -97,7 +100,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           path: translation/
-          token: "${{ secrets.PAT }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"
           commit-message: "${{ env.pr_title }}"
           committer: "${{ env.BOT_USERNAME }} <${{ env.BOT_EMAIL }}>"
           author: "${{ env.BOT_USERNAME }} <${{ env.BOT_EMAIL }}>"
