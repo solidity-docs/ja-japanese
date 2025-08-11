@@ -129,12 +129,18 @@ Reentrancyは、Ether送金だけでなく、別のコントラクトでのあ�
 ガスリミットとループ
 ====================
 
+<<<<<<< HEAD
 .. Loops that do not have a fixed number of iterations, for example, loops that depend on storage values, have to be used carefully:
 .. Due to the block gas limit, transactions can only consume a certain amount of gas.
 .. Either explicitly or just due to normal operation, the number of iterations in a loop can grow beyond the block gas limit which can cause the complete contract to be stalled at a certain point.
 .. This may not apply to ``view`` functions that are only executed to read data from the blockchain.
 .. Still, such functions may be called by other contracts as part of on-chain operations and stall those.
 .. Please be explicit about such cases in the documentation of your contracts.
+=======
+- Neither contracts nor "externally-owned accounts" are currently able to prevent someone from sending them Ether.
+  Contracts can react on and reject a regular transfer, but there are ways to move Ether without creating a message call.
+  One way is to simply "mine to" the contract address and the second way is using ``selfdestruct(x)``.
+>>>>>>> english/develop
 
 例えば、ストレージの値に依存するループなど、反復回数が固定されていないループは、慎重に使用する必要があります。
 ブロックガスリミットにより、トランザクションは一定量のガスしか消費できません。
