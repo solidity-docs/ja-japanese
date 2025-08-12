@@ -146,11 +146,11 @@ Reentrancyは、Ether送金だけでなく、別のコントラクトでのあ�
 Etherの送受信
 =============
 
-.. - Neither contracts nor "external accounts" are currently able to prevent that someone sends them Ether.
+.. - Neither contracts nor "externally-owned accounts" are currently able to prevent that someone sends them Ether.
 ..   Contracts can react on and reject a regular transfer, but there are ways to move Ether without creating a message call.
 ..   One way is to simply "mine to" the contract address and the second way is using ``selfdestruct(x)``.
 
-- コントラクトも「外部アカウント」も、誰かがEtherを送ってくるのを防ぐことは今のところできません。
+- コントラクトも「外部所有アカウント」も、誰かがEtherを送ってくるのを防ぐことは今のところできません。
   コントラクトは、通常の送金に反応して拒否できますが、メッセージコールを作成せずにEtherを移動する方法があります。
   ひとつはコントラクトのアドレスに単純に「マイニング」する方法で、もうひとつは ``selfdestruct(x)`` を使う方法です。
 

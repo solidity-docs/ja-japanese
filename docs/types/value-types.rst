@@ -236,7 +236,7 @@ Solidityでは、除算はゼロに向かって丸められます。
     変換の曖昧さを減らすために、バージョン0.4.24以降のコンパイラでは、変換時に切り捨てを明示することを強制するようになっています。
     例えば、32バイトの値 ``0x111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFFCCCC`` を考えてみましょう。
 
-    ``address(uint160(bytes20(b)))`` を使うと ``0x111122223333444455556666777788889999aAaa`` になり、 ``address(uint160(uint256(b)))`` を使うと ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc`` になります。
+    ``address(bytes20(b))`` を使うと ``0x111122223333444455556666777788889999aAaa`` になり、 ``address(uint160(uint256(b)))`` を使うと ``0x777788889999AaAAbBbbCcccddDdeeeEfFFfCcCc`` になります。
 
 .. note::
 
