@@ -111,16 +111,9 @@ Solidityにおけるコントラクトとは、Ethereumブロックチェーン�
 今回のコントラクトでは、いくつかの新しい概念が導入されています。
 それらを一つずつ見ていきましょう。
 
-<<<<<<< HEAD
 ``address public minter;`` という行は、 :ref:`address<address>` という型の状態変数を宣言しています。
 ``address`` 型は160ビットの値で、算術演算を行うことができません。
-コントラクトのアドレスや、 :ref:`外部アカウント<accounts>` に属するキーペアの公開鍵のハッシュを格納するのに適しています。
-=======
-The line ``address public minter;`` declares a state variable of type :ref:`address<address>`.
-The ``address`` type is a 160-bit value that does not allow any arithmetic operations.
-It is suitable for storing addresses of contracts, or a hash of the public half
-of a keypair belonging to :ref:`externally-owned accounts<accounts>`.
->>>>>>> english/develop
+コントラクトのアドレスや、 :ref:`外部所有アカウント <accounts>` に属するキーペアの公開鍵のハッシュを格納するのに適しています。
 
 キーワード ``public`` を指定すると、コントラクトの外部から状態変数の現在の値にアクセスできる関数が自動的に生成されます。
 このキーワードがないと、他のコントラクトはその変数にアクセスする方法がありません。
@@ -289,23 +282,10 @@ EVMはサンドボックス化されているだけでなく、完全に隔離�
 アカウント
 ==========
 
-<<<<<<< HEAD
 Ethereumには、同じアドレス空間を共有する2種類のアカウントがあります。
-それは、公開鍵と秘密鍵のペア（つまり人間）によって管理される **外部アカウント** と、アカウントと一緒に保存されているコードによって管理される **コントラクトアカウント** です。
+それは、公開鍵と秘密鍵のペア（つまり人間）によって管理される **外部所有アカウント** と、アカウントと一緒に保存されているコードによって管理される **コントラクトアカウント** です。
 
-外部アカウントのアドレスは公開鍵から決定されますが、コントラクトのアドレスはコントラクトが作成された時点で決定されます（作成者のアドレスとそのアドレスから送信されたトランザクションの数、いわゆる「nonce」から導き出されます）。
-=======
-There are two kinds of accounts in Ethereum which share the same
-address space: **Externally-owned accounts** that are controlled by
-public-private key pairs (i.e. humans) and **contract accounts** which are
-controlled by the code stored together with the account.
-
-The address of an externally-owned account is determined from
-the public key while the address of a contract is
-determined at the time the contract is created
-(it is derived from the creator address and the number
-of transactions sent from that address, the so-called "nonce").
->>>>>>> english/develop
+外部所有アカウントのアドレスは公開鍵から決定されますが、コントラクトのアドレスはコントラクトが作成された時点で決定されます（作成者のアドレスとそのアドレスから送信されたトランザクションの数、いわゆる「nonce」から導き出されます）。
 
 アカウントにコードが格納されているかどうかにかかわらず、EVMでは2つの型が同じように扱われます。
 
