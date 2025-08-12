@@ -1,4 +1,4 @@
-#  Japanese Translation of the Solidity Documentation
+# Japanese Translation of the Solidity Documentation
 
 Solidityドキュメントの日本語翻訳プロジェクトです。
 進捗状況は https://github.com/solidity-docs/ja-japanese/issues/1 で確認できます。
@@ -13,14 +13,16 @@ Solidityドキュメントの翻訳者のチャットは https://forum.solidityl
 
 ### 同期PRの対処の仕方
 
-基本的にGitHubのGUIだけでは難しい。
+[ethereum/solidity](https://github.com/ethereum/solidity) と同期するPRが定期的に作成される。
+
+基本的にGitHubのGUIだけでは翻訳するのは難しく、gitコマンドを使ったCUI操作が必要。
 
 まず、同期PRの「Files changed」から変更されたドキュメントのファイル一覧を見る。
 
-次に、前回の同期PRの最終コミットハッシュから、今回の同期PRの最新コミットハッシュ間の差分を、Solidity本体のリポジトリ（このリポジトリではない）で、`git diff <old commit hash>..<new commit hash>`を実行して表示する。
+次に、前回の同期PRの最終コミットハッシュから、今回の同期PRの最新コミットハッシュ間の差分を、オリジナルの ethereum/solidity リポジトリで、 `git diff <old commit hash>..<new commit hash>` を実行して表示する。
 具体的なコミットハッシュは前回の同期PRの最後のコミットハッシュ（botによるコミットの直前）と、今回の同期PRの最後のコミットハッシュ（botによるコミットの直前）を使えば良い。
 
-そして、変更された各ファイルごとに、`git diff`の結果画面で`/<file name>`コマンドで検索して変更点を調べる。
+そして、変更された各ファイルごとに、 `git diff` の結果画面で `/<file name>` コマンドで変更点を調べる。
 `gh pr checkout <pr-number>` 等を用いて該当PRのブランチに切り替え、コンフリクトの対処や翻訳を行う。
 
 ### 環境構築の一例
@@ -36,12 +38,14 @@ pip install -r docs/requirements.txt
 
 HTML:
 ```
+source venv/bin/activate.fish
 cd docs
 make html
 ```
 
 PDF:
 ```
+source venv/bin/activate.fish
 cd docs
 make latexpdf
 ```
