@@ -15,6 +15,7 @@
 * `awesome-solidity <https://github.com/bkrem/awesome-solidity>`_
 * `Solidity by Example <https://solidity-by-example.org/>`_
 * `Solidity documentation community translations <https://github.com/solidity-docs>`_
+* `Solidity and Smart Contract Glossary <https://www.cyfrin.io/glossary>`_
 
 統合（Ethereum）開発環境
 ========================
