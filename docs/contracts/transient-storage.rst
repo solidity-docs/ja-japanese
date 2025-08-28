@@ -6,14 +6,9 @@
 トランジェントストレージ
 ************************
 
-.. Transient storage is another data location besides memory, storage, calldata (and return-data and code) which was introduced alongside its respective opcodes ``TSTORE`` and ``TLOAD`` by `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_.
-.. This new data location behaves as a key-value store similar to storage with the main difference being that data in transient storage is not permanent, but is scoped to the current transaction only, after which it will be reset to zero.
-.. Since the content of transient storage has very limited lifetime and size, it does not need to be stored permanently as a part of state and the associated gas costs are much lower than in case of storage.
-.. EVM version ``cancun`` or newer is required for transient storage to be available.
-
 トランジェントストレージは、メモリ、ストレージ、コールデータ（およびリターンデータやコード）に加えて導入された新たなデータ領域であり、これは `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_ によって提案された ``TSTORE`` および ``TLOAD`` オペコードとともに導入されました。
-この新しいデータ領域は、ストレージと同様のキー・バリュー形式で動作しますが、最大の違いは、トランジェントストレージ内のデータは永続的ではなく、現在のトランザクションのスコープ内に限られ、トランザクション終了後にはゼロにリセットされるという点です。
-トランジェントストレージの内容は寿命もサイズも非常に限定されているため、状態の一部として永続的に保存する必要がなく、そのためストレージに比べて関連するガスコストも大幅に低くなっています。
+この新しいデータ領域は、ストレージと同様にKey-Valueストアとして動作しますが、最大の違いは、トランジェントストレージ内のデータは永続的ではなく、現在のトランザクションのスコープ内に限られ、トランザクション終了後にはゼロにリセットされるという点です。
+トランジェントストレージの内容はライフタイムもサイズも非常に限定されているため、状態の一部として永続的に保存する必要がなく、ストレージに比べて関連するガスコストも大幅に低くなっています。
 トランジェントストレージを利用するには、EVM バージョン ``cancun`` 以降が必要です。
 
 .. Transient storage variables cannot be initialized in place, i.e., they cannot be assigned to upon declaration, since the value would be cleared at the end of the creation transaction, rendering the initialization ineffective.
@@ -30,15 +25,14 @@
 .. It is also important to note that the values in transient storage are packed in the same fashion as those in persistent storage.
 .. See :ref:`Storage Layout <storage-inplace-encoding>` for more information.
 
-トランジェントストレージ変数はストレージとは完全に独立したアドレス空間を持っているため、  
-トランジェント状態変数の順序がストレージ状態変数のレイアウトに影響を与えることはなく、逆も同様です。
+トランジェントストレージ変数はストレージとは完全に独立したアドレス空間を持っているため、トランジェント状態変数の順序がストレージ状態変数のレイアウトに影響を与えることはなく、逆も同様です。
 ただし、すべての状態変数は同じ名前空間を共有するため、名前は重複できません。
 また、トランジェントストレージ内の値は、永続的なストレージと同様の方法でパックされる点にも注意が必要です。
 詳細は :ref:`ストレージレイアウト <storage-inplace-encoding>` を参照してください。
 
 .. Besides that, transient variables can have visibility as well and ``public`` ones will have a getter function generated automatically as usual.
 
-そのほか、トランジェント変数にもビジビリティを指定でき、 ``public`` な変数には通常通り自動で getter 関数が生成されます。
+そのほか、トランジェント変数にもビジビリティを指定でき、 ``public`` な変数には通常通り自動でゲッター関数が生成されます。
 
 .. Note that, currently, such use of ``transient`` as a data location is only allowed for :ref:`value type <value-types>` state variable declarations.
 .. Reference types, such as arrays, mappings and structs, as well as local or parameter variables are not yet supported.

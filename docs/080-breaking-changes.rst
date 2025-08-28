@@ -2,9 +2,6 @@
 Solidity v0.8.0の破壊的変更点
 *****************************
 
-.. This section highlights the main breaking changes introduced in Solidity version 0.8.0.
-.. For the full list check `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_.
-
 このセクションでは、Solidityのバージョン0.8.0で導入された主な変更点を紹介します。
 完全なリストは `リリースチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_ を参照してください。
 
@@ -15,44 +12,32 @@ Solidity v0.8.0の破壊的変更点
 
 .. This section lists changes where existing code changes its behavior without the compiler notifying you about it.
 
-このセクションでは、既存のコードがコンパイラーに通知されることなく動作を変更する変更点を示します。
+このセクションでは、コンパイラーからの通知なしに既存コードの動作が変わる変更点を列挙します。
 
-.. * Arithmetic operations revert on underflow and overflow.
-..   You can use ``unchecked { ... }`` to use the previous wrapping behavior.
+* 算術演算は、アンダーフロー時とオーバーフロー時にリバートします。
+  ``unchecked { ... }`` を使うと、従来のラップアラウンド挙動を用いることができます。
 
-..   Checks for overflow are very common, so we made them the default to increase readability of code, even if it comes at a slight increase of gas costs.
+  オーバーフロー検査は非常に一般的なため、少々ガス代が高くなってもコードの可読性を高めるためにデフォルトの挙動にしました。
 
-* 算術演算は、アンダーフローとオーバーフローでリバートします。
-  ``unchecked { ... }`` を使えば、以前の折り返し動作を使うことができます。
-
-  オーバーフローのチェックは非常に一般的なものなので、多少ガス代が高くなってもコードの可読性を高めるためにデフォルトにしました。
-
-.. * ABI coder v2 is activated by default.
-
-..   You can choose to use the old behavior using ``pragma abicoder v1;``.
-..   The pragma ``pragma experimental ABIEncoderV2;`` is still valid, but it is deprecated and has no effect.
-..   If you want to be explicit, please use ``pragma abicoder v2;`` instead.
-
-..   Note that ABI coder v2 supports more types than v1 and performs more sanity checks on the inputs.
 ..   ABI coder v2 makes some function calls more expensive and it can also make contract calls
 ..   revert that did not revert with ABI coder v1 when they contain data that does not conform to the
 ..   parameter types.
 
-* ABI coder v2はデフォルトで起動しています。
+* ABI coder v2はデフォルトで有効です。
 
-  ``pragma abicoder v1;`` を使って古い動作を選択できます。
-  プラグマ ``pragma experimental ABIEncoderV2;`` はまだ有効ですが、非推奨であり、効果はありません。
-  明示的にしたい場合は、代わりに ``pragma abicoder v2;`` を使用してください。
+  ``pragma abicoder v1;`` で旧来の動作を選択できます。
+  ``pragma experimental ABIEncoderV2;`` は引き続き有効ですが非推奨で、効果はありません。
+  明示したい場合は ``pragma abicoder v2;`` を使用してください。
 
-  ABI coder v2は、v1よりも多くの型をサポートし、入力に対してより多くのサニティチェックを行うことに注意してください。
-  ABI coder v2では、一部の関数呼び出しがより高価になり、また、パラメータの型に適合しないデータが含まれている場合、ABI coder v1ではリバートしなかったコントラクトコールがリバートすることがあります。
+  ABI coder v2はv1より多くの型をサポートし、入力に対してより厳密なサニティチェックを行います。
+  そのため一部の関数呼び出しはコストが高くなり、またパラメータ型に適合しないデータを含む場合、v1ではリバートしなかったコントラクト呼び出しがリバートすることがあります。
 
 .. * Exponentiation is right associative, i.e., the expression ``a**b**c`` is parsed as ``a**(b**c)``.
 ..   Before 0.8.0, it was parsed as ``(a**b)**c``.
 
 ..   This is the common way to parse the exponentiation operator.
 
-* つまり、 ``a**b**c`` という式は ``a**(b**c)`` として解析されます。
+* 累乗は右結合です。つまり、 ``a**b**c`` という式は ``a**(b**c)`` として解析されます。
   0.8.0以前は ``(a**b)**c`` と解析されていました。
 
   これは、指数演算子を解析する一般的な方法です。
@@ -66,9 +51,9 @@ Solidity v0.8.0の破壊的変更点
 ..   these situations from a revert on invalid input, like a failing ``require``.
 
 * ゼロ除算や算術オーバーフローなどの失敗したアサーションやその他の内部チェックは、invalid opcodeではなくrevert opcodeを使用します。
-  より具体的には、状況に応じたエラーコードを持つ ``Panic(uint256)`` への関数呼び出しと等しいエラーデータを使用します。
+  より具体的には、状況に応じたエラーコードを持つ ``Panic(uint256)`` への関数呼び出しと同一のエラーデータを返します。
 
-  これにより、エラー時のガスを節約できますが、静的解析ツールでは、このような状況を、 ``require`` の失敗のような無効な入力に対するリバートと区別できます。
+  これによりエラー時のガスが節約され、静的解析ツールはこれらの状況を ``require`` の失敗など無効な入力に対するリバートと区別できます。
 
 .. * If a byte array in storage is accessed whose length is encoded incorrectly, a panic is caused.
 ..   A contract cannot get into this situation unless inline assembly is used to modify the raw representation of storage byte arrays.
