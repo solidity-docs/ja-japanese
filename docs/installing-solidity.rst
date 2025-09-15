@@ -39,9 +39,17 @@ Remix
 
 *小規模なコントラクトやSolidityを短期間で習得するにはRemixをお勧めします。*
 
+<<<<<<< HEAD
 `Remixにオンラインでアクセスする <https://remix.ethereum.org/>`_ 場合、何もインストールする必要はありません。
 インターネットに接続せずに使用したい場合は、https://github.com/ethereum/remix-live/tree/gh-pages#readme に行き、そのページの指示に従ってください。
 Remixは、複数のSolidityバージョンをインストールせずにnightlyビルドをテストするのに便利なオプションでもあります。
+=======
+`Access Remix online <https://remix.ethereum.org/>`_, you do not need to install anything.
+If you want to use it without connection to the Internet, go to
+https://github.com/argotorg/remix-live/tree/gh-pages#readme and follow the instructions on that page.
+Remix is also a convenient option for testing nightly builds
+without installing multiple Solidity versions.
+>>>>>>> english/develop
 
 このページの他のオプションでは、お使いのコンピュータにコマンドラインのSolidityコンパイラソフトウェアをインストールする方法について説明しています。
 大規模なコントラクトに取り組む場合や、より多くのコンパイルオプションを必要とする場合は、コマンドラインコンパイラを選択してください。
@@ -51,10 +59,19 @@ Remixは、複数のSolidityバージョンをインストールせずにnightly
 npm / Node.js
 =============
 
+<<<<<<< HEAD
 ``solcjs`` プログラムは、Solidityのコンパイラである ``solcjs`` をインストールするための便利でポータブルな方法として使用します。
 また、 ``solcjs`` プログラムは、このページの下の方で説明されているコンパイラへのアクセス方法よりも機能が少なくなっています。
 :ref:`commandline-compiler` のドキュメントでは、フル機能のコンパイラである ``solc`` を使用していることを前提としています。
 ``solcjs`` の使い方は、独自の `リポジトリ <https://github.com/ethereum/solc-js>`_ の中で説明されています。
+=======
+Use ``npm`` for a convenient and portable way to install ``solcjs``, a Solidity compiler. The
+``solcjs`` program has fewer features than the ways to access the compiler described
+further down this page. The
+:ref:`commandline-compiler` documentation assumes you are using
+the full-featured compiler, ``solc``. The usage of ``solcjs`` is documented inside its own
+`repository <https://github.com/argotorg/solc-js>`_.
+>>>>>>> english/develop
 
 注: ``solc-js`` プロジェクトは、Emscriptenを使用してC++  ``solc`` から派生しており、両者は同じコンパイラのソースコードを使用しています。
 ``solc-js`` はJavaScriptプロジェクト（Remixなど）で直接使用できます。
@@ -115,7 +132,12 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
 Linuxパッケージ
 ===============
 
+<<<<<<< HEAD
 `solidity/releases <https://github.com/ethereum/solidity/releases>`_ ではSolidityのバイナリパッケージが用意されています。
+=======
+Binary packages of Solidity are available at
+`solidity/releases <https://github.com/argotorg/solidity/releases>`_.
+>>>>>>> english/develop
 
 また、Ubuntu用のPPAも用意しているので、以下のコマンドで最新のステーブル版を入手できます。
 
@@ -245,6 +267,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 これは次のことを意味します。
 
+<<<<<<< HEAD
 - 同じディレクトリに  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_  という名前でバイナリが置かれています。 このファイルはシンボリックリンクになっている可能性があるので、git を使ってダウンロードしていない場合やファイルシステムがシンボリックリンクをサポートしていない場合は、自分で解決する必要があります。
 
 - このバイナリは https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js にもミラーされています。この場合、git は必要ありません。シンボリックリンクは透過的に解決され、ファイルのコピーを提供するか HTTP リダイレクトを返します。
@@ -255,6 +278,23 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 - keccak256ハッシュを ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3`` と比較することで、バイナリの完全性を確認できます。ハッシュは、 `sha3sum`_ が提供する ``keccak256sum`` ユーティリティーを使ってコマンドラインで計算するか、JavaScriptで `keccak256() function   from ethereumjs-util`_ を使って計算できます。
 
 - また、sha256ハッシュを ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` と比較することで、バイナリの完全性を確認できます。
+=======
+- You can find the binary in the same directory under the name
+  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/argotorg/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
+  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
+  git to download it or your file system does not support symlinks.
+- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
+  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
+  of the file or returning a HTTP redirect.
+- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
+  Please, be aware that the order of items in the ``urls`` array is not predetermined or guaranteed and users should not rely on it.
+- You can verify the integrity of the binary by comparing its keccak256 hash to
+  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
+  on the command-line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
+  from ethereumjs-util`_ in JavaScript.
+- You can also verify the integrity of the binary by comparing its sha256 hash to
+  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -277,8 +317,8 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
     私たちがコントロールできない ``ethereum.github.io`` ドメインとは異なり、 ``binaries.soliditylang.org`` は長期的に機能し、同じURL構造を維持することが保証されています。
 
 .. _IPFS: https://ipfs.io
-.. _solc-bin: https://github.com/ethereum/solc-bin/
-.. _Solidity release page on GitHub: https://github.com/ethereum/solidity/releases
+.. _solc-bin: https://github.com/argotorg/solc-bin/
+.. _Solidity release page on GitHub: https://github.com/argotorg/solidity/releases
 .. _sha3sum: https://github.com/maandree/sha3sum
 .. _keccak256() function from ethereumjs-util: https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
 .. _WebAssembly builds: https://emscripten.org/docs/compiling/WebAssembly.html
@@ -328,11 +368,23 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
     ただし、この場合、SMT テストをスキップするために  ``scripts/tests.sh``  に  ``--no-smt``  オプションを渡すことを忘れないでください。
 
 .. note::
+<<<<<<< HEAD
     .. By default the build is performed in *pedantic mode*, which enables extra warnings and tells the compiler to treat all warnings as errors.
     .. This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
     .. If you are only interested in creating a release build and do not intend to modify the source code to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
     .. Doing this is not recommended for general use but may be necessary when using a toolchain we are not testing with or trying to build an older version with newer tools.
     .. If you encounter such warnings, please consider `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+=======
+    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
+    compiler to treat all warnings as errors.
+    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
+    If you are only interested in creating a release build and do not intend to modify the source code
+    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
+    Doing this is not recommended for general use but may be necessary when using a toolchain we are
+    not testing with or trying to build an older version with newer tools.
+    If you encounter such warnings, please consider
+    `reporting them <https://github.com/argotorg/solidity/issues/new>`_.
+>>>>>>> english/develop
 
     デフォルトでは、ビルドは *pedantic mode* で実行され、余分な警告を有効にし、すべての警告をエラーとして扱うようにコンパイラに指示します。
     これにより、開発者は警告が発生したときに修正することを余儀なくされ、「後で修正する」ことが蓄積されることがありません。
@@ -408,7 +460,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 
 .. code-block:: bash
 
-    git clone --recursive https://github.com/ethereum/solidity.git
+    git clone --recursive https://github.com/argotorg/solidity.git
     cd solidity
 
 もしSolidityの開発に協力したいのであれば、Solidityをフォークして、自分の個人的なフォークをセカンドリモートとして追加してください。
@@ -422,7 +474,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
     この方法では、プレリリースビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。
     リリースされたSolidityコンパイラを再構築したい場合は、GitHubのリリースページにあるソースtarballを使用してください。
 
-    https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
+    https://github.com/argotorg/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     （GitHubで提供されている「ソースコード」ではありません）。
 
