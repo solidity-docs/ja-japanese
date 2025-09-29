@@ -1073,6 +1073,15 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   これをコンパイラの `コールバックメカニズム <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。
   これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
 
+<<<<<<< HEAD
+=======
+- ``cvc5`` is used via its binary which must be installed in the system. Only BMC uses ``cvc5``.
+- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
+- ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
+  These can be used together with the compiler's `callback mechanism <https://github.com/argotorg/solc-js>`_ so that
+  any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
+  This can be used by both BMC and CHC depending on which solvers are called.
+>>>>>>> english/develop
 - ``z3`` is available statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler. Otherwise it is used via its binary which must be installed in the system.
 
 .. note::
