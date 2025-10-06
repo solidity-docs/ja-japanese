@@ -92,13 +92,15 @@ html_context = {
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx_a4doc',
+    'sphinx_syntax',
     'html_extra_template_renderer',
     'remix_code_links',
     'sphinx.ext.imgconverter',
 ]
 
-a4_base_path = os.path.dirname(__file__) + '/grammar'
+syntax_base_path = 'grammar'
+# generate link anchors compatible with Sphinx-A4Doc’s naming
+syntax_a4doc_compat_links = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -182,7 +184,8 @@ html_theme = 'sphinx_rtd_theme'
 # documentation.
 html_theme_options = {
     'logo_only': True,
-    'display_version': True,
+    'version_selector': True,
+    'language_selector': True,
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
