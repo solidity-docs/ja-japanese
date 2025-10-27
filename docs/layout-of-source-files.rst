@@ -124,10 +124,21 @@ ABIコーダーv2は実験的なものではなくなったので、Solidity 0.7
 SMTChecker
 ~~~~~~~~~~
 
+<<<<<<< HEAD
 このコンポーネントは、Solidityコンパイラのビルド時に有効にする必要があるため、すべてのSolidityバイナリで利用できるわけではありません。
 :ref:`build instructions<smt_solvers_build>` では、このオプションを有効にする方法を説明しています。
 ほとんどのバージョンのUbuntu PPAリリースでは有効になっていますが、Dockerイメージ、Windowsバイナリ、静的ビルドのLinuxバイナリでは有効になっていません。
 SMTソルバーがローカルにインストールされていて、ブラウザではなくnode経由でsolc-jsを実行している場合、 `smtCallback <https://github.com/ethereum/solc-js#example-usage-with-smtsolver-callback>`_ 経由でsolc-jsを有効にできます。
+=======
+This component has to be enabled when the Solidity compiler is built
+and therefore it is not available in all Solidity binaries.
+The :ref:`build instructions<smt_solvers_build>` explain how to activate this option.
+It is activated for the Ubuntu PPA releases in most versions,
+but not for the Docker images, Windows binaries or the
+statically-built Linux binaries. It can be activated for solc-js via the
+`smtCallback <https://github.com/argotorg/solc-js#example-usage-with-smtsolver-callback>`_ if you have an SMT solver
+installed locally and run solc-js via node (not via the browser).
+>>>>>>> english/develop
 
 ``pragma experimental SMTChecker;`` を使用する場合は、SMTソルバーへの問い合わせによって得られる追加の :ref:`safety warnings<formal_verification>` を取得します。
 このコンポーネントは、Solidity言語のすべての機能をサポートしておらず、多くの警告を出力する可能性があります。
