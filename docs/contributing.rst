@@ -7,7 +7,21 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 特に、以下の領域でのサポートに感謝します。
 
+<<<<<<< HEAD
 * イシューの報告。
+=======
+* Reporting issues.
+* Fixing and responding to `Solidity's GitHub issues
+  <https://github.com/argotorg/solidity/issues>`_, especially those tagged as
+  `"good first issue" <https://github.com/argotorg/solidity/labels/good%20first%20issue>`_ which are
+  meant as introductory issues for external contributors.
+* Improving the documentation.
+* `Translating <https://github.com/solidity-docs>`_ the documentation into more languages.
+* Responding to questions from other users on `StackExchange
+  <https://ethereum.stackexchange.com>`_ and the `Solidity Gitter Chat
+  <https://gitter.im/ethereum/solidity>`_.
+* Getting involved in the language design process by proposing language changes or new features in the `Solidity forum <https://forum.soliditylang.org/>`_ and providing feedback.
+>>>>>>> english/develop
 
 * `SolidityのGitHubイシュー <https://github.com/ethereum/solidity/issues>`_ （特に「 `good first issue <https://github.com/ethereum/solidity/labels/good%20first%20issue>`_ 」タグの付いた、外部の貢献者のための入門的なイシュー）の修正と対応。
 
@@ -25,7 +39,13 @@ Solidityに貢献するための選択肢はたくさんあります。
 まずは :ref:`building-from-source` を使って、Solidityのコンポーネントやビルドプロセスに慣れてみてください。
 また、Solidityでのスマートコントラクトの書き方を熟知することも有効でしょう。
 
+<<<<<<< HEAD
 .. Please note that this project is released with a `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_. By participating in this project — in the issues, pull requests, or Gitter channels — you agree to abide by its terms.
+=======
+To report an issue, please use the
+`GitHub issues tracker <https://github.com/argotorg/solidity/issues>`_. When
+reporting issues, please mention the following details:
+>>>>>>> english/develop
 
 このプロジェクトは `Contributor Code of Conduct <https://raw.githubusercontent.com/ethereum/solidity/develop/CODE_OF_CONDUCT.md>`_ 付きで公開されていることにご注意ください。
 イシュー、プルリクエスト、Gitterチャンネルなど、このプロジェクトに参加することで、その条件を守ることに同意したことになります。
@@ -51,6 +71,7 @@ Solidityに貢献するための選択肢はたくさんあります。
 問題を報告するには、 `GitHubイシュートラッカー <https://github.com/ethereum/solidity/issues>`_ を利用してください。
 報告の際には、以下の内容をお知らせください。
 
+<<<<<<< HEAD
 * Solidityのバージョン。
 * ソースコード（必要に応じて）。
 * オペレーティングシステム。
@@ -58,6 +79,15 @@ Solidityに貢献するための選択肢はたくさんあります。
 * 実際の挙動と期待される挙動の比較。
 
 .. Reducing the source code that caused the issue to a bare minimum is always very helpful and sometimes even clarifies a misunderstanding.
+=======
+Finally, please make sure you respect the `coding style
+<https://github.com/argotorg/solidity/blob/develop/CODING_STYLE.md>`_
+for this project. Also, even though we do CI testing, please test your code and
+ensure that it builds locally before submitting a pull request.
+
+We highly recommend going through our `review checklist <https://github.com/argotorg/solidity/blob/develop/ReviewChecklist.md>`_ before submitting the pull request.
+We thoroughly review every PR and will help you get it right, but there are many common problems that can be easily avoided, making the review much smoother.
+>>>>>>> english/develop
 
 イシューの原因となったソースコードを最小限に減らすことは、常に非常に役に立ち、時には誤解を解くことにもなります。
 
@@ -65,8 +95,15 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 言語設計に関する技術的な議論については、 `Solidity forum <https://forum.soliditylang.org/>`_ への投稿が正しい場所です（ :ref:`solidity_language_design` を参照してください）。
 
+<<<<<<< HEAD
 プルリクエストのワークフロー
 ============================
+=======
+For running all compiler tests you may want to optionally install a few
+dependencies (`evmone <https://github.com/ipsilon/evmone/releases>`_,
+`z3 <https://github.com/Z3Prover/z3>`_, `Eldarica <https://github.com/uuverifiers/eldarica/>`_,
+`cvc5 <https://github.com/cvc5/cvc5>`).
+>>>>>>> english/develop
 
 .. In order to contribute, please fork off of the ``develop`` branch and make your changes there.
 .. Your commit messages should detail *why* you made your change in addition to *what* you did (unless it is a tiny change).
@@ -82,7 +119,12 @@ Solidityに貢献するための選択肢はたくさんあります。
 
 .. Additionally, if you are writing a new feature, please ensure you add appropriate test cases under ``test/`` (see below).
 
+<<<<<<< HEAD
 また、新機能を書いている場合は、 ``test/`` の下に適切なテストケースを追加してください（下記を参照してください）。
+=======
+The test system automatically tries to discover the location of
+the `evmone <https://github.com/ipsilon/evmone/releases>`_ for running the semantic tests.
+>>>>>>> english/develop
 
 .. However, if you are making a larger change, please consult with the `Solidity Development Gitter channel <https://gitter.im/ethereum/solidity-dev>`_ (different from the one mentioned above — this one is focused on compiler and language development instead of language usage) first.
 
@@ -387,8 +429,15 @@ CIは、Emscriptenターゲットのコンパイルを必要とする追加の�
 コマンドラインテスト
 --------------------
 
+<<<<<<< HEAD
 .. Our suite of end-to-end command-line tests checks the behaviour of the compiler binary as a whole in various scenarios.
 .. These tests are located in `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_, one per subdirectory, and can be executed using the ``cmdlineTests.sh`` script.
+=======
+Our suite of end-to-end command-line tests checks the behaviour of the compiler binary as a whole
+in various scenarios.
+These tests are located in `test/cmdlineTests/ <https://github.com/argotorg/solidity/tree/develop/test/cmdlineTests>`_,
+one per subdirectory, and can be executed using the ``cmdlineTests.sh`` script.
+>>>>>>> english/develop
 
 エンドツーエンドのコマンドラインテストスイートは、様々なシナリオにおけるコンパイラバイナリ全体の動作をチェックします。
 これらのテストは `test/cmdlineTests/ <https://github.com/ethereum/solidity/tree/develop/test/cmdlineTests>`_ にサブディレクトリごとに1つずつあり、 ``cmdlineTests.sh`` スクリプトを使って実行できます。
@@ -760,13 +809,25 @@ Solidityの言語設計
 
 言語設計のプロセスに積極的に参加し、Solidityの将来に関するアイデアを共有するには、 `Solidityフォーラム <https://forum.soliditylang.org/>`_ に参加してください。
 
+<<<<<<< HEAD
 .. The Solidity forum serves as the place to propose and discuss new language features and their implementation in the early stages of ideation or modifications of existing features.
+=======
+As soon as proposals get more tangible, their
+implementation will also be discussed in the `Solidity GitHub repository <https://github.com/argotorg/solidity>`_
+in the form of issues.
+>>>>>>> english/develop
 
 Solidityフォーラムは、新しい言語機能やその実装のアイデアの初期段階や、既存の機能の修正を提案し、議論する場として機能しています。
 
 .. As soon as proposals get more tangible, their implementation will also be discussed in the `Solidity GitHub repository <https://github.com/ethereum/solidity>`_ in the form of issues.
 
+<<<<<<< HEAD
 提案が具体的になれば、その実現に向けて `SolidityのGitHubリポジトリ <https://github.com/ethereum/solidity>`_ でもイシューという形で議論されます。
+=======
+If you want to know where the team is standing in terms of implementing new features, you can follow the implementation status in the `Solidity GitHub project <https://github.com/orgs/argotorg/projects/38>`_.
+Issues in the design backlog need further specification and will either be discussed in a language design call or in a regular team call. You can
+see the upcoming changes for the next breaking release by changing from the default branch (`develop`) to the `breaking branch <https://github.com/argotorg/solidity/tree/breaking>`_.
+>>>>>>> english/develop
 
 .. In addition to the forum and issue discussions, we regularly host language design discussion calls in which selected topics, issues or feature implementations are debated in detail.
 .. The invitation to those calls is shared via the forum.
