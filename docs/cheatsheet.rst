@@ -52,6 +52,7 @@ ABIのエンコード関数とデコード関数
 ``address`` のメンバー
 ======================
 
+<<<<<<< HEAD
 .. TODO:
 
 - ``<address>.balance`` (``uint256``): :ref:`address` の残高（Wei）
@@ -62,6 +63,20 @@ ABIのエンコード関数とデコード関数
 - ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: issue low-level ``STATICCALL`` with the given payload, returns success condition and return data
 - ``<address payable>.send(uint256 amount) returns (bool)``: 指定した量のWeiを :ref:`address` に送り、失敗したら ``false`` を返します。
 - ``<address payable>.transfer(uint256 amount)``: 指定した量のWeiを :ref:`address` に送り、失敗したらリバートします。
+=======
+- ``<address>.balance`` (``uint256``): balance of the :ref:`address` in Wei
+- ``<address>.code`` (``bytes memory``): code at the :ref:`address` (can be empty)
+- ``<address>.codehash`` (``bytes32``): the codehash of the :ref:`address`
+- ``<address>.call(bytes memory) returns (bool, bytes memory)``: issue low-level ``CALL`` with the given payload,
+  returns success condition and return data
+- ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``: issue low-level ``DELEGATECALL`` with the given payload,
+  returns success condition and return data
+- ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: issue low-level ``STATICCALL`` with the given payload,
+  returns success condition and return data
+- ``<address payable>.send(uint256 amount) returns (bool)``: send given amount of Wei to :ref:`address`,
+  returns ``false`` on failure (deprecated)
+- ``<address payable>.transfer(uint256 amount)``: send given amount of Wei to :ref:`address`, throws on failure (deprecated)
+>>>>>>> english/develop
 
 .. index:: blockhash, blobhash, block, block;basefee, block;blobbasefee, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
 .. index:: gasleft, msg;data, msg;sender, msg;sig, msg;value, tx;gasprice, tx;origin
