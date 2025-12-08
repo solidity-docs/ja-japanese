@@ -12,9 +12,18 @@ Solidityコンパイラのインストール
 .. In addition, patch-level releases with major release 0 (i.e. 0.x.y) will not contain breaking changes.
 .. That means code that compiles with version 0.x.y can be expected to compile with 0.x.z where z > y.
 
+<<<<<<< HEAD
 Solidityのバージョンは `セマンティックバージョニング <https://semver.org>`_ に従っています。
 さらに、メジャーリリース0（つまり0.x.y）のパッチレベルのリリースには、破壊的な変更が含まれません。
 つまり、バージョン0.x.yでコンパイルされたコードは、0.x.z（z > y）でコンパイルされることが期待できます。
+=======
+In addition to releases, we provide **prereleases** and **nightly development builds** to make it
+easy for developers to try out upcoming features and provide early feedback.
+Note that such builds contain bleeding-edge code from the development branch and are not guaranteed
+to be of the same quality as full releases.
+Despite our best efforts, they might contain undocumented and/or broken changes that will not
+become a part of an actual release. They are not meant for production use.
+>>>>>>> english/develop
 
 .. In addition to releases, we provide **nightly development builds** to make it easy for developers to try out upcoming features and provide early feedback.
 .. Note, however, that while the nightly builds are usually very stable, they contain bleeding-edge code from the development branch and are not guaranteed to be always working.
@@ -51,10 +60,19 @@ Remixは、複数のSolidityバージョンをインストールせずにnightly
 npm / Node.js
 =============
 
+<<<<<<< HEAD
 ``solcjs`` プログラムは、Solidityのコンパイラである ``solcjs`` をインストールするための便利でポータブルな方法として使用します。
 また、 ``solcjs`` プログラムは、このページの下の方で説明されているコンパイラへのアクセス方法よりも機能が少なくなっています。
 :ref:`commandline-compiler` のドキュメントでは、フル機能のコンパイラである ``solc`` を使用していることを前提としています。
 ``solcjs`` の使い方は、独自の `リポジトリ <https://github.com/ethereum/solc-js>`_ の中で説明されています。
+=======
+Use ``npm`` for a convenient and portable way to install ``solcjs``, a Solidity compiler. The
+``solcjs`` program has fewer features than the ways to access the compiler described
+further down this page. The
+:ref:`commandline-compiler` documentation assumes you are using
+the full-featured compiler, ``solc``. The usage of ``solcjs`` is documented inside its own
+`repository <https://github.com/argotorg/solc-js>`_.
+>>>>>>> english/develop
 
 注: ``solc-js`` プロジェクトは、Emscriptenを使用してC++  ``solc`` から派生しており、両者は同じコンパイラのソースコードを使用しています。
 ``solc-js`` はJavaScriptプロジェクト（Remixなど）で直接使用できます。
@@ -73,24 +91,35 @@ npm / Node.js
 Docker
 ======
 
+<<<<<<< HEAD
 SolidityのビルドのDockerイメージは、 ``ethereum`` オーガナイゼーションの ``solc`` イメージを使って利用できます。
 最新のリリースバージョンには ``stable`` タグを、 ``develop`` ブランチの不安定な可能性のある変更には ``nightly`` タグを使用してください。
+=======
+Docker images of Solidity builds are available using the `solc <https://github.com/argotorg/solidity/pkgs/container/solc>`_ image from the argotorg organization on ghcr.io.
+Use the ``stable`` tag for the latest released version, and ``nightly`` for potentially unstable changes in the ``develop`` branch.
+>>>>>>> english/develop
 
 Dockerイメージはコンパイラ実行ファイルを実行するので、すべてのコンパイラ引数を渡すことができます。
 例えば、以下のコマンドは、ステーブル版の ``solc`` イメージ（まだ持っていない場合）を取り出し、 ``--help`` 引数を渡して新しいコンテナで実行します。
 
 .. code-block:: bash
 
-    docker run ethereum/solc:stable --help
+    docker run ghcr.io/argotorg/solc:stable --help
 
 .. note::
     .. Specific compiler versions are supported as the Docker image tag such as ``ethereum/solc:0.8.23``.
     .. We will be passing the ``stable`` tag here instead of specific version tag to ensure that users get
     .. the latest version by default and avoid the issue of an out-of-date version.
 
+<<<<<<< HEAD
     特定のコンパイラバージョンは ``ethereum/solc:0.8.23`` のように Docker イメージのタグとして指定できます。
     ここでは特定のバージョンタグの代わりに ``stable`` タグを使用することで、  
     ユーザーがデフォルトで最新バージョンを取得できるようにし、古いバージョンによる問題を回避します。
+=======
+    Specific compiler versions are supported as the Docker image tag such as ``ghcr.io/argotorg/solc:0.8.23``.
+    We will be passing the ``stable`` tag here instead of specific version tag to ensure that users get
+    the latest version by default and avoid the issue of an out-of-date version.
+>>>>>>> english/develop
 
 ホストマシンでSolidityのファイルをコンパイルするためにDockerイメージを使用するには、入出力用のローカルフォルダーをマウントし、コンパイルするコントラクトを指定します。
 例えば、以下のようになります:
@@ -99,7 +128,7 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
 
     docker run \
         --volume "/tmp/some/local/path/:/sources/" \
-        ethereum/solc:stable \
+        ghcr.io/argotorg/solc:stable \
             /sources/Contract.sol \
             --abi \
             --bin \
@@ -110,11 +139,12 @@ Dockerイメージはコンパイラ実行ファイルを実行するので、�
 
 .. code-block:: bash
 
-    docker run ethereum/solc:stable --standard-json < input.json > output.json
+    docker run ghcr.io/argotorg/solc:stable --standard-json < input.json > output.json
 
 Linuxパッケージ
 ===============
 
+<<<<<<< HEAD
 `solidity/releases <https://github.com/ethereum/solidity/releases>`_ ではSolidityのバイナリパッケージが用意されています。
 
 また、Ubuntu用のPPAも用意しているので、以下のコマンドで最新のステーブル版を入手できます。
@@ -133,6 +163,14 @@ nightlyバージョンは、以下のコマンドでインストールできま�
     sudo add-apt-repository ppa:ethereum/ethereum-dev
     sudo apt-get update
     sudo apt-get install solc
+=======
+Binary packages of Solidity are available at
+`solidity/releases <https://github.com/argotorg/solidity/releases>`_.
+
+Ubuntu packages for versions up to 0.8.30 are available in the
+`ethereum/ethereum PPA <https://launchpad.net/~ethereum/+archive/ubuntu/ethereum>`_.
+However, we have discontinued this distribution method and future versions will not be added there.
+>>>>>>> english/develop
 
 さらに、一部のLinuxディストリビューションでは、独自のパッケージが提供されています。
 これらのパッケージは私たちが直接メンテナンスしているわけではありませんが、基本的にそれぞれのパッケージメンテナによって最新に保たれています。
@@ -245,6 +283,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 これは次のことを意味します。
 
+<<<<<<< HEAD
 - 同じディレクトリに  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/ethereum/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_  という名前でバイナリが置かれています。 このファイルはシンボリックリンクになっている可能性があるので、git を使ってダウンロードしていない場合やファイルシステムがシンボリックリンクをサポートしていない場合は、自分で解決する必要があります。
 
 - このバイナリは https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js にもミラーされています。この場合、git は必要ありません。シンボリックリンクは透過的に解決され、ファイルのコピーを提供するか HTTP リダイレクトを返します。
@@ -255,6 +294,23 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 - keccak256ハッシュを ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3`` と比較することで、バイナリの完全性を確認できます。ハッシュは、 `sha3sum`_ が提供する ``keccak256sum`` ユーティリティーを使ってコマンドラインで計算するか、JavaScriptで `keccak256() function   from ethereumjs-util`_ を使って計算できます。
 
 - また、sha256ハッシュを ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2`` と比較することで、バイナリの完全性を確認できます。
+=======
+- You can find the binary in the same directory under the name
+  `solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js <https://github.com/argotorg/solc-bin/blob/gh-pages/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js>`_.
+  Note that the file might be a symlink, and you will need to resolve it yourself if you are not using
+  git to download it or your file system does not support symlinks.
+- The binary is also mirrored at https://binaries.soliditylang.org/emscripten-wasm32/solc-emscripten-wasm32-v0.7.4+commit.3f05b770.js.
+  In this case git is not necessary and symlinks are resolved transparently, either by serving a copy
+  of the file or returning a HTTP redirect.
+- The file is also available on IPFS at `QmTLs5MuLEWXQkths41HiACoXDiH8zxyqBHGFDRSzVE5CS`_.
+  Please, be aware that the order of items in the ``urls`` array is not predetermined or guaranteed and users should not rely on it.
+- You can verify the integrity of the binary by comparing its keccak256 hash to
+  ``0x300330ecd127756b824aa13e843cb1f43c473cb22eaf3750d5fb9c99279af8c3``.  The hash can be computed
+  on the command-line using ``keccak256sum`` utility provided by `sha3sum`_ or `keccak256() function
+  from ethereumjs-util`_ in JavaScript.
+- You can also verify the integrity of the binary by comparing its sha256 hash to
+  ``0x2b55ed5fec4d9625b6c7b3ab1abd2b7fb7dd2a9c68543bf0323db2c7e2d55af2``.
+>>>>>>> english/develop
 
 .. warning::
 
@@ -270,15 +326,28 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 
 .. warning::
 
+<<<<<<< HEAD
     バイナリは https://ethereum.github.io/solc-bin/ にもありますが、このページはバージョン0.7.2のリリース直後に更新が停止しており、プラットフォームを問わず、新しいリリースやnightlyビルドを受け取ることはなく、また、非emscripten のビルドを含む新しいディレクトリ構造にも対応していません。
 
     使用している場合は、ドロップインで置き換え可能な https://binaries.soliditylang.org に切り替えてください。
     これにより、基盤となるホスティングの変更を透明性のある方法で行い、混乱を最小限に抑えることができます。
     私たちがコントロールできない ``ethereum.github.io`` ドメインとは異なり、 ``binaries.soliditylang.org`` は長期的に機能し、同じURL構造を維持することが保証されています。
+=======
+    The binaries are also available at https://argotorg.github.io/solc-bin/ but this page
+    stopped being updated just after the release of version 0.7.2, will not receive any new releases
+    or nightly builds for any platform and does not serve the new directory structure, including
+    non-emscripten builds.
+
+    If you are using it, please switch to https://binaries.soliditylang.org, which is a drop-in
+    replacement. This allows us to make changes to the underlying hosting in a transparent way and
+    minimize disruption. Unlike the ``argotorg.github.io`` domain, which we do not have any control
+    over, ``binaries.soliditylang.org`` is guaranteed to work and maintain the same URL structure
+    in the long-term.
+>>>>>>> english/develop
 
 .. _IPFS: https://ipfs.io
-.. _solc-bin: https://github.com/ethereum/solc-bin/
-.. _Solidity release page on GitHub: https://github.com/ethereum/solidity/releases
+.. _solc-bin: https://github.com/argotorg/solc-bin/
+.. _Solidity release page on GitHub: https://github.com/argotorg/solidity/releases
 .. _sha3sum: https://github.com/maandree/sha3sum
 .. _keccak256() function from ethereumjs-util: https://github.com/ethereumjs/ethereumjs-util/blob/master/docs/modules/_hash_.md#const-keccak256
 .. _WebAssembly builds: https://emscripten.org/docs/compiling/WebAssembly.html
@@ -292,6 +361,7 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 前提知識 - 全オペレーティングシステム共通
 -----------------------------------------
 
+<<<<<<< HEAD
 以下は、Solidityのすべてのビルドに依存しています。
 
 +----------------------------------------------------------+-------------------------------------------------------+
@@ -305,6 +375,23 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 +----------------------------------------------------------+-------------------------------------------------------+
 | `z3`_ (バージョン4.8.16+, オプション)                    | SMTチェッカーと併用する場合。                         |
 +----------------------------------------------------------+-------------------------------------------------------+
+=======
+.. Note: This has to be kept in sync with `scripts/ci/install_and_check_minimum_requirements.sh`.
+
++-----------------------------------+-------------------------------------------------------+
+| Software                          | Notes                                                 |
++===================================+=======================================================+
+| `CMake`_ (version 3.21.3+ on      | Cross-platform build file generator.                  |
+| Windows, 3.13+ otherwise)         |                                                       |
++-----------------------------------+-------------------------------------------------------+
+| `Boost`_ (version 1.77+ on        | C++ libraries.                                        |
+| Windows, 1.83+ otherwise)         |                                                       |
++-----------------------------------+-------------------------------------------------------+
+| `Git`_                            | Command-line tool for retrieving source code.         |
++-----------------------------------+-------------------------------------------------------+
+| `z3`_ (version 4.8.16+, Optional) | For use with SMT checker.                             |
++-----------------------------------+-------------------------------------------------------+
+>>>>>>> english/develop
 
 .. _Git: https://git-scm.com/download
 .. _Boost: https://www.boost.org
@@ -328,11 +415,23 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
     ただし、この場合、SMT テストをスキップするために  ``scripts/tests.sh``  に  ``--no-smt``  オプションを渡すことを忘れないでください。
 
 .. note::
+<<<<<<< HEAD
     .. By default the build is performed in *pedantic mode*, which enables extra warnings and tells the compiler to treat all warnings as errors.
     .. This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
     .. If you are only interested in creating a release build and do not intend to modify the source code to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
     .. Doing this is not recommended for general use but may be necessary when using a toolchain we are not testing with or trying to build an older version with newer tools.
     .. If you encounter such warnings, please consider `reporting them <https://github.com/ethereum/solidity/issues/new>`_.
+=======
+    By default the build is performed in *pedantic mode*, which enables extra warnings and tells the
+    compiler to treat all warnings as errors.
+    This forces developers to fix warnings as they arise, so they do not accumulate "to be fixed later".
+    If you are only interested in creating a release build and do not intend to modify the source code
+    to deal with such warnings, you can pass ``-DPEDANTIC=OFF`` option to CMake to disable this mode.
+    Doing this is not recommended for general use but may be necessary when using a toolchain we are
+    not testing with or trying to build an older version with newer tools.
+    If you encounter such warnings, please consider
+    `reporting them <https://github.com/argotorg/solidity/issues/new>`_.
+>>>>>>> english/develop
 
     デフォルトでは、ビルドは *pedantic mode* で実行され、余分な警告を有効にし、すべての警告をエラーとして扱うようにコンパイラに指示します。
     これにより、開発者は警告が発生したときに修正することを余儀なくされ、「後で修正する」ことが蓄積されることがありません。
@@ -343,7 +442,15 @@ Solidityの特定のバージョンが必要な場合は、Githubから直接Hom
 最小コンパイラバージョン
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+<<<<<<< HEAD
 以下のC++コンパイラとその最小バージョンでSolidityのコードベースを構築できます。
+=======
+.. Note: Minimum versions for GCC and Clang are based on availability in Ubuntu 24.04.
+
+- `GCC <https://gcc.gnu.org>`_, version 13.3+
+- `Clang <https://clang.llvm.org/>`_, version 18.1.3+
+- `MSVC <https://visualstudio.microsoft.com/vs/>`_, version 2019+
+>>>>>>> english/develop
 
 -  `GCC <https://gcc.gnu.org>`_ 、バージョン11以上
 -  `Clang <https://clang.llvm.org/>`_ 、バージョン14以上
@@ -408,7 +515,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
 
 .. code-block:: bash
 
-    git clone --recursive https://github.com/ethereum/solidity.git
+    git clone --recursive https://github.com/argotorg/solidity.git
     cd solidity
 
 もしSolidityの開発に協力したいのであれば、Solidityをフォークして、自分の個人的なフォークをセカンドリモートとして追加してください。
@@ -422,7 +529,7 @@ Visual Studio 2019は、IDEと必要なコンパイラとライブラリの両�
     この方法では、プレリリースビルドの結果、そのようなコンパイラで生成された各バイトコードにフラグが設定されるなどの問題が発生します。
     リリースされたSolidityコンパイラを再構築したい場合は、GitHubのリリースページにあるソースtarballを使用してください。
 
-    https://github.com/ethereum/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
+    https://github.com/argotorg/solidity/releases/download/v0.X.Y/solidity_0.X.Y.tar.gz
 
     （GitHubで提供されている「ソースコード」ではありません）。
 
@@ -496,29 +603,52 @@ Solidity はオプションで SMT ソルバー（ ``z3``、 ``cvc5``、 ``Eldar
 
 Solidityバージョンの文字列は、4つの部分で構成されています。
 
+<<<<<<< HEAD
 - バージョン番号
 - プレリリースのタグ。通常は ``develop.YYYY.MM.DD`` または ``nightly.YYYY.MM.DD`` に設定されています。
 - コミット。フォーマットは ``commit.GITHASH`` です。
 - プラットフォーム。任意の数の項目を持ち、プラットフォームとコンパイラに関する詳細を含むます。
+=======
+- the version number
+- pre-release tag, usually set to ``develop.YYYY.MM.DD``, ``pre.N`` or ``nightly.YYYY.MM.DD``
+- commit in the format of ``commit.GITHASH``
+- platform, which has an arbitrary number of items, containing details about the platform and compiler
+>>>>>>> english/develop
 
 ローカルに変更があった場合、そのコミットは ``.mod`` でポストフィックスされます。
 
 これらのパーツはSemVerの要求に応じて組み合わせられます。
 SolidityのプレリリースタグはSemVerのプレリリースに相当し、Solidityのコミットとプラットフォームを組み合わせてSemverのビルドメタデータを構成します。
 
+<<<<<<< HEAD
 リリース例: ``0.4.8+commit.60cc1668.Emscripten.clang``。
 
 プレリリースの例: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``。
+=======
+Examples:
+
+- release: ``0.4.8+commit.60cc1668.Emscripten.clang``
+- pre-release: ``0.4.9-pre.3+commit.fb60450bc.Emscripten.clang``
+- nightly build: ``0.4.9-nightly.2017.1.17+commit.6ecb4aa3.Emscripten.clang``
+>>>>>>> english/develop
 
 バージョニングについての重要な情報
 ==================================
 
+<<<<<<< HEAD
 リリースが行われた後、パッチレベルの変更のみが続くと想定されるため、パッチのバージョンレベルをバンプさせています。
 変更がマージされたときには、SemVerと変更の重要度に応じてバージョンを上げる必要があります。
 最後に、リリースは常に現在のnightlyビルドのバージョンで作成されますが、 ``prerelease`` 指定子はありません。
+=======
+After a release is made, the patch version level is bumped, because we assume that only
+patch level changes follow. When changes are merged, the version should be bumped according
+to SemVer and the severity of the change. Finally, a release is always made with the version
+of the current build, but without the ``prerelease`` specifier.
+>>>>>>> english/develop
 
 例:
 
+<<<<<<< HEAD
 1. 0.4.0のリリースを行います。
 2. nightlyビルドのバージョンが今後0.4.1になります。
 3. 非破壊的な変更があった場合 --> バージョンの変更なし。
@@ -526,3 +656,12 @@ SolidityのプレリリースタグはSemVerのプレリリースに相当し、
 5. 0.5.0のリリースを行います。
 
 この動作は :ref:`version pragma <version_pragma>` と相性が良いです。
+=======
+1. The 0.4.0 release is made.
+2. Nightly builds and preerelases have a version of 0.4.1 from now on.
+3. Non-breaking changes are introduced --> no change in version.
+4. A breaking change is introduced --> version is bumped to 0.5.0.
+5. The 0.5.0 release is made.
+
+This behavior works well with the :ref:`version pragma <version_pragma>`.
+>>>>>>> english/develop
