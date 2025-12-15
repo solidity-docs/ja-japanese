@@ -2,8 +2,15 @@
 Solidity v0.8.0の破壊的変更点
 *****************************
 
+<<<<<<< HEAD
 このセクションでは、Solidityのバージョン0.8.0で導入された主な変更点を紹介します。
 完全なリストは `リリースチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.8.0>`_ を参照してください。
+=======
+This section highlights the main breaking changes introduced in Solidity
+version 0.8.0.
+For the full list check
+`the release changelog <https://github.com/argotorg/solidity/releases/tag/v0.8.0>`_.
+>>>>>>> english/develop
 
 .. Silent Changes of the Semantics
 
