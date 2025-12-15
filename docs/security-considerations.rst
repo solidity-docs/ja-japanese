@@ -66,15 +66,26 @@ Reentrancy
         mapping(address => uint) shares;
         /// シェアを引き出す
         function withdraw() public {
+        // This will report a warning (deprecation)
             if (payable(msg.sender).send(shares[msg.sender]))
                 shares[msg.sender] = 0;
         }
     }
 
+<<<<<<< HEAD
 この問題は、 ``send`` にガス制限があるため、それほど深刻ではありませんが、それでも脆弱性があります。
 Etherの送金には常にコードの実行が含まれるため、受信者は ``withdraw`` にコールバックするコントラクトになる可能性があります。
 これにより、複数回の払い戻しが可能となり、基本的にはコントラクト内のすべてのEtherを回収できます。
 特に、以下のコントラクトは、デフォルトで残りのガスをすべて送金する ``call`` を使用しているため、攻撃者は複数回返金できます。
+=======
+The problem is not too serious here because of the limited gas as part of ``send``,
+but it still exposes a weakness:
+Ether transfer can always include code execution,
+so the recipient could be a contract that calls back into ``withdraw``.
+This would let it get multiple refunds and, basically, retrieve all the Ether in the contract.
+In particular, the following contract will allow an attacker to refund multiple times
+as it uses ``call`` which does not limit the amount of gas that is forwarded by default:
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -98,7 +109,7 @@ Re-entrancyを避けるために、以下のようなChecks-Effects-Interactions
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.6.0 <0.9.0;
+    pragma solidity >=0.6.2 <0.9.0;
 
     contract Fund {
         /// @dev Etherシェアのマッピング
@@ -107,7 +118,8 @@ Re-entrancyを避けるために、以下のようなChecks-Effects-Interactions
         function withdraw() public {
             uint share = shares[msg.sender];
             shares[msg.sender] = 0;
-            payable(msg.sender).transfer(share);
+            (bool success, ) = payable(msg.sender).call{value: share}("");
+            require(success);
         }
     }
 
@@ -143,8 +155,18 @@ Reentrancyは、Ether送金だけでなく、別のコントラクトでのあ�
 それでも、そのような関数はオンチェーン操作の一部として他のコントラクトから呼び出され、それらを引き伸ばすことができます。
 このようなケースについては、コントラクトのドキュメントで明示してください。
 
+<<<<<<< HEAD
 Etherの送受信
 =============
+=======
+- There is a way to forward more gas to the receiving contract using ``addr.call{value: x}("")``.
+  This is essentially the same as ``addr.transfer(x)``, only that it forwards all remaining gas,
+  subject to additional limits imposed by some EVM versions (such as the `63/64th rule <https://eips.ethereum.org/EIPS/eip-150>`_
+  introduced by ``tangerineWhistle``), and opens up the ability for the recipient to perform more expensive actions
+  (and it returns a failure code instead of automatically propagating the error).
+  This might include calling back into the sending contract or other state changes you might not have thought of.
+  So it allows for great flexibility for honest users but also for malicious actors.
+>>>>>>> english/develop
 
 .. - Neither contracts nor "externally-owned accounts" are currently able to prevent that someone sends them Ether.
 ..   Contracts can react on and reject a regular transfer, but there are ways to move Ether without creating a message call.
@@ -293,6 +315,7 @@ tx.origin
         function transferTo(address payable dest, uint amount) public {
             // バグはここにあります。tx.originの代わりにmsg.senderを使用する必要があります。
             require(tx.origin == owner);
+            // This will report a warning (deprecation)
             dest.transfer(amount);
         }
     }
