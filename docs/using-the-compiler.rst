@@ -285,6 +285,7 @@ EVMのバージョンをターゲットに設定
   - ``push0`` の導入により、コードサイズが小さくなり、ガスが節約できるようになりました（ `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_ を参照）。
 
 - ``cancun``
+<<<<<<< HEAD
 
   ..  - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
   ..  - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
@@ -304,6 +305,15 @@ EVMのバージョンをターゲットに設定
 - ``osaka`` (**experimental**)
 
    - このバージョンから、EOF への実験的なコンパイルが可能になりました（ `EIP-7692 <https://eips.ethereum.org/EIPS/eip-7692>`_ 参照）。
+=======
+   - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
+   - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+   - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
+   - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+- ``prague``
+- ``osaka`` (**default**)
+   - ``clz`` builtin function is available in inline assembly. (`EIP-7939 <https://eips.ethereum.org/EIPS/eip-7939>`_)
+>>>>>>> english/develop
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -483,10 +493,11 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         // Version of the EVM to compile for (optional).
         // Affects type checking and code generation. Can be homestead,
         // tangerineWhistle, spuriousDragon, byzantium, constantinople,
-        // petersburg, istanbul, berlin, london, paris, shanghai, cancun, prague (default) or osaka (experimental).
-        "evmVersion": "prague",
+        // petersburg, istanbul, berlin, london, paris, shanghai, cancun, prague or osaka (default).
+        "evmVersion": "osaka",
         // EVM Object Format version to compile for (optional, experimental).
         // Currently the only valid value is 1. If not specified, legacy non-EOF bytecode will be generated.
+        // Requires `evmVersion` >= osaka.
         "eofVersion": null,
         // Optional: Change compilation pipeline to go through the Yul intermediate representation.
         // This is false by default.
