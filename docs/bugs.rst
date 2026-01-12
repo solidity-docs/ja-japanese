@@ -6,6 +6,7 @@
 既知のバグのリスト
 ##################
 
+<<<<<<< HEAD
 .. Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
 .. Solidity compiler. The file itself is hosted in the `GitHub repository
 .. <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_.
@@ -15,6 +16,17 @@
 以下に、Solidityコンパイラのセキュリティ関連の既知のバグをJSON形式でリストアップしています。
 このファイルは  `GitHubリポジトリ <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_  にあります。
 このリストはバージョン0.3.0までさかのぼりますが、それ以前のバージョンにしか存在しないことがわかっているバグはリストに含まれていません。
+=======
+Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
+Solidity compiler. The file itself is hosted in the `GitHub repository
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs.json>`_.
+The list stretches back as far as version 0.3.0, bugs known to be present only
+in versions preceding that are not listed.
+
+There is another file called `bugs_by_version.json
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs_by_version.json>`_,
+which can be used to check which bugs affect a specific version of the compiler.
+>>>>>>> english/develop
 
 .. There is another file called `bugs_by_version.json
 .. <https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_,
