@@ -335,8 +335,14 @@ stringのメンバー
 
 .. _address_related:
 
+<<<<<<< HEAD
 アドレス型のメンバー
 --------------------
+=======
+Members of Address Types
+------------------------
+These members are explained in more detail in the section on :ref:`members of address <members-of-addresses>`.
+>>>>>>> english/develop
 
 ``<address>.balance`` (``uint256``)
     :ref:`address` のWei残高
@@ -355,7 +361,12 @@ stringのメンバー
     指定された量のWeiを :ref:`address` に送り、失敗すると ``false`` を返します。
     2300ガスのみ使用可能（調整不可）。
 
+.. warning::
+    ``send()`` and ``transfer()`` are deprecated and scheduled for removal.
+    See the section on :ref:`send <send-address-member>` and :ref:`transfer <balance-transfer-address-members>` for more information.
+
 ``<address>.call(bytes memory) returns (bool, bytes memory)``
+<<<<<<< HEAD
     与えたペイロードで低レベルの ``CALL`` を発行し、成功条件とリターンデータを返します。
     利用可能なすべてのガスを送金できる（調整可能）。
 
@@ -366,6 +377,18 @@ stringのメンバー
 ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
     与えたペイロードで低レベルの ``STATICCALL`` を発行し、成功条件とリターンデータを返します。
     利用可能なすべてのガスを送金できる（調整可能）。
+=======
+    issue low-level ``CALL`` with the given payload, returns success condition and return data,
+    forwards all available gas (subject to additional limits imposed by some EVM versions), adjustable
+
+``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``
+    issue low-level ``DELEGATECALL`` with the given payload, returns success condition and return data,
+    forwards all available gas (subject to additional limits imposed by some EVM versions), adjustable
+
+``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
+    issue low-level ``STATICCALL`` with the given payload, returns success condition and return data,
+    forwards all available gas (subject to additional limits imposed by some EVM versions), adjustable
+>>>>>>> english/develop
 
 詳しくは、 :ref:`address` の項を参照してください。
 
