@@ -11,7 +11,12 @@
 .. - Optimizing transformations on the Yul IR code.
 .. - Optimizations at the opcode level.
 
+<<<<<<< HEAD
 Solidity コンパイラは、以下の3つの異なるレベルで最適化を行います（実行順）:
+=======
+The opcode-based optimizer applies a set of `simplification rules <https://github.com/argotorg/solidity/blob/develop/libevmasm/RuleList.h>`_
+to opcodes. It also combines equal code sets and removes unused code.
+>>>>>>> english/develop
 
 - Solidity コードを直接解析して行うコード生成時の最適化
 - Yul 中間表現（IR）に対する変換ベースの最適化
