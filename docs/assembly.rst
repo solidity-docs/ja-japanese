@@ -469,12 +469,18 @@ Solidityの複数のバージョンで互換性のあるライブラリを開発
         ...
     }
 
+<<<<<<< HEAD
 .. Note that we will disallow the annotation via comment in a future breaking release; so, if you are not concerned with backward-compatibility with older compiler versions, prefer using the dialect string.
 
 なお、コメントによるアノテーションは、将来のブレーキングリリースで禁止する予定です。
 したがって、古いコンパイラのバージョンとの後方互換性にこだわらない場合は、方言文字列を使用することをお勧めします。
 
 .. TODO:
+=======
+.. warning::
+    The ``memory-safe-assembly`` special comment is deprecated and scheduled for removal.
+    In new code targeting recent compilers, use the assembly block annotation.
+>>>>>>> english/develop
 
 Advanced Safe Use of Memory
 ---------------------------
