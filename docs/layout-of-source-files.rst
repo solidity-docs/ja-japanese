@@ -76,6 +76,7 @@ ABIコーダーpragma
 
 ``pragma abicoder v1`` または ``pragma abicoder v2`` を使用すると、ABIエンコーダおよびデコーダの2つの実装を選択できます。
 
+<<<<<<< HEAD
 .. Apart from supporting more types, it involves more extensive validation and safety checks, which may result in higher gas costs, but also heightened security.
 .. It is considered non-experimental as of Solidity 0.6.0 and it is enabled by default starting with Solidity 0.8.0.
 .. The old ABI coder can still be selected using ``pragma abicoder v1;``.
@@ -90,6 +91,26 @@ Solidity 0.6.0の時点では非実験的とみなされ、Solidity 0.8.0から�
 逆は、 ``abicoder v2`` ではないコントラクトが、新しいエンコーダでのみサポートされている型のデコードを必要とするような呼び出しを行わない限り可能です。
 コンパイラはこれを検知してエラーを出します。
 コントラクトで ``abicoder v2`` を有効にするだけで、このエラーは解消されます。
+=======
+The new ABI coder (v2) is able to encode and decode arbitrarily nested
+arrays and structs. Apart from supporting more types, it involves more extensive
+validation and safety checks, which may result in higher gas costs, but also heightened
+security.
+It is considered non-experimental as of Solidity 0.6.0 and it is enabled by default starting
+with Solidity 0.8.0. The old ABI coder can still be selected using ``pragma abicoder v1;``.
+
+.. warning::
+  The ABI coder v1 is deprecated and scheduled for removal.
+  Use ABI coder v2 instead.
+
+The set of types supported by the new encoder is a strict superset of
+the ones supported by the old one. Contracts that use it can interact with ones
+that do not without limitations. The reverse is possible only as long as the
+non-``abicoder v2`` contract does not try to make calls that would require
+decoding types only supported by the new encoder. The compiler can detect this
+and will issue an error. Simply enabling ``abicoder v2`` for your contract is
+enough to make the error go away.
+>>>>>>> english/develop
 
 .. note::
 
@@ -124,6 +145,7 @@ ABIコーダーv2は実験的なものではなくなったので、Solidity 0.7
 SMTChecker
 ~~~~~~~~~~
 
+<<<<<<< HEAD
 このコンポーネントは、Solidityコンパイラのビルド時に有効にする必要があるため、すべてのSolidityバイナリで利用できるわけではありません。
 :ref:`build instructions<smt_solvers_build>` では、このオプションを有効にする方法を説明しています。
 ほとんどのバージョンのUbuntu PPAリリースでは有効になっていますが、Dockerイメージ、Windowsバイナリ、静的ビルドのLinuxバイナリでは有効になっていません。
@@ -132,6 +154,19 @@ SMTソルバーがローカルにインストールされていて、ブラウ�
 ``pragma experimental SMTChecker;`` を使用する場合は、SMTソルバーへの問い合わせによって得られる追加の :ref:`safety warnings<formal_verification>` を取得します。
 このコンポーネントは、Solidity言語のすべての機能をサポートしておらず、多くの警告を出力する可能性があります。
 サポートされていない機能が報告された場合、解析が完全にはうまくいかない可能性があります。
+=======
+If you use ``pragma experimental SMTChecker;``, then you get additional
+:ref:`safety warnings<formal_verification>` which are obtained by querying an
+SMT solver.
+The component does not yet support all features of the Solidity language and
+likely outputs many warnings. In case it reports unsupported features, the
+analysis may not be fully sound.
+>>>>>>> english/develop
+
+.. note::
+
+    The ``SMTChecker`` pragma is deprecated and will be removed.
+    To enable SMTChecker, simply select :ref:`select an engine<smtchecker_engines>` when invoking the compiler.
 
 .. index:: source file, ! import, module, source unit
 
