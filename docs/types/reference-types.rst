@@ -655,7 +655,7 @@ Solidityでは、構造体の形で新しい型を定義する方法を提供し
 .. code-block:: solidity
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.6.0 <0.9.0;
+    pragma solidity >=0.6.2 <0.9.0;
 
     // 2つのフィールドを持つ新しい型を定義します。
     // 構造体をコントラクトの外部で宣言すると、複数のコントラクトで共有できるようになります。
@@ -701,8 +701,8 @@ Solidityでは、構造体の形で新しい型を定義する方法を提供し
                 return false;
             uint amount = c.amount;
             c.amount = 0;
-            c.beneficiary.transfer(amount);
-            return true;
+            (bool success, ) = c.beneficiary.call{value: amount}("");
+            return success;
         }
     }
 
