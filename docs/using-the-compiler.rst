@@ -285,6 +285,7 @@ EVMのバージョンをターゲットに設定
   - ``push0`` の導入により、コードサイズが小さくなり、ガスが節約できるようになりました（ `EIP-3855 <https://eips.ethereum.org/EIPS/eip-3855>`_ を参照）。
 
 - ``cancun``
+<<<<<<< HEAD
 
   ..  - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
   ..  - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
@@ -304,6 +305,15 @@ EVMのバージョンをターゲットに設定
 - ``osaka`` (**experimental**)
 
    - このバージョンから、EOF への実験的なコンパイルが可能になりました（ `EIP-7692 <https://eips.ethereum.org/EIPS/eip-7692>`_ 参照）。
+=======
+   - The block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_) can be accessed via the global ``block.blobbasefee`` or ``blobbasefee()`` in inline assembly.
+   - Introduces ``blobhash()`` in inline assembly and a corresponding global function to retrieve versioned hashes of blobs associated with the transaction (see `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
+   - Opcode ``mcopy`` is available in assembly (see `EIP-5656 <https://eips.ethereum.org/EIPS/eip-5656>`_).
+   - Opcodes ``tstore`` and ``tload`` are available in assembly (see `EIP-1153 <https://eips.ethereum.org/EIPS/eip-1153>`_).
+- ``prague``
+- ``osaka`` (**default**)
+   - ``clz`` builtin function is available in inline assembly. (`EIP-7939 <https://eips.ethereum.org/EIPS/eip-7939>`_)
+>>>>>>> english/develop
 
 .. index:: ! standard JSON, ! --standard-json
 .. _compiler-api:
@@ -408,7 +418,15 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         "stopAfter": "parsing",
         // オプション: List of remappings
         "remappings": [ ":g=/dir" ],
+<<<<<<< HEAD
         // オプション: Optimizer settings
+=======
+        // Optional: Experimental mode toggle (Default: false)
+        // Makes it possible to use experimental features (but does not enable any such feature by itself).
+        // The use of this mode is recorded in contract metadata.
+        "experimental": true,
+        // Optional: Optimizer settings
+>>>>>>> english/develop
         "optimizer": {
           // Turn on the optimizer. Optional. Default: false.
           // NOTE: The state of the optimizer is fully determined by the 'details' dict and this setting
@@ -476,27 +494,37 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
               // In particular if the whole value consists only of the delimiter, both sequences are empty.
               // Note that there are several hard-coded steps that always run, even when both sequences are empty.
               // For more information see "The Optimizer > Selecting Optimizations".
-              "optimizerSteps": "dhfoDgvulfnTUtnIf..."
+              "optimizerSteps": "dfDvulfnTUtnIf..."
             }
           }
         },
         // Version of the EVM to compile for (optional).
         // Affects type checking and code generation. Can be homestead,
         // tangerineWhistle, spuriousDragon, byzantium, constantinople,
-        // petersburg, istanbul, berlin, london, paris, shanghai, cancun, prague (default) or osaka (experimental).
-        "evmVersion": "prague",
+        // petersburg, istanbul, berlin, london, paris, shanghai, cancun,
+        // prague, osaka (default), or @future (experimental).
+        "evmVersion": "osaka",
         // EVM Object Format version to compile for (optional, experimental).
         // Currently the only valid value is 1. If not specified, legacy non-EOF bytecode will be generated.
+        // Requires `evmVersion` >= osaka.
         "eofVersion": null,
         // Optional: Change compilation pipeline to go through the Yul intermediate representation.
         // This is false by default.
         "viaIR": true,
+<<<<<<< HEAD
         // オプション: Debugging settings
+=======
+        // Optional: Turn on SSA CFG-based code generation via the IR (experimental).
+        // Implies viaIR: true. This is false by default.
+        "viaSSACFG": false,
+        // Optional: Debugging settings
+>>>>>>> english/develop
         "debug": {
           // How to treat revert (and require) reason strings. Settings are
           // "default", "strip", "debug" and "verboseDebug".
           // "default" does not inject compiler-generated revert strings and keeps user-supplied ones.
-          // "strip" removes all revert strings (if possible, i.e. if literals are used) keeping side-effects
+          // "strip" removes all revert strings (if possible, i.e. if literals are used) keeping side-effects.
+          // NOTE: "strip" does not remove custom errors.
           // "debug" injects strings for compiler-generated internal reverts, implemented for ABI encoders V1 and V2 for now.
           // "verboseDebug" even appends further information to user-supplied revert strings (not yet implemented)
           "revertStrings": "default",
@@ -509,8 +537,11 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
           //     - `<end>` is the index of the first byte after that location.
           // - `snippet`: A single-line code snippet from the location indicated by `@src`.
           //     The snippet is quoted and follows the corresponding `@src` annotation.
-          // - `*`: Wildcard value that can be used to request everything.
-          "debugInfo": ["location", "snippet"]
+          // - `ast-id`: Annotations of the form `@ast-id <id>` over elements that can be mapped back to a definition in the original Solidity file.
+          //   `<id>` is a node ID in the Solidity AST ('ast' output).
+          // - `ethdebug`: Ethdebug annotations (experimental). Automatically enabled when any ethdebug output is requested.
+          // - `*`: Wildcard value that can be used to request all non-experimental components.
+          "debugInfo": ["location", "snippet", "ast-id", "ethdebug"]
         },
         // メタデータの設定（オプション）
         "metadata": {
@@ -561,13 +592,15 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         //   userdoc - User documentation (natspec)
         //   metadata - Metadata
         //   ir - Yul intermediate representation of the code before optimization
-        //   irAst - AST of Yul intermediate representation of the code before optimization
+        //   irAst - AST of Yul intermediate representation of the code before optimization (experimental)
         //   irOptimized - Intermediate representation after optimization
-        //   irOptimizedAst - AST of intermediate representation after optimization
-        //   storageLayout - Slots, offsets and types of the contract's state variables in storage.
-        //   transientStorageLayout - Slots, offsets and types of the contract's state variables in transient storage.
+        //   irOptimizedAst - AST of intermediate representation after optimization (experimental)
+        //   storageLayout - Slots, offsets and types of the contract's state variables in storage
+        //   transientStorageLayout - Slots, offsets and types of the contract's state variables in transient storage
         //   evm.assembly - New assembly format
         //   evm.legacyAssembly - Old-style assembly format in JSON
+        //   evm.bytecode.ethdebug - Debug information in ethdebug format (ethdebug/format/program schema for creation bytecode). Can only be requested when compiling via IR. (experimental)
+        //   evm.deployedBytecode.ethdebug - Debug information in ethdebug format (ethdebug/format/program schema for deployed bytecode). Can only be requested when compiling via IR. (experimental)
         //   evm.bytecode.functionDebugData - Debugging information at function level
         //   evm.bytecode.object - Bytecode object
         //   evm.bytecode.opcodes - Opcodes list
@@ -578,6 +611,11 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
         //   evm.deployedBytecode.immutableReferences - Map from AST ids to bytecode ranges that reference immutables
         //   evm.methodIdentifiers - The list of function hashes
         //   evm.gasEstimates - Function gas estimates
+        //   yulCFGJson - Control Flow Graph (CFG) of the Single Static Assignment (SSA) form of the contract (experimental)
+        //
+        // Global level (needs "*" as file name and "*" as contract name):
+        //   ethdebug.resources - Global ethdebug output (ethdebug/format/info/resources schema) containing source list and compiler info (experimental)
+        //   ethdebug.compilation - Global ethdebug compilation output (the 'compilation' key from ethdebug/format/info/resources schema) (experimental)
         //
         // Note that using `evm`, `evm.bytecode`, etc. will select every
         // target part of that output. Additionally, `*` can be used as a wildcard to request everything.
@@ -729,6 +767,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
               "legacyAssembly": {},
               // Bytecode and related details.
               "bytecode": {
+                // Ethdebug output (experimental)
+                "ethdebug": {/* ... */},
                 // Debugging data at the level of functions.
                 "functionDebugData": {
                   // Now follows a set of functions including compiler-internal and
@@ -771,6 +811,8 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
                 }
               },
               "deployedBytecode": {
+                // Ethdebug output (experimental)
+                "ethdebug": {/* ... */},
                 /* ..., */ // The same layout as above.
                 "immutableReferences": {
                   // There are two references to the immutable with AST ID 3, both 32 bytes long. One is
@@ -795,10 +837,19 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
                 "internal": {
                   "heavyLifting()": "infinite"
                 }
-              }
+              },
+              // Yul CFG representation of the SSA form (experimental)
+              "yulCFGJson": {/* ... */}
             }
           }
         }
+      },
+      // Global Ethdebug output (experimental)
+      "ethdebug": {
+        // Requested via ethdebug.resources output selection
+        "resources": {/* ... */},
+        // Requested via ethdebug.compilation output selection
+        "compilation": {/* ... */}
       }
     }
 
@@ -807,6 +858,7 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
 
 .. 1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
 
+<<<<<<< HEAD
 1. ``JSONError``: JSON入力が要求されたフォーマットに適合していません。
    例: 入力がJSONオブジェクトでない、言語がサポートされていない、など。
 
@@ -867,3 +919,76 @@ Solidityコンパイラとのインターフェースとして、特に複雑な
 
 15. ``Info``: コンパイラが、ユーザーが役に立つかもしれないと考えている情報です。
     しかし、危険ではないので、必ず対処する必要はありません。
+=======
+1. ``JSONError``: JSON input doesn't conform to the required format, e.g. input is not a JSON object, the language is not supported, etc.
+2. ``IOError``: IO and import processing errors, such as unresolvable URL or hash mismatch in supplied sources.
+3. ``ParserError``: Source code doesn't conform to the language rules.
+4. ``DocstringParsingError``: The NatSpec tags in the comment block cannot be parsed.
+5. ``SyntaxError``: Syntactical error, such as ``continue`` is used outside of a ``for`` loop.
+6. ``DeclarationError``: Invalid, unresolvable or clashing identifier names. e.g. ``Identifier not found``
+7. ``TypeError``: Error within the type system, such as invalid type conversions, invalid assignments, etc.
+8. ``UnimplementedFeatureError``: Feature is not supported by the compiler, but is expected to be supported in future versions.
+9. ``InternalCompilerError``: Internal bug triggered in the compiler - this should be reported as an issue.
+10. ``Exception``: Unknown failure during compilation - this should be reported as an issue.
+11. ``CompilerError``: Invalid use of the compiler stack - this should be reported as an issue.
+12. ``FatalError``: Fatal error not processed correctly - this should be reported as an issue.
+13. ``YulException``: Error during Yul code generation - this should be reported as an issue.
+14. ``Warning``: A warning, which didn't stop the compilation, but should be addressed if possible.
+15. ``Info``: Information that the compiler thinks the user might find useful, but is not dangerous and does not necessarily need to be addressed.
+
+.. index:: ! Experimental mode, ! --experimental
+.. _experimental-mode:
+
+Experimental Mode
+*****************
+
+Some language and compiler features included in stable releases are not themselves considered stable.
+They are sparsely documented, if at all, often not adequately tested, and thus not yet intended for production use.
+In many cases it is possible to develop a big feature incrementally, with each iteration being already stable.
+Sometimes, however, it is preferable to start with a prototype and stabilize it over multiple releases, while receiving feedback from users.
+To prevent accidental use, such features can be only accessed by enabling the experimental mode.
+
+There are no backwards compatibility guarantees for experimental features.
+They are subject to change in breaking ways in non-breaking releases of the compiler.
+Only major changes affecting them are recorded in the changelog.
+
+To enable the experimental mode, use the ``--experimental`` flag on the command line,
+or the analogous ``settings.experimental`` boolean setting in the Standard JSON input.
+
+Note that the use of this mode is recorded in the metadata:
+
+- ``experimental`` flag in CBOR metadata is set to ``true``,
+- ``settings.experimental`` in JSON metadata is set to ``true``,
+
+.. note::
+    Prior to version 0.8.35, most of the experimental features were usable without any extra safeguards.
+    Some were gated behind ``pragma experimental``, but this was not done consistently.
+    The information about them was also only recorded in CBOR metadata and even then not always.
+    The main goal of the experimental mode is to systematize this and make users fully aware when relying on features which are unfinished or not production-ready.
+
+The table below details all currently available experimental features.
+
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Feature               | ID                       | Affects bytecode | Flag/pragma                                                                                                                             |
++=======================+==========================+==================+=========================================================================================================================================+
+| AST import            | ``ast-import``           | yes              | ``--import-ast``                                                                                                                        |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| LSP                   | ``lsp``                  | no               | ``--lsp``                                                                                                                               |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| EVM Assembly import   | ``evmasm-import``        | yes              | ``--import-asm-json``                                                                                                                   |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Generic Solidity      | ``generic-solidity``     | yes              | ``pragma experimental solidity``                                                                                                        |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| IR AST                | ``ir-ast``               | no               | ``--ir-ast-json``, ``--ir-optimized-ast-json``                                                                                          |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| EOF                   | ``eof``                  | yes              | ``--experimental-eof-version``                                                                                                          |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Non-mainnet EVMs      | ``evm``                  | yes              | ``--evm-version <version name>``                                                                                                        |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| Ethdebug              | ``ethdebug``             | no               | ``--ethdebug-resources``, ``--ethdebug-compilation``, ``--ethdebug-program``, ``--ethdebug-program-runtime``, ``--debug-info ethdebug`` |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+|                       |                          | no               | ``--yul-cfg-json``                                                                                                                      |
+| SSA CFG               + ``ssa-cfg``              +------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+|                       |                          | yes              | ``--via-ssa-cfg``                                                                                                                       |
++-----------------------+--------------------------+------------------+-----------------------------------------------------------------------------------------------------------------------------------------+
+>>>>>>> english/develop
