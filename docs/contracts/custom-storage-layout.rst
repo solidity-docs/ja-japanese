@@ -23,8 +23,16 @@
 
 .. As the above example shows, the specifier uses the ``layout at <base-slot-expression>`` syntax and is located in the header of a contract definition.
 
+<<<<<<< HEAD
 上の例に示されているように、この指定子は ``layout at <base-slot-expression>`` という構文を使用し、
 コントラクト定義のヘッダー部分に記述されます。
+=======
+The layout specifier can be placed either before or after the inheritance specifier, and can appear at most once.
+The ``base-slot-expression`` must be an :ref:`integer literal<rational_literals>` expression
+that can be evaluated at compilation time and yields a value in the range of ``uint256``.
+The use of constants initialized using such expressions and
+the :ref:`built-in function erc7201<mathematical-and-cryptographic-functions>` is also allowed.
+>>>>>>> english/develop
 
 .. The layout specifier can be placed either before or after the inheritance specifier, and can appear at most once.
 .. The ``base-slot-expression`` must be an :ref:`integer literal<rational_literals>` expression that can be evaluated at compilation time and yields a value in the range of ``uint256``.
