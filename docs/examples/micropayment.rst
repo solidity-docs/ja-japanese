@@ -156,7 +156,8 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
             // this recreates the message that was signed on the client
             bytes32 message = prefixed(keccak256(abi.encodePacked(msg.sender, amount, nonce, this)));
             require(recoverSigner(message, signature) == owner);
-            payable(msg.sender).transfer(amount);
+            (bool success, ) = payable(msg.sender).call{value: amount}("");
+            require(success);
         }
 
         /// freeze the contract and reclaim the leftover funds.
@@ -166,7 +167,8 @@ web3.jsが生成する署名は、 ``r`` 、 ``s`` 、 ``v`` を連結したも�
         {
             require(msg.sender == owner);
             freeze();
-            payable(msg.sender).transfer(address(this).balance);
+            (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+            require(success);
         }
 
         /// signature methods.
@@ -362,9 +364,11 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
             require(msg.sender == recipient);
             require(isValidSignature(amount, signature));
 
-            recipient.transfer(amount);
             freeze();
-            sender.transfer(address(this).balance);
+            (bool success, ) = recipient.call{value: amount}("");
+            require(success);
+            (success, ) = sender.call{value: address(this).balance}("");
+            require(success);
         }
 
         /// 送信者はいつでも有効期限を延長できます。
@@ -385,7 +389,8 @@ Solidityの関数 ``isValidSignature`` と ``recoverSigner`` は、前のセク�
         {
             require(block.timestamp >= expiration);
             freeze();
-            sender.transfer(address(this).balance);
+            (bool success, ) = sender.call{value: address(this).balance}("");
+            require(success);
         }
 
         function isValidSignature(uint256 amount, bytes memory signature)
