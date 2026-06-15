@@ -430,6 +430,7 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
 - Etherの送信
 
 .. warning::
+<<<<<<< HEAD
     .. When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``) but the receiving contract does not define a receive Ether function or a payable fallback function, an exception will be thrown, sending back the Ether (this was different before Solidity v0.4.0).
     .. If you want your contract to receive Ether, you have to implement a receive Ether function (using payable fallback functions for receiving Ether is not recommended, since the fallback is invoked and would not fail for interface confusions on the part of the sender).
 
@@ -450,6 +451,20 @@ receive Ether関数もpayable fallback関数も存在しない場合、コント
 ..     than the sum of some manual accounting implemented in a
 ..     contract (i.e. having a counter updated in the receive Ether function).
 
+=======
+    ``send()`` and ``transfer()`` are deprecated and scheduled for removal.
+    See the section on :ref:`send <send-address-member>` and :ref:`transfer <balance-transfer-address-members>` for more information.
+
+.. warning::
+    When Ether is sent directly to a contract (without a function call, i.e. sender uses ``send`` or ``transfer``)
+    but the receiving contract does not define a receive Ether function or a payable fallback function,
+    an exception will be thrown, sending back the Ether (this was different
+    before Solidity v0.4.0). If you want your contract to receive Ether,
+    you have to implement a receive Ether function (using payable fallback functions for receiving Ether is
+    not recommended, since the fallback is invoked and would not fail for interface confusions
+    on the part of the sender).
+
+>>>>>>> english/develop
 .. warning::
 
     Etherを受け取る関数を持たないコントラクトは、 *coinbaseトランザクション* （別名: *minerブロックリワード* ）の受信者として、または ``selfdestruct`` の宛先としてEtherを受け取ることができます。
@@ -581,8 +596,14 @@ fallback関数
             // その上で ``send`` を呼び出すには ``address payable`` 型に変換する必要があります。
             address payable testPayable = payable(address(test));
 
+<<<<<<< HEAD
             // 誰かがそのコントラクトにEtherを送ると、送金は失敗します。
             // つまり、ここではfalseが返されます。
+=======
+            // If someone sends Ether to that contract,
+            // the transfer will fail, i.e. this returns false here.
+            // This will report a warning (deprecation)
+>>>>>>> english/develop
             return testPayable.send(2 ether);
         }
 
