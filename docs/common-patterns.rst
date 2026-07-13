@@ -52,7 +52,8 @@
             uint amount = pendingWithdrawals[msg.sender];
             // Reentrancy攻撃を防ぐため、送金前にpendingしている返金の額をゼロにすることを忘れないでください
             pendingWithdrawals[msg.sender] = 0;
-            payable(msg.sender).transfer(amount);
+            (bool success, ) = payable(msg.sender).call{value: amount}("");
+            require(success);
         }
     }
 
@@ -79,8 +80,14 @@
 
         function becomeRichest() public payable {
             if (msg.value <= mostSent) revert NotEnoughEther();
+<<<<<<< HEAD
             // この行は問題を引き起こす可能性があります（以下で説明します）。
             richest.transfer(msg.value);
+=======
+            // This line can cause problems (explained below).
+            (bool success, ) = richest.call{value: msg.value}("");
+            require(success);
+>>>>>>> english/develop
             richest = payable(msg.sender);
             mostSent = msg.value;
         }
@@ -192,8 +199,10 @@
                 revert NotEnoughEther();
 
             _;
-            if (msg.value > amount)
-                payable(msg.sender).transfer(msg.value - amount);
+            if (msg.value > amount) {
+                (bool success, ) = payable(msg.sender).call{value: msg.value - amount}("");
+                require(success);
+            }
         }
 
         function forceOwnerChange(address newOwner)
