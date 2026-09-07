@@ -69,7 +69,7 @@ Etherの単位
 
 グローバルな名前空間に常に存在し、主にブロックチェーンに関する情報を提供するために使用されたり、汎用的なユーティリティー関数である特別な変数や関数があります。
 
-.. index:: abi, block, coinbase, difficulty, prevrandao, encode, number, block;number, timestamp, block;timestamp, block;basefee, block;blobbasefee, msg, data, gas, sender, value, gas price, origin
+.. index:: abi, block, coinbase, difficulty, prevrandao, encode, number, block;number, timestamp, block;timestamp, block;basefee, block;blobbasefee, block;slotnum, msg, data, gas, sender, value, gas price, origin
 
 ブロックとトランザクションのプロパティ
 --------------------------------------
@@ -86,6 +86,7 @@ Etherの単位
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
 
 - ``block.blobbasefee`` (``uint``): current block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_)
+<<<<<<< HEAD
 
 - ``block.chainid`` (``uint``): カレントブロックのチェーンID
 
@@ -116,6 +117,23 @@ Etherの単位
 - ``tx.gasprice`` (``uint``): トランザクションのガスプライス
 
 - ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）
+=======
+- ``block.chainid`` (``uint``): current chain id
+- ``block.coinbase`` (``address payable``): current block miner's address
+- ``block.difficulty`` (``uint``): current block difficulty (``EVM < Paris``). For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` (`EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
+- ``block.gaslimit`` (``uint``): current block gaslimit
+- ``block.number`` (``uint``): current block number
+- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``)
+- ``block.slotnum`` (``uint64``): current beacon chain slot number (`EIP-7843 <https://eips.ethereum.org/EIPS/eip-7843>`_, ``EVM >= Amsterdam``)
+- ``block.timestamp`` (``uint``): current block timestamp as seconds since unix epoch
+- ``gasleft() returns (uint256)``: remaining gas
+- ``msg.data`` (``bytes calldata``): complete calldata
+- ``msg.sender`` (``address``): sender of the message (current call)
+- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
+- ``msg.value`` (``uint``): number of wei sent with the message
+- ``tx.gasprice`` (``uint``): gas price of the transaction
+- ``tx.origin`` (``address``): sender of the transaction (full call chain)
+>>>>>>> english/develop
 
 .. note::
 
@@ -242,7 +260,7 @@ stringのメンバー
 ``revert(string memory reason)``
     実行を中止し、状態変化をリバートするために、説明用の文字列を提供します。
 
-.. index:: keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography,
+.. index:: keccak256, ripemd160, sha256, ecrecover, addmod, mulmod, cryptography, erc7201,
 
 .. _mathematical-and-cryptographic-functions:
 
@@ -331,12 +349,24 @@ stringのメンバー
     この問題を回避するには、実際のコントラクトで使用する前に、まず各コントラクトにWei（例: 1）を送信することです。
     これは、メインネットやテストネットでは問題になりません。
 
+``erc7201(string memory id) returns (uint)``
+    compute the base slot of a storage namespace of a given ``id`` according to the ``erc7201`` formula defined by `ERC-7201 <https://eips.ethereum.org/EIPS/eip-7201>`_.
+    The formula is equivalent to ``keccak256(keccak256(id) - 1) & ~0xff``.
+    The builtin accepts arbitrary strings, including ones containing whitespace.
+    The function can be used in compile-time context.
+
 .. index:: balance, codehash, send, transfer, call, callcode, delegatecall, staticcall
 
 .. _address_related:
 
+<<<<<<< HEAD
 アドレス型のメンバー
 --------------------
+=======
+Members of Address Types
+------------------------
+These members are explained in more detail in the section on :ref:`members of address <members-of-addresses>`.
+>>>>>>> english/develop
 
 ``<address>.balance`` (``uint256``)
     :ref:`address` のWei残高
@@ -355,7 +385,12 @@ stringのメンバー
     指定された量のWeiを :ref:`address` に送り、失敗すると ``false`` を返します。
     2300ガスのみ使用可能（調整不可）。
 
+.. warning::
+    ``send()`` and ``transfer()`` are deprecated and scheduled for removal.
+    See the section on :ref:`send <send-address-member>` and :ref:`transfer <balance-transfer-address-members>` for more information.
+
 ``<address>.call(bytes memory) returns (bool, bytes memory)``
+<<<<<<< HEAD
     与えたペイロードで低レベルの ``CALL`` を発行し、成功条件とリターンデータを返します。
     利用可能なすべてのガスを送金できる（調整可能）。
 
@@ -366,6 +401,18 @@ stringのメンバー
 ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
     与えたペイロードで低レベルの ``STATICCALL`` を発行し、成功条件とリターンデータを返します。
     利用可能なすべてのガスを送金できる（調整可能）。
+=======
+    issue low-level ``CALL`` with the given payload, returns success condition and return data,
+    forwards all available gas (subject to additional limits imposed by some EVM versions), adjustable
+
+``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``
+    issue low-level ``DELEGATECALL`` with the given payload, returns success condition and return data,
+    forwards all available gas (subject to additional limits imposed by some EVM versions), adjustable
+
+``<address>.staticcall(bytes memory) returns (bool, bytes memory)``
+    issue low-level ``STATICCALL`` with the given payload, returns success condition and return data,
+    forwards all available gas (subject to additional limits imposed by some EVM versions), adjustable
+>>>>>>> english/develop
 
 詳しくは、 :ref:`address` の項を参照してください。
 
@@ -560,4 +607,16 @@ stringのメンバー
 ``define``, ``final``, ``implements``, ``in``, ``inline``, ``let``, ``macro``, ``match``,
 ``mutable``, ``null``, ``of``, ``partial``, ``promise``, ``reference``, ``relocatable``,
 ``sealed``, ``sizeof``, ``static``, ``supports``, ``switch``, ``typedef``, ``typeof``,
+<<<<<<< HEAD
 ``var`` 。
+=======
+``var``.
+
+.. note::
+    The following identifiers will become keywords in the future and will no longer be usable as names:
+    ``at``, ``error``, ``layout``, ``leave``, ``super``, ``transient``, ``this``.
+
+    There are also names which will be considered Yul reserved identifiers in the future:
+    ``basefee``, ``blobbasefee``, ``blobhash``, ``clz``, ``memoryguard``, ``mcopy``, ``prevrandao``, ``slotnum``, ``tload``, ``tstore``.
+
+>>>>>>> english/develop
