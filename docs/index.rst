@@ -12,10 +12,18 @@ Solidityは、静的型付け、継承、ライブラリ、複雑なユーザー
 
 Solidityでは、投票、クラウドファンディング、ブラインドオークション、マルチシグネチャウォレットなどの用途に応じたコントラクトを作成できます。
 
+<<<<<<< HEAD
 コントラクトをデプロイする際には、Solidityの最新のリリースバージョンを使用すべきです。
 例外的なケースを除いて、最新バージョンには `セキュリティフィックス <https://github.com/ethereum/solidity/security/policy#supported-versions>`_ が施されています。
 さらに、破壊的な変更や新機能も定期的に導入されています。
 私たちは現在、 `この速いペースでの変更を示すため <https://semver.org/#spec-item-4>`_ に、0.y.zというバージョン番号を使用しています。
+=======
+When deploying contracts, you should use the latest released version of Solidity.
+Apart from exceptional cases, only the latest version receives
+`security fixes <https://github.com/argotorg/solidity/security/policy#supported-versions>`_.
+Furthermore, breaking changes, as well as new features, are introduced regularly.
+We currently use a 0.y.z version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+>>>>>>> english/develop
 
 .. warning::
 
