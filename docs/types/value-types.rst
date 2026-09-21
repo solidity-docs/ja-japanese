@@ -252,17 +252,27 @@ Solidityでは、除算はゼロに向かって丸められます。
 
 全メンバーのアドレスの早見表は、 :ref:`address_related` を参照してください。
 
+<<<<<<< HEAD
 * ``balance`` と ``transfer``
 
 プロパティ ``balance`` を使ってアドレスの残高を照会したり、 ``transfer`` 関数を使って支払先のアドレスにイーサ（wei単位）を送信したりすることが可能です。
+=======
+.. _balance-transfer-address-members:
 
-.. code-block:: solidity
-    :force:
+* ``balance`` and ``transfer``
 
-    address payable x = payable(0x123);
-    address myAddress = address(this);
-    if (x.balance < 10 && myAddress.balance >= 10) x.transfer(10);
+    It is possible to query the balance of an address using the property ``balance``
+    and to send Ether (in units of wei) to a payable address using the ``transfer`` function:
+>>>>>>> english/develop
 
+    .. code-block:: solidity
+        :force:
+
+        address payable x = payable(0x123);
+        address myAddress = address(this);
+        if (x.balance < 10 && myAddress.balance >= 10) x.transfer(10);
+
+<<<<<<< HEAD
 ``transfer`` 関数は、現在のコントラクトの残高が十分でない場合や、Ether送金が受信アカウントで拒否された場合に失敗します。
 ``transfer`` 関数は失敗するとリバートします。
 
@@ -277,11 +287,58 @@ Solidityでは、除算はゼロに向かって丸められます。
 実行に失敗した場合、現在のコントラクトは例外的に停止しませんが、 ``send`` は ``false`` を返します。
 
 .. warning::
+=======
+    The ``transfer`` function fails if the balance of the current contract is not large enough
+    or if the Ether transfer is rejected by the receiving account. The ``transfer`` function
+    reverts on failure.
+
+    .. note::
+        If ``x`` is a contract address, its code (more specifically: its :ref:`receive-ether-function`, if present, or otherwise its :ref:`fallback-function`, if present) will be executed together with the ``transfer`` call (this is a feature of the EVM and cannot be prevented). If that execution runs out of gas or fails in any way, the Ether transfer will be reverted and the current contract will stop with an exception.
+
+    .. warning::
+        ``transfer`` is deprecated and scheduled for removal.
+        Simple ether transfers can still be performed using the :ref:`call function <address_call_functions>`
+        with with an optionally provided maximum amount of gas and empty payload, i.e., ``call{value: <amount>}("")``.
+        By default this forwards all the remaining gas, subject to additional limits imposed by some EVM versions
+        (such as the `63/64th rule <https://eips.ethereum.org/EIPS/eip-150>`_ introduced by ``tangerineWhistle``).
+        As with any external call, the ``gas`` call option can be used to set a lower limit.
+
+        While it is possible to recreate the functionality by explicitly setting the limit to the value of the stipend (2300 gas),
+        this value no longer holds its original meaning due to changing opcode costs.
+        It is recommended to use different means to protect against reentrancy.
+
+.. _send-address-member:
+
+* ``send``
+
+    ``send`` is the low-level counterpart of ``transfer``. If the execution fails, the current contract will not stop with an exception, but ``send`` will return ``false``.
+
+    .. warning::
+        There are some dangers in using ``send``: The transfer fails if the call stack depth is at 1024
+        (this can always be forced by the caller) and it also fails if the recipient runs out of gas. So in order
+        to make safe Ether transfers, always check the return value of ``send``, use ``transfer`` or even better:
+        use a pattern where the recipient withdraws the Ether.
+
+    .. warning::
+        ``send`` is deprecated and scheduled for removal.
+        Simple ether transfers can still be performed using the :ref:`call function <address_call_functions>`
+        with with an optionally provided maximum amount of gas and empty payload, i.e., ``call{value: <amount>}("")``.
+        By default this forwards all the remaining gas, subject to additional limits imposed by some EVM versions
+        (such as the `63/64th rule <https://eips.ethereum.org/EIPS/eip-150>`_ introduced by ``tangerineWhistle``).
+        As with any external call, the ``gas`` call option can be used to set a lower limit.
+
+        While it is possible to recreate the functionality by explicitly setting the limit to the value of the stipend (2300 gas),
+        this value no longer holds its original meaning due to changing opcode costs.
+        It is recommended to use different means to protect against reentrancy.
+
+.. _address_call_functions:
+>>>>>>> english/develop
 
     ``send`` の使用にはいくつかの危険性があります。
     コールスタックの深さが1024の場合（これは常に呼び出し側で強制できます）、送金は失敗し、また、受信者がガス欠になった場合も失敗します。
     したがって、安全なEther送金を行うためには、 ``send`` の戻り値を常にチェックするか、 ``transfer`` を使用するか、あるいはさらに良い方法として、受信者がEtherを引き出すパターンを使用してください。
 
+<<<<<<< HEAD
 * ``call``, ``delegatecall``, ``staticcall``
 
 ABIに準拠していないコントラクトとのインターフェースや、エンコーディングをより直接的に制御するために、関数 ``call`` 、 ``delegatecall`` 、 ``staticcall`` が用意されています。
@@ -289,13 +346,26 @@ ABIに準拠していないコントラクトとのインターフェースや�
 関数 ``abi.encode``、 ``abi.encodePacked``、 ``abi.encodeWithSelector``、 ``abi.encodeWithSignature`` は、構造化データのエンコードに使用できます。
 
 例:
+=======
+    In order to interface with contracts that do not adhere to the ABI,
+    or to get more direct control over the encoding,
+    the functions ``call``, ``delegatecall`` and ``staticcall`` are provided.
+    They all take a single ``bytes memory`` parameter and
+    return the success condition (as a ``bool``) and the returned data
+    (``bytes memory``).
+    The functions ``abi.encode``, ``abi.encodePacked``, ``abi.encodeWithSelector``
+    and ``abi.encodeWithSignature`` can be used to encode structured data.
 
-.. code-block:: solidity
+    Example:
+>>>>>>> english/develop
 
-    bytes memory payload = abi.encodeWithSignature("register(string)", "MyName");
-    (bool success, bytes memory returnData) = address(nameReg).call(payload);
-    require(success);
+    .. code-block:: solidity
 
+        bytes memory payload = abi.encodeWithSignature("register(string)", "MyName");
+        (bool success, bytes memory returnData) = address(nameReg).call(payload);
+        require(success);
+
+<<<<<<< HEAD
 .. warning::
 
     これらの関数はすべて低レベルの関数であり、注意して使用する必要があります。
@@ -308,24 +378,49 @@ ABIに準拠していないコントラクトとのインターフェースや�
     これらのエッジケースはバージョン0.5.0で削除されました。
 
 ``gas`` モディファイアで供給ガスを調整することが可能です。
+=======
+    .. warning::
+        All these functions are low-level functions and should be used with care.
+        Specifically, any unknown contract might be malicious and if you call it, you
+        hand over control to that contract which could in turn call back into
+        your contract, so be prepared for changes to your state variables
+        when the call returns. The regular way to interact with other contracts
+        is to call a function on a contract object (``x.f()``).
 
-.. code-block:: solidity
+    .. note::
+        Previous versions of Solidity allowed these functions to receive
+        arbitrary arguments and would also handle a first argument of type
+        ``bytes4`` differently. These edge cases were removed in version 0.5.0.
 
-    address(nameReg).call{gas: 1000000}(abi.encodeWithSignature("register(string)", "MyName"));
+    It is possible to adjust the supplied gas with the ``gas`` modifier:
+>>>>>>> english/develop
 
+    .. code-block:: solidity
+
+        address(nameReg).call{gas: 1000000}(abi.encodeWithSignature("register(string)", "MyName"));
+
+<<<<<<< HEAD
 同様に、送金するEtherの値も制御できます。
+=======
+    Similarly, the supplied Ether value can be controlled too:
+>>>>>>> english/develop
 
-.. code-block:: solidity
+    .. code-block:: solidity
 
-    address(nameReg).call{value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
+        address(nameReg).call{value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
+<<<<<<< HEAD
 最後に、これらのモディファイアは組み合わせることができます。
 その順番は問題ではありません。
+=======
+    Lastly, these modifiers can be combined. Their order does not matter:
+>>>>>>> english/develop
 
-.. code-block:: solidity
+    .. code-block:: solidity
 
-    address(nameReg).call{gas: 1000000, value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
+        address(nameReg).call{gas: 1000000, value: 1 ether}(abi.encodeWithSignature("register(string)", "MyName"));
 
+<<<<<<< HEAD
 同様の方法で、関数 ``delegatecall`` を使用できます。
 違いは、与えられたアドレスのコードのみが使用され、他のすべての側面（ストレージ、残高、...）は、現在のコントラクトから取得されます。
 ``delegatecall`` の目的は、別のコントラクトに保存されているライブラリコードを使用することです。
@@ -344,10 +439,29 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 ``gas`` オプションは3つの方式すべてで利用できますが、 ``value`` オプションは ``call`` でのみ利用できます。
 
 .. note::
+=======
+    In a similar way, the function ``delegatecall`` can be used: the difference is that only the code of the given address is used, all other aspects (storage, balance, ...) are taken from the current contract. The purpose of ``delegatecall`` is to use library code which is stored in another contract. The user has to ensure that the layout of storage in both contracts is suitable for delegatecall to be used.
+
+    .. note::
+        Prior to homestead, only a limited variant called ``callcode`` was available that did not provide access to the original ``msg.sender`` and ``msg.value`` values. This function was removed in version 0.5.0.
+
+    Since byzantium ``staticcall`` can be used as well. This is basically the same as ``call``, but will revert if the called function modifies the state in any way.
+
+    All three functions ``call``, ``delegatecall`` and ``staticcall`` are very low-level functions and should only be used as a *last resort* as they break the type-safety of Solidity.
+
+    The ``gas`` option is available on all three methods, while the ``value`` option is only available
+    on ``call``.
+
+    .. note::
+        It is best to avoid relying on hardcoded gas values in your smart contract code,
+        regardless of whether state is read from or written to, as this can have many pitfalls.
+        Also, access to gas might change in the future.
+>>>>>>> english/develop
 
     スマートコントラクトのコードでは、状態の読み書きにかかわらず、ハードコードされたガスの値に依存することは、多くの落とし穴があるので避けたほうがよいでしょう。
     また、ガスへのアクセスが将来変わる可能性もあります。
 
+<<<<<<< HEAD
 * ``code`` と ``codehash``
 
 .. You can query the deployed code for any smart contract.
@@ -378,6 +492,22 @@ Byzantiumから ``staticcall`` も使えるようになりました。
 .. note::
 
     すべてのコントラクトは ``address`` 型に変換できるので、 ``address(this).balance`` を使って現在のコントラクトの残高を照会することが可能です。
+=======
+    You can query the deployed code for any smart contract. Use ``.code`` to get the EVM bytecode as a
+    ``bytes memory``, which might be empty. Use ``.codehash`` to get the Keccak-256 hash of that code
+    (as a ``bytes32``). Note that ``addr.codehash`` is cheaper than using ``keccak256(addr.code)``.
+
+    .. warning::
+        The output of ``addr.codehash`` may be ``0`` if the account associated with ``addr`` is empty or non-existent
+        (i.e., it has no code, zero balance, and zero nonce as defined by `EIP-161 <https://eips.ethereum.org/EIPS/eip-161>`_).
+        If the account has no code but a non-zero balance or nonce, then ``addr.codehash`` will output the Keccak-256 hash of empty data
+        (i.e., ``keccak256("")`` which is equal to ``c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470``), as defined by
+        `EIP-1052 <https://eips.ethereum.org/EIPS/eip-1052>`_.
+
+    .. note::
+        All contracts can be converted to ``address`` type, so it is possible to query the balance of the
+        current contract using ``address(this).balance``.
+>>>>>>> english/develop
 
 .. index:: ! contract type, ! type; contract
 
