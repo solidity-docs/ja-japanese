@@ -787,14 +787,21 @@ You can optionally provide a message string or a custom error to ``require``, bu
     :force:
 
     // SPDX-License-Identifier: GPL-3.0
-    pragma solidity >=0.5.0 <0.9.0;
+    pragma solidity >=0.6.2 <0.9.0;
 
     contract Sharer {
         function sendHalf(address payable addr) public payable returns (uint balance) {
             require(msg.value % 2 == 0, "Even value required.");
             uint balanceBeforeTransfer = address(this).balance;
+<<<<<<< HEAD
             addr.transfer(msg.value / 2);
             // transferに失敗すると例外がスローされ、ここにコールバックすることはできないので、半分のEtherを送金せず保持する方法はないはずです。
+=======
+            (bool success, ) = addr.call{value: msg.value / 2}("");
+            require(success);
+            // Since require will stop execution and revert if success is false,
+            // there should be no way for us to still have half of the Ether.
+>>>>>>> english/develop
             assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
             return address(this).balance;
         }
@@ -878,7 +885,8 @@ You can optionally provide a message string or a custom error to ``require``, bu
             if (msg.sender != owner)
                 revert Unauthorized();
 
-            payable(msg.sender).transfer(address(this).balance);
+            (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
+            require(success);
         }
     }
 
@@ -1031,9 +1039,20 @@ Solidityでは、エラーの種類に応じて様々な種類のキャッチブ
 ..     The caller always retains at least 1/64th of the gas in a call and thus even if the called contract goes out of gas, the caller still has some gas left.
 
 .. note::
+<<<<<<< HEAD
 
     失敗したコールの原因はさまざまです。
     エラーメッセージが呼び出されたコントラクトから直接来ていると思わないでください。
     エラーはコールチェーンのより深いところで発生し、呼び出されたコントラクトがそれをフォワードしただけかもしれません。
     また、意図的なエラー状態ではなく、ガス欠状態が原因である可能性もあります。
     コール側は常に1/64以上のガスを保持しているため、コールされたコントラクトがガス欠になっても、コール側にはガスが残っています。
+=======
+    The reason behind a failed call can be manifold. Do not assume that
+    the error message is coming directly from the called contract:
+    The error might have happened deeper down in the call chain and the
+    called contract just forwarded it. Also, it could be due to an
+    out-of-gas situation and not a deliberate error condition:
+    The caller always retains at least 1/64th of the gas in a call and thus
+    even if the called contract goes out of gas, the caller still
+    has some gas left.
+>>>>>>> english/develop
