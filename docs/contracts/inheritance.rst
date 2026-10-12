@@ -402,8 +402,13 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
 .. _modifier-overriding:
 
+<<<<<<< HEAD
 モディファイアのオーバーライド
 ==============================
+=======
+Modifier Overriding (deprecated)
+================================
+>>>>>>> english/develop
 
 .. Function modifiers can override each other. This works in the same way as
 .. :ref:`function overriding <function-overriding>` (except that there is no overloading for modifiers). The
@@ -421,6 +426,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     contract Base
     {
+        // This will report a warning (deprecation)
         modifier foo() virtual {_;}
     }
 
@@ -441,11 +447,13 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     contract Base1
     {
+        // This will report a warning (deprecation)
         modifier foo() virtual {_;}
     }
 
     contract Base2
     {
+        // This will report a warning (deprecation)
         modifier foo() virtual {_;}
     }
 
@@ -454,6 +462,13 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         modifier foo() override(Base1, Base2) {_;}
     }
 
+<<<<<<< HEAD
+=======
+.. warning::
+    ``virtual`` modifiers are deprecated and scheduled for removal.
+
+
+>>>>>>> english/develop
 .. index:: ! constructor
 
 .. _constructor:
