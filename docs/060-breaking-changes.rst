@@ -2,8 +2,16 @@
 Solidity v0.6.0の破壊的変更点
 *****************************
 
+<<<<<<< HEAD
 .. This section highlights the main breaking changes introduced in Solidity version 0.6.0, along with the reasoning behind the changes and how to update affected code.
 .. For the full list check `the release changelog <https://github.com/ethereum/solidity/releases/tag/v0.6.0>`_.
+=======
+This section highlights the main breaking changes introduced in Solidity
+version 0.6.0, along with the reasoning behind the changes and how to update
+affected code.
+For the full list check
+`the release changelog <https://github.com/argotorg/solidity/releases/tag/v0.6.0>`_.
+>>>>>>> english/develop
 
 このセクションでは、Solidityバージョン0.6.0で導入された主な変更点と、変更の理由、影響を受けるコードの更新方法について説明します。
 完全なリストは `リリースチェンジログ <https://github.com/ethereum/solidity/releases/tag/v0.6.0>`_ を参照してください。
@@ -156,8 +164,17 @@ Solidity v0.6.0の破壊的変更点
 * YulとInline Assemblyには、現在の関数を終了させる ``leave`` という新しい文があります。
 * ``address`` から ``address payable`` への変換は ``payable(x)`` を介して可能になりました。
 
+<<<<<<< HEAD
 インターフェースの変更点
 ========================
+=======
+The compiler now appends the `IPFS <https://ipfs.io/>`_ hash of the metadata file to the end of the bytecode by default
+(for details, see documentation on :doc:`contract metadata <metadata>`). Before 0.6.0, the compiler appended the
+`Swarm <https://www.ethswarm.org/>`_ hash by default, and in order to still support this behavior,
+the new command-line option ``--metadata-hash`` was introduced. It allows you to select the hash to be produced and
+appended, by passing either ``ipfs`` or ``swarm`` as value to the ``--metadata-hash`` command-line option.
+Passing the value ``none`` completely removes the hash.
+>>>>>>> english/develop
 
 .. This section lists changes that are unrelated to the language itself, but that have an effect on the interfaces of the compiler.
 .. These may change the way how you use the compiler on the command-line, how you use its programmable interface, or how you analyze the output produced by it.

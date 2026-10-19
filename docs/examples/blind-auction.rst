@@ -94,14 +94,27 @@
         function withdraw() external returns (bool) {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
+<<<<<<< HEAD
                 // 受信者は `send` が戻る前に、受信コールの一部としてこの関数を再び呼び出すことができるので、これをゼロに設定することが重要です。
+=======
+                // It is important to set this to zero because the recipient
+                // can call this function again as part of the receiving call
+                // before `call` returns.
+>>>>>>> english/develop
                 pendingReturns[msg.sender] = 0;
 
                 // msg.sender is not of type `address payable` and must be
                 // explicitly converted using `payable(msg.sender)` in order
+<<<<<<< HEAD
                 // use the member function `send()`.
                 if (!payable(msg.sender).send(amount)) {
                     // ここでコールを投げる必要はなく、ただリセットすれば良いです。
+=======
+                // use the member function `call()`.
+                (bool success, ) = payable(msg.sender).call{value: amount}("");
+                if (!success) {
+                    // No need to call throw here, just reset the amount owing
+>>>>>>> english/develop
                     pendingReturns[msg.sender] = amount;
                     return false;
                 }
@@ -128,8 +141,14 @@
             ended = true;
             emit AuctionEnded(highestBidder, highestBid);
 
+<<<<<<< HEAD
             // 3. インタラクション
             beneficiary.transfer(highestBid);
+=======
+            // 3. Interaction
+            (bool success, ) = beneficiary.call{value: highestBid}("");
+            require(success);
+>>>>>>> english/develop
         }
     }
 
@@ -262,18 +281,27 @@ Ethereumでは価値の移転はブラインドできないため、誰でも価
                 // 送信者が同じデポジットを再クレームできないようにします。
                 bidToCheck.blindedBid = bytes32(0);
             }
-            payable(msg.sender).transfer(refund);
+            (bool success, ) = payable(msg.sender).call{value: refund}("");
+            require(success);
         }
 
         /// オーバーな入札を引き出す。
         function withdraw() external {
             uint amount = pendingReturns[msg.sender];
             if (amount > 0) {
+<<<<<<< HEAD
                 // これをゼロに設定することが重要です。
                 // なぜなら、受信者は `transfer` が戻る前にリシーブしているコールの一部としてこの関数を再び呼び出すことができるからです（前で述べた 条件 -> エフェクト -> インタラクション に関する記述を参照してください）。
+=======
+                // It is important to set this to zero because the recipient
+                // can call this function again as part of the receiving call
+                // before `call` returns (see the remark above about
+                // conditions -> effects -> interaction).
+>>>>>>> english/develop
                 pendingReturns[msg.sender] = 0;
 
-                payable(msg.sender).transfer(amount);
+                (bool success, ) = payable(msg.sender).call{value: amount}("");
+                require(success);
             }
         }
 
@@ -285,7 +313,8 @@ Ethereumでは価値の移転はブラインドできないため、誰でも価
             if (ended) revert AuctionEndAlreadyCalled();
             emit AuctionEnded(highestBidder, highestBid);
             ended = true;
-            beneficiary.transfer(highestBid);
+            (bool success, ) = beneficiary.call{value: highestBid}("");
+            require(success);
         }
 
         // これは「内部」関数であり、コントラクト自身（または派生コントラクト）からしか呼び出すことができないことを意味します。
