@@ -12,6 +12,7 @@ Solidityは、静的型付け、継承、ライブラリ、複雑なユーザー
 
 Solidityでは、投票、クラウドファンディング、ブラインドオークション、マルチシグネチャウォレットなどの用途に応じたコントラクトを作成できます。
 
+<<<<<<< HEAD
 コントラクトをデプロイする際には、Solidityの最新のリリースバージョンを使用すべきです。
 例外的なケースを除いて、最新バージョンには `セキュリティフィックス <https://github.com/ethereum/solidity/security/policy#supported-versions>`_ が施されています。
 さらに、破壊的な変更や新機能も定期的に導入されています。
@@ -21,6 +22,18 @@ Solidityでは、投票、クラウドファンディング、ブラインドオ
 
    Solidityは最近バージョン0.8.xをリリースしましたが、変更点が多くあります。
    必ず :doc:`その詳細なリスト <080-breaking-changes>` を読んでください。
+=======
+When deploying contracts, you should use the latest released version of Solidity.
+Apart from exceptional cases, only the latest version receives
+`security fixes <https://github.com/argotorg/solidity/security/policy#supported-versions>`_.
+Furthermore, breaking changes, as well as new features, are introduced regularly.
+We currently use a 0.y.z version number `to indicate this fast pace of change <https://semver.org/#spec-item-4>`_.
+
+.. warning::
+
+  The Solidity 0.8.x release introduced a lot of breaking changes.
+  Make sure you read :doc:`the full list <080-breaking-changes>`.
+>>>>>>> english/develop
 
 Solidityやこのドキュメントを改善するためのアイデアはいつでも歓迎します。
 詳細は :doc:`コントリビューターガイド <contributing>` を読んでください。
@@ -66,7 +79,13 @@ Solidityコンパイラをインストールするには様々な方法があり
 
 Ethereumでの分散型アプリケーションの構築について詳しく知りたい場合は、 `Ethereum Developer Resources <https://ethereum.org/en/developers/>`_ で、Ethereumに関するさらに一般的なドキュメントや、幅広い種類のチュートリアル、ツール、開発フレームワークを紹介しています。
 
+<<<<<<< HEAD
 疑問点があれば、検索したり、 `Ethereum StackExchange <https://ethereum.stackexchange.com/>`_ や `Gitterチャンネル <https://gitter.im/ethereum/solidity/>`_ で聞いてみると良いでしょう。
+=======
+If you have any questions, you can try searching for answers or asking on the
+`Ethereum StackExchange <https://ethereum.stackexchange.com/>`_,
+or our `Matrix channel <https://matrix.to/#/#ethereum\_solidity:gitter.im>`_.
+>>>>>>> english/develop
 
 .. _translations:
 
@@ -148,6 +167,7 @@ Ethereumでの分散型アプリケーションの構築について詳しく知
 
    security-considerations.rst
    bugs.rst
+   frequently-reported-non-bugs.rst
    050-breaking-changes.rst
    060-breaking-changes.rst
    070-breaking-changes.rst
