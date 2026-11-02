@@ -35,6 +35,7 @@
 .. An import callback is free to interpret source unit names in an arbitrary way, not just as paths.
 .. If there is no callback available when one is needed or if it fails to locate the source code, compilation fails.
 
+<<<<<<< HEAD
 VFSには、コンパイラーが入力として受け取ったファイルのみが最初に入力されます。
 使用するコンパイラの種類によって異なる *インポートコールバック* を使用して、コンパイル中に追加のファイルを読み込むことができます（後述）。
 コンパイラは、VFS内のインポートパスに一致するソースユニット名が見つからない場合、コールバックを起動し、その名前で配置されるソースコードを取得する役割を果たします。
@@ -61,6 +62,18 @@ VFSには、コンパイラーが入力として受け取ったファイルの�
 
 ..     For portability it is recommended to avoid using import paths that will work correctly only with a specific import callback or only on one platform.
 ..     For example you should always use forward slashes since they work as path separators also on platforms that support backslashes.
+=======
+By default, the command-line compiler provides the *Host Filesystem Loader* - a rudimentary callback
+that interprets a source unit name as a path in the local filesystem.
+This callback can be disabled using the ``--no-import-callback`` command-line option.
+The `JavaScript interface <https://github.com/argotorg/solc-js>`_ does not provide any by default,
+but one can be provided by the user.
+This mechanism can be used to obtain source code from locations other than the local filesystem
+(which may not even be accessible, e.g. when the compiler is running in a browser).
+For example the `Remix IDE <https://remix.ethereum.org/>`_ provides a versatile callback that
+lets you `import files from HTTP, IPFS and Swarm URLs or refer directly to packages in NPM registry
+<https://remix-ide.readthedocs.io/en/latest/import.html>`_.
+>>>>>>> english/develop
 
 .. note::
 
@@ -104,7 +117,14 @@ VFSの初期コンテンツは、コンパイラの起動方法によって異�
 
 #. **Standard JSON**
 
+<<<<<<< HEAD
    :ref:`Standard JSON <compiler-api>`  APIを使用する場合（ `JavaScriptインターフェース <https://github.com/ethereum/solc-js>`_ または ``--standard-json`` コマンドラインオプションを使用）、すべてのソースファイルのコンテンツなどを含むJSONフォーマットの入力を提供します。
+=======
+   When using the :ref:`Standard JSON <compiler-api>` API (via either the `JavaScript interface
+   <https://github.com/argotorg/solc-js>`_ or the ``--standard-json`` command-line option)
+   you provide input in JSON format, containing, among other things, the content of all your source
+   files:
+>>>>>>> english/develop
 
    .. code-block:: json
 
@@ -807,9 +827,17 @@ CLI Path NormalizationとStripping
 
 ..    - source unit names are not normalized so ``a/b=c`` will not match ``a//b`` either.
 
+<<<<<<< HEAD
 ..    - Parts of file and directory names can match as well.
 ..      ``/newProject/con:/new=old`` will match ``/newProject/contract.sol`` and remap it to
 ..      ``oldProject/contract.sol``.
+=======
+   - If multiple remappings match the same source unit name, the one with the longest matching context is chosen.
+   - If contexts are identical, the one with the longest matching prefix is chosen.
+   - If contexts and prefixes are identical, the one specified last wins.
+   - Remappings do not work on other remappings. For example ``a=b b=c c=d`` will not result in ``a``
+     being remapped to ``d``.
+>>>>>>> english/develop
 
 #. **リマッピングは、インポートパスとソースユニット名の間の変換にのみ影響します。**
 
