@@ -6,6 +6,7 @@
 既知のバグのリスト
 ##################
 
+<<<<<<< HEAD
 .. Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
 .. Solidity compiler. The file itself is hosted in the `GitHub repository
 .. <https://github.com/ethereum/solidity/blob/develop/docs/bugs.json>`_.
@@ -19,6 +20,23 @@
 .. There is another file called `bugs_by_version.json
 .. <https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_,
 .. which can be used to check which bugs affect a specific version of the compiler.
+=======
+Below, you can find a JSON-formatted list of some of the known security-relevant bugs in the
+Solidity compiler. The file itself is hosted in the `GitHub repository
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs.json>`_.
+The list stretches back as far as version 0.3.0, bugs known to be present only
+in versions preceding that are not listed.
+
+There is another file called `bugs_by_version.json
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs_by_version.json>`_,
+which can be used to check which bugs affect a specific version of the compiler.
+
+When reporting a security-relevant bug, please make sure that the behavior is unintentional and outside of documented language guarantees.
+Some regularly misreported behaviors are collected in :ref:`Frequently Reported Non-Bugs<frequently-reported-non-bugs>`.
+
+Contract source verification tools and also other tools interacting with
+contracts should consult this list according to the following criteria:
+>>>>>>> english/develop
 
 また、 `bugs_by_version.json <https://github.com/ethereum/solidity/blob/develop/docs/bugs_by_version.json>`_ というファイルがあり、特定のバージョンのコンパイラーに影響を与えるバグを確認できます。
 
@@ -114,6 +132,7 @@ publish
    バグが公に知られるようになった日付。
    オプション。
 severity
+<<<<<<< HEAD
    バグの深刻度: very low、low、medium、high。
    コントラクトテストでの発見可能性、発生の可能性、悪用による被害の可能性を考慮しています。
 conditions
@@ -124,6 +143,28 @@ conditions
    ``evmVersion``: どのEVMバージョンのコンパイラ設定がバグを引き起こすかを示す文字列。
    この文字列には比較演算子を含めることができます。
    例えば、 ``">=constantinople"``  は EVM バージョンが  ``constantinople``  以降に設定されている場合にバグが発生することを意味します。
+=======
+    Severity of the bug: ``very low``, ``very low/low``, ``low``, ``low/medium``, ``medium``, ``medium/high``, ``high``.
+    Takes into account discoverability in contract tests, likelihood of occurrence and
+    potential damage by exploits.
+conditions
+    Conditions that have to be met to trigger the bug. The following
+    keys can be used:
+    ``optimizer``, Boolean value which means that the opcode-based evmasm optimizer
+    has to be switched on to trigger the bug. This says nothing about the Yul optimizer.
+    ``yulOptimizer``, Boolean value which means that the Yul optimizer
+    has to be switched on to trigger the bug.
+    ``ABIEncoderV2``, Boolean value which means that ABI coder v2
+    has to be used to trigger the bug.
+    ``viaIR``, Boolean value which means that the IR-based code generator
+    has to be used (``true``) or must not be used (``false``) to trigger the bug.
+    ``evmVersion``, a string that indicates which EVM version compiler
+    settings trigger the bug. The string can contain comparison
+    operators. For example, ``">=constantinople"`` means that the bug
+    is present when the EVM version is set to ``constantinople`` or
+    later.
+    If no conditions are given, assume that the bug is present.
+>>>>>>> english/develop
 check
    このフィールドには、スマートコントラクトにバグが含まれているかどうかを報告するさまざまなチェックが含まれます。
    最初のタイプのチェックは、バグが存在する場合にソースコード（「source-regex」）に対してマッチされるJavaScriptの正規表現です。
@@ -133,6 +174,9 @@ check
    2番目のタイプのチェックは、SolidityプログラムのコンパクトASTにチェックするパターンです（「ast-compact-json-path」）。
    指定された検索クエリは、 `JsonPath <https://github.com/json-path/JsonPath>`_ の式です。
    SolidityのASTの少なくとも1つのパスがクエリにマッチする場合、バグが存在する可能性が高いです。
+
+The format of the file is formally specified by a `JSON schema
+<https://github.com/argotorg/solidity/blob/develop/docs/bugs.schema.json>`_.
 
 .. literalinclude:: bugs.json
    :language: js

@@ -7,8 +7,16 @@ Solidityブランドガイド
 Solidityのブランド
 ==================
 
+<<<<<<< HEAD
 Solidity プログラミング言語は、コアチームが運営するオープンソースのコミュニティプロジェクトです。
 コアチームのスポンサーは `Ethereum Foundation <https://ethereum.foundation/>`_ です。
+=======
+The Solidity programming language is an open-source, community project
+governed by a core team. The core team is part of the `Argot Collective
+<https://argot.org/>`_, a non-profit that develops and maintains Solidity.
+The project was originally started at and sponsored by the `Ethereum
+Foundation <https://ethereum.foundation/>`_.
+>>>>>>> english/develop
 
 このドキュメントは、Solidityのブランド名とロゴの最適な使用方法についての情報を提供することを目的としています。
 

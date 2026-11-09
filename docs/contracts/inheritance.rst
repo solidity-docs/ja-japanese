@@ -226,6 +226,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         }
     }
 
+<<<<<<< HEAD
 .. If ``Final`` calls a function of ``super``, it does not simply call this function on one of its base contracts.
 .. Rather, it calls this function on the next base contract in the final inheritance graph, so it will call ``Base1.emitEvent()`` (note that the final inheritance sequence is -- starting with the most derived contract: Final, Base2, Base1, Emittable, Owned).
 .. The actual function that is called when using super is not known in the context of the class where it is used, although its type is known.
@@ -236,6 +237,18 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 したがって、 ``Base1.emitEvent()`` が呼び出されます（最も派生したコントラクトから始まる最終的な継承順は、Final → Base2 → Base1 → Emittable → Owned です）。  
 ``super`` を使った場合に実際に呼び出される関数は、それが使われているクラスの文脈内では特定できませんが、その型（シグネチャ）はわかっています。  
 これは通常の仮想関数の探索と似ています。
+=======
+If ``Final`` calls a function of ``super``, it does not simply
+call this function on one of its base contracts.  Rather, it
+calls this function on the next base contract in the final
+inheritance graph, so it will call ``Base2.emitEvent()`` (note that
+the final inheritance sequence is -- starting with the most
+derived contract: Final, Base2, Base1, Emittable, Owned).
+The actual function that is called when using super is
+not known in the context of the class where it is used,
+although its type is known. This is similar for ordinary
+virtual method lookup.
+>>>>>>> english/develop
 
 .. index:: ! overriding;function
 
@@ -402,8 +415,13 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
 .. _modifier-overriding:
 
+<<<<<<< HEAD
 モディファイアのオーバーライド
 ==============================
+=======
+Modifier Overriding (deprecated)
+================================
+>>>>>>> english/develop
 
 .. Function modifiers can override each other. This works in the same way as
 .. :ref:`function overriding <function-overriding>` (except that there is no overloading for modifiers). The
@@ -421,6 +439,7 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     contract Base
     {
+        // This will report a warning (deprecation)
         modifier foo() virtual {_;}
     }
 
@@ -441,11 +460,13 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
 
     contract Base1
     {
+        // This will report a warning (deprecation)
         modifier foo() virtual {_;}
     }
 
     contract Base2
     {
+        // This will report a warning (deprecation)
         modifier foo() virtual {_;}
     }
 
@@ -454,6 +475,13 @@ Solidityは、ポリモーフィズムを含む多重継承をサポートして
         modifier foo() override(Base1, Base2) {_;}
     }
 
+<<<<<<< HEAD
+=======
+.. warning::
+    ``virtual`` modifiers are deprecated and scheduled for removal.
+
+
+>>>>>>> english/develop
 .. index:: ! constructor
 
 .. _constructor:

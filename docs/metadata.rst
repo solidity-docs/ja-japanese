@@ -155,6 +155,7 @@ IPFSの場合、 ``ipfs add`` が返すCIDに含まれるハッシュ（ファ�
       "myDirectory/myFile.sol": {
         // 必須: ソースファイルのkeccak256ハッシュ
         "keccak256": "0x123...",
+<<<<<<< HEAD
         // オプション: ソースファイルに与えられるSPDXライセンス識別子
         "license": "MIT",
         // 必須（「content」が使用されていない場合、下記参照）: ソースファイルへのソートされたURL。
@@ -166,6 +167,141 @@ IPFSの場合、 ``ipfs add`` が返すCIDに含まれるハッシュ（ファ�
     "version": 1
   }
 
+=======
+        // Required for Solidity: Version of the compiler
+        "version": "0.8.2+commit.661d1103"
+      },
+      // Required: Source code language, basically selects a "sub-version"
+      // of the specification
+      "language": "Solidity",
+      // Required: Generated information about the contract.
+      "output": {
+        // Required: ABI definition of the contract. See "Contract ABI Specification"
+        "abi": [/* ... */],
+        // Required: NatSpec developer documentation of the contract. See https://docs.soliditylang.org/en/latest/natspec-format.html for details.
+        "devdoc": {
+          // Contents of the @author NatSpec field of the contract
+          "author": "John Doe",
+          // Contents of the @dev NatSpec field of the contract
+          "details": "Interface of the ERC20 standard as defined in the EIP. See https://eips.ethereum.org/EIPS/eip-20 for details",
+          "errors": {
+            "MintToZeroAddress()" : {
+              "details": "Cannot mint to zero address"
+            }
+          },
+          "events": {
+            "Transfer(address,address,uint256)": {
+              "details": "Emitted when `value` tokens are moved from one account (`from`) toanother (`to`).",
+              "params": {
+                "from": "The sender address",
+                "to": "The receiver address",
+                "value": "The token amount"
+              }
+            }
+          },
+          "kind": "dev",
+          "methods": {
+            "transfer(address,uint256)": {
+              // Contents of the @dev NatSpec field of the method
+              "details": "Returns a boolean value indicating whether the operation succeeded. Must be called by the token holder address",
+              // Contents of the @param NatSpec fields of the method
+              "params": {
+                "_value": "The amount tokens to be transferred",
+                "_to": "The receiver address"
+              },
+              // Contents of the @return NatSpec field.
+              "returns": {
+                // Return var name (here "success") if exists. "_0" as key if return var is unnamed
+                "success": "a boolean value indicating whether the operation succeeded"
+              }
+            }
+          },
+          "stateVariables": {
+            "owner": {
+              // Contents of the @dev NatSpec field of the state variable
+              "details": "Must be set during contract creation. Can then only be changed by the owner"
+            }
+          },
+          // Contents of the @title NatSpec field of the contract
+          "title": "MyERC20: an example ERC20",
+          "version": 1 // NatSpec version
+        },
+        // Required: NatSpec user documentation of the contract. See "NatSpec Format"
+        "userdoc": {
+          "errors": {
+            "ApprovalCallerNotOwnerNorApproved()": [
+              {
+                "notice": "The caller must own the token or be an approved operator."
+              }
+            ]
+          },
+          "events": {
+            "Transfer(address,address,uint256)": {
+              "notice": "`_value` tokens have been moved from `from` to `to`"
+            }
+          },
+          "kind": "user",
+          "methods": {
+            "transfer(address,uint256)": {
+              "notice": "Transfers `_value` tokens to address `_to`"
+            }
+          },
+          "version": 1 // NatSpec version
+        }
+      },
+      // Required: Compiler settings.
+      // Reflects the settings in the JSON input during compilation, except:
+      // - Different format: "libraries" field
+      // - Added field in metadata.settings: "compilationTarget"
+      // - Not in metadata.settings: "stopAfter", "debug.debugInfo", "outputSelection"
+      // See the standard JSON input's "settings" field docs for the rest.
+      "settings": {
+        // Required for Solidity: File path and the name of the contract or library this
+        // metadata is created for. This field is not present in the standard JSON input settings.
+        "compilationTarget": {
+          "myDirectory/myFile.sol": "MyContract"
+        },
+        // Optional (false if omitted): Indicates whether experimental mode has been enabled.
+        // Always matches the value of the `experimental` flag in CBOR metadata.
+        // Note that experimental mode being enabled does not necessarily mean that any
+        // experimental features were actually used, or if they were, that those features
+        // affected the bytecode.
+        "experimental": true,
+        // Required for Solidity: Addresses for libraries used.
+        // Note that metadata has a different format for "libraries" field than the standard JSON input.
+        // metadata format = { "MyLib.sol:MyLib": "0x123123..." }
+        // standard JSON input format = { "MyLib.sol": { "MyLib": "0x123123..." } }
+        "libraries": {
+          "MyLib.sol:MyLib": "0x123123..."
+        },
+        // ...
+        // ...
+        // ...
+        // The rest of the fields and their defaults same as in std JSON input.
+      },
+      // Required: Compilation source files/source units, keys are file paths
+      "sources": {
+        "settable": {
+          // Required (unless "url" is used): literal contents of the source file
+          "content": "contract settable is owned { uint256 private x = 0; function set(uint256 _x) public { if (msg.sender == owner) x = _x; } }",
+          // Required: keccak256 hash of the source file
+          "keccak256": "0x234..."
+        },
+        "myDirectory/myFile.sol": {
+          // Required: keccak256 hash of the source file
+          "keccak256": "0x123...",
+          // Optional: SPDX license identifier as given in the source file
+          "license": "MIT",
+          // Required (unless "content" is used, see above): Sorted URL(s)
+          // to the source file, protocol is more or less arbitrary, but an
+          // IPFS URL is recommended
+          "urls": [ "bzz-raw://7d7a...", "dweb:/ipfs/QmN..." ]
+        }
+      },
+      // Required: The version of the metadata format
+      "version": 1
+    }
+>>>>>>> english/develop
 
 .. warning::
 
@@ -194,12 +330,22 @@ IPFSの場合、 ``ipfs add`` が返すCIDに含まれるハッシュ（ファ�
 .. code-block:: javascript
 
     {
+      // Present if "bytecodeHash" was "ipfs" in compiler settings
       "ipfs": "<metadata hash>",
+<<<<<<< HEAD
       // コンパイラの設定で "bytecodeHash" が "ipfs" ではなく "bzzr1" だった場合
+=======
+      // Present if "bytecodeHash" was "bzzr1" in compiler settings
+>>>>>>> english/develop
       "bzzr1": "<metadata hash>",
       // 以前のバージョンでは "bzzr1" の代わりに "bzzr0" を使用していた
       "bzzr0": "<metadata hash>",
+<<<<<<< HEAD
       // コード生成に影響を与える実験的機能が使用されている場合
+=======
+      // Present if experimental mode has been enabled either via "--experimental" flag or
+      // "settings.experimental" option in Standard JSON
+>>>>>>> english/develop
       "experimental": true,
       "solc": "<compiler version>"
     }
