@@ -373,6 +373,7 @@ ID ``0`` は、初期化されていない関数ポインタ用に予約され�
     .. As a consequence, assigning to a function type variable in inline assembly does not guarantee that the assigned value will be included in the internal dispatch.
     .. The function must also be explicitly referenced elsewhere in the code.
 
+<<<<<<< HEAD
     コンパイラは、名前によって明示的に参照されていない内部関数をできます。  
     そのため、インラインアセンブリ内で関数型の変数に値を代入しても、その関数が内部ディスパッチに含まれるとは限りません。  
     その関数はコードの他の箇所で明示的に参照されている必要があります。
@@ -380,6 +381,12 @@ ID ``0`` は、初期化されていない関数ポインタ用に予約され�
 
 クリーンアップ
 --------------
+=======
+.. _ir-cleanup:
+
+Cleanup
+-------
+>>>>>>> english/develop
 
 .. index:: cleanup, dirty bits
 

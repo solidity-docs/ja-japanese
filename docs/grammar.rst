@@ -2,13 +2,13 @@
 言語の文法
 **********
 
-.. a4:autogrammar:: SolidityParser
-   :only-reachable-from: SolidityParser.sourceUnit
+.. syntax:autogrammar:: SolidityParser.g4
+   :root-rule: SolidityParser.sourceUnit
    :undocumented:
    :cc-to-dash:
 
-.. a4:autogrammar:: SolidityLexer
-   :only-reachable-from: SolidityParser.sourceUnit
+.. syntax:autogrammar:: SolidityLexer.g4
+   :root-rule: SolidityParser.sourceUnit
    :fragments:
    :cc-to-dash:
 
