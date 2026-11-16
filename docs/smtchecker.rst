@@ -323,6 +323,7 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 スマートコントラクトにおける一般的なプロパティの種類は、コントラクトの状態に関わるプロパティです。
 このようなプロパティについてアサーションを失敗させるには、複数のトランザクションが必要になる場合があります。
 
+<<<<<<< HEAD
 .. As an example, consider a 2D grid where both axis have coordinates in the range (-2^128, 2^128 - 1).
 .. Let us place a robot at position (0, 0). The robot can only move diagonally, one step at a time,
 .. and cannot move outside the grid. The robot's state machine can be represented by the smart contract
@@ -332,6 +333,12 @@ SMTCheckerはSolidity >=0.8.7ではデフォルトでアンダーフローとオ
 ここで、ロボットを(0, 0)の位置に置きます。
 ロボットは対角線上に1歩ずつしか移動できず、グリッドの外には出られません。
 このロボットのステートマシンは、以下のスマートコントラクトで表すことができます。
+=======
+As an example, consider a 2D grid where both axis have coordinates in the range (-2^127, 2^127 - 1).
+Let us place a robot at position (0, 0). The robot can only move diagonally, one step at a time,
+and cannot move outside the grid. The robot's state machine can be represented by the smart contract
+below.
+>>>>>>> english/develop
 
 .. code-block:: solidity
 
@@ -995,12 +1002,26 @@ SMTCheckerモジュールは、BMC（Bounded Model Checker）とCHC（Constraine
 Bounded Model Checker (BMC)
 ---------------------------
 
+<<<<<<< HEAD
 .. The BMC engine analyzes functions in isolation, that is, it does not take the
 .. overall behavior of the contract over multiple transactions into account when
 .. analyzing each function.  Loops are also ignored in this engine at the moment.
 .. Internal function calls are inlined as long as they are not recursive, directly
 .. or indirectly. External function calls are inlined if possible. Knowledge
 .. that is potentially affected by reentrancy is erased.
+=======
+.. warning::
+    The BMC engine has been deprecated and will be removed in a future release.
+    Selecting it, either explicitly via ``bmc`` or implicitly via ``all``, emits a deprecation warning.
+    Please use the CHC engine instead.
+
+The BMC engine analyzes functions in isolation, that is, it does not take the
+overall behavior of the contract over multiple transactions into account when
+analyzing each function.  Loops are also ignored in this engine at the moment.
+Internal function calls are inlined as long as they are not recursive, directly
+or indirectly. External function calls are inlined if possible. Knowledge
+that is potentially affected by reentrancy is erased.
+>>>>>>> english/develop
 
 BMCエンジンは、関数を単独で解析します。
 つまり、各関数を解析する際に、複数のトランザクションにわたるコントラクトの全体的な動作を考慮しません。
@@ -1073,6 +1094,15 @@ SMTソルバーを主とし、 `Spacer <https://spacer.bitbucket.io/>`_ をHorn�
   これをコンパイラの `コールバックメカニズム <https://github.com/ethereum/solc-js>`_ と併用することで、システム内の任意のソルバーバイナリを採用して、クエリの結果をコンパイラに同期して返すことができます。
   これは、どのソルバーを呼び出すかによって、BMCとCHCの両方で使用できます。
 
+<<<<<<< HEAD
+=======
+- ``cvc5`` is used via its binary which must be installed in the system. Only BMC uses ``cvc5``.
+- ``eld`` is used via its binary which must be installed in the system. Only CHC uses ``eld``, and only if ``z3`` is not enabled.
+- ``smtlib2`` outputs SMT/Horn queries in the `smtlib2 <http://smtlib.cs.uiowa.edu/>`_ format.
+  These can be used together with the compiler's `callback mechanism <https://github.com/argotorg/solc-js>`_ so that
+  any solver binary from the system can be employed to synchronously return the results of the queries to the compiler.
+  This can be used by both BMC and CHC depending on which solvers are called.
+>>>>>>> english/develop
 - ``z3`` is available statically in ``soljson.js`` (from Solidity 0.6.9), that is, the JavaScript binary of the compiler. Otherwise it is used via its binary which must be installed in the system.
 
 .. note::
