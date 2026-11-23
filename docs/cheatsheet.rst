@@ -52,6 +52,7 @@ ABIのエンコード関数とデコード関数
 ``address`` のメンバー
 ======================
 
+<<<<<<< HEAD
 .. TODO:
 
 - ``<address>.balance`` (``uint256``): :ref:`address` の残高（Wei）
@@ -62,8 +63,22 @@ ABIのエンコード関数とデコード関数
 - ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: issue low-level ``STATICCALL`` with the given payload, returns success condition and return data
 - ``<address payable>.send(uint256 amount) returns (bool)``: 指定した量のWeiを :ref:`address` に送り、失敗したら ``false`` を返します。
 - ``<address payable>.transfer(uint256 amount)``: 指定した量のWeiを :ref:`address` に送り、失敗したらリバートします。
+=======
+- ``<address>.balance`` (``uint256``): balance of the :ref:`address` in Wei
+- ``<address>.code`` (``bytes memory``): code at the :ref:`address` (can be empty)
+- ``<address>.codehash`` (``bytes32``): the codehash of the :ref:`address`
+- ``<address>.call(bytes memory) returns (bool, bytes memory)``: issue low-level ``CALL`` with the given payload,
+  returns success condition and return data
+- ``<address>.delegatecall(bytes memory) returns (bool, bytes memory)``: issue low-level ``DELEGATECALL`` with the given payload,
+  returns success condition and return data
+- ``<address>.staticcall(bytes memory) returns (bool, bytes memory)``: issue low-level ``STATICCALL`` with the given payload,
+  returns success condition and return data
+- ``<address payable>.send(uint256 amount) returns (bool)``: send given amount of Wei to :ref:`address`,
+  returns ``false`` on failure (deprecated)
+- ``<address payable>.transfer(uint256 amount)``: send given amount of Wei to :ref:`address`, throws on failure (deprecated)
+>>>>>>> english/develop
 
-.. index:: blockhash, blobhash, block, block;basefee, block;blobbasefee, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;timestamp
+.. index:: blockhash, blobhash, block, block;basefee, block;blobbasefee, block;chainid, block;coinbase, block;difficulty, block;gaslimit, block;number, block;prevrandao, block;slotnum, block;timestamp
 .. index:: gasleft, msg;data, msg;sender, msg;sig, msg;value, tx;gasprice, tx;origin
 
 ブロックとトランザクションのプロパティ
@@ -75,6 +90,7 @@ ABIのエンコード関数とデコード関数
   A versioned hash consists of a single byte representing the version (currently ``0x01``), followed by the last 31 bytes
   of the SHA256 hash of the KZG commitment (`EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_).
   Returns zero if no blob with the given index exists.
+<<<<<<< HEAD
 
 - ``block.basefee`` (``uint``): カレントブロックのベースフィー（base fee）（ `EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ と `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_ ）。
 
@@ -111,6 +127,25 @@ ABIのエンコード関数とデコード関数
 - ``tx.gasprice`` (``uint``): トランザクションのガスプライス。
 
 - ``tx.origin`` (``address``): トランザクションの送信者（フルコールチェーン）。
+=======
+- ``block.basefee`` (``uint``): current block's base fee (`EIP-3198 <https://eips.ethereum.org/EIPS/eip-3198>`_ and `EIP-1559 <https://eips.ethereum.org/EIPS/eip-1559>`_)
+- ``block.blobbasefee`` (``uint``): current block's blob base fee (`EIP-7516 <https://eips.ethereum.org/EIPS/eip-7516>`_ and `EIP-4844 <https://eips.ethereum.org/EIPS/eip-4844>`_)
+- ``block.chainid`` (``uint``): current chain id
+- ``block.coinbase`` (``address payable``): current block miner's address
+- ``block.difficulty`` (``uint``): current block difficulty (``EVM < Paris``). For other EVM versions it behaves as a deprecated alias for ``block.prevrandao`` that will be removed in the next breaking release
+- ``block.gaslimit`` (``uint``): current block gaslimit
+- ``block.number`` (``uint``): current block number
+- ``block.prevrandao`` (``uint``): random number provided by the beacon chain (``EVM >= Paris``) (see `EIP-4399 <https://eips.ethereum.org/EIPS/eip-4399>`_ )
+- ``block.slotnum`` (``uint64``): current beacon chain slot number (``EVM >= Amsterdam``) (see `EIP-7843 <https://eips.ethereum.org/EIPS/eip-7843>`_ )
+- ``block.timestamp`` (``uint``): current block timestamp in seconds since Unix epoch
+- ``gasleft() returns (uint256)``: remaining gas
+- ``msg.data`` (``bytes``): complete calldata
+- ``msg.sender`` (``address``): sender of the message (current call)
+- ``msg.sig`` (``bytes4``): first four bytes of the calldata (i.e. function identifier)
+- ``msg.value`` (``uint``): number of wei sent with the message
+- ``tx.gasprice`` (``uint``): gas price of the transaction
+- ``tx.origin`` (``address``): sender of the transaction (full call chain)
+>>>>>>> english/develop
 
 .. index:: assert, require, revert
 
@@ -127,11 +162,12 @@ ABIのエンコード関数とデコード関数
 
 - ``revert(string memory message)``: 実行を中止し、説明文字列を提供してステートの変化をリバートします。
 
-.. index:: cryptography, keccak256, sha256, ripemd160, ecrecover, addmod, mulmod
+.. index:: cryptography, keccak256, sha256, ripemd160, ecrecover, addmod, mulmod, erc7201
 
 数学的関数と暗号学的関数
 ========================
 
+<<<<<<< HEAD
 - ``keccak256(bytes memory) returns (bytes32)``: 入力のKeccak-256ハッシュを計算します。
 
 - ``sha256(bytes memory) returns (bytes32)``: 入力のSHA-256ハッシュを計算します。
@@ -143,6 +179,19 @@ ABIのエンコード関数とデコード関数
 - ``addmod(uint x, uint y, uint k) returns (uint)``: 任意の精度で加算が実行され、 ``2**256`` で切り捨てられない ``(x + y) % k`` を計算します。バージョン0.5.0から ``k != 0`` であることをアサートします。
 
 - ``mulmod(uint x, uint y, uint k) returns (uint)``: 任意の精度で乗算が実行され、 ``2**256`` で切り捨てられない ``(x * y) % k`` を計算します。バージョン0.5.0から ``k != 0`` であることをアサートします。
+=======
+- ``keccak256(bytes memory) returns (bytes32)``: compute the Keccak-256 hash of the input
+- ``sha256(bytes memory) returns (bytes32)``: compute the SHA-256 hash of the input
+- ``ripemd160(bytes memory) returns (bytes20)``: compute the RIPEMD-160 hash of the input
+- ``ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address)``: recover address associated with
+  the public key from elliptic curve signature, return zero on error
+- ``addmod(uint x, uint y, uint k) returns (uint)``: compute ``(x + y) % k`` where the addition is performed with
+  arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
+- ``mulmod(uint x, uint y, uint k) returns (uint)``: compute ``(x * y) % k`` where the multiplication is performed
+  with arbitrary precision and does not wrap around at ``2**256``. Assert that ``k != 0`` starting from version 0.5.0.
+- ``erc7201(string memory id) returns (uint)``: compute the base slot of an ``erc7201`` storage namespace.
+  Can be used in compile time context.
+>>>>>>> english/develop
 
 .. index:: this, super, selfdestruct
 

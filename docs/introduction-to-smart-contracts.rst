@@ -191,9 +191,17 @@ WebアプリケーションなどのEthereumクライアントは、ブロック
 これは :ref:`require関数 <assert-and-require-statements>` と非常によく似ています。  
 どちらの方法でも、エラー名や追加データを指定でき、それらは呼び出し元（最終的にはフロントエンドアプリケーションやブロックエクスプローラ）に渡されるため、失敗の原因をより簡単にデバッグしたり、対応したりできます。
 
+<<<<<<< HEAD
 ``send`` 関数は、（すでにコインを持っている人なら）誰でも他の人にコインを送るために使えます。
 送金者が送金するのに十分なコインを持っていない場合は、 ``if`` の条件がtrueと評価されます。
 結果として、 ``revert`` は操作を失敗させ、送金者には ``InsufficientBalance`` というエラーの詳細を伝えます。
+=======
+The ``send`` function can be used by anyone (who already
+has some of these coins) to send coins to anyone else. If the sender does *not* have
+enough coins to send, the condition in ``require`` evaluates to false, triggering a ``revert``
+with the ``InsufficientBalance`` error. This error supplies the requested amount and available
+balance to the caller, which front-end applications or block explorers can surface for debugging.
+>>>>>>> english/develop
 
 .. note::
     このコントラクトを使ってあるアドレスにコインを送っても、ブロックチェーンエクスプローラではそのアドレスを見ても何もわかりません。
