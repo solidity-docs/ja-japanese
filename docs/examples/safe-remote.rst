@@ -87,9 +87,18 @@
         {
             emit Aborted();
             state = State.Inactive;
+<<<<<<< HEAD
             // ここではtransferを直接使っています。
             // この関数の最後のコールであり、すでに状態を変更しているため、reentrancy-safeになっています。
             seller.transfer(address(this).balance);
+=======
+            // We use call here directly. It is
+            // reentrancy-safe, because it is the
+            // last call in this function and we
+            // already changed the state.
+            (bool success, ) = seller.call{value: address(this).balance}("");
+            require(success);
+>>>>>>> english/develop
         }
 
         /// 買い手として購入を確認します。
@@ -114,11 +123,18 @@
             inState(State.Locked)
         {
             emit ItemReceived();
+<<<<<<< HEAD
             // 最初に状態を変更することが重要です。
             // そうしないと、以下の `send` を使用して呼び出されたコントラクトが、ここで再び呼び出される可能性があるからです。
+=======
+            // It is important to change the state first because
+            // otherwise, the contracts called using `call` below
+            // can call in again here.
+>>>>>>> english/develop
             state = State.Release;
 
-            buyer.transfer(value);
+            (bool success, ) = buyer.call{value: value}("");
+            require(success);
         }
 
         /// この機能は、売り手に返金する、つまり売り手のロックされた資金を払い戻すものです。
@@ -128,13 +144,19 @@
             inState(State.Release)
         {
             emit SellerRefunded();
+<<<<<<< HEAD
             // otherwise, the contracts called using `send` below
+=======
+            // It is important to change the state first because
+            // otherwise, the contracts called using `call` below
+>>>>>>> english/develop
             // can call in again here.
             // 最初に状態を変更することが重要です。
             // そうしないと、以下の `send` を使用して呼び出されたコントラクトが、ここで再び呼び出される可能性があるからです。
             state = State.Inactive;
 
-            seller.transfer(3 * value);
+            (bool success, ) = seller.call{value: 3 * value}("");
+            require(success);
         }
     }
 
